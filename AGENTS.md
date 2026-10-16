@@ -83,7 +83,7 @@
 В Cursor Cloud сначала использовать SSH/SCP/SFTP; FTP использовать только если SSH/SCP/SFTP недоступны.
 WordPress API / REST API / MCP blob flow для страниц с `<script>` и `<canvas>` запрещён.
 
-**SSH_HOST / FTP_HOST:** используй **домен сайта** из `WP_SITE_URL` (например `meta-journal.ru`), не IP панели хостинга — у IP часто закрыты порты 21/22.
+**SSH_HOST / FTP_HOST:** используй **домен сайта** из `WP_SITE_URL` (целевой прод: `lireate.ru` на REG.RU), не IP панели хостинга — у IP часто закрыты порты 21/22. Доступы Beget / `meta-journal.ru` в env и в репозитории не использовать.
 
 ## Автономный режим (без подтверждений)
 

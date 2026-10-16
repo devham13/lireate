@@ -13,7 +13,7 @@ from pathlib import Path
 
 import paramiko
 
-from credentials import get_credential, public_site_url, require_credential
+from credentials import get_credential, public_site_url, publishing_enabled, require_credential
 
 
 def parse_args() -> argparse.Namespace:
@@ -198,6 +198,10 @@ def verify_live(url: str, slug: str) -> None:
 
 def main() -> int:
     args = parse_args()
+    if not publishing_enabled():
+        print("Deploy blocked: LIREATE_ALLOW_PUBLISH is not enabled.")
+        return 1
+
     local_path = Path(args.local_path)
     if not local_path.exists():
         print(f"Local template not found: {local_path}")
