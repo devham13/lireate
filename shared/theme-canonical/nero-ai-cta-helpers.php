@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('NERO_AI_DEFAULT_TELEGRAM_CHANNEL_URL')) {
-    define('NERO_AI_DEFAULT_TELEGRAM_CHANNEL_URL', 'https://t.me/Neurinix'); // pragma: allowlist secret
+    define('NERO_AI_DEFAULT_TELEGRAM_CHANNEL_URL', 'https://t.me/[REDACTED]'); // pragma: allowlist secret
 }
 
 if (!function_exists('nero_ai_resolve_env')) {

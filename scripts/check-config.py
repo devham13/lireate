@@ -37,6 +37,14 @@ SECRET_NAMES = (
     "SFTP_PASSWORD",
 )
 
+# Legacy hosting (Beget / meta-journal) must not remain in env after migration to REG.RU.
+LEGACY_HOSTING_MARKERS = (
+    "beget",
+    "devhamnq",
+    "meta-journal.ru",
+    "snake.beget",
+)
+
 
 @dataclass
 class CheckResult:
@@ -170,19 +178,109 @@ def check_ftp(config: dict[str, str]) -> CheckResult:
         return CheckResult("ftp", False, f"connection failed: {type(exc).__name__}")
 
 
-def check_host_alignment(config: dict[str, str]) -> CheckResult:
+def site_hostname(config: dict[str, str]) -> str:
     site_url = config.get("WP_SITE_URL") or config.get("PUBLIC_SITE_URL") or ""
-    ssh_host = config.get("SSH_HOST") or ""
-    if not site_url or not ssh_host:
-        return CheckResult("host alignment", True, "skipped")
-    site_host = site_url.replace("https://", "").replace("http://", "").strip("/").split("/")[0]
-    if ssh_host.replace(".", "").isdigit() and site_host and ssh_host != site_host:
+    return site_url.replace("https://", "").replace("http://", "").strip("/").split("/")[0].lower()
+
+
+def check_no_legacy_hosting(config: dict[str, str]) -> CheckResult:
+    keys = (
+        "SSH_HOST",
+        "FTP_HOST",
+        "SFTP_HOST",
+        "REMOTE_SITE_ROOT",
+        "SSH_THEME_PATH",
+        "SSH_USER",
+        "FTP_USER",
+        "SFTP_USER",
+        "NOTES",
+    )
+    blob = " ".join(str(config.get(key) or "") for key in keys).lower()
+    hits = sorted({marker for marker in LEGACY_HOSTING_MARKERS if marker in blob})
+    if hits:
+        return CheckResult(
+            "legacy hosting",
+            False,
+            "env still points to Beget/meta-journal (" + ", ".join(hits) + "); use REG.RU / lireate.ru only",
+        )
+    return CheckResult("legacy hosting", True, "no Beget/meta-journal markers in env")
+
+
+def check_host_alignment(config: dict[str, str]) -> CheckResult:
+    site_host = site_hostname(config)
+    ssh_host = (config.get("SSH_HOST") or "").lower()
+    ftp_host = (config.get("FTP_HOST") or "").lower()
+    if not site_host:
+        return CheckResult("host alignment", True, "skipped (no site URL)")
+    if ssh_host.replace(".", "").isdigit():
         return CheckResult(
             "host alignment",
             False,
             f"SSH_HOST is IP ({ssh_host}); use domain {site_host!r} instead",
         )
-    return CheckResult("host alignment", True, "SSH_HOST looks aligned with site domain")
+    if ssh_host and ssh_host not in {site_host, f"www.{site_host}"}:
+        return CheckResult(
+            "host alignment",
+            False,
+            f"SSH_HOST={ssh_host!r} must match WP_SITE_URL host {site_host!r} (REG.RU: use lireate.ru)",
+        )
+    if ftp_host and ftp_host not in {site_host, f"www.{site_host}"}:
+        return CheckResult(
+            "host alignment",
+            False,
+            f"FTP_HOST={ftp_host!r} must match WP_SITE_URL host {site_host!r}",
+        )
+    return CheckResult("host alignment", True, "SSH/FTP hosts match site domain")
+
+
+def check_ssh_not_beget(config: dict[str, str]) -> CheckResult:
+    missing = [name for name in REQUIRED_SSH if not present(config.get(name))]
+    if missing:
+        return CheckResult("ssh provider", False, "skipped: missing SSH credentials")
+
+    try:
+        import paramiko  # type: ignore[import-not-found]
+    except ImportError:
+        return CheckResult("ssh provider", False, "paramiko is not installed")
+
+    host = config["SSH_HOST"]
+    port = int(config.get("SSH_PORT") or "22")
+    try:
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(
+            host,
+            port=port,
+            username=config["SSH_USER"],
+            password=config["SSH_PASSWORD"],
+            timeout=15,
+            banner_timeout=15,
+            auth_timeout=15,
+        )
+        _, stdout, stderr = client.exec_command("hostname -f 2>/dev/null || hostname", timeout=15)
+        remote_host = stdout.read().decode("utf-8", errors="replace").strip().lower()
+        err = stderr.read().decode("utf-8", errors="replace").strip()
+        client.close()
+        if any(marker in remote_host for marker in ("beget", "snake.beget")):
+            return CheckResult(
+                "ssh provider",
+                False,
+                f"connected server is Beget ({remote_host}); point SSH_* at REG.RU (lireate.ru)",
+            )
+        if "hosting.reg.ru" in remote_host or remote_host.endswith(".reg.ru"):
+            return CheckResult("ssh provider", True, f"REG.RU host confirmed ({remote_host})")
+        site_host = site_hostname(config)
+        if site_host == "lireate.ru":
+            return CheckResult(
+                "ssh provider",
+                True,
+                f"SSH login ok ({remote_host or 'hostname unknown'})",
+            )
+        return CheckResult("ssh provider", True, f"SSH login ok ({remote_host or 'hostname unknown'})")
+    except (OSError, socket.timeout, Exception) as exc:
+        site_host = site_hostname(config)
+        hint = f"; for {site_host!r} update SSH_USER/SSH_PASSWORD in Cloud Secrets" if site_host else ""
+        return CheckResult("ssh provider", False, f"connection failed: {type(exc).__name__}{hint}")
 
 
 def check_ssh(config: dict[str, str]) -> CheckResult:
@@ -260,12 +358,21 @@ def main() -> int:
         check_required(config, REQUIRED_BASE, "base config"),
         check_required(config, REQUIRED_FTP, "ftp variables"),
         check_required(config, REQUIRED_SSH, "ssh variables"),
+        check_no_legacy_hosting(config),
         check_secret_files_ignored(),
         check_no_tracked_secret_files(),
     ]
 
     if args.network:
-        results.extend([check_url(config), check_host_alignment(config), check_ftp(config), check_ssh(config)])
+        results.extend(
+            [
+                check_url(config),
+                check_host_alignment(config),
+                check_ftp(config),
+                check_ssh(config),
+                check_ssh_not_beget(config),
+            ]
+        )
 
     for result in results:
         print_result(result)

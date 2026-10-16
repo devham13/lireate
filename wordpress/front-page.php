@@ -1,11 +1,11 @@
 <?php
 /**
- * Template Name: Neurinix AI Home
- * Description: Главная страница Meta Journal / Neurinix в стиле AI-автоматизации бизнеса.
+ * Template Name: [REDACTED] AI Home
+ * Description: Главная страница Lireate / [REDACTED] в стиле AI-автоматизации бизнеса.
  *
  * Как использовать:
  * 1) Переименовать файл в front-page.php, если нужно сделать его главной темой.
- * 2) Или загрузить в активную тему и выбрать шаблон "Neurinix AI Home" у нужной страницы.
+ * 2) Или загрузить в активную тему и выбрать шаблон "[REDACTED] AI Home" у нужной страницы.
  */
 
 $page_seo_title = 'AI-автоматизация бизнеса под ключ — внедрение AI-агентов, CRM и нейросетей';
@@ -24,7 +24,7 @@ add_action('wp_head', static function () use ($page_seo_title, $page_seo_descrip
     echo '<meta property="og:type" content="website" />' . "\n";
 }, 1);
 
-$brand = get_bloginfo('name') ?: 'Neurinix';
+$brand = get_bloginfo('name') ?: '[REDACTED]';
 $primary_cta_label = getenv('PRIMARY_CTA_LABEL') ?: 'Получить AI-аудит';
 $primary_cta_url = getenv('PRIMARY_CTA_URL') ?: '#audit';
 $secondary_cta_label = getenv('SECONDARY_CTA_LABEL') ?: 'Что можно автоматизировать';
@@ -40,7 +40,7 @@ nav[aria-label="Хлебные крошки"], .woocommerce-breadcrumb,
 .entry-header, .page-title-section { display: none !important; }
 #primary, .site-main, .site-content, #content, .content-area { padding-top: 0 !important; margin-top: 0 !important; }
 /**
- * Meta Journal / Neurinix homepage design reference.
+ * Lireate / [REDACTED] homepage design reference.
  * Назначение: новый шаблонный дизайн для главной страницы и будущих AI/B2B лендингов.
  * Использование: корневая обёртка страницы должна иметь класс .nero-ai-home-page.
  * Все пользовательские классы начинаются с .nero-ai- чтобы не конфликтовать с WordPress/Kadence.
