@@ -61,7 +61,18 @@ NOTES=
 
 Публикация идёт **только** на **REG.RU** для домена **`lireate.ru`**. Старый хостинг **Beget** и домен **`meta-journal.ru`** в Secrets, в `REMOTE_SITE_ROOT` и в `SSH_USER` не использовать.
 
-Минимальный набор для Cloud Secrets после смены пароля в панели REG.RU:
+### Рекомендуемые Secrets (префикс `LIREATE_`)
+
+Если в Cursor заданы `LIREATE_*`, они **перекрывают** старые `SSH_*` / `FTP_*` / `WP_SITE_URL`:
+
+| Secret | Назначение |
+|--------|------------|
+| `LIREATE_PUBLIC_SITE_URL` | `PUBLIC_SITE_URL` и `WP_SITE_URL` |
+| `LIREATE_REMOTE_SITE_ROOT` | корень WordPress на REG.RU |
+| `LIREATE_SFTP_HOST` / `PORT` / `USER` / `PASSWORD` | SSH/SFTP/FTP для Юры и `deploy.py` |
+| `LIREATE_ALLOW_PUBLISH` | `true` / `1` — разрешить выкладку; пусто = разрешено |
+
+Минимальный набор (либо `LIREATE_*`, либо классические имена) после смены пароля в панели REG.RU:
 
 | Переменная | Значение |
 |------------|----------|

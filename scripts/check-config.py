@@ -16,7 +16,12 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCAL_CREDENTIALS = ROOT / "shared" / "hosting-credentials.local"
+SHARED = ROOT / "shared"
+if str(SHARED) not in sys.path:
+    sys.path.insert(0, str(SHARED))
+from credentials import apply_lireate_hosting_aliases  # noqa: E402
+
+LOCAL_CREDENTIALS = SHARED / "hosting-credentials.local"
 ENV_FILE = ROOT / ".env"
 
 REQUIRED_BASE = (
@@ -72,7 +77,7 @@ def load_config(use_local: bool) -> dict[str, str]:
     if use_local:
         values.update({k: v for k, v in parse_env_file(LOCAL_CREDENTIALS).items() if v})
     values.update({k: v for k, v in os.environ.items() if v})
-    return values
+    return apply_lireate_hosting_aliases(values)
 
 
 def present(value: str | None) -> bool:
