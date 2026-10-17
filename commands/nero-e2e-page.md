@@ -1,6 +1,8 @@
 ---
-description: Полная цепочка Кирилл → Коля||Артём → Женя → Артур → Алина||Борис → Наташа → Юра → Макс||Лёня.
+description: Устарело — используйте commands/lireate-service-page.md
 ---
+
+> **Legacy Nero Network / WordPress.** Для LIREATE: `commands/lireate-service-page.md`.
 
 Пайплайн **Кирилл → Коля||Артём → Женя → Артур → Алина||Борис → Наташа → Юра → Макс||Лёня**.
 
