@@ -35,6 +35,14 @@ git checkout main
 git pull --ff-only
 ```
 
+## Общие CSS/JS услуг
+
+Файлы из `pages/services/_shared/` копируются в `assets/lireate-shared/` при публикации. В git перед merge желательно:
+
+```bash
+python3 scripts/lireate_service_sync_shared.py
+```
+
 ## Dry-run (по умолчанию, без записи)
 
 ```bash

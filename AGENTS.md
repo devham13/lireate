@@ -26,9 +26,12 @@
 
 ## Дизайн и артефакт страницы
 
-- Визуал и вёрстка — **из этого репозитория** (`shared/longread-page-design-system.md`, `agents/natasha`, `agents/alina`, `agents/boris`, `assets/`, `shared/longread-page-reveal.js`), **не** дизайн текущего сайта lireate.ru.
-- Страница **самодостаточная**: свои `<style>`, `<script>`, локальные `assets/`; не зависит от шаблона CMS.
-- Канонический путь в git: `pages/services/<slug>/` (`index.php` + опционально `assets/`, `publish.manifest.json`). См. `pages/services/README.md`.
+- **Все новые страницы услуг** — только стандарт LIREATE: `docs/lireate-service-design.ru.md`, общие ассеты `pages/services/_shared/`, шаблон `pages/services/_template/`, skill `skills/lireate-service-page/SKILL.md`. Эталон: `pages/services/registraciya-tovarnogo-znaka-v-kitae/`.
+- Визуал: тёмный navy, плавающая nav-pill, hero + стеклянная панель, карточки `lx-*` — **не** дизайн текущего шаблона CMS и **не** legacy WordPress-longread (другой стек, не для услуг).
+- Страница **самодостаточная**: `assets/lireate-shared/*` (копия из `_shared`) + локальные `assets/` при необходимости; не зависит от CSS CMS.
+- Канонический путь: `pages/services/<slug>/` (`index.php`, `publish.manifest.json`, `.htaccess` при необходимости). См. `pages/services/README.md`.
+- SEO: `shared/lireate-service-seo-checklist.md`; перед коммитом — `scripts/lireate_service_sync_shared.py` и `scripts/lireate_service_lint.py --slug …`.
+- Запросы и приоритеты: бриф, `shared/lireate-services-queue.md`; при наличии — `data/seo-report.json` в **devham13/lireate-news** (Метрика).
 
 ## Публикация (критично для Cloud)
 
@@ -50,6 +53,7 @@
 - Cloud Agent пытается SSH/FTP на lireate.ru из облака.
 - Cloud Agent пишет «опубликовано» с live URL без факта запуска хостинг-скрипта.
 - Короткая статья вместо лонгрида 8k–20k+ знаков.
+- Услуга без `lx-nav-pill` / `_shared` CSS или с проваленным `lireate_service_lint.py`.
 - Контент с выдуманными кейсами/судами (см. `shared/lireate-content-rules.md`).
 
 ## Handoff

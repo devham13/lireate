@@ -1,0 +1,76 @@
+# Дизайн-система страниц услуг LIREATE
+
+Обязательный стандарт для **всех** новых страниц услуг на `lireate.ru`. Эталон: `pages/services/registraciya-tovarnogo-znaka-v-kitae/`.
+
+## Исходники
+
+| Путь | Назначение |
+|------|------------|
+| `pages/services/_shared/lireate-service-dark.css` | Общие стили (префикс классов `lx-*`) |
+| `pages/services/_shared/lireate-reveal.js` | Появление секций при скролле |
+| `pages/services/_template/` | Копировать при новой услуге |
+| `shared/lireate-service-seo-checklist.md` | SEO-чек-лист |
+| `scripts/lireate_service_lint.py` | Автопроверка перед коммитом |
+
+После правки `_shared` выполните:
+
+```bash
+python3 scripts/lireate_service_sync_shared.py
+```
+
+На хостинге общие файлы подмешивает `lireate_hosting_publish_service.py` в `assets/lireate-shared/`.
+
+## Палитра и фон
+
+- Фон страницы: `#0b1020` (navy), радиальные свечения сине-фиолетовые (`.lx-bg-glow`).
+- Текст основной: `#94a3b8`, заголовки: `#f1f5f9` / `#f8fafc`.
+- Акцент лейблов: `#60a5fa`, вторичный фиолетовый: `#a78bfa`.
+- Кнопка primary: градиент `#3b82f6` → `#8b5cf6` → `#6366f1`, скругление pill.
+
+## Типографика
+
+- Шрифт: **Inter** (Google Fonts), fallback system-ui.
+- Eyebrow / section label: 11px, uppercase, letter-spacing 0.14em, weight 800.
+- H1 hero: clamp ~2–3.15rem, weight 800, letter-spacing −0.03em.
+- H2 секций: clamp ~1.5–2.1rem, weight 800.
+- Body: 16px, line-height 1.65–1.75.
+
+## Отступы и сетка
+
+- Контейнер `.lireate-svc-page`: max-width 1120px, padding 0 20px, нижний отступ 80px.
+- Секция `.lx-section`: padding-top 56px.
+- Hero: двухколоночная сетка (1.05fr / 0.95fr), gap 40px; ≤960px — одна колонка.
+- Карточки этапов `.lx-card-grid`: 3 колонки → 1 на мобиле.
+
+## Компоненты
+
+1. **Плавающее меню** — `.lx-nav-shell` + `.lx-nav-pill` (белая «пилюля», логотип LIREATE, якоря, CTA «Консультация»). На узком экране скрыть `.lx-nav-links`.
+2. **Hero** — eyebrow, один H1, лид, теги `.lx-tags`, CTA primary + ghost, мини-статистика `.lx-hero-mini` (финальные тексты, без «ломающей» анимации счётчиков).
+3. **Стеклянная панель** — `.lx-glass`: KPI `.lx-kpi-row`, лента `.lx-feed`, схема `.lx-route` / `.lx-route-steps` (HTML/CSS, не canvas с налезающим текстом).
+4. **Секции** — `.lx-section-label` + H2, абзацы, при необходимости `.lx-card-grid` / `.lx-checklist`.
+5. **FAQ** — `<details class="lx-faq">` + дублирование в JSON-LD `FAQPage`.
+6. **Форма** — `#lireate-lead-form`, панель `.lx-form-panel`, согласие на ПДн.
+7. **Мессенджеры** — `#link-telegram`, `#link-whatsapp`, опционально `data-lireate-telegram` / `data-lireate-whatsapp` на `<html>` (подставляет CMS).
+8. **Dock** — `.lx-dock` справа снизу (форма + TG).
+9. **Перелинковка** — блок `#related` с `.lx-related-links`.
+
+## Адаптив
+
+- Breakpoints в CSS: 960px (hero/contact, скрытие меню), 520px (мессенджеры, KPI, схема 2 колонки).
+- Статистика и подписи — грамотный русский, готовые строки в HTML.
+
+## Подключение на странице
+
+```html
+<link rel="stylesheet" href="assets/lireate-shared/lireate-service-dark.css">
+...
+<body class="lireate-svc-body">
+<main class="lireate-svc-page ...">
+<script src="assets/lireate-shared/lireate-reveal.js"></script>
+```
+
+## Контент и SEO
+
+- Лонгрид 8k–20k+ знаков, без выдуманных дел (`shared/lireate-content-rules.md`).
+- Запросы: очередь услуг, бриф пользователя, при наличии — `data/seo-report.json` из репозитория **lireate-news** (бот Метрики).
+- Перед коммитом: `python3 scripts/lireate_service_lint.py --slug <slug>`.

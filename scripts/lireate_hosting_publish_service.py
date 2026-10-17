@@ -32,6 +32,47 @@ SKIP_NAMES = {
 }
 
 MANAGED_MARKER = ".lireate-managed.json"
+SHARED_ASSETS_PREFIX = Path("assets") / "lireate-shared"
+
+
+def _shared_asset_files(office_repo):
+    shared_dir = office_repo / "pages" / "services" / "_shared"
+    if not shared_dir.is_dir():
+        return []
+    out = []
+    for path in sorted(shared_dir.iterdir()):
+        if not path.is_file() or path.name.startswith("."):
+            continue
+        rel = SHARED_ASSETS_PREFIX / path.name
+        out.append((path, rel))
+    return out
+
+
+def _build_publish_plan(service_dir, office_repo):
+    plan = []
+    for rel in _iter_source_files(service_dir):
+        src = service_dir / rel
+        plan.append(
+            {
+                "rel": str(rel).replace("\\", "/"),
+                "src": str(src),
+                "sha256": _sha256_file(src),
+                "size": src.stat().st_size,
+            }
+        )
+    for src, rel in _shared_asset_files(office_repo):
+        dst_rel = str(rel).replace("\\", "/")
+        if any(item["rel"] == dst_rel for item in plan):
+            continue
+        plan.append(
+            {
+                "rel": dst_rel,
+                "src": str(src),
+                "sha256": _sha256_file(src),
+                "size": src.stat().st_size,
+            }
+        )
+    return plan
 
 
 def require_python(min_version):
@@ -241,20 +282,9 @@ def main():
 
     dest_dir = docroot_path / url_path if docroot_path else Path(url_path)
     public_url = "{0}/{1}/".format(site, url_path)
-    source_files = list(_iter_source_files(service_dir))
-    plan = []
-    for rel in source_files:
-        src = service_dir / rel
-        dst = dest_dir / rel
-        plan.append(
-            {
-                "rel": str(rel).replace("\\", "/"),
-                "src": str(src),
-                "dst": str(dst),
-                "sha256": _sha256_file(src),
-                "size": src.stat().st_size,
-            }
-        )
+    plan = _build_publish_plan(service_dir, office_repo)
+    for item in plan:
+        item["dst"] = str(dest_dir / item["rel"])
 
     print("=== SERVICE PUBLISH PLAN ===")
     print("slug: {0}".format(slug))
@@ -307,20 +337,9 @@ def main():
                 return 2
             slug, url_path, manifest = _load_manifest(service_dir)
             dest_dir = docroot_path / url_path
-            source_files = list(_iter_source_files(service_dir))
-            plan = []
-            for rel in source_files:
-                src = service_dir / rel
-                dst = dest_dir / rel
-                plan.append(
-                    {
-                        "rel": str(rel).replace("\\", "/"),
-                        "src": str(src),
-                        "dst": str(dst),
-                        "sha256": _sha256_file(src),
-                        "size": src.stat().st_size,
-                    }
-                )
+            plan = _build_publish_plan(service_dir, office_repo)
+            for item in plan:
+                item["dst"] = str(dest_dir / item["rel"])
 
         existing_managed = _load_managed_marker(dest_dir)
         foreign = []

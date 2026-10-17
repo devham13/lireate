@@ -1,36 +1,53 @@
 # Страницы услуг LIREATE (исходники для хостинга)
 
-Cloud Agent **не** выкладывает файлы на `lireate.ru` напрямую (RCPC блокирует облако). Он коммитит готовый каталог сюда; на REG.RU скрипт `scripts/lireate_hosting_publish_service.py` делает `git pull` и копирует в DOCROOT.
+Cloud Agent **не** выкладывает файлы на `lireate.ru` напрямую. Он коммитит каталог сюда; на REG.RU — `scripts/lireate_hosting_publish_service.py`.
 
-## Структура одной услуги
+## Новая услуга
+
+1. Скопировать `pages/services/_template/` → `pages/services/<slug>/`.
+2. Заполнить `index.php`, `publish.manifest.json`, при необходимости `.htaccess` (см. эталон Китая).
+3. Следовать `docs/lireate-service-design.ru.md` и `shared/lireate-service-seo-checklist.md`.
+4. Выполнить:
+
+```bash
+python3 scripts/lireate_service_sync_shared.py --slug <slug>
+python3 scripts/lireate_service_lint.py --slug <slug>
+```
+
+## Структура
 
 ```text
-pages/services/<slug>/
-  index.php          # самодостаточная страница (полный HTML или PHP-обёртка без CMS-темы)
-  publish.manifest.json
-  assets/            # опционально: css, js, изображения
+pages/services/
+  _shared/              # канон CSS/JS (копируются в каждую услугу)
+  _template/            # заготовка новой услуги
+  <slug>/
+    index.php
+    publish.manifest.json
+    .htaccess           # опционально (DirectoryIndex для CMS)
+    assets/
+      lireate-shared/   # копия из _shared (git + publish)
+      …                 # локальные картинки услуги
 ```
 
 ## publish.manifest.json
 
 ```json
 {
-  "slug": "registraciya-tovarnogo-znaka",
-  "url_path": "uslugi/registraciya-tovarnogo-znaka",
-  "title": "Регистрация товарного знака",
-  "description": "Краткое meta description для журнала"
+  "slug": "registraciya-tovarnogo-znaka-v-kitae",
+  "url_path": "registraciya_tovarnogo_znaka_v_kitae",
+  "title": "Регистрация товарного знака в Китае",
+  "description": "…140–160 символов…"
 }
 ```
 
-- `url_path` — путь от корня сайта **без** ведущего `/`. По умолчанию: `uslugi/<slug>`.
-- Публичный URL: `https://${PUBLIC_SITE_HOST}/<url_path>/` (каталог с `index.php`).
+Публичный URL: `https://<домен>/<url_path>/`.
 
-Проверьте, что путь не конфликтует с маршрутизацией CMS. Для статических каталогов Apache обычно отдаёт `index.php` напрямую, если нет перехвата в `.htaccess`.
+## Дизайн (обязательный)
 
-## Дизайн
+Тёмная дизайн-система услуг: `pages/services/_shared/lireate-service-dark.css`, `lireate-reveal.js`. Подробно — `docs/lireate-service-design.ru.md`. Эталон: **регистрация ТЗ в Китае**.
 
-Вёрстка и ассеты — **из этого репозитория** (`shared/longread-page-design-system.md`, `agents/natasha`, `agents/alina`, `agents/boris`, `assets/`). Не копировать визуальный стиль текущего шаблона lireate.ru. Страница должна работать без CSS/JS родительской CMS (inline или `assets/` рядом).
+Публикатор автоматически добавляет файлы из `_shared` в `assets/lireate-shared/` на сервере (даже если забыли sync в git — лучше синхронизировать в репозитории).
 
 ## Маркер на проде
 
-После публикации в каталоге появляется служебный `.lireate-managed.json` (список файлов, которые трогал автопубликатор). Скрипт **не перезаписывает** чужие файлы вне этого списка.
+`.lireate-managed.json` в каталоге услуги — список файлов автопубликатора.
