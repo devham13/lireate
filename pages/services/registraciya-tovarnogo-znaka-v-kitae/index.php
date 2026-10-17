@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-$path = '/uslugi/registraciya-tovarnogo-znaka-v-kitae/';
+$path = '/registraciya_tovarnogo_znaka_v_kitae/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
 $canonical = ($host !== '' ? 'https://' . $host : '') . $path;
 ?><!DOCTYPE html>

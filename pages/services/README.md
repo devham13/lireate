@@ -22,8 +22,8 @@ pages/services/<slug>/
 }
 ```
 
-- `url_path` — путь от корня сайта **без** ведущего `/`. По умолчанию: `uslugi/<slug>`.
-- Публичный URL: `https://${PUBLIC_SITE_HOST}/<url_path>/` (каталог с `index.php`).
+- `url_path` — путь от корня сайта **без** ведущего `/`, в стиле lireate.ru (`registraciya_tovarnogo_znaka`, не `/uslugi/...`). По умолчанию: транслит slug с подчёркиваниями.
+- Публичный URL: `https://${PUBLIC_SITE_HOST}/<url_path>/` (каталог с `index.php` в DOCROOT).
 
 Проверьте, что путь не конфликтует с маршрутизацией CMS. Для статических каталогов Apache обычно отдаёт `index.php` напрямую, если нет перехвата в `.htaccess`.
 

@@ -2,7 +2,7 @@
 
 | Дата | Slug | URL | Title | Статус |
 | --- | --- | --- | --- | --- |
-| 2026-10-17 | registraciya-tovarnogo-znaka-v-kitae | /uslugi/registraciya-tovarnogo-znaka-v-kitae/ | Регистрация товарного знака в Китае | ready_for_hosting (repo) |
+| 2026-10-17 | registraciya-tovarnogo-znaka-v-kitae | /registraciya_tovarnogo_znaka_v_kitae/ | Регистрация товарного знака в Китае | ready_for_hosting (repo) |
 
 | Дата | Slug | URL | Title | Шаблон |
 | --- | --- | --- | --- | --- |
