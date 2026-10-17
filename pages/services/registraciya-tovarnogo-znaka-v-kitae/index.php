@@ -49,9 +49,9 @@ $canonical = ($host !== '' ? 'https://' . $host : '') . $path;
       <a class="lx-btn lx-btn-ghost" href="#program">Смотреть программу</a>
     </div>
     <div class="lx-hero-mini">
-      <div class="lx-mini-stat"><strong data-lx-count="12" data-lx-suffix="+ мес.">12+ мес.</strong><span>типичный цикл экспертизы</span></div>
-      <div class="lx-mini-stat"><strong data-lx-count="6" data-lx-suffix=" блоков">6 блоков</strong><span>маршрут работ</span></div>
-      <div class="lx-mini-stat"><strong data-lx-count="2" data-lx-suffix=" языка">2 языка</strong><span>координация</span></div>
+      <div class="lx-mini-stat"><strong class="lx-stat-value">12+ мес.</strong><span>типичный цикл экспертизы</span></div>
+      <div class="lx-mini-stat"><strong class="lx-stat-value">6 этапов</strong><span>маршрут работ</span></div>
+      <div class="lx-mini-stat"><strong class="lx-stat-value">2 языка</strong><span>русский и китайский</span></div>
     </div>
   </div>
   <div class="lx-glass" aria-label="Статус сопровождения заявки">
@@ -60,9 +60,9 @@ $canonical = ($host !== '' ? 'https://' . $host : '') . $path;
       <span class="lx-live">Сопровождение CNIPA</span>
     </div>
     <div class="lx-kpi-row">
-      <div class="lx-kpi"><b data-lx-count="6">6</b><small>этапов работ</small></div>
-      <div class="lx-kpi"><b data-lx-count="45">45</b><small>классов МКТУ макс.</small></div>
-      <div class="lx-kpi"><b>№</b><small>номер заявки в реестре</small></div>
+      <div class="lx-kpi"><b class="lx-stat-value">6 этапов</b><small>маршрут сопровождения</small></div>
+      <div class="lx-kpi"><b class="lx-stat-value">45 классов</b><small>МКТУ (макс. в классификации)</small></div>
+      <div class="lx-kpi"><b class="lx-stat-value">2 языка</b><small>документы и переписка</small></div>
     </div>
     <ul class="lx-feed">
       <li>Аудит обозначения и коллизии в открытых реестрах</li>
@@ -70,7 +70,15 @@ $canonical = ($host !== '' ? 'https://' . $host : '') . $path;
       <li>Ответ на уведомление экспертизы в срок</li>
       <li>Регистрация в реестре после положительного решения</li>
     </ul>
-    <canvas id="china-tm-hero-canvas" role="img" aria-label="Анимация: путь заявки на товарный знак от России до регистрации в Китае"></canvas>
+    <div class="lx-route" role="img" aria-label="Путь заявки: от бренда до регистрации в Китае">
+      <ol class="lx-route-steps">
+        <li><span class="lx-route-node">RU</span><span class="lx-route-label">Бренд</span></li>
+        <li><span class="lx-route-node">CNIPA</span><span class="lx-route-label">Подача</span></li>
+        <li><span class="lx-route-node">МКТУ</span><span class="lx-route-label">Классы</span></li>
+        <li><span class="lx-route-node lx-route-node--wide">Экспертиза</span><span class="lx-route-label">рассмотрение CNIPA</span></li>
+        <li><span class="lx-route-node">Реестр</span><span class="lx-route-label">Регистрация</span></li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -243,7 +251,6 @@ $canonical = ($host !== '' ? 'https://' . $host : '') . $path;
   <a id="dock-telegram" href="/contacts/" title="Telegram" aria-label="Telegram">TG</a>
 </aside>
 
-<script src="assets/china-tm-hero.js"></script>
 <script src="assets/lireate-reveal.js"></script>
 <script>
 (function(){
