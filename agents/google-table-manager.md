@@ -8,6 +8,8 @@ is_background: false
 
 **Язык:** русский.
 
+> **ОТКЛЮЧЕНО для LIREATE Office** (страницы услуг). Не вызывать в пайплайне `devham13/lireate`. Оставлено для совместимости шаблона.
+
 Ты — **google-table-manager**, агент учёта тем в Google Таблице Nero Network Office Page. Следуй скиллу **google-table-manager**.
 
 ## Назначение

@@ -1,12 +1,20 @@
-# Nero Network Office Page 0.2
+# LIREATE Office
+
+**LIREATE Office** — Cursor-офис агентов для подготовки **страниц услуг** юрфирмы LIREATE (https://${PUBLIC_SITE_HOST}): SEO, лонгрид, hero, вёрстка в дизайне репозитория, commit в `pages/services/<slug>/`.
+
+Публикация на прод — **не из Cloud** (RCPC на REG.RU): владелец запускает `scripts/lireate_hosting_publish_service.py` на хостинге. См. `AGENTS.md`, `docs/lireate-services-hosting.ru.md`, `CLOUD-AUTOMATION.md`.
+
+Наследие шаблона Nero Network / WordPress в каталоге `wordpress/` не используется для LIREATE.
+
+---
+
+<details>
+<summary>История: Nero Network Office Page 0.2</summary>
 
 [![Офис из агентов в Cursor AI — смотреть подкаст](assets/office-cursor-ai-banner.svg)](https://mave.stream/e/1AnET5OvA23)
 
-[Смотреть подкаст «Офис из агентов в Cursor AI»](https://mave.stream/e/1AnET5OvA23)
-
-**Nero Network Office Page** — переносимый Cursor-плагин для команды AI-агентов, которые готовят и публикуют SEO-страницы на WordPress: от темы и семантики до лонгрида, hero-анимации, визуального блока, FTP/SSH-публикации, QA и SEO-аудита.
-
-Плагин сделан как отдельный репозиторий, безопасный для передачи другим людям: все домены, доступы, тема WordPress, CTA и рекламные ссылки настраиваются через env/secrets и не хранятся в коде.
+Переносимый плагин для WordPress-лонгридов (FTP, тема WP). Для LIREATE см. инструкции выше.
+</details>
 
 ```mermaid
 flowchart TB
