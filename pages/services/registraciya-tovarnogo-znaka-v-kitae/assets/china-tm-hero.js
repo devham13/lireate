@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var box = canvas.parentElement;
     if (!box) return;
     w = box.clientWidth;
-    h = Math.max(320, Math.min(520, box.clientHeight || 420));
+    h = Math.max(140, Math.min(200, canvas.clientHeight || 160));
     canvas.width = w;
     canvas.height = h;
   }
