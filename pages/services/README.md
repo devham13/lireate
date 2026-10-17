@@ -25,7 +25,7 @@ pages/services/<slug>/
 - `url_path` — путь от корня сайта **без** ведущего `/`, в стиле lireate.ru (`registraciya_tovarnogo_znaka`, не `/uslugi/...`). По умолчанию: транслит slug с подчёркиваниями.
 - Публичный URL: `https://${PUBLIC_SITE_HOST}/<url_path>/` (каталог с `index.php` в DOCROOT).
 
-Проверьте, что путь не конфликтует с маршрутизацией CMS. Для статических каталогов Apache обычно отдаёт `index.php` напрямую, если нет перехвата в `.htaccess`.
+На lireate.ru корневой rewrite CMS часто даёт **404 на `/slug/`**, хотя **`/slug/index.php`** открывается. В каждый каталог услуги кладите **`.htaccess`** с `DirectoryIndex index.php` (см. `pages/services/_htaccess-service-dir.tpl`).
 
 ## Дизайн
 

@@ -147,6 +147,18 @@ def _http_status(url, timeout=20):
         return None
 
 
+def _verify_public_url(public_url):
+    """CMS may 404 on /slug/ while /slug/index.php returns 200; accept either."""
+    st = _http_status(public_url)
+    if st == 200:
+        return st, public_url
+    alt = public_url.rstrip("/") + "/index.php"
+    st2 = _http_status(alt)
+    if st2 == 200:
+        return st2, alt
+    return st or st2, public_url
+
+
 def _git_pull(office_repo):
     if not (office_repo / ".git").is_dir():
         return False, "not a git repo: {0}".format(office_repo)
@@ -385,12 +397,15 @@ def main():
         state_file.parent.mkdir(parents=True, exist_ok=True)
         state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-        st = _http_status(public_url)
+        st, verified_url = _verify_public_url(public_url)
         if st != 200:
-            _print_status("BLOCKER", "published files but HTTP {0} for {1}".format(st, public_url))
+            _print_status(
+                "BLOCKER",
+                "published files but HTTP {0} for {1} (try {2}index.php)".format(st, public_url, public_url.rstrip("/") + "/"),
+            )
             return 1
 
-        _print_status("PUBLISHED", public_url)
+        _print_status("PUBLISHED", verified_url)
         return 0
 
 
