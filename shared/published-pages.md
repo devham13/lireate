@@ -1,5 +1,9 @@
 # Published Pages
 
+| Дата | Slug | URL | Title | Статус |
+| --- | --- | --- | --- | --- |
+| 2026-10-17 | registraciya-tovarnogo-znaka-v-kitae | /uslugi/registraciya-tovarnogo-znaka-v-kitae/ | Регистрация товарного знака в Китае | ready_for_hosting (repo) |
+
 | Дата | Slug | URL | Title | Шаблон |
 | --- | --- | --- | --- | --- |
 | 2026-05-28 | kpmg-claude-vnedrenie-ai-276-tysyach | https://meta-journal.ru/kpmg-claude-vnedrenie-ai-276-tysyach/ | KPMG и Claude: 276 000 сотрудников — уроки AI для бизнеса | page-kpmg-claude-vnedrenie-ai-276-tysyach.php |
