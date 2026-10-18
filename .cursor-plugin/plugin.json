@@ -1,19 +1,19 @@
 {
-  "name": "nero-network-office-page",
-  "displayName": "Nero Network Office Page",
-  "description": "Reusable Cursor office for preparing and publishing WordPress longread pages: research, SEO, copy, design, FTP/SSH publication, QA and SEO audit. Configure all private site data through env files or Cursor Secrets.",
-  "version": "0.2.0",
+  "name": "lireate-office",
+  "displayName": "LIREATE Office",
+  "description": "Cursor office for LIREATE legal service pages: SEO, longread, design from repo assets, commit to pages/services/, hosting publish via REG.RU script. Configure CTA and site URL through env or Cursor Secrets.",
+  "version": "1.0.0",
   "keywords": [
-    "wordpress",
+    "lireate",
+    "legal",
     "seo",
-    "wordstat",
     "cursor",
     "automation",
     "publishing",
     "qa"
   ],
   "author": {
-    "name": "Nero Network"
+    "name": "LIREATE"
   },
   "rules": "./rules/",
   "skills": "./skills/",

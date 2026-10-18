@@ -16,6 +16,8 @@ id_ed25519*
 output/
 .cursor/nero-network-handoff.md
 .cursor/nero-network-fragments/
+.cursor/lireate-handoff.md
+.cursor/lireate-fragments/
 page-*.php
 !wordpress/
 !wordpress/page-*.php

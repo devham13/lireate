@@ -1,148 +1,61 @@
-# Nero Network Office Page: Cloud Automation Setup
+# LIREATE Office: Cloud Automation
 
-Эта инструкция нужна, чтобы запускать Nero Network Office Page в Cursor Automations 3 раза в день.
+Автоматизация готовит **новые страницы услуг** в репозитории `devham13/lireate`; выкладка на https://${PUBLIC_SITE_HOST} — скриптом на хостинге REG.RU.
 
-## Что запускаем
+## Пайплайн
 
-Полный пайплайн:
+`Коля||Артём → Женя → Артур → Алина||Борис → Наташа → schema-markup → internal-linker → Юра → indexator → Макс → Лёня`
 
-`google-table-manager (reserve) → Кирилл → Коля||Артём → Женя → Артур → Алина||Борис → Наташа → schema-markup → internal-linker → Юра → google-table-manager (publish) → indexator → Макс → Лёня`
+**Не используются:** google-table-manager, kirill (новости), vk-publisher.
 
-google-table-manager резервирует тему из Google Таблицы (статус «Не использовано»); Кирилл оформляет угол и Wordstat; после Юры google-table-manager записывает URL в столбец ссылки (`GOOGLE_SHEETS_LINK_COLUMN`), **не меняя** столбец «Статус».
+## Ограничение Cloud
+
+Из Cursor Cloud **нет** доступа к lireate.ru (RCPC, FTP). Юра **не деплоит**; только commit `pages/services/<slug>/`. Инструкция владельцу: `docs/lireate-services-hosting.ru.md`.
 
 ## Канонические файлы
 
-- Handoff: `<PROJECT_ROOT>/.cursor/nero-network-handoff.md`
-- Фрагменты параллельных агентов: `<PROJECT_ROOT>/.cursor/nero-network-fragments/`
-- Ledger Кирилла: `<PROJECT_ROOT>/shared/kirill-news-ledger.md`
-- Журнал опубликованных страниц: `<PROJECT_ROOT>/nero-network-office-page/shared/published-pages.md`
-- Плагин: `<PROJECT_ROOT>/nero-network-office-page`
-- Шаблон env/secrets: `<PROJECT_ROOT>/nero-network-office-page/shared/hosting-credentials.env.example`
-- Локальный fallback, не для git: `<PROJECT_ROOT>/nero-network-office-page/shared/hosting-credentials.local`
+- Handoff: `<PROJECT_ROOT>/.cursor/lireate-handoff.md`
+- Фрагменты: `<PROJECT_ROOT>/.cursor/lireate-fragments/`
+- Очередь услуг: `<PROJECT_ROOT>/shared/lireate-services-queue.md`
+- Журнал: `<PROJECT_ROOT>/shared/published-pages.md`
+- Правила контента: `<PROJECT_ROOT>/shared/lireate-content-rules.md`
+- Хостинг-скрипт: `<PROJECT_ROOT>/scripts/lireate_hosting_publish_service.py`
 
-## Cursor docs, по которым настроено
+## Secrets / env (Cloud)
 
-- Cloud Agents setup: https://cursor.com/docs/cloud-agent/setup.md
-- Environment variables and secrets: https://cursor.com/docs/cloud-agent/setup.md#environment-variables-and-secrets
-- Secret protection: https://cursor.com/docs/cloud-agent/security-network.md#secret-protection
-- Automations: https://cursor.com/docs/cloud-agent/automations.md
-- Self-hosted pool: https://cursor.com/docs/cloud-agent/self-hosted-pool.md
-- MCP tools in Cloud Agents: https://cursor.com/docs/cloud-agent/capabilities.md#mcp-tools
-- MCP config interpolation: https://cursor.com/docs/mcp.md#config-interpolation
+Минимум для контента и CTA:
 
-## Почему нужен self-hosted worker
+- `SITE_BRAND=LIREATE`
+- `PUBLIC_SITE_URL=https://${PUBLIC_SITE_HOST}`
+- `PUBLIC_SITE_HOST=lireate.ru`
+- `PRIMARY_CTA_LABEL`, `PRIMARY_CTA_URL` (форма/контакты на lireate.ru)
+- `SECONDARY_CTA_*` — опционально
 
-Обычный Cloud Agent подойдёт только если все нужные интеграции доступны в облаке Cursor:
-
-- WebSearch/WebFetch;
-- MCP Wordstat;
-- FTP/SSH/WordPress-доступы;
-- браузерная проверка;
-- Node.js для IndexLift.
-
-Если Wordstat MCP, FTP/SSH или секреты находятся локально/в приватной среде, запускай через self-hosted worker.
+**Не нужны** для Cloud-пайплайна услуг: `WP_*`, `FTP_*`, `SSH_*`, `GOOGLE_SHEET_*`, VK-токены.
 
 ## Worker
 
-На машине/сервере, где есть доступы и инструменты:
+Обычный Cloud Agent достаточен: WebSearch, файлы, commit. Self-hosted worker нужен только если требуется Wordstat MCP или браузерный QA с доступом к live-сайту.
 
-```powershell
-cd "<PROJECT_ROOT>"
-$env:CURSOR_API_KEY="YOUR_TEAM_OR_SERVICE_ACCOUNT_KEY"
-agent worker start --pool --pool-name nero-network
-```
-
-Для постоянного worker:
-
-```powershell
-cd "<PROJECT_ROOT>"
-$env:CURSOR_API_KEY="YOUR_TEAM_OR_SERVICE_ACCOUNT_KEY"
-agent worker start --pool --pool-name nero-network --idle-release-timeout 600
-```
-
-## Secrets / env vars
-
-Для worker должны быть доступны:
-
-- env vars из `nero-network-office-page/shared/hosting-credentials.env.example`;
-- доступ к MCP Wordstat (`user-mcp-kv` или аналог);
-- доступ к интернету для WebSearch/WebFetch;
-- Node.js для `nero-network-office-page/skills/indexlift-seo-auditor`.
-
-В Cloud Cursor добавь реальные значения в Cloud Agents Dashboard → Secrets / Environment Variables. Для sensitive значений используй redacted secrets:
-
-- `FTP_HOST`, `FTP_PORT`, `FTP_USER`, `FTP_PASSWORD`
-- `SSH_HOST`, `SSH_PORT`, `SSH_USER`, `SSH_PASSWORD`
-- `REMOTE_SITE_ROOT`, `REMOTE_WP_CONTENT`, `REMOTE_WP_THEMES`, `REMOTE_WP_PLUGINS`, `SSH_THEME_PATH`
-- `WP_SITE_URL`, `WP_ADMIN_URL`, `PUBLIC_SITE_URL`
-- `WP_CLI_BIN`, `PHP_BIN`, если WP-CLI запускается нестандартно
-
-`hosting-credentials.local`, `.env`, приватные ключи и одноразовые FTP/SSH-скрипты не коммитить. Если используешь `mcp.json`, не хардкодь токены: используй `${env:NAME}` interpolation.
-
-## Automation schedule
-
-Создай Cursor Automation:
-
-- Trigger: Schedule
-- Cron: 3 раза в день, например:
+## Automation prompt (шаблон)
 
 ```text
-0 9,14,19 * * *
+Репозиторий LIREATE Office (devham13/lireate). Новая страница услуги юрфирмы.
+
+Тема услуги: <название> (товарные знаки / ИС / авторское право / патенты / арбитраж).
+
+Директор-оркестратор: роли только через Task / generalPurpose. Не выполняй роли сам.
+
+0. Сбрось .cursor/lireate-handoff.md одной строкой "# LIREATE — новая сессия" и очисти .cursor/lireate-fragments/.
+1. seo-kolya || artyom → zhenya → artur → alina || boris → natasha → schema-markup → internal-linker → yura.
+2. Контент: shared/lireate-content-rules.md. Лонгрид 8k–20k+ знаков.
+3. Дизайн из репозитория, самодостаточная страница в pages/services/<slug>/.
+4. Юра: commit/push, статус ready_for_hosting, НЕ SSH/FTP. deployment: hosting_script.
+5. indexator → qa → lenya по файлам в repo; live URL проверяет владелец после хостинг-скрипта.
+
+Финал: slug, путь pages/services/, ожидаемый URL https://${PUBLIC_SITE_HOST}/uslugi/<slug>/, команда для Shell на хостинге (dry-run и --apply) или блокер.
 ```
 
-- Repository: репозиторий с этим проектом
-- Branch: рабочая ветка публикации
-- Worker pool: `nero-network`
-- Environment install: off, если зависимости уже стоят на worker; on, если нужно ставить Node-пакеты
-- Tools: MCP Wordstat, browser/web, shell/filesystem, при необходимости Slack/GitHub
+## После merge PR
 
-## Automation prompt
-
-```text
-Ты работаешь в репозитории Nero Network Office Page.
-
-Запусти полный пайплайн Nero Network Office Page для новости дня **через роли**.
-
-0. Текущий Cloud Agent уже является Директором-оркестратором. Не вызывай отдельный Task или команду с именем director: директор не является отдельной ролью пайплайна.
-   Директор запускает только ролевых агентов: `kirill`, `seo-kolya`, `artyom`, `zhenya`, `artur`, `alina`, `boris`, `natasha`, `yura`, `qa`, `lenya`.
-   Для каждой роли сначала используй project-agent Task соответствующего имени.
-   Если Cloud API не принимает имя роли как Task type, используй fallback: **отдельный `generalPurpose` Task на эту одну роль**.
-   Для каждого `generalPurpose` Task передай короткий контракт роли: имя роли, входной файл/фрагмент, точный маркер результата, запреты, путь `agents/<role>.md` и путь соответствующего `skills/<skill>/SKILL.md`. Полный текст больших skill не копируй без необходимости.
-   Один Task = одна роль. Не объединяй роли.
-   Если недоступен даже `generalPurpose` Task или невозможно запускать отдельные Task, остановись с блокером:
-   `❌ БЛОКЕР: Cloud Agent не может запускать отдельные Task/subagents даже через generalPurpose. Не выполняю single-agent pipeline.`
-1. Директор-оркестратор может сбрасывать handoff, запускать отдельные Task/subagents по ролям, читать фрагменты, переносить блоки в handoff и проверять маркеры. НЕ выполняй роли сам.
-2. Перед стартом сбрось <PROJECT_ROOT>/.cursor/nero-network-handoff.md одной строкой "# Nero Network — новая сессия".
-3. Очисти фрагменты текущей сессии в <PROJECT_ROOT>/.cursor/nero-network-fragments/.
-4. Запусти Кирилла: он должен сам найти одну лучшую свежую новость по нейросетям/автоматизации, проверить Wordstat, проверить дубли по <PROJECT_ROOT>/shared/kirill-news-ledger.md и <PROJECT_ROOT>/nero-network-office-page/shared/published-pages.md, записать selected в ledger и блок === КИРИЛЛ (НОВОСТЬ ДНЯ) === в handoff.
-5. Если Кирилл не нашёл недублирующуюся тему, остановись и запиши блокер.
-6. Далее выполни цепочку: Коля||Артём → Женя → Артур → Алина||Борис → Наташа → schema-markup → internal-linker → Юра → google-table-manager (publish) → indexator → Макс → Лёня.
-7. Параллельные агенты не пишут напрямую в handoff: они пишут во фрагменты <PROJECT_ROOT>/.cursor/nero-network-fragments/, а Директор переносит блоки в handoff без дублей.
-8. Юра публикует только SSH/SCP/SFTP/FTP как `page-{slug}.php` в активную тему `${WP_THEME_SLUG}`; в Cloud сначала SSH/SCP/SFTP, НЕ WordPress API / REST API / MCP blob flow.
-9. До QA проверь, что в handoff есть === ЮРА (ПУБЛИКАЦИЯ) === и live HTML содержит main#primary, {slug}-page, hero/canvas-маркеры.
-10. После публикации Юра обновляет <PROJECT_ROOT>/nero-network-office-page/shared/published-pages.md и, если тема пришла от Кирилла, <PROJECT_ROOT>/shared/kirill-news-ledger.md статусом published.
-11. Если indexator, Макс или Лёня нашли проблемы, максимум 2 цикла Юра → indexator → Макс → Лёня.
-
-Запрещено:
-- самому писать лонгрид вместо Жени;
-- самому делать hero вместо Алины;
-- самому делать визуальный блок вместо Бориса;
-- самому верстать страницу вместо Наташи;
-- самому вставлять рекламу вместо Артура;
-- самому публиковать вместо Юры;
-- самому делать QA/SEO-аудит вместо Макса и Лёни;
-- объединять несколько ролей в один `generalPurpose` Task;
-- спрашивать у пользователя подтверждение на deploy, SSH, npm/pip, QA, повторную публикацию — выполняй автономно до URL или блокера.
-
-Финальный ответ: URL опубликованной страницы или блокер с причиной.
-```
-
-## После каждого запуска
-
-Проверь, что изменились:
-
-- `<PROJECT_ROOT>/shared/kirill-news-ledger.md`
-- `<PROJECT_ROOT>/nero-network-office-page/shared/published-pages.md`
-- при необходимости файлы страницы/шаблона
-
-Если Automation работает через PR, смерджи PR, чтобы следующий запуск видел свежий ledger и не повторял новость.
+Владелец на REG.RU: `git pull` в `$HOME/lireate-autopub/office-repo`, dry-run, затем `--apply` с `LIREATE_ALLOW_PUBLISH=yes`.

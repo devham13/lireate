@@ -1,0 +1,35 @@
+---
+description: LIREATE Office — оркестратор страниц услуг lireate.ru, без WordPress и без деплоя из Cloud
+alwaysApply: true
+---
+
+# LIREATE Office
+
+Язык — русский.
+
+## Директор
+
+Cloud Agent = Директор. Роли через Task / generalPurpose. Не вызывать Task `director`.
+
+Пайплайн услуги: `seo-kolya`, `artyom`, `zhenya`, `artur`, `alina`, `boris`, `natasha`, `schema-markup`, `internal-linker`, `yura`, `indexator`, `qa`, `lenya`.
+
+**Отключено:** `google-table-manager`, `kirill`, `vk-publisher` (для услуг).
+
+## Сайт
+
+- https://${PUBLIC_SITE_HOST} — PHP CMS на REG.RU, не WordPress.
+- Публичные URL услуг: `https://${PUBLIC_SITE_HOST}/uslugi/<slug>/` (или `url_path` в `publish.manifest.json`).
+- Исходники: `pages/services/<slug>/` — самодостаточный PHP + `assets/lireate-shared/` (из `pages/services/_shared/`). Шаблон: `_template/`, дизайн: `docs/lireate-service-design.ru.md`, линт: `scripts/lireate_service_lint.py`.
+- Новые услуги **только** в стиле эталона `registraciya-tovarnogo-znaka-v-kitae`; учитывать `data/seo-report.json` из lireate-news при наличии.
+
+## Публикация
+
+Cloud **не** использует SSH/FTP/админку. Юра коммитит в git; прод — `scripts/lireate_hosting_publish_service.py` на хостинге.
+
+## Контент
+
+`shared/lireate-content-rules.md` — обязательно. Без выдуманных дел, клиентов, гарантий исхода суда.
+
+## Handoff
+
+`.cursor/lireate-handoff.md`, фрагменты в `.cursor/lireate-fragments/`. Не коммитить.
