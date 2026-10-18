@@ -69,6 +69,7 @@ $schema_graph = [
       <a href="#when">Когда нужна</a>
       <a href="#program">Этапы</a>
       <a href="#pricing">Стоимость</a>
+      <a href="#reviews">Отзывы</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Заявка</a>
     </nav>
@@ -227,12 +228,13 @@ $schema_graph = [
 <section class="lx-section lx-reveal" id="related">
   <span class="lx-section-label">LIREATE</span>
   <h2>Смежные услуги</h2>
-  <ul class="lx-related-links">
-    <li><a href="/findtz/">Проверка товарного знака</a></li>
-    <li><a href="/registraciya_tovarnogo_znaka/">Регистрация товарного знака</a></li>
-    <li><a href="/registraciya_tovarnogo_znaka_v_kitae/">Регистрация в Китае</a></li>
-    <li><a href="/contacts/">Контакты</a></li>
-  </ul>
+  <div class="lx-related-grid">
+    <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
+    <a class="lx-related-card" href="/registraciya_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация товарного знака</strong></a>
+    <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
+    <a class="lx-related-card" href="/news/"><span class="lx-related-card-type">Блог</span><strong>Новости LIREATE</strong></a>
+    <a class="lx-related-card" href="/contacts/"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
+  </div>
 </section>
 
 </main>

@@ -78,3 +78,12 @@ python3 scripts/lireate_service_sync_shared.py
 - Лонгрид 8k–20k+ знаков, без выдуманных дел (`shared/lireate-content-rules.md`).
 - Запросы: очередь услуг, бриф пользователя, при наличии — `data/seo-report.json` из репозитория **lireate-news** (бот Метрики).
 - Перед коммитом: `python3 scripts/lireate_service_lint.py --slug <slug>`.
+
+## Интерактив и маскот
+
+- Скрипты: `lireate-motion-init.js` (prefers-reduced-motion), `lireate-mascot.js` (вход, wave, point CTA, walk по `#program`, wave у формы), `lireate-hero-panel.js` (KPI + анимация route-card), `lireate-steps-walk.js`, карусель/квиз/таймлайн/compare/calculator/reviews/mobile-bar — по карте `pages/services/_template/BLOCKS.ru.md`.
+- Отзывы: `blocks/lireate-reviews.inc.php`, данные `reviews.json`; демо-карточка только в `_template`.
+
+## Реквизиты в футере
+
+Телефон, адрес (Зеленодольск), email `info@librend.ru`, мессенджеры — как на `/contacts/` и в политике. **ИНН/ОГРН/полное юр. наименование на сайте не найдены** — в футер не добавляются до появления на lireate.ru.
