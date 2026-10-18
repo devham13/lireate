@@ -36,6 +36,9 @@ class HostingPublishTests(unittest.TestCase):
         shared.mkdir(parents=True)
         (shared / "lireate-service-dark.css").write_text("body{}", encoding="utf-8")
         (shared / "lireate-contact.js").write_text("// test", encoding="utf-8")
+        (shared / "service-directory.htaccess").write_text(
+            "DirectoryIndex index.php\n", encoding="utf-8"
+        )
         self.docroot.mkdir(parents=True)
 
     def tearDown(self):
@@ -56,16 +59,29 @@ class HostingPublishTests(unittest.TestCase):
             update_mode=update,
         )
 
-    @mock.patch.object(pub, "_http_status", return_value=200)
+    @mock.patch.object(pub, "_http_status", return_value=(200, None))
     def test_first_publish_writes_marker(self, _http):
         code = self._publish(apply=True)
         self.assertEqual(code, 0)
         dest = self.docroot / "uslugi" / "demo-service"
         self.assertTrue((dest / "index.php").is_file())
+        self.assertTrue((dest / ".htaccess").is_file())
+        self.assertIn("DirectoryIndex", (dest / ".htaccess").read_text(encoding="utf-8"))
         self.assertTrue((dest / ".lireate-managed.json").is_file())
         self.assertTrue((dest / "assets" / "lireate-shared" / "lireate-contact.js").is_file())
+        self.assertTrue(self.state_file.is_file())
+        state = json.loads(self.state_file.read_text(encoding="utf-8"))
+        self.assertIn(self.slug, state)
 
-    @mock.patch.object(pub, "_http_status", return_value=200)
+    @mock.patch.object(pub, "_http_status", return_value=(404, None))
+    def test_http_failure_does_not_write_json_state(self, _http):
+        code = self._publish(apply=True)
+        self.assertEqual(code, 1)
+        dest = self.docroot / "uslugi" / "demo-service"
+        self.assertTrue((dest / "index.php").is_file())
+        self.assertFalse(self.state_file.is_file())
+
+    @mock.patch.object(pub, "_http_status", return_value=(200, None))
     def test_foreign_file_blocks_full_publish(self, _http):
         dest = self.docroot / "uslugi" / "demo-service"
         dest.mkdir(parents=True)
@@ -74,7 +90,7 @@ class HostingPublishTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertEqual((dest / "index.php").read_text(encoding="utf-8"), "legacy foreign")
 
-    @mock.patch.object(pub, "_http_status", return_value=200)
+    @mock.patch.object(pub, "_http_status", return_value=(200, None))
     def test_update_skips_foreign_but_updates_managed(self, _http):
         self._publish(apply=True)
         dest = self.docroot / "uslugi" / "demo-service"

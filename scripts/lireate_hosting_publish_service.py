@@ -31,8 +31,16 @@ SKIP_NAMES = {
     ".DS_Store",
 }
 
+SHARED_SKIP_FILENAMES = frozenset(
+    {
+        "service-directory.htaccess",
+    }
+)
+
 MANAGED_MARKER = ".lireate-managed.json"
 SHARED_ASSETS_PREFIX = Path("assets") / "lireate-shared"
+SERVICE_DIR_HTACCESS_REL = ".htaccess"
+SERVICE_DIR_HTACCESS_SHARED = Path("pages") / "services" / "_shared" / "service-directory.htaccess"
 
 
 def _shared_asset_files(office_repo):
@@ -43,9 +51,39 @@ def _shared_asset_files(office_repo):
     for path in sorted(shared_dir.iterdir()):
         if not path.is_file() or path.name.startswith("."):
             continue
+        if path.name in SHARED_SKIP_FILENAMES:
+            continue
         rel = SHARED_ASSETS_PREFIX / path.name
         out.append((path, rel))
     return out
+
+
+def _canonical_service_htaccess_path(office_repo):
+    path = office_repo / SERVICE_DIR_HTACCESS_SHARED
+    if path.is_file():
+        return path
+    return None
+
+
+def _ensure_htaccess_in_plan(plan, service_dir, office_repo):
+    """Every service URL dir needs .htaccess so DirectoryIndex beats CMS root rewrite."""
+    rel = SERVICE_DIR_HTACCESS_REL
+    for item in plan:
+        if item["rel"] == rel:
+            return
+    src = service_dir / rel
+    if not src.is_file():
+        src = _canonical_service_htaccess_path(office_repo)
+    if not src or not src.is_file():
+        return
+    plan.append(
+        {
+            "rel": rel,
+            "src": str(src),
+            "sha256": _sha256_file(src),
+            "size": src.stat().st_size,
+        }
+    )
 
 
 def _build_publish_plan(service_dir, office_repo):
@@ -60,6 +98,7 @@ def _build_publish_plan(service_dir, office_repo):
                 "size": src.stat().st_size,
             }
         )
+    _ensure_htaccess_in_plan(plan, service_dir, office_repo)
     for src, rel in _shared_asset_files(office_repo):
         dst_rel = str(rel).replace("\\", "/")
         if any(item["rel"] == dst_rel for item in plan):
@@ -178,14 +217,65 @@ def _load_managed_marker(dest_dir):
 
 
 def _http_status(url, timeout=20):
-    try:
-        import urllib.request
+    """Return (status_code or None, error_detail for logs)."""
+    import ssl
+    import urllib.error
+    import urllib.request
 
-        req = urllib.request.Request(url, method="GET", headers={"User-Agent": "lireate-service-publish/1.0"})
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.getcode()
-    except Exception:
-        return None
+    headers = {"User-Agent": "lireate-service-publish/2.0"}
+    errors = []
+
+    def _try_urllib():
+        try:
+            ctx = ssl.create_default_context()
+            req = urllib.request.Request(url, method="GET", headers=headers)
+            with urllib.request.urlopen(req, timeout=timeout, context=ctx) as resp:
+                return resp.getcode(), None
+        except urllib.error.HTTPError as exc:
+            return exc.code, None
+        except Exception as exc:
+            errors.append("urllib: {0}".format(exc))
+            return None, None
+
+    code, _ = _try_urllib()
+    if code is not None:
+        return code, None
+
+    curl_bin = shutil.which("curl")
+    if curl_bin:
+        try:
+            proc = subprocess.run(
+                [
+                    curl_bin,
+                    "-sS",
+                    "-o",
+                    "/dev/null",
+                    "-w",
+                    "%{http_code}",
+                    "--max-time",
+                    str(int(timeout)),
+                    "-A",
+                    headers["User-Agent"],
+                    "-L",
+                    url,
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+                check=False,
+            )
+            if proc.returncode == 0:
+                raw = (proc.stdout or "").strip()
+                if raw.isdigit():
+                    return int(raw), None
+            err = (proc.stderr or proc.stdout or "curl exit {0}".format(proc.returncode)).strip()
+            errors.append("curl: {0}".format(err))
+        except Exception as exc:
+            errors.append("curl: {0}".format(exc))
+
+    detail = "; ".join(errors) if errors else "no response"
+    logging.warning("HTTP check failed for %s: %s", url, detail)
+    return None, detail
 
 
 def _git_pull(office_repo):
@@ -408,20 +498,24 @@ def _publish_slug(
         encoding="utf-8",
     )
 
+    st, http_err = _http_status(public_url)
+    if st != 200:
+        detail = "published files but HTTP {0} for {1}".format(st, public_url)
+        if http_err:
+            detail = "{0} ({1})".format(detail, http_err)
+        _print_status("BLOCKER", detail)
+        return 1
+
     state = _load_state(state_file)
     state[slug] = {
         "url_path": url_path,
         "public_url": public_url,
         "published_at": ts,
         "dest_dir": str(dest_dir),
+        "http_verified_at": ts,
     }
     state_file.parent.mkdir(parents=True, exist_ok=True)
     state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-    st = _http_status(public_url)
-    if st != 200:
-        _print_status("BLOCKER", "published files but HTTP {0} for {1}".format(st, public_url))
-        return 1
 
     status_word = "UPDATED" if update_mode else "PUBLISHED"
     _print_status(status_word, public_url)
@@ -445,6 +539,11 @@ def main():
         help="Run --update for every slug in services-published.json state",
     )
     parser.add_argument("--skip-git-pull", action="store_true")
+    parser.add_argument(
+        "--repair",
+        action="store_true",
+        help="Copy missing per-directory .htaccess into published service dirs (idempotent)",
+    )
     parser.add_argument("--office-repo", type=Path, default=None)
     parser.add_argument("--env-file", type=Path, default=None)
     args = parser.parse_args()
@@ -457,8 +556,10 @@ def main():
     slug = (args.slug or os.environ.get("LIREATE_SERVICE_SLUG") or "").strip()
     if args.update_all:
         slug = ""
-    elif not slug:
-        _print_status("BLOCKER", "pass --slug or set LIREATE_SERVICE_SLUG (or use --update-all)")
+    elif args.repair and not slug:
+        slug = ""
+    elif not slug and not args.repair:
+        _print_status("BLOCKER", "pass --slug or set LIREATE_SERVICE_SLUG (or use --update-all / --repair)")
         return 2
 
     office_repo = args.office_repo or Path(
@@ -486,6 +587,32 @@ def main():
     if args.update and args.update_all:
         _print_status("BLOCKER", "use either --update or --update-all, not both")
         return 2
+
+    if args.repair:
+        from lireate_hosting_services_lib import load_state_txt, repair_service_htaccess
+
+        if not docroot_path or not docroot_path.is_dir():
+            _print_status("BLOCKER", "set LIREATE_DOCROOT to existing directory")
+            return 1
+        state_txt = Path(
+            os.environ.get("LIREATE_SERVICES_STATE_TXT") or (home / "state" / "services-published.txt")
+        )
+        slugs = None
+        if slug:
+            slugs = {slug}
+        elif state_txt.is_file():
+            slugs = load_state_txt(state_txt)
+        repaired = repair_service_htaccess(
+            office_repo,
+            docroot_path,
+            slugs=slugs,
+            dry_run=dry_run,
+        )
+        if repaired:
+            _print_status("REPAIRED", ", ".join(repaired))
+        else:
+            _print_status("REPAIR_OK", "no missing .htaccess")
+        return 0
 
     with _file_lock(lock_file):
         if not args.skip_git_pull and not dry_run:

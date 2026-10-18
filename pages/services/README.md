@@ -18,7 +18,7 @@ python3 scripts/lireate_service_queue.py
 ## Новая услуга
 
 1. Взять `slug` из очереди (или из брифа) и скопировать `pages/services/_template/` → `pages/services/<slug>/`.
-2. Заполнить `index.php`, `publish.manifest.json`, при необходимости `.htaccess` (см. эталон Китая).
+2. Заполнить `index.php`, `publish.manifest.json` (в шаблоне уже есть `.htaccess`; иначе публикатор подставит `_shared/service-directory.htaccess`).
 3. Следовать `docs/lireate-service-design.ru.md` и `shared/lireate-service-seo-checklist.md`.
 4. Выполнить:
 
@@ -31,7 +31,7 @@ python3 scripts/lireate_service_lint.py --slug <slug>
 
 ```text
 pages/services/
-  _shared/              # канон CSS/JS (копируются в каждую услугу)
+  _shared/              # канон CSS/JS + service-directory.htaccess для Apache
   _template/            # заготовка новой услуги
   <slug>/
     index.php

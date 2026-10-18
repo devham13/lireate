@@ -61,11 +61,28 @@ git checkout -B main FETCH_HEAD
 
 ## Состояние и политика «не трогать старое»
 
-- Текстовый state CRON: `$HOME/lireate-autopub/state/services-published.txt` (по одному slug на строку).
-- JSON от публикатора: `$HOME/lireate-autopub/state/services-published.json`.
-- Уже опубликованные slug **не** обновляются и **не** перезаписываются.
-- Если каталог URL уже есть в `DOCROOT`, CRON только дописывает slug в state.
+- Текстовый state CRON: `$HOME/lireate-autopub/state/services-published.txt` (по одному slug на строку). Slug попадает сюда **только** после успешной публикации и HTTP **200** на URL со слэшем (`https://…/path/`).
+- JSON от публикатора: `$HOME/lireate-autopub/state/services-published.json` (обновляется вместе с успешной проверкой HTTP).
+- Счётчик неудачных прогонов: `$HOME/lireate-autopub/state/services-publish-retries.json` (для логов; лимит `LIREATE_MAX_PUBLISH_HTTP_RETRIES`, по умолчанию 48).
+- Уже опубликованные slug **не** обновляются и **не** перезаписываются обычным CRON.
+- `--init` по-прежнему дописывает в state slug, у которых в `DOCROOT` уже лежит `index.php`/`index.html` (ручные старые выкладки).
+- Частичная выкладка (файлы на диске, но HTTP не прошёл) **не** считается опубликованной: slug остаётся кандидатом на следующий CRON.
 - `data/db.php` CRON и меню **не** меняют.
+
+### `.htaccess` в каталоге услуги
+
+Корневой `.htaccess` CMS перехватывает `/slug/` в `/?view=slug` без `index.php` в каталоге. Каждая услуга получает локальный `.htaccess` (`DirectoryIndex` + rewrite на `index.php`):
+
+- в репозитории: `pages/services/<slug>/.htaccess` или общий шаблон `pages/services/_shared/service-directory.htaccess` (публикатор подставляет автоматически);
+- на хостинге CRON при `LIREATE_ALLOW_PUBLISH=yes` перед публикацией **самолечит** отсутствующий `.htaccess` в уже выложенных каталогах.
+
+Ручное восстановление:
+
+```bash
+"$PY" "$OFFICE/scripts/lireate_hosting_publish_service.py" --repair --apply --skip-git-pull
+# или один slug:
+"$PY" "$OFFICE/scripts/lireate_hosting_publish_service.py" --slug zashchita-avtorskih-prav --repair --apply --skip-git-pull
+```
 
 ## Переменные `.env`
 
@@ -109,7 +126,9 @@ OFFICE="$LIREATE_AUTOPUB_HOME/office-repo"
   --update-all
 ```
 
-Режим `--update` делает бэкап затронутых файлов. Если маркера нет, но slug есть в JSON-state (старые публикации), допускается полное обновление плана. Чужие файлы в каталоге не трогаются.
+Режим `--update` делает бэкап затронутых файлов, всегда включает актуальный `.htaccess`. Если маркера нет, но slug есть в JSON-state (старые публикации), допускается полное обновление плана. Чужие файлы в каталоге не трогаются.
+
+Проверка HTTP после выкладки: `urllib` + запасной `curl`, ошибки пишутся в `service-publish.log`. Без HTTP 200 slug в `services-published.txt` не попадает.
 
 ## Логи и бэкапы
 
