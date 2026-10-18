@@ -7,7 +7,8 @@
 ## S01. Защита авторских прав на контент, софт и дизайн
 
 - **slug:** `zashchita-avtorskih-prav`
-- **status:** new
+- **status:** done
+- **menu_after:** `Продление товарного знака`
 - **old_url:** —
 - **demand:** 630
 - **main_query:** защита авторских прав *(дополнено)*
