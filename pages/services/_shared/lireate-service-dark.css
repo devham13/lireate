@@ -1255,6 +1255,7 @@ html.lx-no-motion .lx-timeline-mascot { transition: none; }
 @media (max-width: 960px) {
   body.lireate-svc-body { padding-bottom: 72px; }
   .lx-mobile-bar { display: flex; }
+  .lx-dock { display: none; }
   .lx-related-grid { grid-template-columns: 1fr; }
   .lx-breadcrumbs { padding-top: 92px; }
 }
