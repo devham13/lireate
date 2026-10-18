@@ -182,6 +182,34 @@ def lint_slug(slug):
     if "link-telegram" not in html and "data-lireate-telegram" not in html:
         errors.append("missing messenger hook (link-telegram or data-lireate-telegram on <html>)")
 
+    if "lireate-contact.js" not in html:
+        errors.append("must include assets/lireate-shared/lireate-contact.js")
+
+    if re.search(r'id=["\']lf-email["\']', html, re.I):
+        errors.append("lead form must not include lf-email (use name + phone only)")
+    if re.search(r'id=["\']lf-company["\']', html, re.I):
+        errors.append("lead form must not include lf-company")
+    if re.search(r'id=["\']lf-cert["\']', html, re.I):
+        errors.append("lead form must not include lf-cert")
+    if re.search(r'id=["\']lf-msg["\']', html, re.I):
+        errors.append("lead form must not include lf-msg textarea")
+
+    if "Получить консультацию" not in html:
+        errors.append('submit button must read "Получить консультацию"')
+    if "Отправить бриф" in html:
+        errors.append('deprecated submit label "Отправить бриф"')
+
+    if re.search(r'id=["\']dock-telegram["\'][^>]*>\s*TG\s*<', html, re.I):
+        errors.append("dock-telegram must use SVG icon, not text TG")
+    if re.search(r'id=["\']dock-max["\'][^>]*>\s*M\s*<', html, re.I):
+        errors.append("dock-max must use SVG icon, not text M")
+
+    if 'id="hero-max"' not in html and "id='hero-max'" not in html:
+        errors.append("missing hero CTA id=hero-max (Написать в Max)")
+
+    if "lx-form-alt" not in html:
+        errors.append("missing lx-form-alt block under lead form")
+
     if not re.search(r'href=["\']tel:', html, re.I) and "/contacts/" not in html:
         warnings.append("no tel: link; ensure /contacts/ for phone")
 

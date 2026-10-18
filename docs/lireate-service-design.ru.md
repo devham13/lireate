@@ -8,6 +8,7 @@
 |------|------------|
 | `pages/services/_shared/lireate-service-dark.css` | Общие стили (префикс классов `lx-*`) |
 | `pages/services/_shared/lireate-reveal.js` | Появление секций при скролле |
+| `pages/services/_shared/lireate-contact.js` | Иконки мессенджеров, форма заявки |
 | `pages/services/_template/` | Копировать при новой услуге |
 | `shared/lireate-service-seo-checklist.md` | SEO-чек-лист |
 | `scripts/lireate_service_lint.py` | Автопроверка перед коммитом |
@@ -49,9 +50,9 @@ python3 scripts/lireate_service_sync_shared.py
 3. **Стеклянная панель** — `.lx-glass`: KPI `.lx-kpi-row`, лента `.lx-feed`, схема `.lx-route` / `.lx-route-steps` (HTML/CSS, не canvas с налезающим текстом).
 4. **Секции** — `.lx-section-label` + H2, абзацы, при необходимости `.lx-card-grid` / `.lx-checklist`.
 5. **FAQ** — `<details class="lx-faq">` + дублирование в JSON-LD `FAQPage`.
-6. **Форма** — `#lireate-lead-form`, панель `.lx-form-panel`, согласие на ПДн.
-7. **Мессенджеры** — `#link-telegram`, `#link-whatsapp`, опционально `data-lireate-telegram` / `data-lireate-whatsapp` на `<html>` (подставляет CMS).
-8. **Dock** — `.lx-dock` справа снизу (форма + TG).
+6. **Форма** — `#lireate-lead-form`: только **Имя**, **Телефон**, чекбокс согласия со ссылкой на `/privacy/`, кнопка **«Получить консультацию»**. Под кнопкой — `.lx-form-alt` («или напишите нам» + компактные Telegram и MAX). Атрибут `data-lead-topic` задаёт префикс сообщения в Telegram.
+7. **Мессенджеры** — `#link-telegram`, `#link-whatsapp`, `#link-max`; на hero — `#hero-telegram`, `#hero-max` с `data-lx-icon`. Ссылки по умолчанию: Telegram `https://t.me/lireate_patent`, WhatsApp `https://wa.me/79600484957`, MAX `https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI`, телефон `tel:+79600484957`. Опционально `data-lireate-*` на `<html>` (подставляет CMS).
+8. **Dock** — `.lx-dock` справа снизу: заявка (иконка брифа), Telegram и MAX (inline SVG через `lireate-contact.js`, без текстовых TG/M).
 9. **Перелинковка** — блок `#related` с `.lx-related-links`.
 
 ## Адаптив
@@ -67,7 +68,10 @@ python3 scripts/lireate_service_sync_shared.py
 <body class="lireate-svc-body">
 <main class="lireate-svc-page ...">
 <script src="assets/lireate-shared/lireate-reveal.js"></script>
+<script src="assets/lireate-shared/lireate-contact.js"></script>
 ```
+
+Иконки Telegram (самолётик) и MAX (логотип с max.ru/favicon.svg) — inline SVG в `lireate-contact.js`, без внешних CDN.
 
 ## Контент и SEO
 

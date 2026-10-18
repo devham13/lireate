@@ -71,6 +71,7 @@ body.lireate-cn-body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   padding: 11px 22px;
   border-radius: 999px;
   font-size: 13px;
@@ -81,6 +82,14 @@ body.lireate-cn-body {
   transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
   white-space: nowrap;
 }
+.lx-btn--with-icon { padding-left: 18px; padding-right: 20px; }
+.lx-svg-icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  display: block;
+}
+.lx-svg-icon--max { width: 1.25em; height: 1.25em; }
 .lx-btn-primary {
   color: #fff;
   background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 55%, #6366f1 100%);
@@ -459,7 +468,41 @@ html.lx-no-motion .lx-stat-pulse {
   background: linear-gradient(135deg, rgba(244, 114, 182, 0.12) 0%, rgba(139, 92, 246, 0.14) 100%);
 }
 .lx-msg-btn--max:hover { border-color: rgba(244, 114, 182, 0.55); }
-.lx-msg-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+.lx-msg-btn .lx-svg-icon { width: 20px; height: 20px; }
+.lx-form-alt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.lx-form-alt-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+.lx-form-alt-icons { display: flex; gap: 10px; align-items: center; }
+.lx-form-alt-link {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s;
+}
+.lx-form-alt-link:hover { transform: translateY(-2px); }
+.lx-form-alt-link--max {
+  color: #fff;
+  background: linear-gradient(135deg, #f472b6 0%, #8b5cf6 100%);
+}
+.lx-form-alt-link .lx-svg-icon { width: 20px; height: 20px; }
 .lx-dock {
   position: fixed;
   right: 18px;
@@ -477,15 +520,16 @@ html.lx-no-motion .lx-stat-pulse {
   place-items: center;
   background: rgba(255, 255, 255, 0.95);
   color: #0f172a;
-  font-weight: 800;
-  font-size: 12px;
+  font-size: 0;
   text-decoration: none;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s;
 }
+.lx-dock a:hover { transform: translateY(-2px); }
+.lx-dock a .lx-svg-icon { width: 24px; height: 24px; }
 .lx-dock a.lx-dock-max {
   background: linear-gradient(135deg, #f472b6 0%, #8b5cf6 100%);
   color: #fff;
-  font-size: 11px;
 }
 .lx-form-success {
   display: none;

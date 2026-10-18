@@ -70,6 +70,27 @@ PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter" 2>/dev/null || echo python
 
 Успех: `STATUS: PUBLISHED` и HTTP 200 на `https://${PUBLIC_SITE_HOST}/uslugi/<slug>/` (или `url_path` из `publish.manifest.json`).
 
+## Безопасное обновление уже опубликованной страницы
+
+CRON и обычный `--apply` **не перезаписывают** чужие файлы в каталоге услуги. Чтобы выкатить новый дизайн или правки из git **только** по файлам, которые публиковал LIREATE:
+
+```bash
+"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_publish_service.py" \
+  --slug prodlenie-tovarnogo-znaka \
+  --apply \
+  --update
+```
+
+Обновить **все** slug из `state/services-published.json`:
+
+```bash
+"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_publish_service.py" \
+  --apply \
+  --update-all
+```
+
+Режим `--update` перезаписывает файлы из `.lireate-managed.json`, плюс `assets/lireate-shared/*`, делает бэкап затронутых файлов. Если маркера нет, но slug есть в state (старые публикации), допускается полное обновление плана. Чужие файлы в каталоге не трогаются.
+
 ## CRON (пример: раз в час проверять очередь slug из env)
 
 Публикацию по CRON лучше запускать только когда slug известен (после merge PR). Пример ручного cron для одной услуги:

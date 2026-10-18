@@ -225,12 +225,225 @@ def _print_status(code, detail=""):
     logging.info(msg)
 
 
+def _load_state(state_file):
+    if not state_file.is_file():
+        return {}
+    try:
+        return json.loads(state_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def _shared_rel(rel):
+    prefix = str(SHARED_ASSETS_PREFIX).replace("\\", "/") + "/"
+    return rel == str(SHARED_ASSETS_PREFIX).replace("\\", "/") or rel.startswith(prefix)
+
+
+def _allowed_update_rels(existing_managed, plan, slug_in_state):
+    allowed = set()
+    if existing_managed:
+        allowed |= set((existing_managed.get("files") or {}).keys())
+    for item in plan:
+        if _shared_rel(item["rel"]):
+            allowed.add(item["rel"])
+    if slug_in_state and not existing_managed:
+        allowed |= {item["rel"] for item in plan}
+    return allowed
+
+
+def _foreign_blocking_files(plan, existing_managed, update_mode, allowed_update):
+    foreign = []
+    for item in plan:
+        dst = Path(item["dst"])
+        if not dst.is_file():
+            continue
+        rel = item["rel"]
+        if update_mode:
+            continue
+        if existing_managed and rel in (existing_managed.get("files") or {}):
+            continue
+        foreign.append(rel)
+    return foreign
+
+
+def _publish_slug(
+    slug,
+    office_repo,
+    docroot_path,
+    site,
+    home,
+    state_file,
+    dry_run,
+    allow,
+    skip_git_pull,
+    update_mode,
+):
+    service_dir = office_repo / "pages" / "services" / slug
+    index_php = service_dir / "index.php"
+    index_html = service_dir / "index.html"
+    if not service_dir.is_dir() or not (index_php.is_file() or index_html.is_file()):
+        _print_status("BLOCKER", "missing pages/services/{0}/index.php or index.html".format(slug))
+        return 2
+
+    try:
+        slug, url_path, manifest = _load_manifest(service_dir)
+    except ValueError as exc:
+        _print_status("BLOCKER", str(exc))
+        return 2
+
+    dest_dir = docroot_path / url_path
+    public_url = "{0}/{1}/".format(site, url_path)
+    plan = _build_publish_plan(service_dir, office_repo)
+    for item in plan:
+        item["dst"] = str(dest_dir / item["rel"])
+
+    state = _load_state(state_file)
+    slug_in_state = slug in state
+    existing_managed = _load_managed_marker(dest_dir) if docroot_path and docroot_path.is_dir() else None
+    allowed_update = _allowed_update_rels(existing_managed, plan, slug_in_state)
+
+    mode_label = "UPDATE" if update_mode else "PUBLISH"
+    print("=== SERVICE {0} PLAN ===".format(mode_label))
+    print("slug: {0}".format(slug))
+    print("office_repo: {0}".format(office_repo))
+    print("source: {0}".format(service_dir))
+    print("url_path: {0}".format(url_path))
+    print("dest_dir: {0}".format(dest_dir))
+    print("public_url: {0}".format(public_url))
+    print("files: {0}".format(len(plan)))
+    for item in plan:
+        print("  - {0} ({1} bytes)".format(item["rel"], item["size"]))
+
+    if update_mode and not allowed_update:
+        _print_status(
+            "BLOCKER",
+            "update mode requires prior publish (.lireate-managed.json or state entry for {0})".format(slug),
+        )
+        return 1
+
+    if dry_run:
+        if not docroot_path or not docroot_path.is_dir():
+            _print_status("DRY_RUN", "set LIREATE_DOCROOT for target checks")
+            return 0
+        foreign = _foreign_blocking_files(plan, existing_managed, update_mode, allowed_update)
+        if foreign:
+            print("WARNING: would BLOCK on foreign files: {0}".format(", ".join(foreign)))
+        if update_mode:
+            to_write = [item["rel"] for item in plan if item["rel"] in allowed_update or not Path(item["dst"]).is_file()]
+            print("UPDATE would write: {0}".format(", ".join(to_write) if to_write else "(none)"))
+        _print_status("DRY_RUN", "no writes (use --apply and LIREATE_ALLOW_PUBLISH=yes)")
+        return 0
+
+    if not allow:
+        _print_status("BLOCKER", "LIREATE_ALLOW_PUBLISH is not yes")
+        return 1
+
+    if not docroot_path or not docroot_path.is_dir():
+        _print_status("BLOCKER", "set LIREATE_DOCROOT to existing directory")
+        return 1
+
+    if not update_mode:
+        foreign = _foreign_blocking_files(plan, existing_managed, update_mode, allowed_update)
+        if foreign:
+            _print_status(
+                "BLOCKER",
+                "refusing to overwrite foreign files: {0}".format(", ".join(foreign)),
+            )
+            return 1
+
+    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    backup_root = home / "backups" / "services" / slug / ts
+    items_to_copy = []
+    for item in plan:
+        rel = item["rel"]
+        dst = Path(item["dst"])
+        if update_mode and dst.is_file() and rel not in allowed_update:
+            print("SKIP (foreign): {0}".format(rel))
+            continue
+        items_to_copy.append(item)
+
+    if update_mode and dest_dir.is_dir() and items_to_copy:
+        backup_root.mkdir(parents=True, exist_ok=True)
+        for item in items_to_copy:
+            dst = Path(item["dst"])
+            if dst.is_file():
+                bdst = backup_root / item["rel"]
+                bdst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(dst), str(bdst))
+        logging.info("backup: %s", backup_root)
+
+    if not update_mode and dest_dir.is_dir() and existing_managed:
+        backup_root.mkdir(parents=True, exist_ok=True)
+        for rel in existing_managed.get("files", {}):
+            src = dest_dir / rel
+            if src.is_file():
+                bdst = backup_root / rel
+                bdst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(src), str(bdst))
+        logging.info("backup: %s", backup_root)
+
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    for item in items_to_copy:
+        src = Path(item["src"])
+        dst = Path(item["dst"])
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(src), str(dst))
+
+    marker_files = {item["rel"]: {"sha256": item["sha256"], "size": item["size"]} for item in plan}
+    if existing_managed and update_mode:
+        prev_files = existing_managed.get("files") or {}
+        for rel, meta in prev_files.items():
+            if rel not in marker_files:
+                marker_files[rel] = meta
+
+    marker = {
+        "slug": slug,
+        "url_path": url_path,
+        "published_at": ts,
+        "source_repo": str(office_repo),
+        "files": marker_files,
+    }
+    (dest_dir / MANAGED_MARKER).write_text(
+        json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    state = _load_state(state_file)
+    state[slug] = {
+        "url_path": url_path,
+        "public_url": public_url,
+        "published_at": ts,
+        "dest_dir": str(dest_dir),
+    }
+    state_file.parent.mkdir(parents=True, exist_ok=True)
+    state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    st = _http_status(public_url)
+    if st != 200:
+        _print_status("BLOCKER", "published files but HTTP {0} for {1}".format(st, public_url))
+        return 1
+
+    status_word = "UPDATED" if update_mode else "PUBLISHED"
+    _print_status(status_word, public_url)
+    return 0
+
+
 def main():
     require_python((3, 6))
 
     parser = argparse.ArgumentParser(description="LIREATE service page publish (REG.RU hosting)")
     parser.add_argument("--slug", required=False, help="Service slug (folder under pages/services/)")
     parser.add_argument("--apply", action="store_true", help="Write files (requires LIREATE_ALLOW_PUBLISH=yes)")
+    parser.add_argument(
+        "--update",
+        action="store_true",
+        help="Safe re-publish: overwrite only files from .lireate-managed.json / state (+ lireate-shared)",
+    )
+    parser.add_argument(
+        "--update-all",
+        action="store_true",
+        help="Run --update for every slug in services-published.json state",
+    )
     parser.add_argument("--skip-git-pull", action="store_true")
     parser.add_argument("--office-repo", type=Path, default=None)
     parser.add_argument("--env-file", type=Path, default=None)
@@ -242,8 +455,10 @@ def main():
         load_dotenv(env_file, override=False)
 
     slug = (args.slug or os.environ.get("LIREATE_SERVICE_SLUG") or "").strip()
-    if not slug:
-        _print_status("BLOCKER", "pass --slug or set LIREATE_SERVICE_SLUG")
+    if args.update_all:
+        slug = ""
+    elif not slug:
+        _print_status("BLOCKER", "pass --slug or set LIREATE_SERVICE_SLUG (or use --update-all)")
         return 2
 
     office_repo = args.office_repo or Path(
@@ -267,150 +482,56 @@ def main():
     if not dry_run:
         _setup_logging(log_file)
 
-    service_dir = office_repo / "pages" / "services" / slug
-    index_php = service_dir / "index.php"
-    index_html = service_dir / "index.html"
-    if not service_dir.is_dir() or not (index_php.is_file() or index_html.is_file()):
-        _print_status("BLOCKER", "missing pages/services/{0}/index.php or index.html".format(slug))
+    update_mode = bool(args.update or args.update_all)
+    if args.update and args.update_all:
+        _print_status("BLOCKER", "use either --update or --update-all, not both")
         return 2
-
-    try:
-        slug, url_path, manifest = _load_manifest(service_dir)
-    except ValueError as exc:
-        _print_status("BLOCKER", str(exc))
-        return 2
-
-    dest_dir = docroot_path / url_path if docroot_path else Path(url_path)
-    public_url = "{0}/{1}/".format(site, url_path)
-    plan = _build_publish_plan(service_dir, office_repo)
-    for item in plan:
-        item["dst"] = str(dest_dir / item["rel"])
-
-    print("=== SERVICE PUBLISH PLAN ===")
-    print("slug: {0}".format(slug))
-    print("office_repo: {0}".format(office_repo))
-    print("source: {0}".format(service_dir))
-    print("url_path: {0}".format(url_path))
-    print("dest_dir: {0}".format(dest_dir))
-    print("public_url: {0}".format(public_url))
-    print("files: {0}".format(len(plan)))
-    for item in plan:
-        print("  - {0} ({1} bytes)".format(item["rel"], item["size"]))
-
-    if dry_run:
-        if not docroot_path or not docroot_path.is_dir():
-            _print_status("DRY_RUN", "set LIREATE_DOCROOT for target checks")
-            return 0
-        existing_managed = _load_managed_marker(dest_dir)
-        foreign = []
-        for item in plan:
-            dst = Path(item["dst"])
-            if not dst.is_file():
-                continue
-            rel = item["rel"]
-            if existing_managed and rel in (existing_managed.get("files") or {}):
-                continue
-            foreign.append(rel)
-        if foreign:
-            print("WARNING: would BLOCK on foreign files: {0}".format(", ".join(foreign)))
-        _print_status("DRY_RUN", "no writes (use --apply and LIREATE_ALLOW_PUBLISH=yes to publish)")
-        return 0
-
-    if not allow:
-        _print_status("BLOCKER", "LIREATE_ALLOW_PUBLISH is not yes")
-        return 1
-
-    if not docroot_path or not docroot_path.is_dir():
-        _print_status("BLOCKER", "set LIREATE_DOCROOT to existing directory")
-        return 1
 
     with _file_lock(lock_file):
-        if not args.skip_git_pull:
+        if not args.skip_git_pull and not dry_run:
             ok, detail = _git_pull(office_repo)
             if not ok:
                 _print_status("BLOCKER", "git pull failed: {0}".format(detail))
                 return 1
             logging.info("git: %s", detail)
-            service_dir = office_repo / "pages" / "services" / slug
-            if not service_dir.is_dir():
-                _print_status("BLOCKER", "service dir missing after pull")
+
+        if args.update_all:
+            state = _load_state(state_file)
+            slugs = sorted(state.keys())
+            if not slugs:
+                _print_status("BLOCKER", "no slugs in state file for --update-all")
                 return 2
-            slug, url_path, manifest = _load_manifest(service_dir)
-            dest_dir = docroot_path / url_path
-            plan = _build_publish_plan(service_dir, office_repo)
-            for item in plan:
-                item["dst"] = str(dest_dir / item["rel"])
+            last_code = 0
+            for one_slug in slugs:
+                code = _publish_slug(
+                    one_slug,
+                    office_repo,
+                    docroot_path,
+                    site,
+                    home,
+                    state_file,
+                    dry_run,
+                    allow,
+                    args.skip_git_pull,
+                    True,
+                )
+                if code != 0:
+                    return code
+                last_code = code
+            return last_code
 
-        existing_managed = _load_managed_marker(dest_dir)
-        foreign = []
-        for item in plan:
-            dst = Path(item["dst"])
-            if not dst.is_file():
-                continue
-            rel = item["rel"]
-            if existing_managed and rel in (existing_managed.get("files") or {}):
-                continue
-            foreign.append(rel)
-        if foreign:
-            _print_status(
-                "BLOCKER",
-                "refusing to overwrite foreign files: {0}".format(", ".join(foreign)),
-            )
-            return 1
-
-        ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        backup_root = home / "backups" / "services" / slug / ts
-        if dest_dir.is_dir() and existing_managed:
-            backup_root.mkdir(parents=True, exist_ok=True)
-            for rel in existing_managed.get("files", {}):
-                src = dest_dir / rel
-                if src.is_file():
-                    bdst = backup_root / rel
-                    bdst.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(str(src), str(bdst))
-            logging.info("backup: %s", backup_root)
-
-        dest_dir.mkdir(parents=True, exist_ok=True)
-        for item in plan:
-            src = Path(item["src"])
-            dst = Path(item["dst"])
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(str(src), str(dst))
-
-        marker = {
-            "slug": slug,
-            "url_path": url_path,
-            "published_at": ts,
-            "source_repo": str(office_repo),
-            "files": {item["rel"]: {"sha256": item["sha256"], "size": item["size"]} for item in plan},
-        }
-        (dest_dir / MANAGED_MARKER).write_text(
-            json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
+        return _publish_slug(
+            slug,
+            office_repo,
+            docroot_path,
+            site,
+            home,
+            state_file,
+            dry_run,
+            allow,
+            args.skip_git_pull,
+            update_mode,
         )
-
-        state = {}
-        if state_file.is_file():
-            try:
-                state = json.loads(state_file.read_text(encoding="utf-8"))
-            except json.JSONDecodeError:
-                state = {}
-        state[slug] = {
-            "url_path": url_path,
-            "public_url": public_url,
-            "published_at": ts,
-            "dest_dir": str(dest_dir),
-        }
-        state_file.parent.mkdir(parents=True, exist_ok=True)
-        state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-        st = _http_status(public_url)
-        if st != 200:
-            _print_status("BLOCKER", "published files but HTTP {0} for {1}".format(st, public_url))
-            return 1
-
-        _print_status("PUBLISHED", public_url)
-        return 0
 
 
 if __name__ == "__main__":
