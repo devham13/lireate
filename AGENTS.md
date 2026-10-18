@@ -14,7 +14,7 @@
 
 `seo-kolya || artyom → zhenya → artur → alina || boris → natasha → schema-markup → internal-linker → yura → indexator → qa → lenya`
 
-- Тему услуги задаёт пользователь, automation prompt или `shared/lireate-services-queue.md`. **Кирилл (новости дня) в этом пайплайне не используется.**
+- Тему услуги задаёт пользователь, automation prompt или **первая** строка `pages/services/queue.md` со `status: new` без каталога `pages/services/<slug>/` (см. `python3 scripts/lireate_service_queue.py`). **Кирилл (новости дня) в этом пайплайне не используется.**
 - **google-table-manager** — **отключён** (нет Google Таблицы тем для LIREATE).
 - **vk-publisher** — **отключён** (не в scope услуг).
 
@@ -31,7 +31,15 @@
 - Страница **самодостаточная**: `assets/lireate-shared/*` (копия из `_shared`) + локальные `assets/` при необходимости; не зависит от CSS CMS.
 - Канонический путь: `pages/services/<slug>/` (`index.php`, `publish.manifest.json`, `.htaccess` при необходимости). См. `pages/services/README.md`.
 - SEO: `shared/lireate-service-seo-checklist.md`; перед коммитом — `scripts/lireate_service_sync_shared.py` и `scripts/lireate_service_lint.py --slug …`.
-- Запросы и приоритеты: бриф, `shared/lireate-services-queue.md`; при наличии — `data/seo-report.json` в **devham13/lireate-news** (Метрика).
+- Запросы и приоритеты: `pages/services/queue.md` (demand из Метрики); при наличии — `data/seo-report.json` в **devham13/lireate-news**.
+
+### Автоматизация service-pages (один прогон = одна услуга)
+
+1. `python3 scripts/lireate_service_queue.py` → `Sxx` + `slug` или `NO_NEW_SERVICE` (тогда **стоп**: без страницы, без PR).
+2. Ровно **одна** новая услуга: копия `pages/services/_template/` → `pages/services/<slug>/`, ассеты из `_shared` (`lireate_service_sync_shared.py`).
+3. `python3 scripts/lireate_service_lint.py --slug <slug>` — обязателен pass.
+4. В `pages/services/queue.md` у этой записи `status: done`; **не** править уже существующие каталоги услуг и **не** трогать `data/db.php`.
+5. PR в `main` (Cloud не публикует на хостинг).
 
 ## Публикация (критично для Cloud)
 
@@ -92,4 +100,4 @@
 
 Runtime handoff/fragments **не коммитить**.
 
-В коммит: `pages/services/<slug>/`, правила, `shared/published-pages.md`, `shared/lireate-services-queue.md` при изменении.
+В коммит: `pages/services/<slug>/`, `pages/services/queue.md`, правила, `shared/published-pages.md` при изменении.

@@ -2,9 +2,22 @@
 
 Cloud Agent **не** выкладывает файлы на `lireate.ru` напрямую. Он коммитит каталог сюда; на REG.RU — `scripts/lireate_hosting_publish_service.py`.
 
+## Очередь (`queue.md`)
+
+Приоритеты и запросы — в [`queue.md`](queue.md) (спрос из экспортов Яндекс.Метрики).
+
+```bash
+python3 scripts/lireate_service_queue.py
+```
+
+- Печатает `Sxx<TAB>slug` для первой записи со `status: new`, если каталога `pages/services/<slug>/` ещё нет.
+- Иначе `NO_NEW_SERVICE` — автоматизация останавливается (без новой страницы и без PR).
+
+**Один прогон automation:** одна услуга → PR в `main` → в очереди `status: done`. Не менять уже существующие каталоги услуг и `data/db.php`.
+
 ## Новая услуга
 
-1. Скопировать `pages/services/_template/` → `pages/services/<slug>/`.
+1. Взять `slug` из очереди (или из брифа) и скопировать `pages/services/_template/` → `pages/services/<slug>/`.
 2. Заполнить `index.php`, `publish.manifest.json`, при необходимости `.htaccess` (см. эталон Китая).
 3. Следовать `docs/lireate-service-design.ru.md` и `shared/lireate-service-seo-checklist.md`.
 4. Выполнить:
