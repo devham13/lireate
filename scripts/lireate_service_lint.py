@@ -227,6 +227,36 @@ def lint_slug(slug):
     if "lx-nav-pill" not in html:
         errors.append("missing lx-nav-pill (standard service layout)")
 
+    has_footer_include = "lireate-service-footer.inc.php" in raw
+    if "lx-site-footer" not in html and not has_footer_include:
+        errors.append("missing lx-site-footer (include lireate-service-footer.inc.php)")
+    if 'href="/politika_konfidencialnosti"' not in html and "href='/politika_konfidencialnosti'" not in html:
+        pass  # checked above for form; footer duplicate ok
+    footer_block = re.search(r'class=["\'][^"\']*lx-site-footer', html, re.I)
+    if footer_block:
+        foot_slice = html[footer_block.start() : footer_block.start() + 2500]
+        if "/politika_konfidencialnosti" not in foot_slice:
+            errors.append("footer must link to /politika_konfidencialnosti")
+        if "/private_data" not in foot_slice:
+            errors.append("footer must link to /private_data")
+
+    for script in (
+        "lireate-motion-init.js",
+        "lireate-mascot.js",
+        "lireate-hero-panel.js",
+    ):
+        if script not in html:
+            errors.append("must include assets/lireate-shared/" + script)
+
+    if "lireate-service-footer.inc.php" not in raw and "lx-site-footer" not in html:
+        errors.append("missing footer include lireate-service-footer.inc.php")
+
+    if slug != "_template":
+        if "lx_reviews_demo_only" in raw or "lx-review-demo-badge" in raw:
+            errors.append("demo review card allowed only in pages/services/_template")
+        if "Пример оформления" in raw:
+            errors.append("demo review badge must not appear on published service pages")
+
     return errors, warnings
 
 

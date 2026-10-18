@@ -16,3 +16,11 @@
 ```html
 <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
 ```
+
+## Лента отзывов
+
+- Данные: `reviews.json` (`items`: `text` | `video`; скрины чатов — массив `chat_screenshots` с `image`).
+- Разметка: `blocks/lireate-reviews.inc.php`, `lireate-reviews.js` (scroll-snap, стрелки, lightbox).
+- На услуге: `$lx_review_filter_services = ['slug'];` + include блока и скрипт.
+- Демо «Пример оформления» — только `_template` (`$lx_reviews_demo_only = true`).
+- VideoObject JSON-LD — только при известном `embed_url` (YouTube или VK `video_ext.php`).

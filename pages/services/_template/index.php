@@ -153,6 +153,12 @@ $schema_graph = [
   <details class="lx-faq"><summary>Вопрос</summary><p>Ответ.</p></details>
 </section>
 
+<?php
+$lx_reviews_demo_only = true;
+$lx_reviews_intro = 'Превью ленты отзывов: на боевых страницах подключается blocks/lireate-reviews.inc.php и reviews.json.';
+include __DIR__ . '/../_shared/blocks/lireate-reviews.inc.php';
+?>
+
 <section class="lx-section lx-reveal" id="related">
   <span class="lx-section-label">LIREATE</span>
   <h2>Смежные услуги и материалы</h2>
@@ -204,7 +210,9 @@ $schema_graph = [
   <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX" target="_blank" rel="noopener noreferrer"></a>
 </aside>
 
+<script src="assets/lireate-shared/lireate-motion-init.js"></script>
 <script src="assets/lireate-shared/lireate-reveal.js"></script>
+<script src="assets/lireate-shared/lireate-reviews.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>

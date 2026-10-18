@@ -12,6 +12,8 @@ SHARED = REPO_ROOT / "pages" / "services" / "_shared"
 SERVICES = REPO_ROOT / "pages" / "services"
 SKIP_DIRS = {"_shared", "_template"}
 DEST_REL = Path("assets") / "lireate-shared"
+FOOTER_NAME = "lireate-service-footer.inc.php"
+BLOCKS_DIR = SHARED / "blocks"
 
 
 def _sha256(path):
@@ -28,7 +30,7 @@ def sync_service(service_dir, dry_run=False):
     for src in sorted(SHARED.glob("*")):
         if not src.is_file() or src.name.startswith("."):
             continue
-        if src.suffix.lower() not in (".css", ".js"):
+        if src.suffix.lower() not in (".css", ".js", ".json"):
             continue
         dst = dest / src.name
         if dst.is_file() and _sha256(src) == _sha256(dst):
@@ -37,6 +39,22 @@ def sync_service(service_dir, dry_run=False):
         if not dry_run:
             dest.mkdir(parents=True, exist_ok=True)
             shutil.copy2(str(src), str(dst))
+    footer_src = SHARED / FOOTER_NAME
+    if footer_src.is_file():
+        footer_dst = service_dir / FOOTER_NAME
+        if not footer_dst.is_file() or _sha256(footer_src) != _sha256(footer_dst):
+            changed.append(footer_dst.relative_to(service_dir))
+            if not dry_run:
+                shutil.copy2(str(footer_src), str(footer_dst))
+    if BLOCKS_DIR.is_dir():
+        for src in sorted(BLOCKS_DIR.glob("*.inc.php")):
+            dst = service_dir / "blocks" / src.name
+            if dst.is_file() and _sha256(src) == _sha256(dst):
+                continue
+            changed.append(dst.relative_to(service_dir))
+            if not dry_run:
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(src), str(dst))
     return changed
 
 
