@@ -13,6 +13,11 @@ $seo_title = 'TODO: заголовок до 60 символов — LIREATE';
 $seo_description = 'TODO: описание ровно 140–160 символов: суть услуги, география, польза, бренд LIREATE. Без гарантий исхода процедуры или суда.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
+$lireate_phone_display = '+7 (960) 048-49-57';
+$lireate_phone_tel = 'tel:+79600484957';
+$lireate_telegram = 'https://t.me/lireate_patent';
+$lireate_whatsapp = 'https://wa.me/79600484957';
+$lireate_max = 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI';
 $faq_entities = [
   ['TODO вопрос FAQ 1?', 'TODO краткий ответ.'],
   ['TODO вопрос FAQ 2?', 'TODO краткий ответ.'],
@@ -55,7 +60,7 @@ $schema_graph = [
   ],
 ];
 ?><!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-lireate-telegram="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-whatsapp="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-max="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -102,7 +107,8 @@ $schema_graph = [
     </div>
     <div class="lx-hero-cta">
       <a class="lx-btn lx-btn-primary" href="#contact">Оставить заявку</a>
-      <a class="lx-btn lx-btn-ghost" href="#program">Смотреть программу</a>
+      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Написать в Telegram</span></a>
+      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>Написать в Max</span></a>
     </div>
     <div class="lx-hero-mini">
       <div class="lx-mini-stat"><strong class="lx-stat-value">TODO</strong><span>подпись</span></div>
@@ -162,21 +168,29 @@ $schema_graph = [
     <div>
       <span class="lx-section-label">Контакт</span>
       <h2>Заявка и мессенджеры</h2>
+      <p>Телефон: <a href="<?php echo htmlspecialchars($lireate_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lireate_phone_display, ENT_QUOTES, 'UTF-8'); ?></a></p>
       <div class="lx-msg-grid">
-        <a class="lx-msg-btn" id="link-telegram" href="/contacts/">Telegram</a>
-        <a class="lx-msg-btn" id="link-whatsapp" href="/contacts/">WhatsApp</a>
+        <a class="lx-msg-btn" id="link-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
+        <a class="lx-msg-btn" id="link-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp"><span>WhatsApp</span></a>
+        <a class="lx-msg-btn lx-msg-btn--max" id="link-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>MAX</span></a>
       </div>
     </div>
     <div class="lx-form-panel">
-      <form id="lireate-lead-form" novalidate>
+      <form id="lireate-lead-form" data-lead-topic="TODO: тема заявки" novalidate>
         <label for="lf-name">Имя</label>
-        <input id="lf-name" name="name" type="text" required>
+        <input id="lf-name" name="name" type="text" required autocomplete="name" placeholder="Как к вам обращаться">
         <label for="lf-phone">Телефон</label>
-        <input id="lf-phone" name="phone" type="tel" required>
-        <label for="lf-msg">Сообщение</label>
-        <textarea id="lf-msg" name="message" required></textarea>
-        <label class="lx-consent"><input type="checkbox" required> Согласие на обработку ПДн</label>
-        <button type="submit" class="lx-btn lx-btn-primary">Отправить</button>
+        <input id="lf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+7 …">
+        <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на обработку персональных данных для ответа на обращение (<a href="/privacy/">политика</a>).</label>
+        <button type="submit" class="lx-btn lx-btn-primary" style="width:100%;margin-top:12px;">Получить консультацию</button>
+        <div class="lx-form-alt">
+          <span class="lx-form-alt-label">или напишите нам</span>
+          <div class="lx-form-alt-icons">
+            <a id="form-alt-telegram" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" aria-label="Telegram"></a>
+            <a id="form-alt-max" class="lx-form-alt-link lx-form-alt-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max-white" aria-label="MAX"></a>
+          </div>
+        </div>
+        <p class="lx-form-success" id="lf-success" role="status">Спасибо! Откроем мессенджер с готовым текстом — отправьте сообщение, чтобы заявка дошла до юриста.</p>
       </form>
     </div>
   </div>
@@ -185,10 +199,12 @@ $schema_graph = [
 </main>
 
 <aside class="lx-dock" aria-label="Быстрый контакт">
-  <a href="#contact" aria-label="Форма">✉</a>
-  <a id="dock-telegram" href="/contacts/" aria-label="Telegram">TG</a>
+  <a href="#contact" class="lx-dock-lead" title="Оставить заявку" aria-label="Оставить заявку"></a>
+  <a id="dock-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" title="Telegram" aria-label="Telegram" target="_blank" rel="noopener noreferrer"></a>
+  <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX" target="_blank" rel="noopener noreferrer"></a>
 </aside>
 
 <script src="assets/lireate-shared/lireate-reveal.js"></script>
+<script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>

@@ -79,10 +79,37 @@ LIREATE_ALLOW_MENU_EDIT=yes   # без yes меню только dry-run в ло
 
 ## Очередь в git vs хостинг
 
-1. Cloud automation: PR → **сам merge в `main`** после зелёного `lireate_service_lint.py`.
+1. Cloud automation: PR → merge в `main` после зелёного `lireate_service_lint.py`.
 2. В `pages/services/queue.md` для услуги: `status: done` (страница в репозитории).
 3. В течение ~30 минут CRON публикует slug и дописывает `services-published.txt`.
 4. Статус `published` в очереди выставляет хостинг (через state), не Cloud Agent.
+
+## Безопасное обновление уже опубликованной страницы
+
+CRON и обычный `--apply` **не перезаписывают** уже опубликованные slug. Чтобы выкатить новый дизайн или правки из git **только** по файлам, которые публиковал LIREATE (`.lireate-managed.json`, state, `assets/lireate-shared/*`):
+
+```bash
+export LIREATE_AUTOPUB_HOME="$HOME/lireate-autopub"
+export LIREATE_ENV_FILE="$LIREATE_AUTOPUB_HOME/.env"
+PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter")"
+OFFICE="$LIREATE_AUTOPUB_HOME/office-repo"
+"$PY" "$OFFICE/scripts/lireate_hosting_publish_service.py" \
+  --slug prodlenie-tovarnogo-znaka \
+  --apply \
+  --skip-git-pull \
+  --update
+```
+
+Обновить **все** slug из `state/services-published.json`:
+
+```bash
+"$PY" "$OFFICE/scripts/lireate_hosting_publish_service.py" \
+  --apply \
+  --skip-git-pull \
+  --update-all
+```
+
+Режим `--update` делает бэкап затронутых файлов. Если маркера нет, но slug есть в JSON-state (старые публикации), допускается полное обновление плана. Чужие файлы в каталоге не трогаются.
 
 ## Логи и бэкапы
 

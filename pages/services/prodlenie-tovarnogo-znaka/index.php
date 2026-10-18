@@ -113,7 +113,8 @@ $schema_graph = [
     </div>
     <div class="lx-hero-cta">
       <a class="lx-btn lx-btn-primary" href="#contact">Оставить заявку</a>
-      <a class="lx-btn lx-btn-ghost" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Написать в Telegram</span></a>
+      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>Написать в Max</span></a>
     </div>
     <div class="lx-hero-mini">
       <div class="lx-mini-stat"><strong class="lx-stat-value">10 лет</strong><span>каждое продление</span></div>
@@ -276,40 +277,27 @@ $schema_graph = [
       <p>Оставьте бриф в форме или напишите в мессенджер — укажите номер свидетельства и ориентировочную дату окончания срока. Юрист вернётся с расчётом пошлин и планом подачи.</p>
       <p>Телефон: <a href="<?php echo htmlspecialchars($lireate_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lireate_phone_display, ENT_QUOTES, 'UTF-8'); ?></a></p>
       <div class="lx-msg-grid" id="messenger-grid">
-        <a class="lx-msg-btn" id="link-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.4 16.6 9 20.1c.6 0 .9-.3 1.2-.6l2.9-2.8 6-4.4c2.8-1.6 0-2.5-.4-2.8L5.7 15.2c-.5.3-.5.7 0 .9l3.7 1.2z"/></svg>
-          Telegram
-        </a>
-        <a class="lx-msg-btn" id="link-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.2 2 11.4c0 1.9.5 3.7 1.5 5.3L2 22l5.6-1.5c1.5.8 3.2 1.3 4.9 1.3 5.5 0 10-4.2 10-9.4S17.5 2 12 2zm5.8 13.5c-.2.6-1.2 1.1-1.7 1.1-.4 0-1.1.2-3.6-.9-3-1.3-5-4.4-5.1-4.6-.2-.3-1.2-1.6-1.2-3.1 0-1.5.8-2.2 1.1-2.5.3-.3.6-.4.8-.4.2 0 .4 0 .6.1.2 0 .4.2.5.5.2.5.6 1.7.7 1.8.1.1.1.3 0 .4 0 .1-.1.2-.2.3l-.3.3c-.1.1-.2.2-.1.4.1.2.5 1 1.1 1.6.8.7 1.5 1 1.7 1.1.2.1.3 0 .4-.1l.6-.7c.1-.2.3-.2.5-.1.8.3 2.8 1.3 3.2 1.5.3.2.5.3.6.4.1.2.1.7-.1 1.3z"/></svg>
-          WhatsApp
-        </a>
-        <a class="lx-msg-btn lx-msg-btn--max" id="link-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
-          MAX
-        </a>
-        <a class="lx-msg-btn" href="/contacts/">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 6h16v12H4V6zm8 5.5L5.5 8.5v9h13v-9L12 11.5zM5.5 7.5 12 11l6.5-3.5H5.5z"/></svg>
-          Контакты
-        </a>
+        <a class="lx-msg-btn" id="link-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
+        <a class="lx-msg-btn" id="link-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp"><span>WhatsApp</span></a>
+        <a class="lx-msg-btn lx-msg-btn--max" id="link-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>MAX</span></a>
+        <a class="lx-msg-btn" href="/contacts/" data-lx-icon="lead"><span>Контакты</span></a>
       </div>
     </div>
     <div class="lx-form-panel">
-      <form id="lireate-lead-form" novalidate>
+      <form id="lireate-lead-form" data-lead-topic="Заявка: продление ТЗ" novalidate>
         <label for="lf-name">Имя</label>
         <input id="lf-name" name="name" type="text" required autocomplete="name" placeholder="Как к вам обращаться">
         <label for="lf-phone">Телефон</label>
         <input id="lf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+7 …">
-        <label for="lf-email">Email</label>
-        <input id="lf-email" name="email" type="email" autocomplete="email" placeholder="для ответа юриста">
-        <label for="lf-company">Компания</label>
-        <input id="lf-company" name="company" type="text" autocomplete="organization" placeholder="необязательно">
-        <label for="lf-cert">Номер свидетельства</label>
-        <input id="lf-cert" name="certificate" type="text" placeholder="например, 123456">
-        <label for="lf-msg">Комментарий</label>
-        <textarea id="lf-msg" name="message" required placeholder="Дата окончания срока, вопросы по пошлинам"></textarea>
         <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на обработку персональных данных для ответа на обращение (<a href="/privacy/">политика</a>).</label>
-        <button type="submit" class="lx-btn lx-btn-primary" style="width:100%;margin-top:12px;">Отправить бриф</button>
+        <button type="submit" class="lx-btn lx-btn-primary" style="width:100%;margin-top:12px;">Получить консультацию</button>
+        <div class="lx-form-alt">
+          <span class="lx-form-alt-label">или напишите нам</span>
+          <div class="lx-form-alt-icons">
+            <a id="form-alt-telegram" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" aria-label="Telegram"></a>
+            <a id="form-alt-max" class="lx-form-alt-link lx-form-alt-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max-white" aria-label="MAX"></a>
+          </div>
+        </div>
         <p class="lx-form-success" id="lf-success" role="status">Спасибо! Откроем мессенджер с готовым текстом — отправьте сообщение, чтобы заявка дошла до юриста.</p>
       </form>
     </div>
@@ -334,47 +322,12 @@ $schema_graph = [
 </main>
 
 <aside class="lx-dock" aria-label="Быстрый контакт">
-  <a href="#contact" title="Форма заявки" aria-label="Форма заявки">✉</a>
-  <a id="dock-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" title="Telegram" aria-label="Telegram">TG</a>
-  <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX">M</a>
+  <a href="#contact" class="lx-dock-lead" title="Оставить заявку" aria-label="Оставить заявку"></a>
+  <a id="dock-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" title="Telegram" aria-label="Telegram" target="_blank" rel="noopener noreferrer"></a>
+  <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX" target="_blank" rel="noopener noreferrer"></a>
 </aside>
 
 <script src="assets/lireate-shared/lireate-reveal.js"></script>
-<script>
-(function(){
-  var cfg = {
-    telegram: document.documentElement.getAttribute('data-lireate-telegram') || '',
-    whatsapp: document.documentElement.getAttribute('data-lireate-whatsapp') || '',
-    max: document.documentElement.getAttribute('data-lireate-max') || ''
-  };
-  function setHref(id, url, fallback) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.href = url || fallback || '/contacts/';
-  }
-  setHref('link-telegram', cfg.telegram, 'https://t.me/lireate_patent');
-  setHref('link-whatsapp', cfg.whatsapp, 'https://wa.me/79600484957');
-  setHref('link-max', cfg.max);
-  setHref('dock-telegram', cfg.telegram, 'https://t.me/lireate_patent');
-  setHref('dock-max', cfg.max);
-
-  var form = document.getElementById('lireate-lead-form');
-  if (!form) return;
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    var name = document.getElementById('lf-name').value.trim();
-    var phone = document.getElementById('lf-phone').value.trim();
-    var cert = (document.getElementById('lf-cert') || {value:''}).value.trim();
-    var msg = document.getElementById('lf-msg').value.trim();
-    var body = 'Заявка: продление ТЗ%0AИмя: ' + encodeURIComponent(name) + '%0AТел: ' + encodeURIComponent(phone) + '%0AСвидетельство: ' + encodeURIComponent(cert) + '%0A' + encodeURIComponent(msg);
-    var tg = document.getElementById('link-telegram').href;
-    if (tg && tg.indexOf('t.me') !== -1) {
-      window.open(tg + (tg.indexOf('?') === -1 ? '?' : '&') + 'text=' + body.replace(/%0A/g, '%0A'), '_blank', 'noopener,noreferrer');
-    }
-    document.getElementById('lf-success').classList.add('is-visible');
-  });
-})();
-</script>
+<script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>
