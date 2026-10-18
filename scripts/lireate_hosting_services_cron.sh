@@ -11,6 +11,7 @@ LOG_DIR="$AUTOPUB_HOME/logs"
 STATE_DIR="$AUTOPUB_HOME/state"
 VAR_DIR="$AUTOPUB_HOME/var"
 STATE_FILE="${LIREATE_SERVICES_STATE_TXT:-$STATE_DIR/services-published.txt}"
+RETRY_FILE="${LIREATE_SERVICES_RETRY_JSON:-$STATE_DIR/services-publish-retries.json}"
 LOCK_FILE="${LIREATE_SERVICES_CRON_LOCK:-$VAR_DIR/services-cron.lock}"
 INIT_MODE=0
 
@@ -83,6 +84,24 @@ if ! git checkout -B "$BRANCH" FETCH_HEAD 2>&1; then
 fi
 echo "git: synced $BRANCH @ $(git rev-parse --short HEAD)"
 
+if [[ "${LIREATE_ALLOW_PUBLISH:-}" == "yes" ]]; then
+  "$PY" - <<'PY' "$OFFICE_REPO" "$DOCROOT"
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(sys.argv[1]) / "scripts"))
+from lireate_hosting_services_lib import repair_service_htaccess
+
+office_repo = Path(sys.argv[1])
+docroot = Path(sys.argv[2])
+fixed = repair_service_htaccess(office_repo, docroot, slugs=None, dry_run=False)
+if fixed:
+    print("htaccess_repair: {0}".format(", ".join(fixed)))
+else:
+    print("htaccess_repair: (none)")
+PY
+fi
+
 LIB="$OFFICE_REPO/scripts/lireate_hosting_services_lib.py"
 PUBLISH="$OFFICE_REPO/scripts/lireate_hosting_publish_service.py"
 MENU="$OFFICE_REPO/scripts/lireate_hosting_menu_add.py"
@@ -116,7 +135,6 @@ sys.path.insert(0, str(Path(sys.argv[1]) / "scripts"))
 from lireate_hosting_services_lib import (
     collect_publish_candidates,
     load_state_txt,
-    save_state_txt,
     seed_state_from_docroot,
 )
 
@@ -126,8 +144,6 @@ state_file = Path(sys.argv[3])
 state, _ = seed_state_from_docroot(office_repo, docroot, state_file)
 state = load_state_txt(state_file)
 candidates = collect_publish_candidates(office_repo, docroot, state)
-if state != load_state_txt(state_file):
-    save_state_txt(state_file, state)
 for slug in candidates:
     print(slug)
 PY
@@ -142,18 +158,38 @@ SLUG="${CANDIDATES[0]}"
 echo "publish_candidate: $SLUG"
 
 if ! "$PY" "$PUBLISH" --slug "$SLUG" --apply --skip-git-pull --office-repo "$OFFICE_REPO" --env-file "$ENV_FILE"; then
-  echo "STATUS: BLOCKER — publish failed for $SLUG"
-  exit 1
-fi
-
-"$PY" - <<'PY' "$OFFICE_REPO" "$STATE_FILE" "$SLUG"
+  "$PY" - <<'PY' "$OFFICE_REPO" "$RETRY_FILE" "$SLUG"
+import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(sys.argv[1]) / "scripts"))
-from lireate_hosting_services_lib import append_slug_to_state
+from lireate_hosting_services_lib import (
+    DEFAULT_MAX_HTTP_RETRIES,
+    record_publish_failure,
+)
+
+retry_file = Path(sys.argv[2])
+slug = sys.argv[3]
+max_r = int(os.environ.get("LIREATE_MAX_PUBLISH_HTTP_RETRIES") or DEFAULT_MAX_HTTP_RETRIES)
+count, over = record_publish_failure(retry_file, slug, max_r)
+print("publish_retry_count: {0} (max {1})".format(count, max_r))
+if over:
+    print("STATUS: WARN — HTTP/publish failures reached cap for {0}; will keep retrying".format(slug))
+PY
+  echo "STATUS: BLOCKER — publish failed for $SLUG (slug not added to state; retry next cron)"
+  exit 1
+fi
+
+"$PY" - <<'PY' "$OFFICE_REPO" "$STATE_FILE" "$SLUG" "$RETRY_FILE"
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(sys.argv[1]) / "scripts"))
+from lireate_hosting_services_lib import append_slug_to_state, clear_publish_failure
 
 append_slug_to_state(Path(sys.argv[2]), sys.argv[3])
+clear_publish_failure(Path(sys.argv[4]), sys.argv[3])
 PY
 
 MENU_ARGS=("$MENU" --slug "$SLUG" --office-repo "$OFFICE_REPO" --env-file "$ENV_FILE")

@@ -9,6 +9,9 @@ from pathlib import Path
 
 SKIP_SERVICE_DIRS = {"_template", "_shared"}
 MANAGED_MARKER = ".lireate-managed.json"
+SERVICE_DIR_HTACCESS = ".htaccess"
+SERVICE_HTACCESS_CANONICAL = Path("pages") / "services" / "_shared" / "service-directory.htaccess"
+DEFAULT_MAX_HTTP_RETRIES = 48
 
 SECTION_RE = re.compile(r"^##\s+(S\d+)\.\s+", re.M)
 FIELD_RE = re.compile(
@@ -109,11 +112,99 @@ def dest_dir_for_manifest(docroot: Path, manifest: dict) -> Path:
 
 
 def dest_looks_published(dest_dir: Path) -> bool:
+    """True when DOCROOT already has a service index (legacy / --init seeding)."""
     if not dest_dir.is_dir():
         return False
     if (dest_dir / "index.php").is_file() or (dest_dir / "index.html").is_file():
         return True
     return False
+
+
+def canonical_htaccess_source(office_repo: Path) -> Path | None:
+    path = office_repo / SERVICE_HTACCESS_CANONICAL
+    if path.is_file():
+        return path
+    return None
+
+
+def service_htaccess_source(office_repo: Path, service_dir: Path) -> Path | None:
+    local = service_dir / SERVICE_DIR_HTACCESS
+    if local.is_file():
+        return local
+    return canonical_htaccess_source(office_repo)
+
+
+def repair_service_htaccess(
+    office_repo: Path,
+    docroot: Path,
+    slugs: set[str] | None = None,
+    dry_run: bool = True,
+) -> list[str]:
+    """Ensure .htaccess exists in published service dirs. Returns repaired url_paths."""
+    repaired: list[str] = []
+    for service_dir in list_service_dirs(office_repo):
+        slug = service_dir.name
+        if slugs is not None and slug not in slugs:
+            continue
+        try:
+            manifest = load_manifest(service_dir)
+        except (ValueError, json.JSONDecodeError):
+            continue
+        dest = dest_dir_for_manifest(docroot, manifest)
+        if not dest.is_dir():
+            continue
+        if not (
+            (dest / "index.php").is_file()
+            or (dest / "index.html").is_file()
+            or (dest / MANAGED_MARKER).is_file()
+        ):
+            continue
+        ht_dest = dest / SERVICE_DIR_HTACCESS
+        src = service_htaccess_source(office_repo, service_dir)
+        if not src:
+            continue
+        if ht_dest.is_file():
+            continue
+        if dry_run:
+            repaired.append(manifest["url_path"])
+            continue
+        import shutil
+
+        shutil.copy2(str(src), str(ht_dest))
+        repaired.append(manifest["url_path"])
+    return repaired
+
+
+def load_retry_state(retry_file: Path) -> dict[str, int]:
+    if not retry_file.is_file():
+        return {}
+    try:
+        data = json.loads(retry_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    return {str(k): int(v) for k, v in data.items() if isinstance(v, int) or str(v).isdigit()}
+
+
+def save_retry_state(retry_file: Path, data: dict[str, int]) -> None:
+    retry_file.parent.mkdir(parents=True, exist_ok=True)
+    retry_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def record_publish_failure(retry_file: Path, slug: str, max_retries: int) -> tuple[int, bool]:
+    counts = load_retry_state(retry_file)
+    n = counts.get(slug, 0) + 1
+    counts[slug] = n
+    save_retry_state(retry_file, counts)
+    return n, n >= max_retries
+
+
+def clear_publish_failure(retry_file: Path, slug: str) -> None:
+    counts = load_retry_state(retry_file)
+    if slug in counts:
+        del counts[slug]
+        save_retry_state(retry_file, counts)
 
 
 def git_sync_office_repo(office_repo: Path, branch: str = "main") -> tuple[bool, str]:
@@ -180,7 +271,11 @@ def collect_publish_candidates(
     docroot: Path,
     state: set[str],
 ) -> list[str]:
-    """Slugs in repo that are not published (not in state, no live dest dir)."""
+    """Slugs in repo that are not yet in CRON state (services-published.txt).
+
+    Partial deploys (files on disk but publish/HTTP failed) stay retryable until
+    a successful cron run appends the slug to state.
+    """
     order = queue_slug_order(office_repo)
     order_index = {s: i for i, s in enumerate(order)}
     candidates: list[str] = []
@@ -190,12 +285,8 @@ def collect_publish_candidates(
         if slug in state:
             continue
         try:
-            manifest = load_manifest(service_dir)
+            load_manifest(service_dir)
         except (ValueError, json.JSONDecodeError):
-            continue
-        dest = dest_dir_for_manifest(docroot, manifest)
-        if dest_looks_published(dest):
-            state.add(slug)
             continue
         candidates.append(slug)
 
