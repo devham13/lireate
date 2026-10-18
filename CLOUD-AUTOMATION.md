@@ -16,7 +16,7 @@
 
 - Handoff: `<PROJECT_ROOT>/.cursor/lireate-handoff.md`
 - Фрагменты: `<PROJECT_ROOT>/.cursor/lireate-fragments/`
-- Очередь услуг: `<PROJECT_ROOT>/shared/lireate-services-queue.md`
+- Очередь услуг: `<PROJECT_ROOT>/pages/services/queue.md` (`scripts/lireate_service_queue.py`)
 - Журнал: `<PROJECT_ROOT>/shared/published-pages.md`
 - Правила контента: `<PROJECT_ROOT>/shared/lireate-content-rules.md`
 - Хостинг-скрипт: `<PROJECT_ROOT>/scripts/lireate_hosting_publish_service.py`

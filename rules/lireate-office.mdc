@@ -21,6 +21,8 @@ Cloud Agent = Директор. Роли через Task / generalPurpose. Не 
 - Публичные URL услуг: `https://${PUBLIC_SITE_HOST}/uslugi/<slug>/` (или `url_path` в `publish.manifest.json`).
 - Исходники: `pages/services/<slug>/` — самодостаточный PHP + `assets/lireate-shared/` (из `pages/services/_shared/`). Шаблон: `_template/`, дизайн: `docs/lireate-service-design.ru.md`, линт: `scripts/lireate_service_lint.py`.
 - Новые услуги **только** в стиле эталона `registraciya-tovarnogo-znaka-v-kitae`; учитывать `data/seo-report.json` из lireate-news при наличии.
+- Очередь: `pages/services/queue.md`. Следующая задача: `python3 scripts/lireate_service_queue.py` (`Sxx` + slug или `NO_NEW_SERVICE`).
+- **service-pages automation:** первая запись `status: new` без папки `pages/services/<slug>/` → одна страница из `_template` + `_shared` → lint → `status: done` в queue → PR в `main`. Не редактировать существующие страницы услуг и `data/db.php`. Если очередь пуста — `NO_NEW_SERVICE`, без страницы и без PR.
 
 ## Публикация
 
