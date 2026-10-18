@@ -64,6 +64,7 @@
 - Короткая статья вместо лонгрида 8k–20k+ знаков.
 - Услуга без `lx-nav-pill` / `_shared` CSS или с проваленным `lireate_service_lint.py`.
 - Контент с выдуманными кейсами/судами (см. `shared/lireate-content-rules.md`).
+- Ссылки на политику/согласие ПДн не с живых страниц сайта: только `/private_data` и `/politika_konfidencialnosti` (не `/privacy/`, не выдуманные URL, не новые страницы политики в репозитории).
 
 ## Handoff
 
