@@ -454,6 +454,11 @@ html.lx-no-motion .lx-stat-pulse {
   transition: transform 0.15s, border-color 0.15s;
 }
 .lx-msg-btn:hover { transform: translateY(-2px); border-color: rgba(96, 165, 250, 0.4); }
+.lx-msg-btn--max {
+  border-color: rgba(244, 114, 182, 0.35);
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.12) 0%, rgba(139, 92, 246, 0.14) 100%);
+}
+.lx-msg-btn--max:hover { border-color: rgba(244, 114, 182, 0.55); }
 .lx-msg-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
 .lx-dock {
   position: fixed;
@@ -476,6 +481,11 @@ html.lx-no-motion .lx-stat-pulse {
   font-size: 12px;
   text-decoration: none;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+.lx-dock a.lx-dock-max {
+  background: linear-gradient(135deg, #f472b6 0%, #8b5cf6 100%);
+  color: #fff;
+  font-size: 11px;
 }
 .lx-form-success {
   display: none;
