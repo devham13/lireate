@@ -13,7 +13,7 @@ python3 scripts/lireate_service_queue.py
 - Печатает `Sxx<TAB>slug` для первой записи со `status: new`, если каталога `pages/services/<slug>/` ещё нет.
 - Иначе `NO_NEW_SERVICE` — автоматизация останавливается (без новой страницы и без PR).
 
-**Один прогон automation:** одна услуга → PR в `main` → в очереди `status: done`. Не менять уже существующие каталоги услуг и `data/db.php`.
+**Один прогон automation:** одна услуга → PR → **merge в `main`** (после зелёного lint) → в очереди `status: done`. Хостинг в течение ~30 мин публикует slug (`scripts/lireate_hosting_services_cron.sh`); `published` фиксирует state на REG.RU. Не менять уже существующие каталоги услуг и `data/db.php`.
 
 ## Новая услуга
 
@@ -49,9 +49,12 @@ pages/services/
   "slug": "registraciya-tovarnogo-znaka-v-kitae",
   "url_path": "registraciya_tovarnogo_znaka_v_kitae",
   "title": "Регистрация товарного знака в Китае",
-  "description": "…140–160 символов…"
+  "description": "…140–160 символов…",
+  "menu_after": "Регистрация товарного знака"
 }
 ```
+
+Опционально: `menu_title`, `menu_after` (или то же поле в `queue.md`) — для `scripts/lireate_hosting_menu_add.py` после публикации.
 
 Публичный URL: `https://<домен>/<url_path>/`.
 

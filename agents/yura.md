@@ -17,7 +17,7 @@ is_background: false
 3. Создай `publish.manifest.json` (`slug`, `url_path` по умолчанию `uslugi/<slug>`, `title`, `description`).
 4. Вставь JSON-LD и внутренние ссылки **до** commit.
 5. Обнови `shared/published-pages.md`: статус `ready_for_hosting`, ожидаемый URL `https://${PUBLIC_SITE_HOST}/<url_path>/`.
-6. **Commit + push** в ветку задачи (не handoff).
+6. **Commit + push**, PR в `main`; после зелёного lint — **merge** (автопубликация услуг разрешена владельцем).
 7. Запиши блок:
 
 ```md
@@ -27,9 +27,9 @@ Slug: ...
 Путь в repo: pages/services/<slug>/
 Ожидаемый URL: https://${PUBLIC_SITE_HOST}/uslugi/.../
 Статус: ready_for_hosting
-deployment: hosting_script
+deployment: hosting_cron
 Проверка repo: index.php ✓, manifest ✓, schema ✓, main#primary ✓
-Команда хостинга (dry-run): см. docs/lireate-services-hosting.ru.md
+Хостинг: CRON scripts/lireate_hosting_services_cron.sh (~30 мин), см. docs/lireate-services-hosting.ru.md
 Журнал: shared/published-pages.md updated
 Передача indexator: mode=pre_publish, expected_url=...
 ```

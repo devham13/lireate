@@ -1,115 +1,131 @@
 # Публикация страниц услуг LIREATE на REG.RU
 
-Скрипт лежит в репозитории **devham13/lireate** (`scripts/lireate_hosting_publish_service.py`), рядом с исходниками страниц `pages/services/<slug>/`. Новости по-прежнему публикуются из **devham13/lireate-news** в MySQL; услуги — отдельным потоком (копирование файлов в DOCROOT).
+Скрипты в **devham13/lireate** (`scripts/lireate_hosting_*`). Новости — отдельно из **devham13/lireate-news** (MySQL). Услуги — копирование `pages/services/<slug>/` в `DOCROOT`.
 
-Production: `u3650956`, `server324.hosting.reg.ru`, `DOCROOT=/var/www/u3650956/data/www/public_html`.
+Production: `u3650956`, `DOCROOT=$HOME/www/public_html`, Python 3.8 из `~/lireate-autopub/.python-interpreter`.
 
-## Почему скрипт в office-repo, а не в lireate-news
+## Почему office-repo на хостинге
 
-Страница услуги собирается агентами в `devham13/lireate` и коммитится в `pages/services/`. Публикатор на хостинге тянет **тот же** репозиторий и копирует каталог в `public_html`, без WordPress и без админки с капчей.
+Страница услуги коммитится в `devham13/lireate`. CRON на REG.RU тянет тот же репозиторий и выкладывает **только новые** slug (без перезаписи уже опубликованных).
 
-## Первая установка office-repo на хостинге
+## Первая установка (один блок для ISPmanager Shell)
+
+Скопируйте целиком. Строка CRON **добавляется** к существующей задаче новостей (`lireate_hosting_cron.sh`), не заменяет её.
 
 ```bash
+set -euo pipefail
 export LIREATE_AUTOPUB_HOME="$HOME/lireate-autopub"
-mkdir -p "$LIREATE_AUTOPUB_HOME"
-git clone https://github.com/devham13/lireate.git "$LIREATE_AUTOPUB_HOME/office-repo"
+export LIREATE_ENV_FILE="$LIREATE_AUTOPUB_HOME/.env"
+PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter")"
+OFFICE="$LIREATE_AUTOPUB_HOME/office-repo"
+mkdir -p "$LIREATE_AUTOPUB_HOME/logs" "$LIREATE_AUTOPUB_HOME/state" "$LIREATE_AUTOPUB_HOME/var"
+if [[ ! -d "$OFFICE/.git" ]]; then
+  git clone https://github.com/devham13/lireate.git "$OFFICE"
+fi
+grep -q '^LIREATE_ALLOW_PUBLISH=' "$LIREATE_ENV_FILE" 2>/dev/null || echo 'LIREATE_ALLOW_PUBLISH=yes' >> "$LIREATE_ENV_FILE"
+grep -q '^LIREATE_ALLOW_MENU_EDIT=' "$LIREATE_ENV_FILE" 2>/dev/null || echo 'LIREATE_ALLOW_MENU_EDIT=yes' >> "$LIREATE_ENV_FILE"
+grep -q '^LIREATE_OFFICE_REPO=' "$LIREATE_ENV_FILE" 2>/dev/null || echo "LIREATE_OFFICE_REPO=$OFFICE" >> "$LIREATE_ENV_FILE"
+grep -q '^LIREATE_DOCROOT=' "$LIREATE_ENV_FILE" 2>/dev/null || echo 'LIREATE_DOCROOT=$HOME/www/public_html' >> "$LIREATE_ENV_FILE"
+CRON_LINE='*/30 * * * * bash $HOME/lireate-autopub/office-repo/scripts/lireate_hosting_services_cron.sh >> $HOME/lireate-autopub/logs/services-cron.log 2>&1'
+( crontab -l 2>/dev/null | grep -v 'lireate_hosting_services_cron.sh' ; echo "$CRON_LINE" ) | crontab -
+bash "$OFFICE/scripts/lireate_hosting_services_cron.sh" --init
+bash "$OFFICE/scripts/lireate_hosting_services_cron.sh"
+echo "OK: services CRON installed; check $LIREATE_AUTOPUB_HOME/logs/services-cron.log"
 ```
 
-Добавьте в `$LIREATE_AUTOPUB_HOME/.env` (рядом с настройками новостей):
+Ожидание после `--init`: в логе `STATUS: INIT_DONE`, в state — slug уже лежащих в `DOCROOT` услуг (например `registraciya-tovarnogo-znaka-v-kitae`). Первый обычный прогон: `STATUS: NO_NEW_SERVICE` или публикация одной новой услуги.
+
+## Синхронизация office-repo (single-branch клон)
+
+```bash
+cd "$HOME/lireate-autopub/office-repo"
+git fetch origin main
+git checkout -B main FETCH_HEAD
+```
+
+`scripts/lireate_hosting_services_cron.sh` делает это автоматически каждые 30 минут.
+
+## Скрипты
+
+| Скрипт | Назначение |
+|--------|------------|
+| `lireate_hosting_services_cron.sh` | CRON: git sync → одна новая услуга → опционально пункт меню |
+| `lireate_hosting_publish_service.py` | Копирование каталога услуги в `DOCROOT` (`--apply`) |
+| `lireate_hosting_menu_add.py` | Пункт `leftSideNaviInSection` в шаблоне CMS |
+
+Публикация одной страницы вручную:
+
+```bash
+"$PY" "$OFFICE/scripts/lireate_hosting_publish_service.py" --slug <slug> --apply --skip-git-pull
+```
+
+## Состояние и политика «не трогать старое»
+
+- Текстовый state CRON: `$HOME/lireate-autopub/state/services-published.txt` (по одному slug на строку).
+- JSON от публикатора: `$HOME/lireate-autopub/state/services-published.json`.
+- Уже опубликованные slug **не** обновляются и **не** перезаписываются.
+- Если каталог URL уже есть в `DOCROOT`, CRON только дописывает slug в state.
+- `data/db.php` CRON и меню **не** меняют.
+
+## Переменные `.env`
 
 ```bash
 LIREATE_DOCROOT=/var/www/u3650956/data/www/public_html
 LIREATE_PUBLIC_SITE_URL=https://${PUBLIC_SITE_HOST}
 LIREATE_OFFICE_REPO=$HOME/lireate-autopub/office-repo
-LIREATE_ALLOW_PUBLISH=no
+LIREATE_ALLOW_PUBLISH=yes
+LIREATE_ALLOW_MENU_EDIT=yes   # без yes меню только dry-run в лог CRON
 ```
 
-## Обновить код office-repo
+## Очередь в git vs хостинг
 
-```bash
-export LIREATE_AUTOPUB_HOME="$HOME/lireate-autopub"
-cd "$LIREATE_AUTOPUB_HOME/office-repo"
-git fetch origin main
-git checkout main
-git pull --ff-only
-```
-
-## Общие CSS/JS услуг
-
-Файлы из `pages/services/_shared/` копируются в `assets/lireate-shared/` при публикации. В git перед merge желательно:
-
-```bash
-python3 scripts/lireate_service_sync_shared.py
-```
-
-## Dry-run (по умолчанию, без записи)
-
-```bash
-export LIREATE_AUTOPUB_HOME="$HOME/lireate-autopub"
-export LIREATE_ENV_FILE="$LIREATE_AUTOPUB_HOME/.env"
-PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter" 2>/dev/null || echo python3)"
-"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_publish_service.py" \
-  --slug registraciya-tovarnogo-znaka
-```
-
-Скрипт внутри dry-run может сделать `git pull` только при `--apply`; для предпросмотра без pull используйте локально актуальный `office-repo`.
-
-## Реальная публикация
-
-В `.env` установите `LIREATE_ALLOW_PUBLISH=yes`, затем:
-
-```bash
-export LIREATE_AUTOPUB_HOME="$HOME/lireate-autopub"
-export LIREATE_ENV_FILE="$LIREATE_AUTOPUB_HOME/.env"
-PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter" 2>/dev/null || echo python3)"
-"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_publish_service.py" \
-  --slug registraciya-tovarnogo-znaka \
-  --apply
-```
-
-Успех: `STATUS: PUBLISHED` и HTTP 200 на `https://${PUBLIC_SITE_HOST}/uslugi/<slug>/` (или `url_path` из `publish.manifest.json`).
+1. Cloud automation: PR → merge в `main` после зелёного `lireate_service_lint.py`.
+2. В `pages/services/queue.md` для услуги: `status: done` (страница в репозитории).
+3. В течение ~30 минут CRON публикует slug и дописывает `services-published.txt`.
+4. Статус `published` в очереди выставляет хостинг (через state), не Cloud Agent.
 
 ## Безопасное обновление уже опубликованной страницы
 
-CRON и обычный `--apply` **не перезаписывают** чужие файлы в каталоге услуги. Чтобы выкатить новый дизайн или правки из git **только** по файлам, которые публиковал LIREATE:
+CRON и обычный `--apply` **не перезаписывают** уже опубликованные slug. Чтобы выкатить новый дизайн или правки из git **только** по файлам, которые публиковал LIREATE (`.lireate-managed.json`, state, `assets/lireate-shared/*`):
 
 ```bash
-"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_publish_service.py" \
+export LIREATE_AUTOPUB_HOME="$HOME/lireate-autopub"
+export LIREATE_ENV_FILE="$LIREATE_AUTOPUB_HOME/.env"
+PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter")"
+OFFICE="$LIREATE_AUTOPUB_HOME/office-repo"
+"$PY" "$OFFICE/scripts/lireate_hosting_publish_service.py" \
   --slug prodlenie-tovarnogo-znaka \
   --apply \
+  --skip-git-pull \
   --update
 ```
 
 Обновить **все** slug из `state/services-published.json`:
 
 ```bash
-"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_publish_service.py" \
+"$PY" "$OFFICE/scripts/lireate_hosting_publish_service.py" \
   --apply \
+  --skip-git-pull \
   --update-all
 ```
 
-Режим `--update` перезаписывает файлы из `.lireate-managed.json`, плюс `assets/lireate-shared/*`, делает бэкап затронутых файлов. Если маркера нет, но slug есть в state (старые публикации), допускается полное обновление плана. Чужие файлы в каталоге не трогаются.
-
-## CRON (пример: раз в час проверять очередь slug из env)
-
-Публикацию по CRON лучше запускать только когда slug известен (после merge PR). Пример ручного cron для одной услуги:
-
-```cron
-TZ=Europe/Moscow
-15 * * * * LIREATE_SERVICE_SLUG=registraciya-tovarnogo-znaka $(cat $HOME/lireate-autopub/.python-interpreter) $HOME/lireate-autopub/office-repo/scripts/lireate_hosting_publish_service.py --apply >> $HOME/lireate-autopub/logs/service-cron.log 2>&1
-```
-
-Перед включением cron убедитесь, что `LIREATE_ALLOW_PUBLISH=yes` осознанно.
+Режим `--update` делает бэкап затронутых файлов. Если маркера нет, но slug есть в JSON-state (старые публикации), допускается полное обновление плана. Чужие файлы в каталоге не трогаются.
 
 ## Логи и бэкапы
 
-- Лог: `$HOME/lireate-autopub/logs/service-publish.log`
-- Состояние: `$HOME/lireate-autopub/state/services-published.json`
-- Бэкап при обновлении: `$HOME/lireate-autopub/backups/services/<slug>/<timestamp>/`
+- CRON: `$HOME/lireate-autopub/logs/services-cron.log`
+- Публикация: `$HOME/lireate-autopub/logs/service-publish.log`
+- Бэкап файлов услуги: `$HOME/lireate-autopub/backups/services/<slug>/<timestamp>/`
+- Бэкап шаблона меню: `*.bak-<UTC>` рядом с файлом
+
+## Локальная проверка (разработка)
+
+```bash
+bash scripts/test_lireate_hosting_services_local.sh
+```
 
 ## Ограничения
 
-- Cursor Cloud **не** имеет SSH/FTP к хостингу (RCPC).
-- Админка `/admin/` с капчей **не** используется для автопубликации услуг.
-- Скрипт не перезаписывает файлы в целевом каталоге, если они не перечислены в `.lireate-managed.json` от прошлой публикации LIREATE.
+- Cursor Cloud **не** имеет SSH/FTP к хостингу.
+- Админка `/admin/` с капчей для автопубликации услуг **не** используется.
+- Публикатор отказывается перезаписывать «чужие» файлы без `.lireate-managed.json`.
