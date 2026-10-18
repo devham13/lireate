@@ -1,59 +1,42 @@
-# Пункт бокового меню «Продление товарного знака»
+# Боковое меню CMS: пункт услуги после «Регистрация товарного знака»
 
-## Где живёт меню
+На lireate.ru левое меню раздела «Услуги» рендерится из PHP-шаблона в `DOCROOT` (не из `data/db.php`). Подпункты блока «Товарный знак» используют класс `leftSideNaviInSection`.
 
-На продакшене (публичный хост из `LIREATE_PUBLIC_SITE_URL` / `PUBLIC_SITE_HOST`) блок **Услуги → Товарный знак** рендерится **шаблоном CMS** (левая колонка `#sidebar-wrapper`, классы `leftSideNaviButton`, `leftSideNaviInSection`). В репозитории **devham13/lireate** исходников этого шаблона **нет**; правка — в админке сайта или в PHP-шаблоне на хостинге (`public_html/local/templates/…`), **не** через `data/db.php` в git.
-
-Текущая разметка (фрагмент с главной, октябрь 2026):
+Пример якоря (уже на проде):
 
 ```html
-<div class="leftSideTitle">Услуги</div>
-<div class="leftSideNaviButton js-question">
-    Товарный знак <div class="leftSideArrow"></div>
-</div>
-<div class="js-answer">
-    <a href="/findtz" class="leftSideNaviInSection">Проверка товарного знака</a>
-    <a href="/registraciya_tovarnogo_znaka" class="leftSideNaviInSection">Регистрация товарного знака</a>
-</div>
+<a href="/registraciya_tovarnogo_znaka" class="leftSideNaviInSection">Регистрация товарного знака</a>
 ```
 
-## Ручное добавление (рекомендуется)
+Для **продления** (`prodlenie-tovarnogo-znaka`) после успешной публикации CRON вызывает `scripts/lireate_hosting_menu_add.py`: вставляет ссылку **сразу после** этого якоря, идемпотентно (маркер `<!-- lireate-menu:<slug> -->`).
 
-1. Войти в админку сайта (раздел шаблонов / структуры / «левое меню» — название зависит от вашей сборки CMS).
-2. Найти блок подзаголовка **Товарный знак** (два существующих пункта).
-3. **После** ссылки «Регистрация товарного знака» вставить:
+## Метаданные
 
-```html
-<a href="/prodlenie_tovarnogo_znaka/" class="leftSideNaviInSection">Продление товарного знака</a>
-```
+В `publish.manifest.json` услуги:
 
-4. Сохранить шаблон, очистить кэш CMS (если включён).
-5. Проверить на главной: раскрыть «Товарный знак» — три пункта, новый ведёт на `/prodlenie_tovarnogo_znaka/` (HTTP 200 после публикации страницы услуги).
+| Поле | Назначение |
+|------|------------|
+| `title` | Текст пункта меню (если нет `menu_title`) |
+| `menu_title` | Явный текст пункта меню |
+| `url_path` | Путь URL (`prodlenie_tovarnogo_znaka` → `/prodlenie_tovarnogo_znaka/`) |
+| `menu_after` | Видимый текст якоря, после которого вставлять пункт |
 
-## Идемпотентный фрагмент для шаблона на хостинге
+То же поле `menu_after` можно задать в `pages/services/queue.md` в записи услуги.
 
-Если правите файл шаблона по SSH, добавьте строку только если её ещё нет:
-
-```bash
-# DRY-RUN: показать, есть ли уже ссылка
-grep -n 'prodlenie_tovarnogo_znaka' /path/to/sidebar-template.php || true
-
-# После ручной вставки HTML-пункта повторить grep — должна быть одна строка.
-```
-
-Автоматическая подстановка через `sed` без просмотра файла **не рекомендуется**: у филиалов (msk.lireate.ru и др.) меню может отличаться.
-
-## Связь с публикацией страницы
-
-Пункт меню имеет смысл включать **после** деплоя `pages/services/prodlenie-tovarnogo-znaka/`:
+## Ручной запуск на хостинге
 
 ```bash
 export LIREATE_AUTOPUB_HOME="$HOME/lireate-autopub"
 export LIREATE_ENV_FILE="$LIREATE_AUTOPUB_HOME/.env"
-PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter" 2>/dev/null || echo python3)"
-"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_publish_service.py" \
-  --slug prodlenie-tovarnogo-znaka \
-  --apply
+PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter")"
+"$PY" "$LIREATE_AUTOPUB_HOME/office-repo/scripts/lireate_hosting_menu_add.py" \
+  --slug prodlenie-tovarnogo-znaka
 ```
 
-(Предварительно: `LIREATE_ALLOW_PUBLISH=yes`, актуальный `git pull` в `office-repo`.)
+Запись в шаблон: `LIREATE_ALLOW_MENU_EDIT=yes` и флаг `--apply`. Без `--apply` — только путь к файлу и diff.
+
+## Безопасность
+
+- `data/db.php` **никогда** не редактируется.
+- Перед записью создаётся бэкап `*.bak-<UTC>`.
+- Повторный запуск не дублирует пункт.

@@ -38,8 +38,9 @@
 1. `python3 scripts/lireate_service_queue.py` → `Sxx` + `slug` или `NO_NEW_SERVICE` (тогда **стоп**: без страницы, без PR).
 2. Ровно **одна** новая услуга: копия `pages/services/_template/` → `pages/services/<slug>/`, ассеты из `_shared` (`lireate_service_sync_shared.py`).
 3. `python3 scripts/lireate_service_lint.py --slug <slug>` — обязателен pass.
-4. В `pages/services/queue.md` у этой записи `status: done`; **не** править уже существующие каталоги услуг и **не** трогать `data/db.php`.
-5. PR в `main` (Cloud не публикует на хостинг).
+4. В `pages/services/queue.md` у этой записи `status: done` **после merge в `main`**; **не** править уже существующие каталоги услуг и **не** трогать `data/db.php`.
+5. PR в `main`: Cloud Agent **сам вливает** PR, когда lint и проверки зелёные (владелец разрешил автопубликацию услуг без ручного approve).
+6. В течение ~30 минут REG.RU CRON (`scripts/lireate_hosting_services_cron.sh`) публикует новый slug; `published` в очереди/state на хостинге — не задача Cloud.
 
 ## Публикация (критично для Cloud)
 
@@ -50,10 +51,10 @@
 1. Собирает каталог `pages/services/<slug>/`.
 2. Вставляет schema и внутренние ссылки.
 3. Обновляет `shared/published-pages.md` со статусом `ready_for_hosting` и ожидаемым URL.
-4. Коммитит и пушит в `devham13/lireate`.
-5. Пишет блок `=== ЮРА (ПУБЛИКАЦИЯ) ===` с `deployment: hosting_script`, **без** вымышленного live URL.
+4. Коммитит, пушит, доводит PR до merge в `main`.
+5. Пишет блок `=== ЮРА (ПУБЛИКАЦИЯ) ===` с `deployment: hosting_cron`, **без** вымышленного live URL.
 
-Реальная выкладка на прод: владелец или CRON на REG.RU — `scripts/lireate_hosting_publish_service.py` (см. `docs/lireate-services-hosting.ru.md`). Новости — отдельно через `lireate-news` / MySQL.
+Реальная выкладка на прод: CRON на REG.RU — `scripts/lireate_hosting_services_cron.sh` → `lireate_hosting_publish_service.py` и при `LIREATE_ALLOW_MENU_EDIT=yes` — `lireate_hosting_menu_add.py` (см. `docs/lireate-services-hosting.ru.md`). Новости — отдельно через `lireate-news` / MySQL.
 
 ## Что считать ошибкой
 
