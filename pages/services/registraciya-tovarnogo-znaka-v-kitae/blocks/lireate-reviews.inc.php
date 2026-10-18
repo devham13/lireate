@@ -151,6 +151,9 @@ foreach ($items as $idx => $item) :
         $embed = isset($item['embed_url']) ? $item['embed_url'] : ('https://www.youtube.com/embed/' . $vid);
         $watch = isset($item['watch_url']) ? $item['watch_url'] : ($vid ? 'https://www.youtube.com/watch?v=' . $vid : $source);
         $poster = isset($item['poster_url']) ? $item['poster_url'] : '';
+        if ($poster && strpos($poster, '/template/') === 0 && $vid) {
+            $poster = 'https://i.ytimg.com/vi/' . $vid . '/hqdefault.jpg';
+        }
         $case = isset($item['case_line']) ? $item['case_line'] : 'Видеоотзыв клиента LIREATE';
         $preview = lx_review_excerpt($case, 120);
         if ($embed && ($vid || strpos($embed, 'vk.') !== false || strpos($embed, 'video_ext') !== false)) {

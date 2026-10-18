@@ -13,6 +13,7 @@ id_rsa*
 id_ed25519*
 
 # Runtime artifacts
+.dev-docroot/
 output/
 .cursor/nero-network-handoff.md
 .cursor/nero-network-fragments/
