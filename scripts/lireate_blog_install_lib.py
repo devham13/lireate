@@ -44,6 +44,96 @@ LIST_SECTION_MARKERS = ('id="blog"', "Самое свежее и интерес�
 SKIP_PATH_PARTS = {"data", "db.php"}
 FORBIDDEN_TOUCH = {".htaccess"}
 
+
+def php_single_quoted_literal(value):
+    """Escape a value for insertion as a PHP single-quoted string literal."""
+    s = str(value)
+    return "'" + s.replace("\\", "\\\\").replace("'", "\\'") + "'"
+
+
+def fill_php_runner_template(template, replacements):
+    """Replace __KEY__ tokens; safe for PHP sources that contain ``{`` / ``}`` braces."""
+    out = template
+    for key, repl in replacements.items():
+        token = "__{0}__".format(key)
+        if token not in out:
+            raise ValueError("missing placeholder {0} in PHP runner template".format(token))
+        out = out.replace(token, repl)
+    return out
+
+
+def build_php_list_diag_runner(sandbox_docroot, list_include_path, news_snippet):
+    """Build php-cli runner for patched CMS list template (--diag)."""
+    doc_lit = php_single_quoted_literal(str(Path(sandbox_docroot).resolve()))
+    list_lit = php_single_quoted_literal(str(Path(list_include_path).resolve()))
+    template = (
+        "<?php\n"
+        "ini_set('display_errors', '1');\n"
+        "error_reporting(E_ALL);\n"
+        "$_SERVER['DOCUMENT_ROOT'] = __DOC__;\n"
+        "$_SERVER['REQUEST_URI'] = '/news/';\n"
+        "$_SERVER['SCRIPT_FILENAME'] = __LIST__;\n"
+        "$_GET = array();\n"
+        "__NEWS__\n"
+        "ob_start();\n"
+        "include __LIST__;\n"
+        "echo ob_get_clean();\n"
+    )
+    return fill_php_runner_template(
+        template,
+        {"DOC": doc_lit, "LIST": list_lit, "NEWS": news_snippet},
+    )
+
+
+def build_php_article_collage_diag_runner(sandbox_docroot, lib_php_path, layout_php_path):
+    """Build php-cli runner for collage-v1 vs legacy article render (--diag)."""
+    doc_lit = php_single_quoted_literal(str(Path(sandbox_docroot).resolve()))
+    lib_lit = php_single_quoted_literal(str(Path(lib_php_path).resolve()))
+    layout_lit = php_single_quoted_literal(str(Path(layout_php_path).resolve()))
+    template = (
+        "<?php\n"
+        "ini_set('display_errors', '1');\n"
+        "error_reporting(E_ALL);\n"
+        "$_SERVER['DOCUMENT_ROOT'] = __DOC__;\n"
+        "require __LIB__;\n"
+        "function lireate_blog_diag_render_article($row, $label) {\n"
+        "    $prep = lireate_blog_article_collage_prepare($row);\n"
+        "    $lireate_blog_title = 'Diag ' . $label;\n"
+        "    $lireate_blog_body_html = lireate_blog_prepare_body_html($prep['body']);\n"
+        "    $lireate_blog_collage_mode = !empty($prep['mode']);\n"
+        "    $lireate_blog_collage_hero_html = isset($prep['hero_html']) ? $prep['hero_html'] : '';\n"
+        "    $lireate_blog_cover_html = '';\n"
+        "    $lireate_blog_date_display = '19.10.2026';\n"
+        "    $lireate_blog_date_iso = '2026-10-19';\n"
+        "    $lireate_blog_tag = 'Тест';\n"
+        "    $lireate_blog_tag_url = '/news/';\n"
+        "    $lireate_blog_current_url = '/diag-article/';\n"
+        "    ob_start();\n"
+        "    include __LAYOUT__;\n"
+        "    return ob_get_clean();\n"
+        "}\n"
+        "$collage_story = '<figure class=\"lx-article-cover\" data-cover-style=\"collage-v1\">'\n"
+        "    . '<img src=\"/template/images/blog/diag-collage-v1.jpg\" alt=\"Diag\" width=\"860\" height=\"400\"></figure>'\n"
+        "    . '<p>Collage body</p>';\n"
+        "$legacy_story = '<p>Legacy body without collage cover.</p><h2>Section</h2>';\n"
+        "echo \"<!-- lireate-blog-diag-article-section:collage -->\\n\";\n"
+        "echo lireate_blog_diag_render_article(array(\n"
+        "    'full_story' => $collage_story,\n"
+        "    'cover_style' => 'collage-v1',\n"
+        "    'seo_url' => 'diag-collage-v1',\n"
+        "    'name' => 'Collage diag',\n"
+        "), 'collage');\n"
+        "echo \"<!-- lireate-blog-diag-article-section:legacy -->\\n\";\n"
+        "echo lireate_blog_diag_render_article(array(\n"
+        "    'full_story' => $legacy_story,\n"
+        "    'name' => 'Legacy diag',\n"
+        "), 'legacy');\n"
+    )
+    return fill_php_runner_template(
+        template,
+        {"DOC": doc_lit, "LIB": lib_lit, "LAYOUT": layout_lit},
+    )
+
 LEGACY_BLOCK_RE = re.compile(
     r"<h1\b[^>]*>.*?</h1>\s*"
     r"(?:<div\s+id=[\"']articleInfo[\"'][^>]*>.*?</div>\s*)?"
@@ -949,23 +1039,7 @@ def run_php_list_diag(live_docroot, office_repo=None):
 
     runner = tmp_root / "run-list.php"
     runner.write_text(
-        (
-            "<?php\n"
-            "ini_set('display_errors', '1');\n"
-            "error_reporting(E_ALL);\n"
-            "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
-            "$_SERVER['REQUEST_URI'] = '/news/';\n"
-            "$_SERVER['SCRIPT_FILENAME'] = {list};\n"
-            "$_GET = array();\n"
-            "{news}\n"
-            "ob_start();\n"
-            "include {list};\n"
-            "echo ob_get_clean();\n"
-        ).format(
-            doc=repr(str(sandbox)),
-            news=news_snippet,
-            list=repr(str(list_include)),
-        ),
+        build_php_list_diag_runner(sandbox, list_include, news_snippet),
         encoding="utf-8",
     )
 
@@ -1082,48 +1156,10 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
 
     runner = sandbox.parent / "run-article-collage-diag.php"
     runner.write_text(
-        (
-            "<?php\n"
-            "ini_set('display_errors', '1');\n"
-            "error_reporting(E_ALL);\n"
-            "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
-            "require {lib};\n"
-            "function lireate_blog_diag_render_article($row, $label) {\n"
-            "    $prep = lireate_blog_article_collage_prepare($row);\n"
-            "    $lireate_blog_title = 'Diag ' . $label;\n"
-            "    $lireate_blog_body_html = lireate_blog_prepare_body_html($prep['body']);\n"
-            "    $lireate_blog_collage_mode = !empty($prep['mode']);\n"
-            "    $lireate_blog_collage_hero_html = isset($prep['hero_html']) ? $prep['hero_html'] : '';\n"
-            "    $lireate_blog_cover_html = '';\n"
-            "    $lireate_blog_date_display = '19.10.2026';\n"
-            "    $lireate_blog_date_iso = '2026-10-19';\n"
-            "    $lireate_blog_tag = 'Тест';\n"
-            "    $lireate_blog_tag_url = '/news/';\n"
-            "    $lireate_blog_current_url = '/diag-article/';\n"
-            "    ob_start();\n"
-            "    include {layout};\n"
-            "    return ob_get_clean();\n"
-            "}\n"
-            "$collage_story = '<figure class=\"lx-article-cover\" data-cover-style=\"collage-v1\">'\n"
-            "    . '<img src=\"/template/images/blog/diag-collage-v1.jpg\" alt=\"Diag\" width=\"860\" height=\"400\"></figure>'\n"
-            "    . '<p>Collage body</p>';\n"
-            "$legacy_story = '<p>Legacy body without collage cover.</p><h2>Section</h2>';\n"
-            "echo \"<!-- lireate-blog-diag-article-section:collage -->\\n\";\n"
-            "echo lireate_blog_diag_render_article(array(\n"
-            "    'full_story' => $collage_story,\n"
-            "    'cover_style' => 'collage-v1',\n"
-            "    'seo_url' => 'diag-collage-v1',\n"
-            "    'name' => 'Collage diag',\n"
-            "), 'collage');\n"
-            "echo \"<!-- lireate-blog-diag-article-section:legacy -->\\n\";\n"
-            "echo lireate_blog_diag_render_article(array(\n"
-            "    'full_story' => $legacy_story,\n"
-            "    'name' => 'Legacy diag',\n"
-            "), 'legacy');\n"
-        ).format(
-            doc=repr(str(sandbox)),
-            lib=repr(str(shared / "lireate-blog-lib.php")),
-            layout=repr(str(layout)),
+        build_php_article_collage_diag_runner(
+            sandbox,
+            shared / "lireate-blog-lib.php",
+            layout,
         ),
         encoding="utf-8",
     )
