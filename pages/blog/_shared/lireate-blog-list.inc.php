@@ -38,7 +38,7 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-list.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <script>
@@ -46,6 +46,15 @@ document.documentElement.classList.add('lireate-blog-html');
 if (document.body) { document.body.classList.add('lireate-blog-body'); }
 </script>
 <div class="lireate-blog-list-page" data-lireate-blog-list-version="<?php echo lireate_blog_h($lb_v); ?>">
+  <?php
+  $lb_total_items = isset($GLOBALS['lireate_blog_list_total_items']) ? (int) $GLOBALS['lireate_blog_list_total_items'] : count($lb_items);
+  $lb_total_pages = isset($GLOBALS['lireate_blog_list_total_pages']) ? (int) $GLOBALS['lireate_blog_list_total_pages'] : 1;
+  if (is_array($lb_pagination) && !empty($lb_pagination['total'])) {
+      $lb_total_pages = (int) $lb_pagination['total'];
+  }
+  echo '<!-- lireate-blog-list-diag-total-items:' . (int) $lb_total_items . ' -->';
+  echo '<!-- lireate-blog-list-diag-total-pages:' . (int) $lb_total_pages . ' -->';
+  ?>
   <header class="lireate-blog-list-hero">
     <div class="lireate-blog-list-wrap">
       <p class="lireate-blog-list-kicker">Блог LIREATE</p>

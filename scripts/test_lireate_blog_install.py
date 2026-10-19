@@ -145,6 +145,7 @@ class BlogInstallLibTests(unittest.TestCase):
         dests = {str(rel).replace("\\", "/") for _, rel in pairs}
         self.assertIn("template/page/news/lireate-blog-cms.inc.php", dests)
         self.assertIn("template/page/news/lireate-blog-list-cms.inc.php", dests)
+        self.assertIn("template/page/news/lireate-blog-list-data.php", dests)
         self.assertIn("template/page/news/lireate-blog-list-legacy.inc.php", dests)
         self.assertIn("template/images/blog/author/yuriy-gorbachev.jpg", dests)
 
@@ -152,6 +153,7 @@ class BlogInstallLibTests(unittest.TestCase):
         text = FIXTURE_LIST.read_text(encoding="utf-8")
         planned, changed, desc = lib.patch_news_list_template_content(text)
         self.assertTrue(changed)
+        self.assertIn("lireate-blog-list-cms.inc.php", planned)
         self.assertIn(lib.LIST_INSTALL_MARKER, planned)
         self.assertIn("lireate-blog-list-cms.inc.php", planned)
         self.assertNotIn("Самое свежее и интересное", planned)
@@ -197,6 +199,26 @@ class BlogInstallLibTests(unittest.TestCase):
             shutil.copy(str(FIXTURE_LIST), str(dest))
             found = lib.find_news_list_template(tmp)
             self.assertEqual(found, dest)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_list_pagination_build_php(self):
+        php = (
+            "<?php\n"
+            "require '{lib}';\n"
+            "$p = lireate_blog_list_build_pagination(2, 5);\n"
+            "echo json_encode($p);\n"
+        ).format(lib=REPO_ROOT / "pages/blog/_shared/lireate-blog-lib.php")
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-pager-"))
+        try:
+            script = tmp / "run.php"
+            script.write_text(php, encoding="utf-8")
+            out = subprocess.run(["php", str(script)], capture_output=True, text=True)
+            self.assertEqual(out.returncode, 0, msg=out.stderr)
+            data = json.loads(out.stdout)
+            self.assertEqual(data["current"], 2)
+            self.assertEqual(data["total"], 5)
+            self.assertEqual(len(data["pages"]), 5)
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
