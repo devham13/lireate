@@ -190,16 +190,39 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
         <?php endforeach; ?>
       </div>
 
-      <?php if (is_array($lb_pagination) && !empty($lb_pagination['pages'])) : ?>
+      <?php if (is_array($lb_pagination) && !empty($lb_pagination['items'])) :
+          $lb_prev = isset($lb_pagination['prev_url']) ? $lb_pagination['prev_url'] : null;
+          $lb_next = isset($lb_pagination['next_url']) ? $lb_pagination['next_url'] : null;
+          ?>
       <nav class="lireate-blog-list-pagination" aria-label="Страницы блога">
-        <?php foreach ($lb_pagination['pages'] as $page) :
-            if (!is_array($page) || empty($page['url'])) {
-                continue;
-            }
-            $is_current = !empty($page['current']);
-            ?>
-        <a class="lireate-blog-list-page-link<?php echo $is_current ? ' is-current' : ''; ?>" href="<?php echo lireate_blog_h($page['url']); ?>"<?php echo $is_current ? ' aria-current="page"' : ''; ?>><?php echo lireate_blog_h(isset($page['num']) ? $page['num'] : ''); ?></a>
-        <?php endforeach; ?>
+        <div class="lireate-blog-list-pagination-inner">
+          <?php if ($lb_prev !== null && $lb_prev !== '') : ?>
+          <a class="lireate-blog-list-page-nav lireate-blog-list-page-nav--prev" href="<?php echo lireate_blog_h($lb_prev); ?>">Назад</a>
+          <?php else : ?>
+          <span class="lireate-blog-list-page-nav lireate-blog-list-page-nav--prev is-disabled" aria-hidden="true">Назад</span>
+          <?php endif; ?>
+          <?php foreach ($lb_pagination['items'] as $page_item) :
+              if (!is_array($page_item)) {
+                  continue;
+              }
+              $item_type = isset($page_item['type']) ? $page_item['type'] : 'page';
+              if ($item_type === 'ellipsis') : ?>
+          <span class="lireate-blog-list-page-ellipsis" aria-hidden="true">…</span>
+              <?php continue;
+              endif;
+              if (empty($page_item['url'])) {
+                  continue;
+              }
+              $is_current = !empty($page_item['current']);
+              ?>
+          <a class="lireate-blog-list-page-link<?php echo $is_current ? ' is-current' : ''; ?>" href="<?php echo lireate_blog_h($page_item['url']); ?>"<?php echo $is_current ? ' aria-current="page"' : ''; ?>><?php echo lireate_blog_h(isset($page_item['num']) ? $page_item['num'] : ''); ?></a>
+          <?php endforeach; ?>
+          <?php if ($lb_next !== null && $lb_next !== '') : ?>
+          <a class="lireate-blog-list-page-nav lireate-blog-list-page-nav--next" href="<?php echo lireate_blog_h($lb_next); ?>">Далее</a>
+          <?php else : ?>
+          <span class="lireate-blog-list-page-nav lireate-blog-list-page-nav--next is-disabled" aria-hidden="true">Далее</span>
+          <?php endif; ?>
+        </div>
       </nav>
       <?php endif; ?>
     </div>

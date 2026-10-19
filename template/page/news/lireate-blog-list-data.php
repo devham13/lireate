@@ -280,6 +280,48 @@ function lireate_blog_list_sort_rows_by_date($rows)
     return $rows;
 }
 
+function lireate_blog_list_pagination_url($pageNum)
+{
+    $query = $_GET;
+    unset($query['page']);
+    $pageNum = (int) $pageNum;
+    if ($pageNum > 1) {
+        $query['page'] = $pageNum;
+    }
+    $qs = http_build_query($query);
+    return '/news/' . ($qs !== '' ? '?' . $qs : '');
+}
+
+function lireate_blog_list_compact_page_numbers($current, $totalPages)
+{
+    $current = (int) $current;
+    $totalPages = (int) $totalPages;
+    if ($totalPages < 2) {
+        return array();
+    }
+    if ($totalPages <= 7) {
+        $out = array();
+        for ($n = 1; $n <= $totalPages; $n++) {
+            $out[] = $n;
+        }
+        return $out;
+    }
+    $sequence = array(1);
+    $left = max(2, $current - 1);
+    $right = min($totalPages - 1, $current + 1);
+    if ($left > 2) {
+        $sequence[] = 'ellipsis';
+    }
+    for ($n = $left; $n <= $right; $n++) {
+        $sequence[] = $n;
+    }
+    if ($right < $totalPages - 1) {
+        $sequence[] = 'ellipsis';
+    }
+    $sequence[] = $totalPages;
+    return $sequence;
+}
+
 function lireate_blog_list_build_pagination($current, $totalPages)
 {
     $totalPages = max(1, (int) $totalPages);
@@ -287,22 +329,29 @@ function lireate_blog_list_build_pagination($current, $totalPages)
     if ($totalPages < 2) {
         return null;
     }
-    $pages = array();
-    $query = $_GET;
-    unset($query['page']);
-    $base = '/news/';
-    for ($n = 1; $n <= $totalPages; $n++) {
-        $query['page'] = $n;
-        $pages[] = array(
+    $items = array();
+    $compact = lireate_blog_list_compact_page_numbers($current, $totalPages);
+    foreach ($compact as $entry) {
+        if ($entry === 'ellipsis') {
+            $items[] = array('type' => 'ellipsis');
+            continue;
+        }
+        $n = (int) $entry;
+        $items[] = array(
+            'type' => 'page',
             'num' => $n,
-            'url' => $base . '?' . http_build_query($query),
+            'url' => lireate_blog_list_pagination_url($n),
             'current' => $n === $current,
         );
     }
+    $prevUrl = $current > 1 ? lireate_blog_list_pagination_url($current - 1) : null;
+    $nextUrl = $current < $totalPages ? lireate_blog_list_pagination_url($current + 1) : null;
     return array(
         'current' => $current,
         'total' => $totalPages,
-        'pages' => $pages,
+        'prev_url' => $prevUrl,
+        'next_url' => $nextUrl,
+        'items' => $items,
     );
 }
 

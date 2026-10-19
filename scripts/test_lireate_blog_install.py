@@ -232,7 +232,7 @@ class BlogInstallLibTests(unittest.TestCase):
         php = (
             "<?php\n"
             "require '{lib}';\n"
-            "$p = lireate_blog_list_build_pagination(2, 5);\n"
+            "$p = lireate_blog_list_build_pagination(2, 21);\n"
             "echo json_encode($p);\n"
         ).format(lib=REPO_ROOT / "pages/blog/_shared/lireate-blog-lib.php")
         tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-pager-"))
@@ -243,8 +243,11 @@ class BlogInstallLibTests(unittest.TestCase):
             self.assertEqual(out.returncode, 0, msg=out.stderr)
             data = json.loads(out.stdout)
             self.assertEqual(data["current"], 2)
-            self.assertEqual(data["total"], 5)
-            self.assertEqual(len(data["pages"]), 5)
+            self.assertEqual(data["total"], 21)
+            nums = [i["num"] for i in data["items"] if i.get("type") == "page"]
+            self.assertEqual(nums, [1, 2, 3, 21])
+            self.assertTrue(any(i.get("type") == "ellipsis" for i in data["items"]))
+            self.assertLessEqual(len(data["items"]), 6)
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
