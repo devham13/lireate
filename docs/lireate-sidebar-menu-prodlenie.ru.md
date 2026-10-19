@@ -40,3 +40,17 @@ PY="$(cat "$LIREATE_AUTOPUB_HOME/.python-interpreter")"
 - `data/db.php` **никогда** не редактируется.
 - Перед записью создаётся бэкап `*.bak-<UTC>`.
 - Повторный запуск не дублирует пункт.
+
+## Удаление пункта меню (без снятия страницы)
+
+Скрипт `scripts/lireate_menu_remove_item.py` убирает только ссылку в левом меню (маркер `<!-- lireate-menu:<slug> -->` + `<a class="leftSideNaviInSection">`). Страница услуги и URL остаются.
+
+По умолчанию удаляется пункт **«Регистрация товарного знака с оплатой за результат»** (`registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`, href `/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/`).
+
+```bash
+export LIREATE_AUTOPUB_HOME=~/lireate-autopub LIREATE_ENV_FILE=~/lireate-autopub/.env
+cd ~/lireate-autopub/office-repo && git fetch origin main && git checkout -B main FETCH_HEAD
+"$(cat ~/lireate-autopub/.python-interpreter)" scripts/lireate_menu_remove_item.py --check
+```
+
+Запись: `LIREATE_ALLOW_MENU_EDIT=yes` и `--apply`. Бэкап: `~/lireate-autopub/backups/menu-remove-<timestamp>/`. Откат: `--rollback <timestamp>`.
