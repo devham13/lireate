@@ -1,0 +1,38 @@
+# Предлагаемая замена DOCROOT/robots.txt на хостинге (${PUBLIC_SITE_HOST})
+# Исправления относительно версии, которую видит Яндекс.Вебмастер (октябрь 2026):
+# — убраны строки Disallow без ведущего «/» (?mode=test) — частая причина «Ошибки в файле robots.txt»;
+# — Sitemap на https;
+# — Clean-param для типовых дублей (?a, __, search_source=dzen, num/category на /news);
+# — политики /private_data и /politika_konfidencialnosti оставлены в Disallow (как сейчас), если нужна индексация — согласовать с Юрием;
+# — Host: основной домен (зеркало www — настроить 301 в .htaccess/CMS, не в robots).
+
+User-agent: *
+Allow: /
+Disallow: /?mode=test
+Disallow: /admin/
+Disallow: /private_data
+Disallow: /politika_konfidencialnosti
+Disallow: /newStyle
+Disallow: /newBlog
+Disallow: /reg-name
+Disallow: /?test
+Disallow: /partnersNew
+Disallow: /mainPage
+Disallow: /testPage
+Disallow: /new_lending
+Disallow: /new_rewiev
+Disallow: /new_port
+Disallow: /contacts
+
+Host: ${PUBLIC_SITE_HOST}
+Sitemap: https://${PUBLIC_SITE_HOST}/sitemap.xml
+
+User-agent: Twitterbot
+Disallow:
+
+Clean-param: a /
+Clean-param: __ /
+Clean-param: search_source /
+Clean-param: num&category /news
+Clean-param: cat /
+Clean-param: design /

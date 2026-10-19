@@ -7,3 +7,4 @@
 | 2026-06-07 | vnedrenie-ai-obrabotka-email-crm | [REDACTED]vnedrenie-ai-obrabotka-email-crm/ | AI-обработка входящей почты в CRM: внедрение под ключ | page-vnedrenie-ai-obrabotka-email-crm.php |
 | 2026-06-07 | ai-1c-erp | [REDACTED]ai-1c-erp/ | AI-агент для 1С и ERP: внедрение и настройка под ключ | page-ai-1c-erp.php |
 | 2026-10-19 | registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat | /registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/ (ожидаемый URL, ready_for_hosting) | Регистрация товарного знака с оплатой за результат — LIREATE | pages/services/registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat/index.php (ready_for_hosting) |
+| 2026-10-19 | dorabotka-tovarnogo-znaka | /dorabotka_logotipa_i_nazvaniya_dlya_registracii_tovarnogo_znaka/ (ожидаемый URL, ready_for_hosting) | Доработка логотипа для регистрации ТЗ — LIREATE | pages/services/dorabotka-tovarnogo-znaka/index.php (ready_for_hosting) |
