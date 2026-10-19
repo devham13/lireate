@@ -406,33 +406,197 @@ def probe_article_path(office_repo):
     return "/kak_zapolnit_zayavku_na_tovarnyiy_znak/"
 
 
-def http_probe(base_url, path, timeout=25):
+def http_probe(base_url, path, timeout=25, cache_bust=None):
     import urllib.error
+    import urllib.parse
     import urllib.request
 
     url = base_url.rstrip("/") + path
-    req = urllib.request.Request(url, headers={"User-Agent": "lireate-blog-install/1.0"})
+    if cache_bust:
+        parsed = urllib.parse.urlparse(url)
+        query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
+        query["_lireate_blog_install"] = [str(cache_bust)]
+        new_q = urllib.parse.urlencode(query, doseq=True)
+        url = urllib.parse.urlunparse(
+            (parsed.scheme, parsed.netloc, parsed.path, parsed.params, new_q, parsed.fragment)
+        )
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "lireate-blog-install/1.0",
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+        },
+    )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             body = resp.read().decode("utf-8", errors="replace")
-            return resp.status, body, url
+            headers = {k.lower(): v for k, v in resp.headers.items()}
+            return resp.status, body, url, headers
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
-        return e.code, body, url
+        headers = {k.lower(): v for k, v in e.headers.items()}
+        return e.code, body, url, headers
 
 
-def verify_http(base_url, article_path):
-    errors = []
-    for path in (article_path, "/news/"):
-        status, body, url = http_probe(base_url, path)
-        if status != 200:
-            errors.append("{0}: HTTP {1}".format(url, status))
+def _php_error_tail(docroot, autopub_home, max_lines=40):
+    candidates = []
+    if docroot:
+        candidates.append(Path(docroot) / "error_log")
+    home = Path.home()
+    candidates.extend(
+        [
+            Path(autopub_home) / "logs" / "php-error.log" if autopub_home else None,
+            home / "logs" / "error_log",
+            home / "logs" / "php-error.log",
+        ]
+    )
+    for path in candidates:
+        if not path or not path.is_file():
             continue
-        if "lx-site-footer" not in body:
-            errors.append("{0}: missing lx-site-footer".format(url))
-        if path == article_path:
-            if "lireate-blog-toc" not in body and "data-lx-blog-toc" not in body:
-                errors.append("{0}: missing TOC markup".format(url))
+        try:
+            lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+            if lines:
+                return str(path), lines[-max_lines:]
+        except OSError:
+            continue
+    return None, []
+
+
+def _cache_header_note(headers):
+    keys = (
+        "x-cache",
+        "x-cache-status",
+        "cf-cache-status",
+        "age",
+        "cache-control",
+        "x-varnish",
+        "x-litespeed-cache",
+    )
+    parts = []
+    for key in keys:
+        if key in headers:
+            parts.append("{0}: {1}".format(key, headers[key]))
+    return "; ".join(parts) if parts else "no cache headers"
+
+
+def diagnose_http_body(body, headers):
+    body = body or ""
+    markers = {
+        "lireate-blog-install": INSTALL_MARKER in body or "lireate-blog-install" in body,
+        "lireate-blog-body": BODY_CLASS in body,
+        "lireate-blog-page": "lireate-blog-page" in body,
+        "lx-site-footer": "lx-site-footer" in body,
+        "toc": ("lireate-blog-toc" in body or "data-lx-blog-toc" in body),
+    }
+    tail = body[-300:] if len(body) > 300 else body
+    issues = re.findall(
+        r"(?:Fatal error|Parse error|Warning):\s*[^\n<]+",
+        body,
+        flags=re.IGNORECASE,
+    )
+    return {
+        "markers": markers,
+        "tail": tail,
+        "php_issues": issues[:8],
+        "cache": _cache_header_note(headers or {}),
+        "length": len(body),
+    }
+
+
+def save_verify_html(logs_dir, backup_id, index, url, status, body):
+    logs_dir = Path(logs_dir)
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    safe = re.sub(r"[^a-zA-Z0-9._-]+", "_", url.replace("https://", "").replace("http://", ""))
+    path = logs_dir / "blog-install-{0}-{1}-{2}.html".format(backup_id, index, safe[:80])
+    header = "<!-- status: {0} url: {1} -->\n".format(status, url)
+    path.write_text(header + body, encoding="utf-8", errors="replace")
+    return path
+
+
+def print_verify_diagnosis(label, url, status, diag, html_path=None, error_log=None):
+    print("=== HTTP DIAG: {0} ===".format(label))
+    print("url: {0}".format(url))
+    print("status: {0}".format(status))
+    if html_path:
+        print("saved: {0}".format(html_path))
+    print("cache: {0}".format(diag.get("cache", "")))
+    print("length: {0}".format(diag.get("length", 0)))
+    markers = diag.get("markers") or {}
+    print(
+        "markers: install={0} body_class={1} blog_page={2} footer={3} toc={4}".format(
+            markers.get("lireate-blog-install"),
+            markers.get("lireate-blog-body"),
+            markers.get("lireate-blog-page"),
+            markers.get("lx-site-footer"),
+            markers.get("toc"),
+        )
+    )
+    if diag.get("php_issues"):
+        print("php in HTML:")
+        for line in diag["php_issues"]:
+            print("  {0}".format(line.strip()))
+    print("body tail (300 chars):")
+    print(diag.get("tail", ""))
+    if error_log:
+        print("php error_log ({0}), last lines:".format(error_log[0]))
+        for line in error_log[1][-8:]:
+            print("  {0}".format(line))
+
+
+def verify_http(
+    base_url,
+    article_path,
+    logs_dir=None,
+    backup_id=None,
+    docroot=None,
+    autopub_home=None,
+):
+    import time
+
+    errors = []
+    cache_bust = str(int(time.time()))
+    err_log_path, err_log_lines = _php_error_tail(docroot, autopub_home)
+
+    checks = (
+        ("article", article_path),
+        ("news_list", "/news/"),
+    )
+    for idx, (label, path) in enumerate(checks, start=1):
+        status, body, url, headers = http_probe(
+            base_url, path, cache_bust=cache_bust
+        )
+        diag = diagnose_http_body(body, headers)
+        html_path = None
+        if logs_dir and backup_id:
+            html_path = save_verify_html(logs_dir, backup_id, idx, url, status, body)
+
+        page_errors = []
+        if status != 200:
+            page_errors.append("HTTP {0}".format(status))
+        if diag.get("php_issues"):
+            page_errors.append("PHP errors in HTML")
+        if label == "news_list":
+            pass
+        else:
+            if not diag["markers"].get("lireate-blog-page"):
+                page_errors.append("missing lireate-blog-page (patch/CMS not active?)")
+            if not diag["markers"].get("lx-site-footer"):
+                page_errors.append("missing lx-site-footer")
+            if not diag["markers"].get("toc"):
+                page_errors.append("missing TOC markup")
+
+        if page_errors:
+            errors.append("{0}: {1}".format(url, "; ".join(page_errors)))
+            print_verify_diagnosis(
+                label,
+                url,
+                status,
+                diag,
+                html_path=html_path,
+                error_log=(err_log_path, err_log_lines) if err_log_lines else None,
+            )
+
     return errors
 
 

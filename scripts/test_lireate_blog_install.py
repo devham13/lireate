@@ -100,6 +100,41 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_http_probe_cache_bust(self):
+        fake = mock.MagicMock()
+        fake.read.return_value = b"ok"
+        fake.status = 200
+        fake.headers = {}
+        fake.__enter__.return_value = fake
+        with mock.patch("urllib.request.urlopen", return_value=fake):
+            url = lib.http_probe("https://example.test", "/news/", cache_bust="12345")[2]
+        self.assertIn("_lireate_blog_install=12345", url)
+
+    def test_verify_news_list_skips_footer(self):
+        article_html = (
+            '<div class="lireate-blog-page lireate-blog-body">'
+            '<nav class="lireate-blog-toc-card" data-lx-blog-toc></nav>'
+            '<footer class="lx-site-footer"></footer></div>'
+        )
+
+        def fake_probe(base, path, timeout=25, cache_bust=None):
+            if path == "/news/":
+                return 200, "<html><body>news list only</body></html>", "https://x/news/", {}
+            return 200, article_html, "https://x/article/", {}
+
+        with mock.patch.object(lib, "http_probe", side_effect=fake_probe):
+            errors = lib.verify_http("https://x", "/article/")
+        self.assertEqual(errors, [])
+
+    def test_verify_article_requires_footer(self):
+        with mock.patch.object(
+            lib,
+            "http_probe",
+            return_value=(200, "<html>no blog</html>", "https://x/a/", {}),
+        ):
+            errors = lib.verify_http("https://x", "/article/")
+        self.assertTrue(any("lx-site-footer" in e for e in errors))
+
     def test_copy_plan_has_cms_include(self):
         pairs = lib.copy_plan(REPO_ROOT)
         dests = {str(rel).replace("\\", "/") for _, rel in pairs}

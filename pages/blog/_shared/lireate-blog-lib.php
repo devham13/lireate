@@ -171,6 +171,25 @@ function lireate_blog_resolve_cover_url($cover)
     return $cover;
 }
 
+function lireate_blog_render_service_footer()
+{
+    $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+    $candidates = array();
+    if ($doc !== '') {
+        $candidates[] = $doc . '/template/lireate/lireate-service-footer.inc.php';
+        $candidates[] = $doc . '/pages/services/_shared/lireate-service-footer.inc.php';
+    }
+    $candidates[] = dirname(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';
+    $candidates[] = dirname(__DIR__, 3) . '/template/lireate/lireate-service-footer.inc.php';
+    foreach ($candidates as $footer_path) {
+        if ($footer_path !== '' && is_file($footer_path)) {
+            include $footer_path;
+            return true;
+        }
+    }
+    return false;
+}
+
 function lireate_blog_related_articles($current_url, $limit = 3)
 {
     $current = '/' . trim((string) $current_url, '/');

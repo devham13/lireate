@@ -30,13 +30,4 @@ $lireate_blog_description = isset($lireate_news_description) ? $lireate_news_des
 
 include $repo_blog_shared . '/lireate-blog-layout.inc.php';
 
-$footer_candidates = array(
-    dirname(__DIR__, 2) . '/lireate/lireate-service-footer.inc.php',
-    dirname(__DIR__, 3) . '/pages/services/_shared/lireate-service-footer.inc.php',
-);
-foreach ($footer_candidates as $footer_path) {
-    if (is_file($footer_path)) {
-        include $footer_path;
-        break;
-    }
-}
+lireate_blog_render_service_footer();
