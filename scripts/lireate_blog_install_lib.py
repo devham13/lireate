@@ -13,6 +13,9 @@ INSTALL_MARKERS_LEGACY = (
     "lireate-blog-install:v1",
 )
 LIST_INSTALL_MARKER = "lireate-blog-list-install:v1"
+LIST_FALLBACK_MARKER = "lireate-blog-list-fallback:v1"
+LIST_LEGACY_MARKER = "lireate-blog-list-legacy:snapshot"
+LIST_LEGACY_REL = Path("template/page/news/lireate-blog-list-legacy.inc.php")
 BODY_CLASS = "lireate-blog-body"
 CMS_INCLUDE = "/template/page/news/lireate-blog-cms.inc.php"
 LIST_CMS_INCLUDE = "/template/page/news/lireate-blog-list-cms.inc.php"
@@ -80,6 +83,9 @@ def copy_plan(office_repo):
     list_cms = news_dir / "lireate-blog-list-cms.inc.php"
     if list_cms.is_file():
         by_dest[Path("template/page/news/lireate-blog-list-cms.inc.php")] = list_cms
+    list_legacy = news_dir / "lireate-blog-list-legacy.inc.php"
+    if list_legacy.is_file():
+        by_dest[LIST_LEGACY_REL] = list_legacy
     index = repo / "data" / "blog-articles-index.json"
     if index.is_file():
         by_dest[Path("data/blog-articles-index.json")] = index
@@ -360,16 +366,42 @@ def _replacement_block_list():
     return (
         "<section id=\"blog\">\n"
         "<?php /* %s */ ?>\n"
-        "<?php\n"
-        "require_once $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-lib.php';\n"
-        "$lireate_blog_list_items = lireate_blog_list_collect_cms_items();\n"
-        "$lireate_blog_list_featured = lireate_blog_list_featured_from_cms($lireate_blog_list_items);\n"
-        "$lireate_blog_list_filters = lireate_blog_list_filters_from_cms();\n"
-        "$lireate_blog_list_pagination = lireate_blog_list_pagination_from_cms();\n"
-        "require $_SERVER['DOCUMENT_ROOT'] . '%s';\n"
-        "?>\n"
+        "<?php require $_SERVER['DOCUMENT_ROOT'] . '%s'; ?>\n"
         "</section>\n"
     ) % (LIST_INSTALL_MARKER, LIST_CMS_INCLUDE)
+
+
+def extract_blog_section_legacy_inner(text):
+    """Inner HTML/PHP of section#blog for fallback snapshot."""
+    span = _span_blog_section(text)
+    if not span:
+        return None
+    block = text[span[0] : span[1]]
+    match = re.search(
+        r"<section\s+id=[\"']blog[\"'][^>]*>(.*)</section>\s*$",
+        block,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if not match:
+        return None
+    return match.group(1).strip()
+
+
+def write_list_legacy_snapshot(docroot, inner_html):
+    if not inner_html:
+        return None
+    rel = LIST_LEGACY_REL
+    path = docroot / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = (
+        "<?php\n"
+        "/** Auto-snapshot of CMS /news list (lireate_blog_install). */\n"
+        "/* %s */\n"
+        "?>\n"
+        "%s\n"
+    ) % (LIST_LEGACY_MARKER, inner_html)
+    path.write_text(payload, encoding="utf-8")
+    return rel
 
 
 def patch_news_list_template_content(text):
@@ -385,9 +417,23 @@ def patch_news_list_template_content(text):
 
 
 def plan_list_template_content(text):
-    text, _, _ = patch_news_list_template_content(text)
-    text, _ = patch_body_class_content(text)
+    """List template: section#blog patch + optional body class (same as --check / --apply)."""
+    text, list_changed, list_desc = patch_news_list_template_content(text)
+    text, body_changed = patch_body_class_content(text)
     return text
+
+
+def list_template_patch_status(original, planned):
+    """Human-readable status for list template (check/apply must match)."""
+    if LIST_INSTALL_MARKER in original and planned == original:
+        return "no changes needed (list include already present)"
+    if planned == original:
+        if LIST_INSTALL_MARKER in original:
+            return "no changes needed (list include already present)"
+        return "no changes needed (section#blog not found or not patchable)"
+    if LIST_INSTALL_MARKER not in original:
+        return "would patch"
+    return "would patch"
 
 
 def plan_template_content(text):
@@ -406,13 +452,19 @@ def apply_list_template_patch(docroot, template_path):
         raise SystemExit("BLOCKER: refusing to patch docroot .htaccess")
     original = template_path.read_text(encoding="utf-8", errors="replace")
     planned = plan_list_template_content(original)
+    status = list_template_patch_status(original, planned)
     if planned == original:
-        return False, ["list template already up to date"]
+        return False, ["list: {0}".format(status)]
+    inner = extract_blog_section_legacy_inner(original)
+    if inner and LIST_INSTALL_MARKER not in original:
+        write_list_legacy_snapshot(docroot, inner)
     notes = []
     if LIST_INSTALL_MARKER not in original:
-        notes.append("list cms include (lireate-blog-list-cms.inc.php)")
-    if BODY_CLASS not in original and BODY_CLASS in planned:
-        notes.append("body class {0}".format(BODY_CLASS))
+        notes.append("list: patched section#blog → lireate-blog-list-cms.inc.php")
+        if inner:
+            notes.append("list: saved legacy snapshot ({0})".format(LIST_LEGACY_REL))
+    elif BODY_CLASS not in original and BODY_CLASS in planned:
+        notes.append("list: added body class {0}".format(BODY_CLASS))
     template_path.write_text(planned, encoding="utf-8")
     return True, notes
 
@@ -427,10 +479,10 @@ def apply_template_patch(docroot, template_path):
     original = template_path.read_text(encoding="utf-8", errors="replace")
     planned = plan_template_content(original)
     if planned == original:
-        return False, ["template already up to date"]
+        return False, ["article: no changes needed (include + body class already present)"]
     notes = []
     if INSTALL_MARKER not in original:
-        notes.append("cms include (lireate-blog-cms.inc.php)")
+        notes.append("article: patched cms include (lireate-blog-cms.inc.php)")
     if BODY_CLASS not in original and BODY_CLASS in planned:
         notes.append("body class {0}".format(BODY_CLASS))
     template_path.write_text(planned, encoding="utf-8")
@@ -599,6 +651,7 @@ def diagnose_http_body(body, headers):
         "lireate-blog-body": BODY_CLASS in body,
         "lireate-blog-page": "lireate-blog-page" in body,
         "lireate-blog-list-page": "lireate-blog-list-page" in body,
+        "lireate-blog-list-fallback": LIST_FALLBACK_MARKER in body,
         "lx-site-footer": "lx-site-footer" in body,
         "toc": ("lireate-blog-toc" in body or "data-lx-blog-toc" in body),
     }
@@ -690,6 +743,8 @@ def verify_http(
         if diag.get("php_issues"):
             page_errors.append("PHP errors in HTML")
         if label == "news_list":
+            if diag["markers"].get("lireate-blog-list-fallback"):
+                page_errors.append("list rendered in fallback mode ({0})".format(LIST_FALLBACK_MARKER))
             if not diag["markers"].get("lireate-blog-list-page"):
                 page_errors.append("missing lireate-blog-list-page (list patch/CMS not active?)")
             if not diag["markers"].get("lx-site-footer"):
@@ -714,6 +769,75 @@ def verify_http(
             )
 
     return errors
+
+
+def run_php_list_diag(docroot, office_repo=None):
+    """Run list CMS include via php-cli; print stdout/stderr (display_errors=on)."""
+    import os
+    import subprocess
+    import tempfile
+
+    docroot = Path(docroot).resolve()
+    cms = docroot / "template/page/news/lireate-blog-list-cms.inc.php"
+    if not cms.is_file():
+        print("BLOCKER: missing {0}".format(cms))
+        return 2
+    php_bin = os.environ.get("LIREATE_PHP_BIN", "php")
+    repo = Path(office_repo) if office_repo is not None else Path(__file__).resolve().parents[1]
+    fixture = repo
+    fixture = fixture / "scripts/fixtures/cms-news-list-template.php"
+    news_snippet = ""
+    if fixture.is_file():
+        text = fixture.read_text(encoding="utf-8", errors="replace")
+        import re as _re
+
+        m = _re.search(r"\$news\s*=\s*array\s*\(.*?\)\s*;", text, _re.DOTALL)
+        if m:
+            news_snippet = m.group(0)
+    script = (
+        "<?php\n"
+        "ini_set('display_errors', '1');\n"
+        "error_reporting(E_ALL);\n"
+        "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
+        "$_SERVER['REQUEST_URI'] = '/news/';\n"
+        "$_GET = array();\n"
+        "{news}\n"
+        "ob_start();\n"
+        "include {cms};\n"
+        "$out = ob_get_clean();\n"
+        "echo $out;\n"
+    ).format(
+        doc=repr(str(docroot)),
+        news=news_snippet if news_snippet else "$news = array();",
+        cms=repr(str(cms)),
+    )
+    tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-"))
+    runner = tmp / "run-list.php"
+    runner.write_text(script, encoding="utf-8")
+    print("=== PHP LIST DIAG ===")
+    print("php: {0}".format(php_bin))
+    print("docroot: {0}".format(docroot))
+    print("include: {0}".format(cms))
+    proc = subprocess.run(
+        [php_bin, "-d", "display_errors=1", "-d", "error_reporting=E_ALL", str(runner)],
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    if proc.stdout:
+        print("--- stdout ---")
+        print(proc.stdout[:8000])
+    if proc.stderr:
+        print("--- stderr ---")
+        print(proc.stderr[:8000])
+    print("exit: {0}".format(proc.returncode))
+    if LIST_FALLBACK_MARKER in (proc.stdout or ""):
+        print("WARN: output contains {0}".format(LIST_FALLBACK_MARKER))
+    shutil.rmtree(tmp, ignore_errors=True)
+    combined = (proc.stdout or "") + (proc.stderr or "")
+    if proc.returncode != 0 or "Fatal error" in combined or "Parse error" in combined:
+        return 1
+    return 0
 
 
 def backup_files(backup_dir, docroot, rel_paths):

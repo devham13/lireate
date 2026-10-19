@@ -77,10 +77,9 @@ def cmd_check(office_repo, docroot):
         print("file: {0}".format(rel))
         original = list_template.read_text(encoding="utf-8", errors="replace")
         planned = lib.plan_list_template_content(original)
-        if planned == original:
-            print("status: no changes needed (list include already present)")
-        else:
-            print("status: would patch")
+        status = lib.list_template_patch_status(original, planned)
+        print("status: {0}".format(status))
+        if planned != original:
             diff = lib.unified_diff(original, planned, str(rel))
             if diff:
                 print(diff.rstrip())
@@ -89,6 +88,10 @@ def cmd_check(office_repo, docroot):
     print("")
     print("SKIP (never touched): data/db.php, docroot/.htaccess")
     return 0
+
+
+def cmd_diag(docroot, office_repo):
+    return lib.run_php_list_diag(docroot, office_repo)
 
 
 def cmd_apply(office_repo, docroot, backups_root):
@@ -194,6 +197,11 @@ def main(argv=None):
         metavar="TIMESTAMP",
         help="Restore backup blog-install-TIMESTAMP under ~/lireate-autopub/backups/",
     )
+    parser.add_argument(
+        "--diag",
+        action="store_true",
+        help="php-cli render of lireate-blog-list-cms.inc.php (display_errors=1)",
+    )
     args = parser.parse_args(argv)
 
     env_file = args.env_file.strip()
@@ -206,6 +214,8 @@ def main(argv=None):
 
     if args.rollback:
         return cmd_rollback(backups_root, docroot, args.rollback.strip())
+    if args.diag:
+        return cmd_diag(docroot, office_repo)
     if args.apply:
         return cmd_apply(office_repo, docroot, backups_root)
     return cmd_check(office_repo, docroot)
