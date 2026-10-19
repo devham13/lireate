@@ -39,6 +39,7 @@ SHARED_SKIP_FILENAMES = frozenset(
 
 MANAGED_MARKER = ".lireate-managed.json"
 SHARED_ASSETS_PREFIX = Path("assets") / "lireate-shared"
+DOCROOT_SHARED_PHP_NAMES = ("lireate-messenger-urls.php",)
 SERVICE_DIR_HTACCESS_REL = ".htaccess"
 SERVICE_DIR_HTACCESS_SHARED = Path("pages") / "services" / "_shared" / "service-directory.htaccess"
 
@@ -56,6 +57,49 @@ def _shared_asset_files(office_repo):
         rel = SHARED_ASSETS_PREFIX / path.name
         out.append((path, rel))
     return out
+
+
+def _docroot_shared_rel_dirs(url_path):
+    """Directories where service index.php expects dirname(__DIR__).'/_shared/'."""
+    parts = [p for p in url_path.strip("/").split("/") if p]
+    rels = [Path("_shared")]
+    if len(parts) > 1:
+        parent = "/".join(parts[:-1])
+        rels.append(Path(parent) / "_shared")
+    seen = set()
+    unique = []
+    for rel in rels:
+        key = str(rel).replace("\\", "/")
+        if key not in seen:
+            seen.add(key)
+            unique.append(rel)
+    return unique
+
+
+def _append_docroot_shared_php(plan, office_repo, url_path, docroot_path):
+    shared_dir = office_repo / "pages" / "services" / "_shared"
+    if not shared_dir.is_dir():
+        return
+    rel_dirs = _docroot_shared_rel_dirs(url_path)
+    existing = {item["rel"] for item in plan}
+    for name in DOCROOT_SHARED_PHP_NAMES:
+        src = shared_dir / name
+        if not src.is_file():
+            continue
+        for rel_dir in rel_dirs:
+            rel = str((rel_dir / name).as_posix())
+            if rel in existing:
+                continue
+            plan.append(
+                {
+                    "rel": rel,
+                    "src": str(src),
+                    "sha256": _sha256_file(src),
+                    "size": src.stat().st_size,
+                    "dst": str(docroot_path / rel) if docroot_path else "",
+                }
+            )
+            existing.add(rel)
 
 
 def _canonical_service_htaccess_path(office_repo):
@@ -111,6 +155,12 @@ def _build_publish_plan(service_dir, office_repo):
                 "size": src.stat().st_size,
             }
         )
+    return plan
+
+
+def _build_publish_plan_with_shared(service_dir, office_repo, url_path, docroot_path):
+    plan = _build_publish_plan(service_dir, office_repo)
+    _append_docroot_shared_php(plan, office_repo, url_path, docroot_path)
     return plan
 
 
@@ -383,9 +433,13 @@ def _publish_slug(
 
     dest_dir = docroot_path / url_path
     public_url = "{0}/{1}/".format(site, url_path)
-    plan = _build_publish_plan(service_dir, office_repo)
+    plan = _build_publish_plan_with_shared(service_dir, office_repo, url_path, docroot_path)
     for item in plan:
-        item["dst"] = str(dest_dir / item["rel"])
+        rel = item["rel"]
+        if rel.startswith("_shared/") or "/_shared/" in rel.replace("\\", "/"):
+            item["dst"] = str(docroot_path / rel)
+        else:
+            item["dst"] = str(dest_dir / rel)
 
     state = _load_state(state_file)
     slug_in_state = slug in state
@@ -503,6 +557,15 @@ def _publish_slug(
         detail = "published files but HTTP {0} for {1}".format(st, public_url)
         if http_err:
             detail = "{0} ({1})".format(detail, http_err)
+        if backup_root.is_dir():
+            for item in items_to_copy:
+                dst = Path(item["dst"])
+                backup_file = backup_root / item["rel"]
+                if backup_file.is_file():
+                    shutil.copy2(str(backup_file), str(dst))
+                elif dst.is_file():
+                    dst.unlink()
+            logging.info("rolled back from backup %s after HTTP failure", backup_root)
         _print_status("BLOCKER", detail)
         return 1
 

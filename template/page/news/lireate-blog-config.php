@@ -2,9 +2,20 @@
 /**
  * Конфиг шаблона статей блога LIREATE (новости /news).
  */
-$messenger_cfg = dirname(__DIR__, 2) . '/services/_shared/lireate-messenger-urls.php';
-if (is_file($messenger_cfg)) {
-    require_once $messenger_cfg;
+$lireate_blog_messenger_candidates = array();
+$doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+if ($doc !== '') {
+    $lireate_blog_messenger_candidates[] = $doc . '/template/lireate/lireate-messenger-urls.php';
+    $lireate_blog_messenger_candidates[] = $doc . '/_shared/lireate-messenger-urls.php';
+    $lireate_blog_messenger_candidates[] = $doc . '/pages/services/_shared/lireate-messenger-urls.php';
+}
+$lireate_blog_messenger_candidates[] = dirname(dirname(__DIR__)) . '/services/_shared/lireate-messenger-urls.php';
+$lireate_blog_messenger_candidates[] = dirname(dirname(dirname(__DIR__))) . '/template/lireate/lireate-messenger-urls.php';
+foreach ($lireate_blog_messenger_candidates as $messenger_cfg) {
+    if ($messenger_cfg !== '' && is_file($messenger_cfg)) {
+        require_once $messenger_cfg;
+        break;
+    }
 }
 if (!defined('LIREATE_BLOG_MAX_CHANNEL_URL')) {
     define(
