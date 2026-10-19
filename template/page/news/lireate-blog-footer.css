@@ -140,3 +140,26 @@
     gap: 10px;
   }
 }
+/* lireate footer/max fix: beats inline "#blog p" (0.5em,#555), inline "footer > div:nth-child(1)" (10px #666e8b bar) and font.css "*{font-family:Open Sans!important}" */
+#blog .lx-site-footer > .lx-site-footer-inner,
+.lx-site-footer > .lx-site-footer-inner{height:auto!important;background:transparent!important}
+.lx-site-footer,.lx-site-footer *,
+.lireate-blog-subscribe-card,.lireate-blog-subscribe-card *{font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif!important}
+#blog .lx-site-footer p{max-width:none;margin:0;letter-spacing:normal;font-size:12px;line-height:1.5;color:#64748b}
+#blog .lx-site-footer p.lx-site-footer-title{font-size:16px;line-height:1.35;font-weight:700;color:#f8fafc;margin:0 0 6px}
+#blog .lx-site-footer p.lx-site-footer-lead{font-size:14px;line-height:1.5;color:#a7b0c8;margin:0 0 12px}
+#blog .lx-site-footer p.lx-site-footer-meta{font-size:13px;line-height:1.45;color:#94a3b8;margin:0 0 2px}
+#blog .lx-site-footer p.lx-site-footer-contact{font-size:14px;line-height:1.55;color:#f1f5f9;margin:12px 0 0}
+#blog .lx-site-footer p.lx-site-footer-contact a{color:#f8fafc}
+#blog .lireate-blog-subscribe-card p.lireate-blog-subscribe-label{font-size:12px;line-height:1.3;font-weight:800;color:#c4b5fd;max-width:none;margin:0 0 6px}
+#blog .lireate-blog-subscribe-card p.lireate-blog-subscribe-text{font-size:15px;line-height:1.55;color:#d4dce8;max-width:none;margin:0 0 14px}
+#blog .lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#64748b;margin:16px 0 0}
+.lx-site-footer p{max-width:none;margin:0;letter-spacing:normal;font-size:12px;line-height:1.5;color:#64748b}
+.lx-site-footer p.lx-site-footer-title{font-size:16px;line-height:1.35;font-weight:700;color:#f8fafc;margin:0 0 6px}
+.lx-site-footer p.lx-site-footer-lead{font-size:14px;line-height:1.5;color:#a7b0c8;margin:0 0 12px}
+.lx-site-footer p.lx-site-footer-meta{font-size:13px;line-height:1.45;color:#94a3b8;margin:0 0 2px}
+.lx-site-footer p.lx-site-footer-contact{font-size:14px;line-height:1.55;color:#f1f5f9;margin:12px 0 0}
+.lx-site-footer p.lx-site-footer-contact a{color:#f8fafc}
+.lireate-blog-subscribe-card p.lireate-blog-subscribe-label{font-size:12px;line-height:1.3;font-weight:800;color:#c4b5fd;max-width:none;margin:0 0 6px}
+.lireate-blog-subscribe-card p.lireate-blog-subscribe-text{font-size:15px;line-height:1.55;color:#d4dce8;max-width:none;margin:0 0 14px}
+.lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#64748b;margin:16px 0 0}
