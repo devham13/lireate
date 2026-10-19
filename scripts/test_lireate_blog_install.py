@@ -202,6 +202,32 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_list_cover_prefers_existing_small_image(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-cover-"))
+        try:
+            img_dir = tmp / "template" / "images" / "blog" / "small"
+            img_dir.mkdir(parents=True)
+            img = img_dir / "cover-test.jpg"
+            img.write_bytes(b"fake")
+            php = (
+                "<?php\n"
+                "$_SERVER['DOCUMENT_ROOT'] = '{doc}';\n"
+                "require '{lib}';\n"
+                "$row = array(\n"
+                "  'name' => 'T',\n"
+                "  'seo_url' => 'wrong_slug',\n"
+                "  'full_story' => '<p><img src=\"/template/images/blog/small/cover-test.jpg\" alt=\"\"></p>',\n"
+                ");\n"
+                "echo lireate_blog_list_cover_from_row($row);\n"
+            ).format(doc=tmp, lib=REPO_ROOT / "pages/blog/_shared/lireate-blog-lib.php")
+            script = tmp / "run.php"
+            script.write_text(php, encoding="utf-8")
+            out = subprocess.run(["php", str(script)], capture_output=True, text=True)
+            self.assertEqual(out.returncode, 0, msg=out.stderr)
+            self.assertIn("cover-test.jpg", out.stdout)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_list_pagination_build_php(self):
         php = (
             "<?php\n"

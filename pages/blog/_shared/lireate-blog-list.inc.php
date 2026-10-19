@@ -54,6 +54,31 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
   }
   echo '<!-- lireate-blog-list-diag-total-items:' . (int) $lb_total_items . ' -->';
   echo '<!-- lireate-blog-list-diag-total-pages:' . (int) $lb_total_pages . ' -->';
+  $lb_cover_cards = array();
+  if (!empty($lb_featured) && is_array($lb_featured)) {
+      $lb_cover_cards[] = $lb_featured;
+  }
+  foreach ($lb_items as $card) {
+      if (!is_array($card)) {
+          continue;
+      }
+      if (!empty($lb_featured) && is_array($lb_featured) && isset($card['url'], $lb_featured['url']) && $card['url'] === $lb_featured['url']) {
+          continue;
+      }
+      $lb_cover_cards[] = $card;
+  }
+  $lb_covers_ok = 0;
+  $lb_covers_missing = 0;
+  foreach ($lb_cover_cards as $card) {
+      $cover = isset($card['cover']) ? trim((string) $card['cover']) : '';
+      if ($cover !== '') {
+          $lb_covers_ok += 1;
+      } else {
+          $lb_covers_missing += 1;
+      }
+  }
+  echo '<!-- lireate-blog-list-diag-covers-ok:' . (int) $lb_covers_ok . ' -->';
+  echo '<!-- lireate-blog-list-diag-covers-missing:' . (int) $lb_covers_missing . ' -->';
   ?>
   <header class="lireate-blog-list-hero">
     <div class="lireate-blog-list-wrap">
