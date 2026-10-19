@@ -276,6 +276,29 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_php_timezone_warning_ignored_in_diag_sandbox(self):
+        html = (
+            '<b>Warning</b>: date(): It is not safe to rely on the system\'s timezone settings '
+            "in <b>/tmp/x.php</b> on line <b>12</b><br />\n"
+            '<div class="lireate-blog-page">'
+            '<nav class="lireate-blog-toc-card" data-lx-blog-toc></nav>'
+            '<footer class="lx-site-footer"></footer></div>'
+        )
+        errs, _diag = lib.verify_render_html_errors(html, {}, "article", diag_sandbox=True)
+        self.assertEqual(errs, [])
+
+    def test_php_real_warning_still_fails_diag_sandbox(self):
+        html = (
+            "<b>Warning</b>: fopen(/missing): failed to open stream in <b>/tmp/x.php</b> on line <b>3</b>"
+            '<div class="lireate-blog-page"><footer class="lx-site-footer"></footer></div>'
+        )
+        errs, _diag = lib.verify_render_html_errors(html, {}, "article", diag_sandbox=True)
+        self.assertTrue(any("PHP errors in HTML" in e for e in errs))
+
+    def test_collage_diag_runner_renders_service_footer(self):
+        php_src = lib.build_php_article_collage_diag_runner("/tmp/s", "/tmp/l.php", "/tmp/layout.php")
+        self.assertIn("lireate_blog_render_service_footer", php_src)
+
     def test_verify_article_markers_require_toc(self):
         html = (
             '<div class="lireate-blog-page">'
