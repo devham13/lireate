@@ -85,17 +85,18 @@ def build_php_list_diag_runner(sandbox_docroot, list_include_path, news_snippet)
     )
 
 
-def build_php_article_collage_diag_runner(sandbox_docroot, lib_php_path, layout_php_path):
+def build_php_article_collage_diag_runner(sandbox_docroot, load_php_path, layout_php_path):
     """Build php-cli runner for collage-v1 vs legacy article render (--diag)."""
     doc_lit = php_single_quoted_literal(str(Path(sandbox_docroot).resolve()))
-    lib_lit = php_single_quoted_literal(str(Path(lib_php_path).resolve()))
+    load_lit = php_single_quoted_literal(str(Path(load_php_path).resolve()))
     layout_lit = php_single_quoted_literal(str(Path(layout_php_path).resolve()))
     template = (
         "<?php\n"
         "ini_set('display_errors', '1');\n"
         "error_reporting(E_ALL);\n"
         "$_SERVER['DOCUMENT_ROOT'] = __DOC__;\n"
-        "require __LIB__;\n"
+        "require __LOAD__;\n"
+        "lireate_blog_require_lib();\n"
         "function lireate_blog_diag_render_article($row, $label) {\n"
         "    $prep = lireate_blog_article_collage_prepare($row);\n"
         "    $lireate_blog_title = 'Diag ' . $label;\n"
@@ -131,7 +132,7 @@ def build_php_article_collage_diag_runner(sandbox_docroot, lib_php_path, layout_
     )
     return fill_php_runner_template(
         template,
-        {"DOC": doc_lit, "LIB": lib_lit, "LAYOUT": layout_lit},
+        {"DOC": doc_lit, "LOAD": load_lit, "LAYOUT": layout_lit},
     )
 
 
@@ -403,6 +404,7 @@ def resolve_paths(office_repo, env_file):
 
 BLOG_SHARED_TO_TEMPLATE = (
     "lireate-blog-config.php",
+    "lireate-blog-load.php",
     "lireate-blog-lib.php",
     "lireate-blog-article.css",
     "lireate-blog-article.js",
@@ -591,9 +593,7 @@ def _replacement_block_newstyle():
         "}\n"
         "$_lb_story = isset($_lb_art['full_story']) ? $_lb_art['full_story'] : '';\n"
         "$lireate_blog_cover_html = '';\n"
-        "if (!function_exists('lireate_blog_require_lib')) {\n"
-        "    require_once $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-lib.php';\n"
-        "}\n"
+        "require_once $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-load.php';\n"
         "lireate_blog_require_lib();\n"
         "$_lb_row_preview = array(\n"
         "    'full_story' => $_lb_story,\n"
@@ -1005,7 +1005,218 @@ def build_diag_sandbox(live_docroot, office_repo):
                     except OSError:
                         pass
 
-    return sandbox, root, list_rel
+    article_rel = None
+    article_tpl_live = find_news_template(live_docroot)
+    if article_tpl_live is not None and article_tpl_live.is_file():
+        try:
+            original = article_tpl_live.read_text(encoding="utf-8", errors="replace")
+            planned = plan_template_content(original)
+            article_rel = article_tpl_live.relative_to(live_docroot)
+            dest = sandbox / article_rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(planned, encoding="utf-8")
+        except (OSError, ValueError):
+            article_rel = None
+
+    if article_rel is None:
+        fixture_newstyle = office_repo / "scripts/fixtures/cms-newstyle-article-snippet.php"
+        if fixture_newstyle.is_file():
+            article_rel = Path("template/page/newStyle.php")
+            dest = sandbox / article_rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            snippet = fixture_newstyle.read_text(encoding="utf-8", errors="replace")
+            planned, _changed, _desc = patch_news_template_content(snippet)
+            dest.write_text(planned, encoding="utf-8")
+
+    stage_service_diag_tree(sandbox, office_repo)
+
+    return sandbox, root, list_rel, article_rel
+
+
+SERVICE_DIAG_SLUG = "registraciya-tovarnogo-znaka-v-kitae"
+
+
+def stage_service_diag_tree(sandbox, office_repo):
+    """Copy one service page + _shared into diag sandbox (PHP smoke, not HTTP)."""
+    repo = Path(office_repo).resolve()
+    slug = SERVICE_DIAG_SLUG
+    svc_src = repo / "pages/services" / slug
+    if not (svc_src / "index.php").is_file():
+        return
+    svc_dst = sandbox / "pages/services" / slug
+    shared_src = repo / "pages/services/_shared"
+    shared_dst = sandbox / "pages/services/_shared"
+    for src_dir, dst_dir in ((shared_src, shared_dst), (svc_src, svc_dst)):
+        if not src_dir.is_dir():
+            continue
+        for path in src_dir.rglob("*"):
+            if not path.is_file():
+                continue
+            rel = path.relative_to(src_dir)
+            target = dst_dir / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(path), str(target))
+
+
+def probe_service_web_path(office_repo):
+    slug = SERVICE_DIAG_SLUG
+    idx = Path(office_repo) / "pages/services" / slug / "index.php"
+    if not idx.is_file():
+        return "/registraciya_tovarnogo_znaka_v_kitae/"
+    text = idx.read_text(encoding="utf-8", errors="replace")
+    m = re.search(r"\$path\s*=\s*['\"]([^'\"]+)['\"]", text)
+    if m:
+        return m.group(1)
+    return "/" + slug.replace("-", "_") + "/"
+
+
+def build_php_newstyle_diag_runner(sandbox_docroot, article_include_path, article_slug):
+    doc_lit = php_single_quoted_literal(str(Path(sandbox_docroot).resolve()))
+    art_lit = php_single_quoted_literal(str(Path(article_include_path).resolve()))
+    slug_lit = php_single_quoted_literal(str(article_slug).strip("/"))
+    template = (
+        "<?php\n"
+        "ini_set('display_errors', '1');\n"
+        "error_reporting(E_ALL);\n"
+        "$_SERVER['DOCUMENT_ROOT'] = __DOC__;\n"
+        "$_SERVER['REQUEST_URI'] = '/' . __SLUG__ . '/';\n"
+        "$_SERVER['SCRIPT_FILENAME'] = __ARTICLE__;\n"
+        "$news_article = array(array(\n"
+        "  'name' => 'Diag article',\n"
+        "  'full_story' => '<p>Lead</p><h2>Section one</h2><p>Body for diag.</p>',\n"
+        "  'datetime' => 1760832000,\n"
+        "  'seo_url' => __SLUG__,\n"
+        "));\n"
+        "$category = 'Товарный знак';\n"
+        "$catUrl = '/news/';\n"
+        "ob_start();\n"
+        "include __ARTICLE__;\n"
+        "echo ob_get_clean();\n"
+    )
+    return fill_php_runner_template(
+        template,
+        {"DOC": doc_lit, "ARTICLE": art_lit, "SLUG": slug_lit},
+    )
+
+
+def build_php_service_diag_runner(sandbox_docroot, service_index_path, web_path):
+    doc_lit = php_single_quoted_literal(str(Path(sandbox_docroot).resolve()))
+    idx_lit = php_single_quoted_literal(str(Path(service_index_path).resolve()))
+    path_lit = php_single_quoted_literal(str(web_path))
+    template = (
+        "<?php\n"
+        "ini_set('display_errors', '1');\n"
+        "error_reporting(E_ALL);\n"
+        "$_SERVER['DOCUMENT_ROOT'] = __DOC__;\n"
+        "$_SERVER['HTTP_HOST'] = 'lireate.ru';\n"
+        "$_SERVER['REQUEST_URI'] = __PATH__;\n"
+        "$_SERVER['SCRIPT_FILENAME'] = __INDEX__;\n"
+        "ob_start();\n"
+        "include __INDEX__;\n"
+        "echo ob_get_clean();\n"
+    )
+    return fill_php_runner_template(
+        template,
+        {"DOC": doc_lit, "INDEX": idx_lit, "PATH": path_lit},
+    )
+
+
+def _php_run_capture(php_bin, repo, runner_path, label):
+    import subprocess
+
+    proc = subprocess.run(
+        [
+            php_bin,
+            "-d",
+            "display_errors=1",
+            "-d",
+            "error_reporting=E_ALL",
+            host_to_php_fs_path(php_bin, repo, runner_path),
+        ],
+        capture_output=True,
+        text=True,
+        timeout=90,
+    )
+    stdout = proc.stdout or ""
+    stderr = proc.stderr or ""
+    combined = stdout + stderr
+    if stderr:
+        print("--- {0} stderr ---".format(label))
+        print(stderr.rstrip())
+    return proc.returncode, stdout, combined
+
+
+def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
+    if article_rel is None:
+        print("BLOCKER: no article CMS template for newStyle diag")
+        return 2
+    article_include = sandbox / article_rel
+    if not article_include.is_file():
+        print("BLOCKER: article template missing in sandbox ({0})".format(article_include))
+        return 2
+    slug = probe_article_path(repo).strip("/")
+    runner = sandbox.parent / "run-newstyle-diag.php"
+    runner.write_text(
+        build_php_newstyle_diag_runner(
+            host_to_php_fs_path(php_bin, repo, sandbox),
+            host_to_php_fs_path(php_bin, repo, article_include),
+            slug,
+        ),
+        encoding="utf-8",
+    )
+    print("=== PHP NEWSTYLE ARTICLE DIAG (dual lib tree) ===")
+    print("article_template: {0}".format(article_rel))
+    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "newstyle")
+    fail = []
+    if code != 0:
+        fail.append("php exit {0}".format(code))
+    if re.search(r"(?i)Fatal error|Parse error|Cannot redeclare", combined):
+        fail.append("PHP fatal/parse/redeclare")
+    if "lireate-blog-page" not in stdout:
+        fail.append("missing lireate-blog-page")
+    if "lx-site-footer" not in stdout:
+        fail.append("missing lx-site-footer")
+    if fail:
+        print("NEWSTYLE RESULT: FAIL ({0})".format("; ".join(fail)))
+        print("--- stdout tail ---")
+        print("\n".join(stdout.splitlines()[-40:]))
+        return 1
+    print("NEWSTYLE RESULT: PASS")
+    return 0
+
+
+def run_php_service_page_diag(sandbox, repo, php_bin):
+    idx = sandbox / "pages/services" / SERVICE_DIAG_SLUG / "index.php"
+    if not idx.is_file():
+        print("WARN: service diag skipped (no {0})".format(idx))
+        return 0
+    web_path = probe_service_web_path(repo)
+    runner = sandbox.parent / "run-service-diag.php"
+    runner.write_text(
+        build_php_service_diag_runner(
+            host_to_php_fs_path(php_bin, repo, sandbox),
+            host_to_php_fs_path(php_bin, repo, idx),
+            web_path,
+        ),
+        encoding="utf-8",
+    )
+    print("=== PHP SERVICE PAGE DIAG ===")
+    print("service: {0} ({1})".format(SERVICE_DIAG_SLUG, web_path))
+    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "service")
+    fail = []
+    if code != 0:
+        fail.append("php exit {0}".format(code))
+    if re.search(r"(?i)Fatal error|Parse error|Cannot redeclare", combined):
+        fail.append("PHP fatal/parse/redeclare")
+    if "lx-nav-pill" not in stdout and "lx-service" not in stdout:
+        fail.append("missing lx service markers")
+    if fail:
+        print("SERVICE RESULT: FAIL ({0})".format("; ".join(fail)))
+        print("--- stdout tail ---")
+        print("\n".join(stdout.splitlines()[-30:]))
+        return 1
+    print("SERVICE RESULT: PASS")
+    return 0
 
 
 def unified_diff(old, new, path_label):
@@ -1304,7 +1515,23 @@ def verify_http_deploy(
         round_errors.extend(log_errors)
         if round_errors:
             errors.extend(round_errors)
+            if any(_verify_error_is_server_fault(e) for e in round_errors):
+                print(
+                    "HTTP verify: server error (5xx) — aborting further rounds (immediate rollback)"
+                )
+                return errors
     return errors
+
+
+def _verify_error_is_server_fault(err_line):
+    """True when verify reported HTTP 5xx for a checked URL."""
+    if not err_line:
+        return False
+    m = re.search(r"HTTP\s+(\d{3})", str(err_line))
+    if not m:
+        return False
+    code = int(m.group(1))
+    return 500 <= code <= 599
 
 
 def run_php_list_diag(live_docroot, office_repo=None):
@@ -1314,7 +1541,7 @@ def run_php_list_diag(live_docroot, office_repo=None):
 
     live_docroot = Path(live_docroot).resolve()
     repo = Path(office_repo) if office_repo is not None else Path(__file__).resolve().parents[1]
-    sandbox, tmp_root, list_rel = build_diag_sandbox(live_docroot, repo)
+    sandbox, tmp_root, list_rel, article_rel = build_diag_sandbox(live_docroot, repo)
     cms = sandbox / "template/page/news/lireate-blog-list-cms.inc.php"
     if not cms.is_file():
         shutil.rmtree(tmp_root, ignore_errors=True)
@@ -1433,8 +1660,8 @@ def run_php_list_diag(live_docroot, office_repo=None):
     fail_reasons = []
     if proc.returncode != 0:
         fail_reasons.append("php exit {0}".format(proc.returncode))
-    if re.search(r"(?i)Fatal error|Parse error", combined):
-        fail_reasons.append("PHP fatal/parse in output")
+    if re.search(r"(?i)Fatal error|Parse error|Cannot redeclare", combined):
+        fail_reasons.append("PHP fatal/parse/redeclare in output")
     if LIST_FALLBACK_MARKER in stdout:
         fail_reasons.append("fallback marker {0}".format(LIST_FALLBACK_MARKER))
     if "lireate-blog-list-page" not in stdout:
@@ -1464,6 +1691,11 @@ def run_php_list_diag(live_docroot, office_repo=None):
     if article_code != 0:
         fail_reasons.append("article collage-v1 diag failed")
 
+    if run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel) != 0:
+        fail_reasons.append("newStyle article render diag failed")
+    if run_php_service_page_diag(sandbox, repo, php_bin) != 0:
+        fail_reasons.append("service page render diag failed")
+
     if fail_reasons:
         print("RESULT: FAIL ({0})".format("; ".join(fail_reasons)))
         code = 1
@@ -1487,11 +1719,14 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
         print("BLOCKER: missing {0}".format(layout))
         return 2
 
+    load_php = sandbox / "template/page/news/lireate-blog-load.php"
+    if not load_php.is_file():
+        load_php = shared / "lireate-blog-load.php"
     runner = sandbox.parent / "run-article-collage-diag.php"
     runner.write_text(
         build_php_article_collage_diag_runner(
             host_to_php_fs_path(php_bin, repo, sandbox),
-            host_to_php_fs_path(php_bin, repo, shared / "lireate-blog-lib.php"),
+            host_to_php_fs_path(php_bin, repo, load_php),
             host_to_php_fs_path(php_bin, repo, layout),
         ),
         encoding="utf-8",
