@@ -501,3 +501,218 @@ body.lireate-blog-body {
     grid-template-columns: 1fr;
   }
 }
+
+/* =============================================================================
+   CMS embed (lireate.ru #articleBox + legacy inline #textBox rules)
+   ============================================================================= */
+body.lireate-blog-body .container.content:has(#articleBox .lireate-blog-page),
+body.lireate-blog-body .content:has(#articleBox .lireate-blog-page),
+.container.content:has(#articleBox .lireate-blog-page),
+.content:has(#articleBox .lireate-blog-page) {
+  background: #0b0b1f !important;
+  text-align: left !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#articleBox:has(.lireate-blog-page),
+section#articleBox:has(> .lireate-blog-page) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #0b0b1f !important;
+}
+
+#articleBox .lireate-blog-page {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 32px clamp(16px, 3vw, 28px) 0;
+  background: #0b0b1f;
+  color: #f1f5f9;
+}
+
+#articleBox .lireate-blog-page .lireate-blog-h1,
+#articleBox h1.lireate-blog-h1 {
+  width: auto !important;
+  max-width: none !important;
+  font-family: "Unbounded", system-ui, sans-serif !important;
+  font-size: clamp(2rem, 4.2vw, 3.25rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.08 !important;
+  color: #fff !important;
+  text-transform: none !important;
+  letter-spacing: -0.04em !important;
+  text-align: left !important;
+  margin: 0 0 20px !important;
+}
+
+#articleBox .lireate-blog-prose,
+#articleBox .lireate-blog-prose p,
+#articleBox .lireate-blog-prose li {
+  color: #f1f5f9 !important;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+}
+
+#articleBox .lireate-blog-prose h2,
+#articleBox .lireate-blog-prose h2[id] {
+  font-family: "Unbounded", system-ui, sans-serif !important;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+  color: #fff !important;
+  margin: 2.2em 0 0.85em !important;
+  padding-bottom: 0.65em !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  max-width: none !important;
+  width: auto !important;
+}
+
+#articleBox .lireate-blog-prose h3,
+#articleBox .lireate-blog-prose h3[id] {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #e2e8f0 !important;
+  margin: 1.6em 0 0.6em !important;
+  max-width: none !important;
+}
+
+#articleBox .lireate-blog-prose h4 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #e2e8f0 !important;
+  margin: 1.4em 0 0.5em !important;
+}
+
+#articleBox .lireate-blog-prose a {
+  color: #7dd3fc !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+#articleBox .lireate-blog-prose a:hover {
+  color: #bae6fd !important;
+}
+
+#articleBox .lireate-blog-prose blockquote {
+  margin: 1.5em 0 !important;
+  padding: 16px 20px !important;
+  border: none !important;
+  border-left: 4px solid #3b82f6 !important;
+  background: rgba(59, 130, 246, 0.12) !important;
+  border-radius: 0 12px 12px 0 !important;
+  color: #e2e8f0 !important;
+}
+
+#articleBox .lireate-blog-prose blockquote p {
+  margin: 0 0 0.5em !important;
+  color: #e2e8f0 !important;
+}
+
+#articleBox .lireate-blog-prose ul,
+#articleBox .lireate-blog-prose ol {
+  list-style: disc outside !important;
+  margin: 0 0 1.1em !important;
+  padding: 0 0 0 1.35em !important;
+}
+
+#articleBox .lireate-blog-prose ol {
+  list-style: decimal outside !important;
+}
+
+#articleBox .lireate-blog-prose li {
+  display: list-item !important;
+  position: static !important;
+  padding-left: 0 !important;
+  margin-top: 0.35em !important;
+}
+
+#articleBox .lireate-blog-prose li::before {
+  content: none !important;
+  background: none !important;
+  width: auto !important;
+  height: auto !important;
+  position: static !important;
+}
+
+#articleBox .lireate-blog-prose .tableBox,
+#articleBox .lireate-blog-prose table {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 1.25em 0 1.75em !important;
+  border-collapse: collapse !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  font-size: 15px !important;
+}
+
+#articleBox .lireate-blog-prose table tr:first-child,
+#articleBox .lireate-blog-prose table tr:first-child td,
+#articleBox .lireate-blog-prose table tr:first-child th {
+  background: rgba(30, 41, 59, 0.85) !important;
+  color: #f8fafc !important;
+  font-weight: 600 !important;
+}
+
+#articleBox .lireate-blog-prose table td,
+#articleBox .lireate-blog-prose table th {
+  padding: 10px 12px !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  color: #e2e8f0 !important;
+  font-size: 15px !important;
+}
+
+#articleBox .lireate-blog-prose img,
+#articleBox .lireate-blog-prose .img-responsive {
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 1.25em 0 !important;
+  border-radius: 12px !important;
+  float: none !important;
+}
+
+#articleBox .lireate-blog-related,
+#articleBox .lx-site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 700px) {
+  #articleBox:has(.lireate-blog-page) {
+    padding: 0 !important;
+  }
+  #articleBox .lireate-blog-page {
+    padding: 20px 14px 0;
+  }
+  #articleBox .lireate-blog-page .lireate-blog-h1,
+  #articleBox h1.lireate-blog-h1 {
+    font-size: 2rem !important;
+    width: 100% !important;
+  }
+  #articleBox .lireate-blog-prose h2 {
+    font-size: 1.35rem !important;
+    width: 100% !important;
+  }
+  #articleBox .lireate-blog-prose p,
+  #articleBox .lireate-blog-prose li {
+    font-size: 16px !important;
+  }
+  #articleBox .lireate-blog-header-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #articleBox .lireate-blog-header-top-right {
+    justify-content: flex-start;
+  }
+  #articleBox .lireate-blog-published {
+    text-align: left;
+    width: 100%;
+  }
+}
