@@ -36,7 +36,7 @@ $listCssHref = '/template/page/news/lireate-blog-list.css?v=2026-10-19i';
 if ($listCss === 'before') {
     $listCssHref = '/blog_preview/assets/list-before.css';
 } elseif ($listCss === 'after') {
-    $listCssHref = '/template/page/news/lireate-blog-list.css?v=2026-10-19i';
+    $listCssHref = '/template/page/news/lireate-blog-list.css?v=2026-10-19k';
 }
 ?>
 <!DOCTYPE html>
@@ -52,9 +52,15 @@ if ($listCss === 'before') {
   <link rel="stylesheet" href="<?php echo htmlspecialchars($lb_cms_origin, ENT_QUOTES, 'UTF-8'); ?>/template/css/main.css" type="text/css">
   <link rel="stylesheet" href="<?php echo htmlspecialchars($lb_cms_origin, ENT_QUOTES, 'UTF-8'); ?>/template/css/media.css" type="text/css">
   <link rel="stylesheet" href="<?php echo htmlspecialchars($listCssHref, ENT_QUOTES, 'UTF-8'); ?>">
-  <link rel="stylesheet" href="/template/page/news/lireate-blog-footer.css?v=2026-10-19i">
+  <link rel="stylesheet" href="/template/page/news/lireate-blog-footer.css?v=2026-10-19k">
+  <style>
+    #leftSideBar { position: fixed; left: 0; top: 0; width: 270px; height: 100vh; background: #262c40; z-index: 99; }
+    @media (max-width: 1250px) { #leftSideBar { width: 240px; } }
+    @media (max-width: 1150px) { #leftSideBar { display: none; } }
+  </style>
 </head>
 <body class="cms-default lireate-blog-body">
+<div id="leftSideBar" aria-hidden="true"></div>
 <div class="wrapper">
   <div class="container content">
     <section id="blog">

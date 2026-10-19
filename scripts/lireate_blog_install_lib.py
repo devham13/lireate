@@ -986,12 +986,22 @@ def run_php_list_diag(live_docroot, office_repo=None):
         total_items = int(m_items.group(1))
     if m_pages:
         total_pages = int(m_pages.group(1))
+    covers_ok = None
+    covers_missing = None
+    m_ok = re.search(r"lireate-blog-list-diag-covers-ok:(\d+)", stdout)
+    m_miss = re.search(r"lireate-blog-list-diag-covers-missing:(\d+)", stdout)
+    if m_ok:
+        covers_ok = int(m_ok.group(1))
+    if m_miss:
+        covers_missing = int(m_miss.group(1))
     print(
-        "diag_counts: card_titles={0} pagination_links={1} total_items={2} total_pages={3}".format(
+        "diag_counts: card_titles={0} pagination_links={1} total_items={2} total_pages={3} covers_ok={4} covers_missing={5}".format(
             card_titles,
             page_links,
             total_items if total_items is not None else "n/a",
             total_pages if total_pages is not None else "n/a",
+            covers_ok if covers_ok is not None else "n/a",
+            covers_missing if covers_missing is not None else "n/a",
         )
     )
 

@@ -208,6 +208,108 @@ function lireate_blog_resolve_cover_url($cover)
     return $cover;
 }
 
+function lireate_blog_docroot_fs_path($webPath)
+{
+    $webPath = trim((string) $webPath);
+    if ($webPath === '' || preg_match('#^https?://#i', $webPath)) {
+        return '';
+    }
+    $webPath = preg_replace('#\?.*$#', '', $webPath);
+    $doc = lireate_blog_docroot();
+    if ($doc === '') {
+        return '';
+    }
+    return $doc . '/' . ltrim($webPath, '/');
+}
+
+function lireate_blog_web_path_is_file($webPath)
+{
+    if (preg_match('#^https?://#i', (string) $webPath)) {
+        return true;
+    }
+    $fs = lireate_blog_docroot_fs_path($webPath);
+    return $fs !== '' && is_file($fs);
+}
+
+function lireate_blog_list_first_img_src_from_html($html)
+{
+    $html = (string) $html;
+    if ($html === '') {
+        return '';
+    }
+    if (preg_match('/<img\b[^>]*\bsrc\s*=\s*["\']([^"\']+)["\']/i', $html, $m)) {
+        return trim($m[1]);
+    }
+    return '';
+}
+
+function lireate_blog_list_cover_candidate_paths($row)
+{
+    $paths = array();
+    $explicit = lireate_blog_list_row_get(
+        $row,
+        array('cover', 'image', 'img', 'preview', 'og_image', 'og:image', 'seo_image'),
+        ''
+    );
+    if ($explicit !== '') {
+        $paths[] = $explicit;
+    }
+    $body = lireate_blog_list_row_get($row, array('full_story', 'text', 'story'), '');
+    if ($body === '') {
+        $path = lireate_blog_list_seo_path($row);
+        if ($path !== '') {
+            $idx = lireate_blog_index_article_by_path($path);
+            if (is_array($idx)) {
+                $body = lireate_blog_list_row_get($idx, array('full_story', 'body_html'), '');
+                if ($explicit === '') {
+                    $fromIdx = lireate_blog_list_row_get($idx, array('cover', 'image'), '');
+                    if ($fromIdx !== '') {
+                        $paths[] = $fromIdx;
+                    }
+                }
+            }
+        }
+    }
+    $img = lireate_blog_list_first_img_src_from_html($body);
+    if ($img !== '') {
+        $basename = basename(parse_url($img, PHP_URL_PATH));
+        if ($basename !== '' && $basename !== '.' && $basename !== '..') {
+            $paths[] = '/template/images/blog/small/' . $basename;
+            $paths[] = '/template/images/blog/' . $basename;
+        }
+        if (strpos($img, '/template/images/blog/') !== false) {
+            $paths[] = $img;
+        }
+    }
+    $seo = lireate_blog_list_row_get($row, array('seo_url', 'url', 'slug'), '');
+    $seo = trim((string) $seo, '/');
+    if ($seo !== '') {
+        $paths[] = '/template/images/blog/small/' . $seo . '.jpg';
+        $paths[] = '/template/images/blog/' . $seo . '.jpg';
+    }
+    $unique = array();
+    foreach ($paths as $p) {
+        $p = trim((string) $p);
+        if ($p === '') {
+            continue;
+        }
+        if (!in_array($p, $unique, true)) {
+            $unique[] = $p;
+        }
+    }
+    return $unique;
+}
+
+function lireate_blog_list_cover_from_row($row)
+{
+    foreach (lireate_blog_list_cover_candidate_paths($row) as $path) {
+        if (lireate_blog_web_path_is_file($path)) {
+            return lireate_blog_resolve_cover_url($path);
+        }
+    }
+    return '';
+}
+
 function lireate_blog_render_service_footer()
 {
     $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
@@ -401,20 +503,6 @@ function lireate_blog_list_format_date($row)
         }
     }
     return $raw;
-}
-
-function lireate_blog_list_cover_from_row($row)
-{
-    $cover = lireate_blog_list_row_get($row, array('cover', 'image', 'img', 'preview'), '');
-    if ($cover !== '') {
-        return lireate_blog_resolve_cover_url($cover);
-    }
-    $seo = lireate_blog_list_row_get($row, array('seo_url', 'url', 'slug'), '');
-    $seo = trim((string) $seo, '/');
-    if ($seo === '') {
-        return '';
-    }
-    return lireate_blog_resolve_cover_url('/template/images/blog/' . $seo . '.jpg');
 }
 
 function lireate_blog_list_seo_path($row)

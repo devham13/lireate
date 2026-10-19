@@ -293,8 +293,14 @@ body.lireate-blog-body {
   position: relative;
 }
 
-.lireate-blog-list-card-cover--fallback {
-  background-image: linear-gradient(145deg, rgba(59, 130, 246, 0.18), rgba(15, 23, 42, 0.95));
+.lireate-blog-list-card-cover--fallback,
+.lireate-blog-list-featured-cover--fallback {
+  background-image:
+    url("/template/images/logo/logo.svg"),
+    linear-gradient(145deg, rgba(59, 130, 246, 0.22), rgba(15, 23, 42, 0.96));
+  background-repeat: no-repeat, no-repeat;
+  background-position: center 42%, center;
+  background-size: 42% auto, cover;
 }
 
 .lireate-blog-list-card-tag {
@@ -521,8 +527,29 @@ body.lireate-blog-body .container.content:has(.lireate-blog-list-page),
 .container.content:has(.lireate-blog-list-page) {
   background: #0b0b1f !important;
   text-align: left !important;
-  padding-left: 0 !important;
   padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+@media (min-width: 1151px) and (max-width: 1250px) {
+  body.lireate-blog-body .content:has(.lireate-blog-list-page),
+  body.lireate-blog-body .container.content:has(.lireate-blog-list-page) {
+    padding-left: 240px !important;
+  }
+}
+
+@media (min-width: 1251px) {
+  body.lireate-blog-body .content:has(.lireate-blog-list-page),
+  body.lireate-blog-body .container.content:has(.lireate-blog-list-page) {
+    padding-left: 270px !important;
+  }
+}
+
+@media (max-width: 1150px) {
+  body.lireate-blog-body .content:has(.lireate-blog-list-page),
+  body.lireate-blog-body .container.content:has(.lireate-blog-list-page) {
+    padding-left: 0 !important;
+  }
 }
 
 section#blog:has(.lireate-blog-list-page),
@@ -532,25 +559,27 @@ section#blog:has(.lireate-blog-list-page),
   padding: 0 !important;
   margin: 0 !important;
   max-width: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 section#blog .lireate-blog-list-page,
 #blog .lireate-blog-list-page {
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
 }
 
 section#blog:has(.lireate-blog-list-page) .lx-site-footer,
-.lireate-blog-list-page + .lx-site-footer,
-section#blog .lireate-blog-list-page ~ .lx-site-footer {
+body.lireate-blog-body .content section#blog + .lx-site-footer {
   position: relative;
   z-index: 5;
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
   margin-top: 0;
   box-sizing: border-box;
   background: #0b0b1f !important;
