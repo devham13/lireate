@@ -325,30 +325,119 @@ def _read_ini_directive(paths, directive):
     return None
 
 
-def resolve_php_diag_ini_settings(docroot=None):
-    """CLI -d flags for --diag (match live timezone; do not hide real errors)."""
+def _ini_bool_off(value):
+    if value is None:
+        return True
+    return str(value).strip().lower() in ("0", "off", "false", "no", "")
+
+
+def resolve_php_diag_ini_settings(docroot=None, error_log_path=None):
+    """CLI -d flags for --diag (match live: no HTML errors, log to file)."""
     candidates = _php_ini_candidate_paths(docroot)
     tz = _read_ini_directive(candidates, "date.timezone") or PHP_DIAG_DEFAULT_TIMEZONE
-    display_errors = _read_ini_directive(candidates, "display_errors") or "1"
+    display_errors = _read_ini_directive(candidates, "display_errors")
+    if display_errors is None:
+        display_errors = "0"
+    log_errors = _read_ini_directive(candidates, "log_errors")
+    if log_errors is None:
+        log_errors = "1"
     error_reporting = _read_ini_directive(candidates, "error_reporting") or "E_ALL"
-    return {
+    settings = {
         "date.timezone": tz,
         "display_errors": display_errors,
+        "log_errors": log_errors,
         "error_reporting": error_reporting,
     }
+    if error_log_path:
+        settings["error_log"] = str(error_log_path)
+    return settings
 
 
-def format_php_diag_ini_note(docroot=None):
-    settings = resolve_php_diag_ini_settings(docroot)
+def format_php_diag_ini_note(docroot=None, error_log_path=None):
+    settings = resolve_php_diag_ini_settings(docroot, error_log_path=error_log_path)
     return ", ".join("{0}={1}".format(k, settings[k]) for k in sorted(settings.keys()))
 
 
-def build_php_diag_argv(php_bin, office_repo, runner_path, docroot=None):
+def build_php_diag_argv(php_bin, office_repo, runner_path, docroot=None, error_log_path=None):
     argv = [php_bin]
-    for key, val in resolve_php_diag_ini_settings(docroot).items():
+    for key, val in resolve_php_diag_ini_settings(
+        docroot, error_log_path=error_log_path
+    ).items():
         argv.extend(["-d", "{0}={1}".format(key, val)])
     argv.append(host_to_php_fs_path(php_bin, office_repo, runner_path))
     return argv
+
+
+PHP_LOG_ENTRY_RE = re.compile(
+    r"PHP\s+(Fatal error|Parse error|Warning|Notice|Deprecated):\s+(.+?)\s+in\s+(.+?)\s+on line\s+(\d+)",
+    re.IGNORECASE,
+)
+PHP_LOG_BLOCKING_RE = re.compile(
+    r"(Fatal error|Parse error|Cannot redeclare|Failed opening required|"
+    r"Allowed memory size|Call to undefined function)",
+    re.IGNORECASE,
+)
+
+
+def php_error_signature(level, message, filepath, line_no):
+    base = Path(filepath).name if filepath else ""
+    msg = re.sub(r"\s+", " ", (message or "").strip())
+    return "{0}: {1} in {2} on line {3}".format(
+        level.capitalize() if level else "Error",
+        msg[:200],
+        base,
+        line_no,
+    )
+
+
+def parse_php_error_log(text):
+    blocking = []
+    info = []
+    signatures = set()
+    for raw_line in (text or "").splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        m = PHP_LOG_ENTRY_RE.search(line)
+        if m:
+            level, message, filepath, line_no = m.groups()
+            sig = php_error_signature(level, message, filepath, line_no)
+            entry = {"line": line, "signature": sig, "level": level}
+            signatures.add(sig)
+            if PHP_LOG_BLOCKING_RE.search(line) or level.lower() in (
+                "fatal error",
+                "parse error",
+            ):
+                blocking.append(entry)
+            else:
+                info.append(entry)
+            continue
+        if PHP_LOG_BLOCKING_RE.search(line):
+            entry = {"line": line, "signature": line[:200], "level": "fatal"}
+            blocking.append(entry)
+            signatures.add(entry["signature"])
+    return {"blocking": blocking, "info": info, "signatures": signatures}
+
+
+def print_php_log_diag_summary(label, log_parsed, max_info=6):
+    if not log_parsed:
+        return
+    blocking = log_parsed.get("blocking") or []
+    info = log_parsed.get("info") or []
+    if blocking:
+        print("php_log_{0}_blocking ({1}):".format(label, len(blocking)))
+        for item in blocking[:8]:
+            print("  {0}".format(item.get("line") or item.get("signature")))
+    if info:
+        print("php_log_{0}_info ({1}):".format(label, len(info)))
+        for item in info[:max_info]:
+            print("  {0}".format(item.get("line") or item.get("signature")))
+
+
+def diff_new_log_signatures(baseline_signatures, current_log_parsed):
+    base = set(baseline_signatures or [])
+    current = set((current_log_parsed or {}).get("signatures") or [])
+    return sorted(current - base)
 
 
 def php_issue_is_ignorable_in_diag(message):
@@ -754,6 +843,9 @@ def _replacement_block_newstyle():
     return (
         "<?php /* %s */ ?>\n"
         "<?php\n"
+        "if (isset($news_article[0]) && is_array($news_article[0]) && !array_key_exists('category', $news_article[0])) {\n"
+        "    $news_article[0]['category'] = isset($category) ? $category : '';\n"
+        "}\n"
         "$_lb_art = (isset($news_article[0]) && is_array($news_article[0])) ? $news_article[0] : array();\n"
         "$_lb_seo = '';\n"
         "if (!empty($_lb_art['seo_url'])) {\n"
@@ -1177,10 +1269,12 @@ def build_diag_sandbox(live_docroot, office_repo):
                         pass
 
     article_rel = None
+    article_unpatched_path = root / "article-template-unpatched.php"
     article_tpl_live = find_news_template(live_docroot)
     if article_tpl_live is not None and article_tpl_live.is_file():
         try:
             original = article_tpl_live.read_text(encoding="utf-8", errors="replace")
+            article_unpatched_path.write_text(original, encoding="utf-8")
             planned = plan_template_content(original)
             article_rel = article_tpl_live.relative_to(live_docroot)
             dest = sandbox / article_rel
@@ -1327,7 +1421,38 @@ def _php_array_literal_from_map(string_map):
     return "\n".join(lines)
 
 
-def run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel):
+def capture_unpatched_newstyle_log_baseline(
+    tmp_root, sandbox, repo, php_bin, article_rel, error_log_path
+):
+    unpatched = Path(tmp_root) / "article-template-unpatched.php"
+    if not unpatched.is_file() or article_rel is None:
+        return set()
+    slug = probe_article_path(repo).strip("/")
+    runner = Path(tmp_root) / "run-newstyle-baseline.php"
+    runner.write_text(
+        build_php_newstyle_diag_runner(
+            host_to_php_fs_path(php_bin, repo, sandbox),
+            host_to_php_fs_path(php_bin, repo, unpatched),
+            slug,
+        ),
+        encoding="utf-8",
+    )
+    print("=== PHP NEWSTYLE BASELINE (unpatched template, error_log only) ===")
+    _code, _stdout, _combined, log_parsed = _php_run_capture(
+        php_bin,
+        repo,
+        runner,
+        "newstyle-baseline",
+        docroot=sandbox,
+        error_log_path=error_log_path,
+    )
+    print_php_log_diag_summary("baseline", log_parsed)
+    return set(log_parsed.get("signatures") or [])
+
+
+def run_php_http_verify_articles_diag(
+    sandbox, repo, php_bin, article_rel, error_log_path=None, baseline_log_signatures=None
+):
     if article_rel is None:
         print("BLOCKER: no article CMS template for HTTP verify article diag")
         return 2
@@ -1350,8 +1475,13 @@ def run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel):
     )
     print("=== PHP HTTP VERIFY ARTICLES DIAG (same markers as --apply) ===")
     print("paths: {0}".format(", ".join(slug_paths)))
-    code, stdout, combined = _php_run_capture(
-        php_bin, repo, runner, "http-verify-articles", docroot=sandbox
+    code, stdout, combined, log_parsed = _php_run_capture(
+        php_bin,
+        repo,
+        runner,
+        "http-verify-articles",
+        docroot=sandbox,
+        error_log_path=error_log_path,
     )
     fail = []
     if code != 0:
@@ -1366,21 +1496,33 @@ def run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel):
             fail.append("missing render chunk for {0}".format(slug))
             continue
         chunk = stdout.split(start, 1)[1].split(end, 1)[0]
-        errs, diag = verify_render_html_errors(chunk, {}, "article", diag_sandbox=True)
+        diag = diagnose_http_body(chunk, {})
         markers = diag.get("markers") or {}
+        marker_errs = verify_article_marker_errors(markers)
         print(
             "  {0}: toc={1} footer={2} blog_page={3}{4}".format(
                 slug,
                 markers.get("toc"),
                 markers.get("lx-site-footer"),
                 markers.get("lireate-blog-page"),
-                (" FAIL: " + "; ".join(errs)) if errs else " OK",
+                (" FAIL: " + "; ".join(marker_errs)) if marker_errs else " OK",
             )
         )
-        if errs:
-            print_php_render_issue_details(chunk, diag_mode=True, label=slug)
-            fail.append("{0}: {1}".format(slug, "; ".join(errs)))
+        if marker_errs:
+            fail.append("{0}: {1}".format(slug, "; ".join(marker_errs)))
+    new_sigs = diff_new_log_signatures(baseline_log_signatures, log_parsed)
+    if log_parsed.get("blocking"):
+        for item in log_parsed["blocking"]:
+            fail.append("PHP log fatal: {0}".format(item.get("signature") or item.get("line")))
+    if new_sigs:
+        print("php_log_new_vs_baseline ({0}):".format(len(new_sigs)))
+        for sig in new_sigs[:12]:
+            print("  {0}".format(sig))
+        fail.append(
+            "new PHP notice/warning vs unpatched template ({0})".format(len(new_sigs))
+        )
     if fail:
+        print_php_log_diag_summary("http-verify-articles", log_parsed)
         print("HTTP VERIFY ARTICLES RESULT: FAIL ({0})".format("; ".join(fail)))
         return 1
     print("HTTP VERIFY ARTICLES RESULT: PASS")
@@ -1438,11 +1580,17 @@ def build_php_service_diag_runner(sandbox_docroot, service_index_path, web_path)
     )
 
 
-def _php_run_capture(php_bin, repo, runner_path, label, docroot=None):
+def _php_run_capture(php_bin, repo, runner_path, label, docroot=None, error_log_path=None):
     import subprocess
 
+    log_path = Path(error_log_path) if error_log_path else None
+    if log_path is not None:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        log_path.write_text("", encoding="utf-8")
     proc = subprocess.run(
-        build_php_diag_argv(php_bin, repo, runner_path, docroot=docroot),
+        build_php_diag_argv(
+            php_bin, repo, runner_path, docroot=docroot, error_log_path=log_path
+        ),
         capture_output=True,
         text=True,
         timeout=90,
@@ -1450,13 +1598,21 @@ def _php_run_capture(php_bin, repo, runner_path, label, docroot=None):
     stdout = proc.stdout or ""
     stderr = proc.stderr or ""
     combined = stdout + stderr
-    if stderr:
+    log_parsed = {"blocking": [], "info": [], "signatures": set()}
+    if log_path is not None and log_path.is_file():
+        try:
+            log_parsed = parse_php_error_log(log_path.read_text(encoding="utf-8", errors="replace"))
+        except OSError:
+            pass
+    if stderr and not _ini_bool_off(resolve_php_diag_ini_settings(docroot).get("display_errors")):
         print("--- {0} stderr ---".format(label))
         print(stderr.rstrip())
-    return proc.returncode, stdout, combined
+    return proc.returncode, stdout, combined, log_parsed
 
 
-def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
+def run_php_newstyle_path_diag(
+    sandbox, repo, php_bin, article_rel, error_log_path=None, baseline_log_signatures=None
+):
     if article_rel is None:
         print("BLOCKER: no article CMS template for newStyle diag")
         return 2
@@ -1476,13 +1632,28 @@ def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
     )
     print("=== PHP NEWSTYLE ARTICLE DIAG (dual lib tree) ===")
     print("article_template: {0}".format(article_rel))
-    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "newstyle", docroot=sandbox)
+    code, stdout, combined, log_parsed = _php_run_capture(
+        php_bin,
+        repo,
+        runner,
+        "newstyle",
+        docroot=sandbox,
+        error_log_path=error_log_path,
+    )
     fail = []
     if code != 0:
         fail.append("php exit {0}".format(code))
     if re.search(r"(?i)Fatal error|Parse error|Cannot redeclare", combined):
-        fail.append("PHP fatal/parse/redeclare")
-    marker_errors, diag = verify_render_html_errors(stdout, {}, "article", diag_sandbox=True)
+        fail.append("PHP fatal/parse/redeclare in cli output")
+    new_sigs = diff_new_log_signatures(baseline_log_signatures, log_parsed)
+    marker_errors, diag = verify_render_html_errors(
+        stdout,
+        {},
+        "article",
+        diag_sandbox=True,
+        diag_log_parsed=log_parsed,
+        new_log_signatures=new_sigs,
+    )
     if marker_errors:
         fail.extend(marker_errors)
     markers = diag.get("markers") or {}
@@ -1493,9 +1664,9 @@ def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
             markers.get("toc"),
         )
     )
+    print_php_log_diag_summary("newstyle", log_parsed)
     if fail:
         print("NEWSTYLE RESULT: FAIL ({0})".format("; ".join(fail)))
-        print_php_render_issue_details(stdout, diag_mode=True, label="newstyle")
         print("--- stdout tail ---")
         print("\n".join(stdout.splitlines()[-40:]))
         return 1
@@ -1520,7 +1691,9 @@ def run_php_service_page_diag(sandbox, repo, php_bin):
     )
     print("=== PHP SERVICE PAGE DIAG ===")
     print("service: {0} ({1})".format(SERVICE_DIAG_SLUG, web_path))
-    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "service", docroot=sandbox)
+    code, stdout, combined, _log_parsed = _php_run_capture(
+        php_bin, repo, runner, "service", docroot=sandbox
+    )
     fail = []
     if code != 0:
         fail.append("php exit {0}".format(code))
@@ -1672,24 +1845,39 @@ def verify_article_marker_errors(markers):
     return page_errors
 
 
-def verify_render_html_errors(body, headers, page_kind, diag_sandbox=False):
+def verify_render_html_errors(
+    body,
+    headers,
+    page_kind,
+    diag_sandbox=False,
+    diag_log_parsed=None,
+    new_log_signatures=None,
+):
     """Return (errors, diag) using the same marker rules as live HTTP verify."""
     diag = diagnose_http_body(body, headers or {})
     markers = diag.get("markers") or {}
     raw_issues = extract_php_html_issues(body)
+    errs = []
     if diag_sandbox:
-        blocking, _ignored = filter_php_issues_for_diag(raw_issues)
+        log_parsed = diag_log_parsed or {}
+        for item in log_parsed.get("blocking") or []:
+            errs.append(
+                "PHP log fatal: {0}".format(
+                    (item.get("signature") or item.get("line") or "")[:240]
+                )
+            )
+        for sig in new_log_signatures or []:
+            errs.append("new PHP notice/warning vs unpatched template: {0}".format(sig[:240]))
     else:
         blocking = raw_issues
-    errs = []
-    if blocking:
-        first = blocking[0].get("line", "PHP error in HTML")
-        errs.append("PHP errors in HTML: {0}".format(first[:240]))
+        if blocking:
+            first = blocking[0].get("line", "PHP error in HTML")
+            errs.append("PHP errors in HTML: {0}".format(first[:240]))
+        diag["php_issues_blocking"] = [item.get("line") for item in blocking]
     if page_kind == "news_list":
         errs.extend(verify_news_list_marker_errors(markers))
     else:
         errs.extend(verify_article_marker_errors(markers))
-    diag["php_issues_blocking"] = [item.get("line") for item in blocking]
     return errs, diag
 
 
@@ -2048,12 +2236,20 @@ def run_php_list_diag(live_docroot, office_repo=None):
     print("live_docroot: {0}".format(live_docroot))
     print("sandbox_docroot: {0}".format(sandbox))
     print("php: {0}".format(php_bin))
-    print("diag_php_ini: {0}".format(format_php_diag_ini_note(sandbox)))
+    error_log_path = tmp_root / "php-diag-errors.log"
+    print(
+        "diag_php_ini: {0}".format(
+            format_php_diag_ini_note(sandbox, error_log_path=error_log_path)
+        )
+    )
     print("cms_template: {0}".format(list_rel))
     print("list_cms_inc: {0} (from office-repo copy)".format(cms.relative_to(sandbox)))
 
+    error_log_path.write_text("", encoding="utf-8")
     proc = subprocess.run(
-        build_php_diag_argv(php_bin, repo, runner, docroot=sandbox),
+        build_php_diag_argv(
+            php_bin, repo, runner, docroot=sandbox, error_log_path=error_log_path
+        ),
         capture_output=True,
         text=True,
         timeout=90,
@@ -2129,13 +2325,48 @@ def run_php_list_diag(live_docroot, office_repo=None):
     if not footer_link_ok:
         fail_reasons.append("missing lireate-blog-footer.css?v=2026-10-19n in list HTML")
 
-    article_code = run_php_article_collage_diag(sandbox, repo, php_bin)
+    list_log_parsed = parse_php_error_log(
+        error_log_path.read_text(encoding="utf-8", errors="replace")
+        if error_log_path.is_file()
+        else ""
+    )
+    if list_log_parsed.get("blocking"):
+        fail_reasons.append("PHP log fatal during list render")
+        print_php_log_diag_summary("list", list_log_parsed)
+
+    baseline_log_signatures = capture_unpatched_newstyle_log_baseline(
+        tmp_root, sandbox, repo, php_bin, article_rel, error_log_path
+    )
+
+    article_code = run_php_article_collage_diag(
+        sandbox, repo, php_bin, error_log_path=error_log_path
+    )
     if article_code != 0:
         fail_reasons.append("article collage-v1 diag failed")
 
-    if run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel) != 0:
+    if (
+        run_php_newstyle_path_diag(
+            sandbox,
+            repo,
+            php_bin,
+            article_rel,
+            error_log_path=error_log_path,
+            baseline_log_signatures=baseline_log_signatures,
+        )
+        != 0
+    ):
         fail_reasons.append("newStyle article render diag failed")
-    if run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel) != 0:
+    if (
+        run_php_http_verify_articles_diag(
+            sandbox,
+            repo,
+            php_bin,
+            article_rel,
+            error_log_path=error_log_path,
+            baseline_log_signatures=baseline_log_signatures,
+        )
+        != 0
+    ):
         fail_reasons.append("HTTP verify article paths diag failed")
     if run_php_service_page_diag(sandbox, repo, php_bin) != 0:
         fail_reasons.append("service page render diag failed")
@@ -2151,10 +2382,8 @@ def run_php_list_diag(live_docroot, office_repo=None):
     return code
 
 
-def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
+def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php", error_log_path=None):
     """Render collage-v1 and legacy article snippets; assert hero vs classic header."""
-    import subprocess
-
     sandbox = Path(sandbox_docroot).resolve()
     repo = Path(office_repo).resolve()
     shared = repo / "pages/blog/_shared"
@@ -2177,17 +2406,15 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
     )
 
     print("=== PHP ARTICLE COLLAGE DIAG ===")
-    proc = subprocess.run(
-        build_php_diag_argv(php_bin, repo, runner, docroot=sandbox),
-        capture_output=True,
-        text=True,
-        timeout=60,
+    proc_code, stdout, _combined, log_parsed = _php_run_capture(
+        php_bin,
+        repo,
+        runner,
+        "article-collage",
+        docroot=sandbox,
+        error_log_path=error_log_path,
     )
-    stdout = proc.stdout or ""
-    stderr = proc.stderr or ""
-    if stderr:
-        print("--- article diag stderr ---")
-        print(stderr.rstrip())
+    print_php_log_diag_summary("collage", log_parsed)
 
     article_css_path = sandbox / "template/page/news/lireate-blog-article.css"
     article_css = ""
@@ -2207,9 +2434,8 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
         collage_no_dup = "lx-article-cover" not in prose_tail
     legacy_no_hero = COLLAGE_V1_HERO_ATTR not in legacy_chunk
     legacy_header = "lireate-blog-header" in legacy_chunk and "lireate-blog-h1" in legacy_chunk
-    legacy_marker_errors, legacy_diag = verify_render_html_errors(
-        legacy_chunk, {}, "article", diag_sandbox=True
-    )
+    legacy_diag = diagnose_http_body(legacy_chunk, {})
+    legacy_marker_errors = verify_article_marker_errors(legacy_diag.get("markers") or {})
     legacy_toc = (legacy_diag.get("markers") or {}).get("toc")
     css_ok = COLLAGE_V1_CSS_MARKER in article_css
     print(
@@ -2224,8 +2450,11 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
     )
 
     fail = []
-    if proc.returncode != 0:
-        fail.append("php exit {0}".format(proc.returncode))
+    if proc_code != 0:
+        fail.append("php exit {0}".format(proc_code))
+    if log_parsed.get("blocking"):
+        for item in log_parsed["blocking"]:
+            fail.append("PHP log fatal: {0}".format(item.get("signature") or item.get("line")))
     if not collage_hero:
         fail.append("collage hero missing")
     if not collage_no_dup:
@@ -2241,7 +2470,6 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
 
     if fail:
         print("ARTICLE COLLAGE RESULT: FAIL ({0})".format("; ".join(fail)))
-        print_php_render_issue_details(legacy_chunk or stdout, diag_mode=True, label="collage-legacy")
         return 1
     print("ARTICLE COLLAGE RESULT: PASS")
     return 0

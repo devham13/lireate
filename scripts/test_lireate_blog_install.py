@@ -287,13 +287,50 @@ class BlogInstallLibTests(unittest.TestCase):
         errs, _diag = lib.verify_render_html_errors(html, {}, "article", diag_sandbox=True)
         self.assertEqual(errs, [])
 
-    def test_php_real_warning_still_fails_diag_sandbox(self):
+    def test_diag_sandbox_ignores_notice_in_html(self):
         html = (
-            "<b>Warning</b>: fopen(/missing): failed to open stream in <b>/tmp/x.php</b> on line <b>3</b>"
-            '<div class="lireate-blog-page"><footer class="lx-site-footer"></footer></div>'
+            "<b>Notice</b>: Undefined index: category in <b>/tmp/newStyle.php</b> on line <b>26</b>"
+            '<div class="lireate-blog-page">'
+            '<nav class="lireate-blog-toc-card" data-lx-blog-toc></nav>'
+            '<footer class="lx-site-footer"></footer></div>'
         )
         errs, _diag = lib.verify_render_html_errors(html, {}, "article", diag_sandbox=True)
-        self.assertTrue(any("PHP errors in HTML" in e for e in errs))
+        self.assertEqual(errs, [])
+
+    def test_diag_log_fatal_blocks_sandbox_verify(self):
+        log_parsed = lib.parse_php_error_log(
+            "PHP Parse error:  syntax error, unexpected '}' in /tmp/newStyle.php on line 9\n"
+        )
+        html = (
+            '<div class="lireate-blog-page">'
+            '<nav class="lireate-blog-toc-card" data-lx-blog-toc></nav>'
+            '<footer class="lx-site-footer"></footer></div>'
+        )
+        errs, _diag = lib.verify_render_html_errors(
+            html, {}, "article", diag_sandbox=True, diag_log_parsed=log_parsed
+        )
+        self.assertTrue(any("PHP log fatal" in e for e in errs))
+
+    def test_newstyle_patch_guards_news_article_category(self):
+        snippet = FIXTURE_NEWSTYLE.read_text(encoding="utf-8")
+        planned, changed, _desc = lib.patch_news_template_content(snippet)
+        self.assertTrue(changed)
+        self.assertIn("array_key_exists('category'", planned)
+
+    def test_diff_new_log_signatures_only_new_notices_fail(self):
+        baseline = {
+            lib.php_error_signature(
+                "Notice", "Undefined index: category", "/doc/newStyle.php", 26
+            )
+        }
+        log = (
+            "PHP Notice:  Undefined index: category in /doc/newStyle.php on line 26\n"
+            "PHP Notice:  Undefined index: brand_new in /doc/newStyle.php on line 30\n"
+        )
+        parsed = lib.parse_php_error_log(log)
+        new_sigs = lib.diff_new_log_signatures(baseline, parsed)
+        self.assertEqual(len(new_sigs), 1)
+        self.assertIn("brand_new", new_sigs[0])
 
     def test_collage_diag_runner_renders_service_footer(self):
         php_src = lib.build_php_article_collage_diag_runner("/tmp/s", "/tmp/l.php", "/tmp/layout.php")
