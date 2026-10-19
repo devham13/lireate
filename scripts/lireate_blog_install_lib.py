@@ -1,6 +1,7 @@
 """Blog template install helpers (used by lireate_blog_install.py and tests)."""
 
 import difflib
+import hashlib
 import json
 import re
 import shutil
@@ -701,23 +702,6 @@ def copy_plan(office_repo):
         cms = news_dir / "lireate-blog-cms.inc.php"
         if cms.is_file():
             by_dest[Path("template/page/news/lireate-blog-cms.inc.php")] = cms
-    footer_src = repo / "pages" / "services" / "_shared" / "lireate-service-footer.inc.php"
-    messenger_src = repo / "pages" / "services" / "_shared" / "lireate-messenger-urls.php"
-    if footer_src.is_file():
-        by_dest[Path("template/lireate/lireate-service-footer.inc.php")] = footer_src
-    else:
-        lireate_dir = repo / "template" / "lireate"
-        if lireate_dir.is_dir():
-            src = lireate_dir / "lireate-service-footer.inc.php"
-            if src.is_file():
-                by_dest[Path("template/lireate/lireate-service-footer.inc.php")] = src
-    services_shared = repo / "pages" / "services" / "_shared"
-    for name in DOCROOT_MESSENGER_BUNDLE_NAMES:
-        src = services_shared / name
-        if src.is_file():
-            by_dest[Path("template/lireate") / name] = src
-    if messenger_src.is_file() and Path("template/lireate/lireate-messenger-urls.php") not in by_dest:
-        by_dest[Path("template/lireate/lireate-messenger-urls.php")] = messenger_src
     if shared_blog.is_dir():
         for path in sorted(shared_blog.glob("*")):
             if path.is_file() and path.suffix in (".php", ".css", ".js"):
@@ -1198,6 +1182,108 @@ def apply_copies(office_repo, docroot, pairs):
     return created
 
 
+def apply_blog_install_to_docroot(office_repo, docroot):
+    """Blog/news only: copy plan + CMS template patches (no service dirs or messenger bundle)."""
+    docroot = Path(docroot).resolve()
+    office_repo = Path(office_repo).resolve()
+    pairs = copy_plan(office_repo)
+    created = apply_copies(office_repo, docroot, pairs)
+    patch_notes = []
+    template = find_news_template(docroot)
+    list_template = find_news_list_template(docroot)
+    if template is not None:
+        _changed, notes = apply_template_patch(docroot, template)
+        patch_notes.extend(notes)
+    if list_template is not None:
+        _changed, notes = apply_list_template_patch(docroot, list_template)
+        patch_notes.extend(notes)
+    return created, patch_notes
+
+
+def published_service_url_paths(office_repo, docroot):
+    from lireate_hosting_services_lib import (
+        dest_dir_for_manifest,
+        dest_looks_published,
+        list_service_dirs,
+        load_manifest,
+    )
+
+    docroot = Path(docroot).resolve()
+    paths = []
+    for service_dir in list_service_dirs(Path(office_repo).resolve()):
+        try:
+            manifest = load_manifest(service_dir)
+        except (ValueError, json.JSONDecodeError):
+            continue
+        dest = dest_dir_for_manifest(docroot, manifest)
+        if dest_looks_published(dest) or dest.is_dir():
+            paths.append(manifest["url_path"].strip("/"))
+    return paths
+
+
+def blog_apply_service_guard_prefixes(office_repo, docroot):
+    """Docroot path prefixes that --apply / --rollback must never touch."""
+    prefixes = [Path("_shared"), Path("template/lireate")]
+    for url_path in published_service_url_paths(office_repo, docroot):
+        if url_path:
+            prefixes.append(Path(url_path))
+    return prefixes
+
+
+def is_blog_apply_forbidden_rel(rel, office_repo, docroot):
+    rel = Path(rel)
+    for prefix in blog_apply_service_guard_prefixes(office_repo, docroot):
+        if rel == prefix or prefix in rel.parents:
+            return True
+    return False
+
+
+def _sha256_file(path):
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def collect_guarded_docroot_files(docroot, office_repo):
+    """All files under service guard prefixes that exist in docroot."""
+    docroot = Path(docroot).resolve()
+    rels = set()
+    for prefix in blog_apply_service_guard_prefixes(office_repo, docroot):
+        base = docroot / prefix
+        if not base.exists():
+            continue
+        if base.is_file():
+            rels.add(prefix)
+            continue
+        for path in base.rglob("*"):
+            if path.is_file():
+                rels.add(path.relative_to(docroot))
+    return sorted(rels, key=lambda p: str(p).replace("\\", "/"))
+
+
+def diff_blog_apply_service_guard(baseline_root, post_root, office_repo):
+    """
+    Return relative paths where post-apply differs from baseline under service guard trees.
+    Used by CGI gate / diag to ensure blog --apply never mutates services.
+    """
+    baseline_root = Path(baseline_root).resolve()
+    post_root = Path(post_root).resolve()
+    rels = set(collect_guarded_docroot_files(baseline_root, office_repo))
+    rels.update(collect_guarded_docroot_files(post_root, office_repo))
+    changed = []
+    for rel in sorted(rels, key=lambda p: str(p).replace("\\", "/")):
+        b = baseline_root / rel
+        p = post_root / rel
+        if b.is_file() and p.is_file():
+            if _sha256_file(b) != _sha256_file(p):
+                changed.append(rel)
+        elif b.is_file() != p.is_file():
+            changed.append(rel)
+    return changed
+
+
 def site_base_url():
     import os
 
@@ -1298,12 +1384,15 @@ def restore_backup_full(
     site_base_url=None,
     verify_paths=None,
     autopub_home=None,
+    office_repo=None,
 ):
-    restore_backup(backup_dir, docroot)
+    restore_backup(backup_dir, docroot, office_repo=office_repo)
     created_path = backup_dir / "created.json"
     if created_path.is_file():
         data = json.loads(created_path.read_text(encoding="utf-8"))
         for rel in data.get("created") or []:
+            if office_repo is not None and is_blog_apply_forbidden_rel(rel, office_repo, docroot):
+                continue
             target = docroot / rel
             if target.is_file():
                 target.unlink()
@@ -2637,12 +2726,16 @@ def write_created_manifest(backup_dir, created_rels):
     )
 
 
-def restore_backup(backup_dir, docroot):
+def restore_backup(backup_dir, docroot, office_repo=None):
     manifest_path = backup_dir / "manifest.json"
     if not manifest_path.is_file():
         raise SystemExit("BLOCKER: no manifest in backup {0}".format(backup_dir))
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    skipped_service = 0
     for rel in manifest.get("files") or []:
+        if office_repo is not None and is_blog_apply_forbidden_rel(rel, office_repo, docroot):
+            skipped_service += 1
+            continue
         src = backup_dir / rel
         dst = docroot / rel
         if src.is_file():
@@ -2650,6 +2743,12 @@ def restore_backup(backup_dir, docroot):
             shutil.copy2(str(src), str(dst))
         elif dst.is_file():
             dst.unlink()
+    if skipped_service:
+        print(
+            "rollback: skipped {0} service-guard path(s) (blog install does not manage services)".format(
+                skipped_service
+            )
+        )
 
 
 def make_backup_id():

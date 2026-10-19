@@ -72,18 +72,8 @@ def copy_live_docroot_slice(live_docroot, sandbox, office_repo):
 
 
 def simulate_blog_apply_on_docroot(office_repo, docroot):
-    """Same file operations as cmd_apply (no backup / HTTP)."""
-    docroot = Path(docroot).resolve()
-    pairs = lib.copy_plan(office_repo)
-    lib.apply_copies(office_repo, docroot, pairs)
-    lib.deploy_docroot_messenger_shared(office_repo, docroot)
-    lib.refresh_published_service_includes(office_repo, docroot)
-    template = lib.find_news_template(docroot)
-    list_template = lib.find_news_list_template(docroot)
-    if template is not None:
-        lib.apply_template_patch(docroot, template)
-    if list_template is not None:
-        lib.apply_list_template_patch(docroot, list_template)
+    """Same file operations as cmd_apply (blog/news only; no backup / HTTP)."""
+    lib.apply_blog_install_to_docroot(office_repo, docroot)
 
 
 def _cgi_env(docroot, script_path, request_uri):
@@ -341,6 +331,17 @@ def run_php_cgi_live_gate_diag(live_docroot, office_repo):
         copy_live_docroot_slice(live_docroot, post_root, office_repo)
         print("simulate --apply on post-apply sandbox...")
         simulate_blog_apply_on_docroot(office_repo, post_root)
+        service_guard = lib.diff_blog_apply_service_guard(
+            baseline_root, post_root, office_repo
+        )
+        if service_guard:
+            print("service_guard: FAIL ({0} path(s) changed under service guard)".format(
+                len(service_guard)
+            ))
+            for rel in service_guard[:20]:
+                print("  - {0}".format(rel))
+        else:
+            print("service_guard: PASS (published services + _shared + template/lireate unchanged)")
         print("--- baseline cgi suite (current live files) ---")
         base_fail, base_sigs, _base_block = run_cgi_suite(
             cgi_bin, baseline_root, office_repo, log_path
@@ -357,6 +358,10 @@ def run_php_cgi_live_gate_diag(live_docroot, office_repo):
             for sig in new_sigs[:20]:
                 print("  {0}".format(sig))
         fail = list(post_fail)
+        if service_guard:
+            fail.append(
+                "blog apply mutated service-guard paths ({0})".format(len(service_guard))
+            )
         if new_sigs:
             fail.append(
                 "new log signatures vs live baseline ({0})".format(len(new_sigs))
