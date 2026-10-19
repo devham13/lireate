@@ -14,6 +14,7 @@ $lireate_blog_canonical = '/proverka_tovarnogo_znaka_pered_registraciey_chek_lis
 $lireate_blog_body_html = file_get_contents(__DIR__ . '/sample-body.html');
 
 $assets_base = '/template/page/news';
+define('LIREATE_BLOG_PUBLIC_ORIGIN', 'https://lireate.ru'); // pragma: allowlist secret
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -23,12 +24,8 @@ $assets_base = '/template/page/news';
   <title><?php echo htmlspecialchars($lireate_blog_title, ENT_QUOTES, 'UTF-8'); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($lireate_blog_description, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="canonical" href="<?php echo htmlspecialchars($lireate_blog_canonical, ENT_QUOTES, 'UTF-8'); ?>">
-  <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css">
-  <style>
-    html, body { margin: 0; background: #0b0b1f; }
-  </style>
 </head>
-<body>
+<body class="lireate-blog-body">
 <?php
 define('LIREATE_BLOG_ASSETS_BASE', $assets_base);
 require_once dirname(__DIR__) . '/_shared/lireate-blog-layout.inc.php';

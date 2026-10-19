@@ -12,7 +12,8 @@ $lireate_phone_display = '+7 (960) 048-49-57';
 $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
-$lireate_max = 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI';
+require_once dirname(__DIR__) . '/_shared/lireate-messenger-urls.php';
+$lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Какой срок действия товарного знака?', 'По ст. 1491 ГК РФ — 10 лет с даты подачи заявки; продление возможно неограниченно при уплате пошлин.'],
   ['Когда подавать заявление?', 'В последний год действия права; при пропуске — дополнительные 6 месяцев с пошлиной по п. 2.25 Положения о пошлинах.'],

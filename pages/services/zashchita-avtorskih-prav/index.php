@@ -12,7 +12,8 @@ $lireate_phone_display = '+7 (960) 048-49-57';
 $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
-$lireate_max = 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI';
+require_once dirname(__DIR__) . '/_shared/lireate-messenger-urls.php';
+$lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Нужна ли регистрация, чтобы охранялись авторские права?', 'Нет. По п. 4 ст. 1259 ГК РФ право возникает при создании произведения в объективной форме. Программу или БД можно дополнительно зарегистрировать по желанию (ст. 1262 ГК РФ).'],
   ['Что охраняется, а что нет?', 'Охраняются результаты творческого труда из ст. 1259 ГК РФ. Не охраняются идеи, методы и факты (п. 5 ст. 1259). Оценка делается по конкретным файлам.'],
