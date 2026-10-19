@@ -211,7 +211,17 @@ def cmd_apply(office_repo, docroot, backups_root):
         for err in errors:
             print("  - {0}".format(err))
         print("rolling back backup {0}...".format(backup_id))
-        lib.restore_backup_full(backup_dir, docroot)
+        verify_paths = list(article_paths) + ["/news/"]
+        rollback_errors = lib.restore_backup_full(
+            backup_dir,
+            docroot,
+            site_base_url=base,
+            verify_paths=verify_paths,
+            autopub_home=backups_root.parent,
+        )
+        if rollback_errors:
+            print("STATUS: ROLLED BACK WITH HTTP ERRORS ({0})".format(backup_id))
+            return 1
         print("STATUS: ROLLED BACK ({0})".format(backup_id))
         return 1
 

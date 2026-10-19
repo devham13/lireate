@@ -5,7 +5,9 @@
 if (function_exists('lireate_blog_h')) {
     return;
 }
-require_once __DIR__ . '/lireate-blog-load.php';
+if (!function_exists('lireate_blog_dir_up')) {
+    require_once dirname(__FILE__) . '/lireate-blog-load.php';
+}
 
 if (!function_exists('lireate_blog_h')) {
 function lireate_blog_h($s)

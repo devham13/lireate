@@ -16,6 +16,7 @@ DATA_INDEX = REPO / "data" / "blog-articles-index.json"
 
 COPY_FILES = (
     "lireate-blog-config.php",
+    "lireate-blog-load.php",
     "lireate-blog-lib.php",
     "lireate-blog-article.css",
     "lireate-blog-article.js",
