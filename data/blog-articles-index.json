@@ -1,0 +1,54 @@
+{
+  "updated": "2026-10-19",
+  "source": "lireate.ru/news (ручная выгрузка метаданных для блока «Читайте также»)",
+  "articles": [
+    {
+      "url": "/otvet_na_pretenziyu_pravoobladatelya_tovarnogo_znaka_poryadok_srok_30_dney_i_obrazec",
+      "title": "Ответ на претензию правообладателя товарного знака: порядок, срок 30 дней и образец",
+      "date_display": "18.10.2026",
+      "tag": "Товарный знак",
+      "cover": "/template/images/blog/otvet_na_pretenziyu_pravoobladatelya_tovarnogo_znaka_poryadok_srok_30_dney_i_obrazec.jpg",
+      "excerpt": "Пришла претензия о нарушении чужого товарного знака: требуют убрать товар и заплатить компенсацию. Эмоциональный ответ или перевод денег без анализа часто закрепляют вину, а молчание дольше 30 дней с даты направления письма усложняет позицию."
+    },
+    {
+      "url": "/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta",
+      "title": "Проверка товарного знака перед регистрацией: чек-лист по реестрам Роспатента",
+      "date_display": "18.10.2026",
+      "tag": "Товарный знак",
+      "cover": "/template/images/blog/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta.jpg",
+      "excerpt": "Вы выбрали имя бренда и готовите заявку в Роспатент — а в открытом реестре уже есть чужой знак в вашем классе МКТУ. Проверка по бесплатным базам Роспатента и ФИПС отсекает часть рисков до подачи."
+    },
+    {
+      "url": "/kak_zapolnit_zayavku_na_tovarnyiy_znak",
+      "title": "Как заполнить заявку на товарный знак",
+      "date_display": "03.12.2024",
+      "tag": "Товарный знак",
+      "cover": "/template/images/blog/kak_zapolnit_zayavku_na_tovarnyj_znak.jpg",
+      "excerpt": "Чтобы зарегистрировать товарный знак, нужно подать заявку в Роспатент. Перед заполнением документации подберите классы МКТУ и проверьте обозначение по базе патентного ведомства."
+    },
+    {
+      "url": "/kak_zaschitit_tovarnyiy_znak_i_reputaciyu_biznesa_v_seti",
+      "title": "Как защитить товарный знак и репутацию бизнеса в сети",
+      "date_display": "29.03.2020",
+      "tag": "Товарный знак",
+      "cover": "/template/images/blog/Как_защитить_товарный_знак_и_репутацию_бизнеса_в_сети.jpg",
+      "excerpt": "Официально зарегистрированный товарный знак защищается законодательством РФ. Владелец может обратиться в суд или правоохранительные органы для прекращения нарушения и возмещения ущерба."
+    },
+    {
+      "url": "/7_prichin_zaregestrirovat_tovarnyiy_znak",
+      "title": "7 причин зарегистрировать товарный знак",
+      "date_display": "22.02.2020",
+      "tag": "Товарный знак",
+      "cover": "/template/images/blog/18.jpg",
+      "excerpt": "Как обезопасить себя от предприимчивых конкурентов и злоумышленников? Как перевести бизнес на новый уровень? На эти вопросы отвечает регистрация товарного знака."
+    },
+    {
+      "url": "/preimuschestva_zaregistrirovannogo_brenda",
+      "title": "Преимущества зарегистрированного бренда?",
+      "date_display": "29.08.2017",
+      "tag": "Бренд",
+      "cover": "/template/images/blog/656-559a20c3fa3d363441e8417c21d67d8f.jpg",
+      "excerpt": "Зарегистрированный в качестве товарного знака бренд снижает риск контрафакта и помогает удержать долю рынка и репутацию."
+    }
+  ]
+}
