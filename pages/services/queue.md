@@ -35,7 +35,8 @@
 ## S03. Возражение против регистрации товарного знака
 
 - **slug:** `vozrazhenie-protiv-registracii-tovarnogo-znaka`
-- **status:** new
+- **status:** done
+- **menu_after:** Регистрация товарного знака
 - **old_url:** —
 - **demand:** 506
 - **main_query:** возражение против регистрации товарного знака
