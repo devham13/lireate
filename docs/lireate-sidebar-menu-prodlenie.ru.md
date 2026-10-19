@@ -54,3 +54,5 @@ cd ~/lireate-autopub/office-repo && git fetch origin main && git checkout -B mai
 ```
 
 Запись: `LIREATE_ALLOW_MENU_EDIT=yes` и `--apply`. Бэкап: `~/lireate-autopub/backups/menu-remove-<timestamp>/`. Откат: `--rollback <timestamp>`.
+
+Скрипт ищет **все** `*.php` в DOCROOT (кроме `data/db.php`), в т.ч. дубликаты меню для главной (`template/parts/leftSideNav.php` и варианты вроде `leftSideNavMain.php`). HTTP-проверка: главная, `/findtz/`, страница услуги — 200, ссылка в sidebar отсутствует.
