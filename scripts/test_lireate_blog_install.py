@@ -49,6 +49,7 @@ class BlogInstallLibTests(unittest.TestCase):
         pairs = lib.copy_plan(REPO_ROOT)
         dests = {str(rel).replace("\\", "/") for _, rel in pairs}
         self.assertIn("template/page/news/lireate-blog-cms.inc.php", dests)
+        self.assertIn("template/images/blog/author/yuriy-gorbachev.jpg", dests)
 
 
 class BlogInstallApplyTests(unittest.TestCase):

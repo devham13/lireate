@@ -73,6 +73,11 @@ def copy_plan(office_repo):
     index = repo / "data" / "blog-articles-index.json"
     if index.is_file():
         by_dest[Path("data/blog-articles-index.json")] = index
+    author_dir = repo / "template" / "images" / "blog" / "author"
+    if author_dir.is_dir():
+        for path in sorted(author_dir.iterdir()):
+            if path.is_file():
+                by_dest[Path("template/images/blog/author") / path.name] = path
     return [(src, rel) for rel, src in sorted(by_dest.items(), key=lambda x: str(x[0]))]
 
 

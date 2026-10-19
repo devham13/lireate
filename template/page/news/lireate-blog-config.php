@@ -22,8 +22,25 @@ if (!defined('LIREATE_BLOG_DEFAULT_AUTHOR')) {
     define('LIREATE_BLOG_DEFAULT_AUTHOR', 'Юрий Горбачев');
 }
 
+if (!defined('LIREATE_BLOG_AUTHOR_NAME')) {
+    define('LIREATE_BLOG_AUTHOR_NAME', 'Юрий Горбачев');
+}
+
+if (!defined('LIREATE_BLOG_AUTHOR_ROLE')) {
+    define('LIREATE_BLOG_AUTHOR_ROLE', 'Генеральный директор ООО «ЛИРЕЙТ»');
+}
+
+/** Без расширения: /template/images/blog/author/yuriy-gorbachev.{webp,jpg} */
+if (!defined('LIREATE_BLOG_AUTHOR_AVATAR_PATH')) {
+    define('LIREATE_BLOG_AUTHOR_AVATAR_PATH', '/template/images/blog/author/yuriy-gorbachev');
+}
+
+if (!defined('LIREATE_BLOG_READING_WPM')) {
+    define('LIREATE_BLOG_READING_WPM', 180);
+}
+
 if (!defined('LIREATE_BLOG_TEMPLATE_VERSION')) {
-    define('LIREATE_BLOG_TEMPLATE_VERSION', '2026-10-19b');
+    define('LIREATE_BLOG_TEMPLATE_VERSION', '2026-10-19c');
 }
 
 if (!defined('LIREATE_BLOG_ASSETS_BASE')) {

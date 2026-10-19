@@ -202,11 +202,58 @@ function lireate_blog_prepare_body_html($html)
     return lireate_blog_ensure_h2_ids($html);
 }
 
+function lireate_blog_reading_time_minutes($html)
+{
+    $text = strip_tags((string) $html);
+    $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $text = preg_replace('/\s+/u', ' ', trim($text));
+    if ($text === '') {
+        return 1;
+    }
+    $parts = preg_split('/\s+/u', $text, -1, PREG_SPLIT_NO_EMPTY);
+    $words = is_array($parts) ? count($parts) : 0;
+    $wpm = defined('LIREATE_BLOG_READING_WPM') ? (int) LIREATE_BLOG_READING_WPM : 180;
+    if ($wpm < 1) {
+        $wpm = 180;
+    }
+    $mins = (int) ceil($words / $wpm);
+    return $mins < 1 ? 1 : $mins;
+}
+
+function lireate_blog_absolute_url($path, $canonical_hint = '')
+{
+    $path = '/' . ltrim((string) $path, '/');
+    $origin = defined('LIREATE_BLOG_PUBLIC_ORIGIN') ? trim((string) LIREATE_BLOG_PUBLIC_ORIGIN) : '';
+    if ($origin !== '') {
+        return rtrim($origin, '/') . $path;
+    }
+    $canonical_hint = trim((string) $canonical_hint);
+    if ($canonical_hint !== '' && preg_match('#^https?://#i', $canonical_hint)) {
+        $parts = parse_url($canonical_hint);
+        if (!empty($parts['scheme']) && !empty($parts['host'])) {
+            $base = $parts['scheme'] . '://' . $parts['host'];
+            if (!empty($parts['port'])) {
+                $base .= ':' . $parts['port'];
+            }
+            return $base . $path;
+        }
+    }
+    return $path;
+}
+
 function lireate_blog_article_jsonld($meta)
 {
     $author = isset($meta['author']) && $meta['author'] !== ''
         ? $meta['author']
-        : LIREATE_BLOG_DEFAULT_AUTHOR;
+        : (defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_NAME : LIREATE_BLOG_DEFAULT_AUTHOR);
+    $job_title = isset($meta['author_role']) && $meta['author_role'] !== ''
+        ? $meta['author_role']
+        : (defined('LIREATE_BLOG_AUTHOR_ROLE') ? LIREATE_BLOG_AUTHOR_ROLE : '');
+    $avatar_path = defined('LIREATE_BLOG_AUTHOR_AVATAR_PATH') ? LIREATE_BLOG_AUTHOR_AVATAR_PATH : '';
+    $canonical = isset($meta['canonical']) ? $meta['canonical'] : '';
+    $author_image = $avatar_path !== ''
+        ? lireate_blog_absolute_url($avatar_path . '.jpg', $canonical)
+        : '';
     $iso = isset($meta['date_iso']) ? $meta['date_iso'] : '';
     if ($iso === '' && isset($meta['date_display'])) {
         $iso = lireate_blog_date_display_to_iso($meta['date_display']);
@@ -222,9 +269,16 @@ function lireate_blog_article_jsonld($meta)
         '@type' => 'Article',
         'headline' => $headline,
         'description' => $desc,
-        'author' => array(
-            '@type' => 'Person',
-            'name' => $author,
+        'author' => array_filter(
+            array(
+                '@type' => 'Person',
+                'name' => $author,
+                'jobTitle' => $job_title !== '' ? $job_title : null,
+                'image' => $author_image !== '' ? $author_image : null,
+            ),
+            function ($v) {
+                return $v !== null && $v !== '';
+            }
         ),
         'datePublished' => $iso !== '' ? $iso : null,
         'dateModified' => $modified !== '' ? $modified : null,
