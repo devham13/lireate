@@ -21,7 +21,8 @@
 ## S02. Регистрация товарного знака с оплатой за результат
 
 - **slug:** `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`
-- **status:** new
+- **status:** done
+- **menu_after:** Регистрация товарного знака
 - **old_url:** https://${PUBLIC_SITE_HOST}/reg-tz-main
 - **demand:** 544
 - **main_query:** регистрация товарного знака с оплатой за результат
