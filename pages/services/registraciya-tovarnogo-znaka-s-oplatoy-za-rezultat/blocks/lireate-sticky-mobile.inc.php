@@ -1,7 +1,12 @@
 <?php
 $lx_sticky_tel = isset($lireate_phone_tel) ? $lireate_phone_tel : 'tel:+79600484957';
 $lx_sticky_tg = isset($lireate_telegram) ? $lireate_telegram : 'https://t.me/lireate_patent';
-$lx_sticky_max = isset($lireate_max) ? $lireate_max : 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI';
+$_lb_messenger_require = dirname(__DIR__) . '/lireate-messenger-require.inc.php';
+if (!is_file($_lb_messenger_require)) {
+    $_lb_messenger_require = dirname(dirname(__DIR__)) . '/_shared/lireate-messenger-require.inc.php';
+}
+require_once $_lb_messenger_require;
+$lx_sticky_max = isset($lireate_max) ? $lireate_max : LIREATE_MAX_CHAT_URL;
 ?>
 <aside class="lx-mobile-bar" aria-label="Быстрый звонок и мессенджеры">
   <a class="lx-mobile-bar-btn lx-mobile-bar-btn--call" href="<?php echo htmlspecialchars($lx_sticky_tel, ENT_QUOTES, 'UTF-8'); ?>">Позвонить</a>

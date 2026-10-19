@@ -1037,25 +1037,56 @@ SERVICE_DIAG_SLUG = "registraciya-tovarnogo-znaka-v-kitae"
 
 
 def stage_service_diag_tree(sandbox, office_repo):
-    """Copy one service page + _shared into diag sandbox (PHP smoke, not HTTP)."""
+    """Copy service + docroot/_shared like live hosting (PHP smoke, not repo-only paths)."""
     repo = Path(office_repo).resolve()
     slug = SERVICE_DIAG_SLUG
     svc_src = repo / "pages/services" / slug
     if not (svc_src / "index.php").is_file():
         return
-    svc_dst = sandbox / "pages/services" / slug
+    web_path = probe_service_web_path(repo).strip("/")
+    if web_path:
+        svc_dst = sandbox / web_path
+    else:
+        svc_dst = sandbox / slug.replace("-", "_")
     shared_src = repo / "pages/services/_shared"
-    shared_dst = sandbox / "pages/services/_shared"
-    for src_dir, dst_dir in ((shared_src, shared_dst), (svc_src, svc_dst)):
-        if not src_dir.is_dir():
+    docroot_shared = sandbox / "_shared"
+    for path in svc_src.rglob("*"):
+        if not path.is_file():
             continue
-        for path in src_dir.rglob("*"):
-            if not path.is_file():
-                continue
-            rel = path.relative_to(src_dir)
-            target = dst_dir / rel
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(str(path), str(target))
+        rel = path.relative_to(svc_src)
+        target = svc_dst / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(path), str(target))
+    messenger_names = (
+        "lireate-messenger-urls.php",
+        "lireate-messenger-load.php",
+        "lireate-messenger-require.inc.php",
+    )
+    if shared_src.is_dir():
+        docroot_shared.mkdir(parents=True, exist_ok=True)
+        for name in messenger_names:
+            src = shared_src / name
+            if src.is_file():
+                shutil.copy2(str(src), str(docroot_shared / name))
+        pages_shared = sandbox / "pages/services/_shared"
+        pages_shared.mkdir(parents=True, exist_ok=True)
+        for name in messenger_names:
+            src = shared_src / name
+            if src.is_file():
+                shutil.copy2(str(src), str(pages_shared / name))
+
+
+def resolve_service_diag_index(sandbox, office_repo):
+    web_path = probe_service_web_path(office_repo).strip("/")
+    if web_path:
+        idx = sandbox / web_path / "index.php"
+        if idx.is_file():
+            return idx
+    slug = SERVICE_DIAG_SLUG
+    fallback = sandbox / "pages/services" / slug / "index.php"
+    if fallback.is_file():
+        return fallback
+    return sandbox / web_path / "index.php" if web_path else fallback
 
 
 def probe_service_web_path(office_repo):
@@ -1186,7 +1217,7 @@ def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
 
 
 def run_php_service_page_diag(sandbox, repo, php_bin):
-    idx = sandbox / "pages/services" / SERVICE_DIAG_SLUG / "index.php"
+    idx = resolve_service_diag_index(sandbox, repo)
     if not idx.is_file():
         print("WARN: service diag skipped (no {0})".format(idx))
         return 0

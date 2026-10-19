@@ -58,7 +58,7 @@
   function initMessengerLinks(cfg) {
     var tg = cfg.telegram || 'https://t.me/lireate_patent';
     var wa = cfg.whatsapp || 'https://wa.me/79600484957';
-    var max = cfg.max || 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI';
+    var max = cfg.max || 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI'; // LIREATE_MAX_CHAT_URL
     setHref('link-telegram', tg);
     setHref('link-whatsapp', wa);
     setHref('link-max', max);
