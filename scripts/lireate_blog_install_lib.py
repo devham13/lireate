@@ -148,6 +148,8 @@ PHP56_SOURCE_FORBIDDEN = (
     (re.compile(r"\?->"), "nullsafe ?-> (PHP 8+)"),
     (re.compile(r"\bfn\s*\("), "arrow function fn() (PHP 7.4+)"),
     (re.compile(r"\bstr_contains\s*\("), "str_contains() (PHP 8+)"),
+    (re.compile(r"function\s+\w+\s*\([^)]*:\s*\??\s*\w"), "scalar parameter type hints (PHP 7+)"),
+    (re.compile(r"function\s+\w+\s*\([^)]*\)\s*:\s*\??\s*\w+\s*\{"), "return type hints (PHP 7+)"),
 )
 
 PHP56_DEPLOY_REL_DIRS = (
@@ -1217,7 +1219,86 @@ def backup_dir_for_id(backups_root, backup_id):
     return backups_root / ("blog-install-" + backup_id)
 
 
-def restore_backup_full(backup_dir, docroot):
+def reset_php_opcache_on_docroot(docroot):
+    """Touch PHP under docroot and restart this user's php-cgi workers (REG.RU PHP 5.6)."""
+    import os
+    import subprocess
+    import time
+
+    docroot = Path(docroot).resolve()
+    touched = 0
+    for path in docroot.rglob("*.php"):
+        try:
+            os.utime(path, None)
+            touched += 1
+        except OSError:
+            pass
+    user = os.environ.get("USER") or ""
+    patterns = (
+        "/opt/php/5.6/bin/php-cgi",
+        "/opt/php/5.6/sbin/php-fpm",
+    )
+    for pattern in patterns:
+        if not user:
+            continue
+        subprocess.run(
+            ["pkill", "-u", user, "-f", pattern],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    time.sleep(2)
+    return touched
+
+
+def verify_http_until_ok(
+    base_url,
+    paths,
+    rounds=6,
+    wait_seconds=25,
+    docroot=None,
+    autopub_home=None,
+):
+    """Poll HTTP until all paths return 200 or rounds exhausted."""
+    import time
+
+    paths = list(paths)
+    errors = []
+    for round_idx in range(1, rounds + 1):
+        round_errors = []
+        cache_bust = "{0}-rollback-{1}".format(int(time.time()), round_idx)
+        for path in paths:
+            status, body, url, _headers = http_probe(base_url, path, cache_bust=cache_bust)
+            if status != 200:
+                round_errors.append("{0}: HTTP {1}".format(url, status))
+            elif "Fatal error" in (body or "") or "Parse error" in (body or ""):
+                round_errors.append("{0}: PHP fatal in HTML".format(url))
+        if not round_errors:
+            print(
+                "HTTP rollback verify round {0}/{1}: all {2} URL(s) OK".format(
+                    round_idx, rounds, len(paths)
+                )
+            )
+            return []
+        errors = round_errors
+        print(
+            "HTTP rollback verify round {0}/{1}: {2} error(s), waiting {3}s...".format(
+                round_idx, rounds, len(round_errors), wait_seconds
+            )
+        )
+        for line in round_errors[:8]:
+            print("  - {0}".format(line))
+        if round_idx < rounds:
+            time.sleep(wait_seconds)
+    return errors
+
+
+def restore_backup_full(
+    backup_dir,
+    docroot,
+    site_base_url=None,
+    verify_paths=None,
+    autopub_home=None,
+):
     restore_backup(backup_dir, docroot)
     created_path = backup_dir / "created.json"
     if created_path.is_file():
@@ -1226,6 +1307,23 @@ def restore_backup_full(backup_dir, docroot):
             target = docroot / rel
             if target.is_file():
                 target.unlink()
+            elif target.is_dir():
+                shutil.rmtree(target, ignore_errors=True)
+    touched = reset_php_opcache_on_docroot(docroot)
+    print("opcache reset: touched {0} php file(s), signaled php-cgi workers".format(touched))
+    if site_base_url and verify_paths:
+        errors = verify_http_until_ok(
+            site_base_url,
+            verify_paths,
+            docroot=docroot,
+            autopub_home=autopub_home,
+        )
+        if errors:
+            print("HTTP rollback verify still failing:")
+            for err in errors:
+                print("  - {0}".format(err))
+            return errors
+    return []
 
 
 def sync_office_blog_template(office_repo):
@@ -2198,8 +2296,13 @@ def run_php_list_diag(live_docroot, office_repo=None):
     import os
     import subprocess
 
+    from lireate_blog_cgi_gate import run_php_cgi_live_gate_diag
+
     live_docroot = Path(live_docroot).resolve()
     repo = Path(office_repo) if office_repo is not None else Path(__file__).resolve().parents[1]
+    cgi_code = run_php_cgi_live_gate_diag(live_docroot, repo)
+    if cgi_code != 0:
+        return cgi_code
     sandbox, tmp_root, list_rel, article_rel = build_diag_sandbox(live_docroot, repo)
     cms = sandbox / "template/page/news/lireate-blog-list-cms.inc.php"
     if not cms.is_file():

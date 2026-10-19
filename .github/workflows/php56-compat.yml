@@ -1,0 +1,22 @@
+name: PHP 5.6 compatibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  php56:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer, cs2pr
+      - name: Install PHPCS + PHPCompatibility
+        run: composer install --no-interaction --prefer-dist
+      - name: PHPCS PHPCompatibility 5.6
+        run: vendor/bin/phpcs -p --standard=phpcs.xml.dist
+      - name: Python PHP 5.6 forbidden scan
+        run: python3 -m unittest scripts.test_lireate_blog_install.BlogInstallLibTests.test_deploy_php_sources_no_php7_dirname_levels -q

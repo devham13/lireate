@@ -561,6 +561,29 @@ class BlogInstallLibTests(unittest.TestCase):
         violations = lib.scan_php56_forbidden_sources(REPO_ROOT)
         self.assertEqual(violations, [], msg="\n".join(violations))
 
+    def test_dual_lib_tree_no_redeclare_php(self):
+        if not shutil.which("php"):
+            self.skipTest("php-cli not available")
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-dual-lib-php-"))
+        try:
+            doc = tmp / "docroot"
+            for src, rel in lib.copy_plan(REPO_ROOT):
+                dst = doc / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(src), str(dst))
+            env = os.environ.copy()
+            env["LIREATE_TEST_DOCROOT"] = str(doc)
+            out = subprocess.run(
+                ["php", str(REPO_ROOT / "scripts/test_lireate_blog_dual_lib.php")],
+                capture_output=True,
+                text=True,
+                env=env,
+            )
+            self.assertEqual(out.returncode, 0, msg=out.stdout + out.stderr)
+            self.assertIn("OK dual-lib", out.stdout)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_build_article_collage_diag_runner_has_php_braces(self):
         """Runner must not use str.format on PHP (braces and !empty break format)."""
         sandbox = Path("/tmp/lireate-blog-diag-sandbox")
