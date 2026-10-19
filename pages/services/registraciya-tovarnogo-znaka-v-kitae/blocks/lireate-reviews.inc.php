@@ -176,7 +176,6 @@ foreach ($items as $idx => $item) :
               <?php if ($poster) : ?>
               <div class="lx-review-video-poster"><img src="<?php echo htmlspecialchars($poster, ENT_QUOTES, 'UTF-8'); ?>" alt="" loading="lazy" width="280" height="360"></div>
               <?php endif; ?>
-              <div class="lx-review-bubble lx-review-bubble--them"><?php echo htmlspecialchars($preview, ENT_QUOTES, 'UTF-8'); ?></div>
               <span class="lx-review-video-play" aria-hidden="true">▶</span>
             </div>
             <span class="lx-review-tag-pill"><?php echo htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?></span>

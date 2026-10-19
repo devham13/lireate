@@ -45,6 +45,10 @@ for (const p of pages) {
   }
   const footer = await page.$('.lx-site-footer');
   if (!footer) issues.push(`${p.slug}: footer missing`);
+  const reqs = await page.$eval('.lx-site-footer', (el) => el.textContent.includes('1648040894'));
+  if (!reqs) issues.push(`${p.slug}: footer requisites missing`);
+  const email = await page.$eval('.lx-site-footer', (el) => el.textContent.includes('info@lireate.ru'));
+  if (!email) issues.push(`${p.slug}: footer email missing`);
   if (p.calc) {
     const calc = await page.$('[data-lx-calc]');
     if (!calc) issues.push(`${p.slug}: calculator block missing`);

@@ -1,6 +1,5 @@
 /**
  * Скриншоты услуг через PHP preview (scripts/lireate_service_preview_server.sh).
- * Usage: node scripts/capture_service_screenshots.mjs
  */
 import puppeteer from 'puppeteer-core';
 import { readFileSync } from 'fs';
@@ -20,7 +19,7 @@ const routes = [
 function assertPng(path) {
   const buf = readFileSync(path);
   if (buf.length < 25000) throw new Error(`${path} too small (${buf.length} bytes)`);
-  const text = buf.toString('latin1', 0, 200);
+  const text = buf.toString('latin1', 0, 400);
   if (text.includes('Directory listing')) throw new Error(`${path} is directory listing`);
 }
 
@@ -46,19 +45,28 @@ for (const r of routes) {
   const page = await browser.newPage();
   const base = BASE + r.path;
   await shot(page, base, `${OUT}/${r.key}-desktop-hero.png`, 1440, 900);
-  await shot(page, base + '#program', `${OUT}/${r.key}-desktop-steps.png`, 1440, 900);
   const revUrl = base + '#reviews';
   await page.goto(revUrl, { waitUntil: 'networkidle2', timeout: 60000 });
   await new Promise((r) => setTimeout(r, 1500));
   const hasReviews = await page.$('#reviews .lx-review-frame');
   if (hasReviews) {
+    await page.setViewport({ width: 1440, height: 900 });
     await page.screenshot({ path: `${OUT}/${r.key}-desktop-reviews.png` });
     assertPng(`${OUT}/${r.key}-desktop-reviews.png`);
     console.log('OK', `${OUT}/${r.key}-desktop-reviews.png`);
   } else {
     console.log('SKIP reviews', r.key);
   }
-  await shot(page, base + '#contact', `${OUT}/${r.key}-desktop-footer.png`, 1440, 900);
+  await page.goto(base, { waitUntil: 'networkidle2', timeout: 60000 });
+  await page.setViewport({ width: 1440, height: 900 });
+  const det = await page.$('.lx-site-footer-requisites');
+  if (det) await page.evaluate((el) => { el.open = true; }, det);
+  const foot = await page.$('.lx-site-footer');
+  if (foot) {
+    await foot.screenshot({ path: `${OUT}/${r.key}-desktop-footer.png` });
+    assertPng(`${OUT}/${r.key}-desktop-footer.png`);
+    console.log('OK', `${OUT}/${r.key}-desktop-footer.png`);
+  }
   await shot(page, base, `${OUT}/${r.key}-mobile-hero.png`, 390, 844);
   await page.close();
 }

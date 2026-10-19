@@ -19,6 +19,13 @@
 python3 scripts/lireate_service_sync_shared.py
 ```
 
+Локальный просмотр с PHP (как на хостинге, не `python -m http.server`):
+
+```bash
+bash scripts/lireate_service_preview_server.sh
+# http://127.0.0.1:8888/zashchita_avtorskih_prav/ и т.д.
+```
+
 На хостинге общие файлы подмешивает `lireate_hosting_publish_service.py` в `assets/lireate-shared/`.
 
 ## Палитра и фон
@@ -86,4 +93,4 @@ python3 scripts/lireate_service_sync_shared.py
 
 ## Реквизиты в футере
 
-Телефон, адрес (Зеленодольск), email `info@librend.ru`, мессенджеры — как на `/contacts/` и в политике. **ИНН/ОГРН/полное юр. наименование на сайте не найдены** — в футер не добавляются до появления на lireate.ru.
+Реквизиты ООО «ЛИРЕЙТ» — в `lireate-service-footer.inc.php` (email `info@lireate.ru`, банк в `<details>`).
