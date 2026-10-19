@@ -251,6 +251,18 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_build_article_collage_diag_runner_has_php_braces(self):
+        """Runner must not use str.format on PHP (braces and !empty break format)."""
+        sandbox = Path("/tmp/lireate-blog-diag-sandbox")
+        lib_path = REPO_ROOT / "pages/blog/_shared/lireate-blog-lib.php"
+        layout_path = REPO_ROOT / "pages/blog/_shared/lireate-blog-layout.inc.php"
+        php_src = lib.build_php_article_collage_diag_runner(sandbox, lib_path, layout_path)
+        self.assertIn("function lireate_blog_diag_render_article", php_src)
+        self.assertIn("!empty($prep['mode'])", php_src)
+        self.assertIn("lireate_blog_collage_mode", php_src)
+        self.assertNotIn("__DOC__", php_src)
+        self.assertIn("DOCUMENT_ROOT", php_src)
+
     def test_collage_v1_prepare_strips_cover_figure(self):
         php = (
             "<?php\n"
