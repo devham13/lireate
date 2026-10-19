@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+"""Install LIREATE blog CMS shell into hosting DOCROOT (check / apply / rollback)."""
+
+import argparse
+import os
+import sys
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+import lireate_blog_install_lib as lib  # noqa: E402
+
+
+def resolve_office_repo():
+    explicit = os.environ.get("LIREATE_OFFICE_REPO", "").strip()
+    if explicit:
+        return Path(explicit).expanduser().resolve()
+    autopub = os.environ.get("LIREATE_AUTOPUB_HOME", "").strip()
+    if autopub:
+        candidate = Path(autopub).expanduser() / "office-repo"
+        if candidate.is_dir():
+            return candidate.resolve()
+    return REPO_ROOT
+
+
+def bootstrap_env(env_file):
+    env_file = Path(env_file).expanduser()
+    if not env_file.is_file():
+        raise SystemExit("BLOCKER: env file not found: {0}".format(env_file))
+    lib.load_env_file(env_file)
+    return env_file
+
+
+def print_copy_plan(pairs, docroot):
+    print("=== COPY (office-repo → DOCROOT) ===")
+    if not pairs:
+        print("WARN: nothing to copy — run lireate_blog_sync_template.py in office-repo")
+        return
+    for src, rel in pairs:
+        print("{0}  →  {1}".format(src, docroot / rel))
+
+
+def cmd_check(office_repo, docroot):
+    pairs = lib.copy_plan(office_repo)
+    template = lib.find_news_template(docroot)
+    print("docroot: {0}".format(docroot))
+    print("office_repo: {0}".format(office_repo))
+    print_copy_plan(pairs, docroot)
+    print("")
+    print("=== CMS TEMPLATE PATCH ===")
+    if template is None:
+        print("BLOCKER: no CMS news template found under {0}/template".format(docroot))
+        return 2
+    rel = template.relative_to(docroot)
+    print("file: {0}".format(rel))
+    original = template.read_text(encoding="utf-8", errors="replace")
+    planned = lib.plan_template_content(original)
+    if planned == original:
+        print("status: no changes needed (include + body class already present)")
+    else:
+        print("status: would patch")
+        diff = lib.unified_diff(original, planned, str(rel))
+        if diff:
+            print(diff.rstrip())
+        else:
+            print("(empty diff)")
+    print("")
+    print("SKIP (never touched): data/db.php, docroot/.htaccess")
+    return 0
+
+
+def cmd_apply(office_repo, docroot, backups_root):
+    lib.sync_office_blog_template(office_repo)
+    pairs = lib.copy_plan(office_repo)
+    if not pairs:
+        raise SystemExit("BLOCKER: copy plan is empty")
+
+    template = lib.find_news_template(docroot)
+    if template is None:
+        raise SystemExit(
+            "BLOCKER: no CMS news template under {0}/template".format(docroot)
+        )
+
+    backup_id = lib.make_backup_id()
+    backup_dir = lib.backup_dir_for_id(backups_root, backup_id)
+    rel_template = template.relative_to(docroot)
+
+    to_backup = [rel for _, rel in pairs if (docroot / rel).is_file()]
+    if rel_template not in to_backup:
+        to_backup.append(rel_template)
+
+    lib.backup_files(backup_dir, docroot, to_backup)
+    created = lib.apply_copies(office_repo, docroot, pairs)
+    lib.write_created_manifest(backup_dir, created)
+
+    changed, notes = lib.apply_template_patch(docroot, template)
+    print("backup: {0}".format(backup_dir))
+    print("template patch: {0}".format(", ".join(notes)))
+
+    base = lib.site_base_url()
+    if not base:
+        print("WARN: no public URL in env — skipping HTTP checks")
+        print("STATUS: OK (files deployed, backup {0})".format(backup_id))
+        return 0
+
+    article_path = lib.probe_article_path(office_repo)
+    errors = lib.verify_http(base, article_path)
+    if errors:
+        print("HTTP verify failed:")
+        for err in errors:
+            print("  - {0}".format(err))
+        print("rolling back backup {0}...".format(backup_id))
+        lib.restore_backup_full(backup_dir, docroot)
+        print("STATUS: ROLLED BACK ({0})".format(backup_id))
+        return 1
+
+    print("HTTP OK: {0}{1}, {0}/news/".format(base, article_path))
+    print("STATUS: OK (backup {0})".format(backup_id))
+    return 0
+
+
+def cmd_rollback(backups_root, docroot, backup_id):
+    backup_dir = lib.backup_dir_for_id(backups_root, backup_id)
+    if not backup_dir.is_dir():
+        raise SystemExit("BLOCKER: backup not found: {0}".format(backup_dir))
+    lib.restore_backup_full(backup_dir, docroot)
+    print("STATUS: restored backup {0}".format(backup_id))
+    return 0
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="LIREATE blog template install for hosting DOCROOT")
+    parser.add_argument(
+        "--env-file",
+        default=os.environ.get("LIREATE_ENV_FILE", ""),
+        help="Path to .env with LIREATE_DOCROOT (default: $LIREATE_ENV_FILE)",
+    )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Copy files, patch CMS template, verify HTTP (rollback on failure)",
+    )
+    parser.add_argument(
+        "--rollback",
+        metavar="TIMESTAMP",
+        help="Restore backup blog-install-TIMESTAMP under ~/lireate-autopub/backups/",
+    )
+    args = parser.parse_args(argv)
+
+    env_file = args.env_file.strip()
+    if not env_file:
+        raise SystemExit("BLOCKER: set LIREATE_ENV_FILE or pass --env-file")
+
+    bootstrap_env(env_file)
+    office_repo = resolve_office_repo()
+    office_repo, docroot, backups_root, _ = lib.resolve_paths(office_repo, env_file)
+
+    if args.rollback:
+        return cmd_rollback(backups_root, docroot, args.rollback.strip())
+    if args.apply:
+        return cmd_apply(office_repo, docroot, backups_root)
+    return cmd_check(office_repo, docroot)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
