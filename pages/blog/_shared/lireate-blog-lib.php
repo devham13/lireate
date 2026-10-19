@@ -380,6 +380,79 @@ function lireate_blog_list_cover_from_row($row)
     return lireate_blog_resolve_cover_url('/template/images/blog/' . $seo . '.jpg');
 }
 
+function lireate_blog_list_seo_path($row)
+{
+    $seo = lireate_blog_list_row_get($row, array('seo_url', 'url', 'slug'), '');
+    $seo = trim((string) $seo, '/');
+    if ($seo === '') {
+        return '';
+    }
+    return '/' . $seo . '/';
+}
+
+function lireate_blog_index_article_by_path($path)
+{
+    static $map = null;
+    $norm = '/' . trim((string) $path, '/') . '/';
+    if ($norm === '//') {
+        return null;
+    }
+    if ($map === null) {
+        $map = array();
+        foreach (lireate_blog_load_index()['articles'] as $article) {
+            if (!is_array($article) || empty($article['url'])) {
+                continue;
+            }
+            $key = '/' . trim((string) $article['url'], '/') . '/';
+            $map[$key] = $article;
+        }
+    }
+    return isset($map[$norm]) ? $map[$norm] : null;
+}
+
+/**
+ * HTML для расчёта времени чтения: только full_story (CMS или index), не анонс.
+ */
+function lireate_blog_list_body_for_reading_time($row)
+{
+    $body = lireate_blog_list_row_get($row, array('full_story', 'text', 'story'), '');
+    if ($body !== '') {
+        return (string) $body;
+    }
+    $path = lireate_blog_list_seo_path($row);
+    if ($path !== '') {
+        $idx = lireate_blog_index_article_by_path($path);
+        if (is_array($idx)) {
+            $from_idx = lireate_blog_list_row_get($idx, array('full_story', 'body_html'), '');
+            if ($from_idx !== '') {
+                return (string) $from_idx;
+            }
+        }
+    }
+    return '';
+}
+
+function lireate_blog_list_read_mins_for_row($row)
+{
+    $preset = lireate_blog_list_row_get($row, array('reading_mins', 'read_mins'), '');
+    if ($preset !== '' && (int) $preset > 0) {
+        return (int) $preset;
+    }
+    $path = lireate_blog_list_seo_path($row);
+    if ($path !== '') {
+        $idx = lireate_blog_index_article_by_path($path);
+        if (is_array($idx) && isset($idx['reading_mins']) && (int) $idx['reading_mins'] > 0) {
+            return (int) $idx['reading_mins'];
+        }
+    }
+    $body = lireate_blog_list_body_for_reading_time($row);
+    if ($body !== '') {
+        return lireate_blog_reading_time_minutes($body);
+    }
+    $title = lireate_blog_list_row_get($row, array('name', 'title', 'headline'), '');
+    return lireate_blog_reading_time_minutes($title);
+}
+
 function lireate_blog_list_excerpt_from_row($row)
 {
     $text = lireate_blog_list_row_get(
@@ -422,8 +495,7 @@ function lireate_blog_list_normalize_row($row)
     if ($author === '') {
         $author = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_NAME : LIREATE_BLOG_DEFAULT_AUTHOR;
     }
-    $body_for_time = lireate_blog_list_row_get($row, array('full_story', 'short_story', 'descr', 'excerpt'), '');
-    $read_mins = lireate_blog_reading_time_minutes($body_for_time !== '' ? $body_for_time : $title);
+    $read_mins = lireate_blog_list_read_mins_for_row($row);
     $date_display = lireate_blog_list_format_date($row);
     return array(
         'url' => $seo,
