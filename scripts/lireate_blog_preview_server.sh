@@ -16,8 +16,9 @@ mkdir -p "$DOCROOT/pages/services/_shared"
 ln -sfn "$ROOT/pages/services/_shared/lireate-service-footer.inc.php" "$DOCROOT/pages/services/_shared/lireate-service-footer.inc.php"
 mkdir -p "$DOCROOT/pages/services/_shared" "$DOCROOT/pages/blog/_shared"
 ln -sfn "$ROOT/pages/services/_shared/lireate-service-dark.css" "$DOCROOT/pages/services/_shared/lireate-service-dark.css"
-for f in lireate-blog-config.php lireate-blog-lib.php lireate-blog-layout.inc.php lireate-blog-article.css lireate-blog-article.js; do
+for f in lireate-blog-config.php lireate-blog-lib.php lireate-blog-layout.inc.php lireate-blog-list.inc.php lireate-blog-article.css lireate-blog-article.js lireate-blog-list.css lireate-blog-footer.css; do
   ln -sfn "$ROOT/pages/blog/_shared/$f" "$DOCROOT/pages/blog/_shared/$f"
 done
-echo "Blog preview: http://127.0.0.1:${PORT}/blog_preview/"
+echo "Blog preview article: http://127.0.0.1:${PORT}/blog_preview/"
+echo "Blog preview list:    http://127.0.0.1:${PORT}/blog_preview/list.php"
 exec php -S "127.0.0.1:${PORT}" -t "$DOCROOT"

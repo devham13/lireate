@@ -12,8 +12,11 @@ INSTALL_MARKERS_LEGACY = (
     "lireate-blog-install:v2",
     "lireate-blog-install:v1",
 )
+LIST_INSTALL_MARKER = "lireate-blog-list-install:v1"
 BODY_CLASS = "lireate-blog-body"
 CMS_INCLUDE = "/template/page/news/lireate-blog-cms.inc.php"
+LIST_CMS_INCLUDE = "/template/page/news/lireate-blog-list-cms.inc.php"
+LIST_SECTION_MARKERS = ('id="blog"', "Самое свежее и интересное", "articlesBlock")
 
 SKIP_PATH_PARTS = {"data", "db.php"}
 FORBIDDEN_TOUCH = {".htaccess"}
@@ -74,6 +77,9 @@ def copy_plan(office_repo):
         for path in sorted(shared_blog.glob("*")):
             if path.is_file() and path.suffix in (".php", ".css", ".js"):
                 by_dest[Path("pages/blog/_shared") / path.name] = path
+    list_cms = news_dir / "lireate-blog-list-cms.inc.php"
+    if list_cms.is_file():
+        by_dest[Path("template/page/news/lireate-blog-list-cms.inc.php")] = list_cms
     index = repo / "data" / "blog-articles-index.json"
     if index.is_file():
         by_dest[Path("data/blog-articles-index.json")] = index
@@ -98,6 +104,32 @@ def _iter_php_under_template(docroot):
         if "data" in rel.parts and path.name == "db.php":
             continue
         yield path
+
+
+def find_news_list_template(docroot):
+    """Locate CMS PHP that renders /news list (section#blog)."""
+    candidates = []
+    for path in _iter_php_under_template(docroot):
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        if "news_article[0]" in text:
+            continue
+        if not all(marker in text for marker in (LIST_SECTION_MARKERS[0], LIST_SECTION_MARKERS[1])):
+            continue
+        score = 70
+        if LIST_INSTALL_MARKER in text:
+            score = 100
+        if LIST_SECTION_MARKERS[2] in text:
+            score += 10
+        if path.name in ("news.php", "blog.php", "newsList.php"):
+            score += 15
+        candidates.append((score, path))
+    if not candidates:
+        return None
+    candidates.sort(key=lambda x: (-x[0], len(str(x[1]))))
+    return candidates[0][1]
 
 
 def find_news_template(docroot):
@@ -298,11 +330,91 @@ def patch_body_class_content(text):
     return new_text, new_text != text
 
 
+def _span_blog_section(text):
+    match = re.search(r"<section\s+id=[\"']blog[\"'][^>]*>", text, re.IGNORECASE)
+    if not match:
+        return None
+    start = match.start()
+    open_end = match.end()
+    depth = 1
+    pos = open_end
+    lower = text.lower()
+    while pos < len(text) and depth > 0:
+        next_open = lower.find("<section", pos)
+        next_close = lower.find("</section>", pos)
+        if next_close == -1:
+            return None
+        if next_open != -1 and next_open < next_close:
+            depth += 1
+            pos = next_open + 8
+        else:
+            depth -= 1
+            end = next_close + len("</section>")
+            if depth == 0:
+                return (start, end)
+            pos = next_close + 9
+    return None
+
+
+def _replacement_block_list():
+    return (
+        "<section id=\"blog\">\n"
+        "<?php /* %s */ ?>\n"
+        "<?php\n"
+        "require_once $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-lib.php';\n"
+        "$lireate_blog_list_items = lireate_blog_list_collect_cms_items();\n"
+        "$lireate_blog_list_featured = lireate_blog_list_featured_from_cms($lireate_blog_list_items);\n"
+        "$lireate_blog_list_filters = lireate_blog_list_filters_from_cms();\n"
+        "$lireate_blog_list_pagination = lireate_blog_list_pagination_from_cms();\n"
+        "require $_SERVER['DOCUMENT_ROOT'] . '%s';\n"
+        "?>\n"
+        "</section>\n"
+    ) % (LIST_INSTALL_MARKER, LIST_CMS_INCLUDE)
+
+
+def patch_news_list_template_content(text):
+    """Return (new_text, changed, description)."""
+    if LIST_INSTALL_MARKER in text:
+        return text, False, "already patched (list marker present)"
+    span = _span_blog_section(text)
+    if not span:
+        return text, False, "section#blog not found"
+    repl = _replacement_block_list()
+    new_text = text[: span[0]] + repl + text[span[1] :]
+    return new_text, new_text != text, "replaced section#blog with lireate-blog-list-cms.inc.php"
+
+
+def plan_list_template_content(text):
+    text, _, _ = patch_news_list_template_content(text)
+    text, _ = patch_body_class_content(text)
+    return text
+
+
 def plan_template_content(text):
     """Apply news + body patches for preview (idempotent)."""
     text, _, _ = patch_news_template_content(text)
     text, _ = patch_body_class_content(text)
     return text
+
+
+def apply_list_template_patch(docroot, template_path):
+    """Write patched list template; return (changed, notes)."""
+    rel = template_path.relative_to(docroot)
+    if "data" in rel.parts and template_path.name == "db.php":
+        raise SystemExit("BLOCKER: refusing to patch data/db.php")
+    if template_path.name == ".htaccess" and template_path.parent == docroot:
+        raise SystemExit("BLOCKER: refusing to patch docroot .htaccess")
+    original = template_path.read_text(encoding="utf-8", errors="replace")
+    planned = plan_list_template_content(original)
+    if planned == original:
+        return False, ["list template already up to date"]
+    notes = []
+    if LIST_INSTALL_MARKER not in original:
+        notes.append("list cms include (lireate-blog-list-cms.inc.php)")
+    if BODY_CLASS not in original and BODY_CLASS in planned:
+        notes.append("body class {0}".format(BODY_CLASS))
+    template_path.write_text(planned, encoding="utf-8")
+    return True, notes
 
 
 def apply_template_patch(docroot, template_path):
@@ -486,6 +598,7 @@ def diagnose_http_body(body, headers):
         "lireate-blog-install": INSTALL_MARKER in body or "lireate-blog-install" in body,
         "lireate-blog-body": BODY_CLASS in body,
         "lireate-blog-page": "lireate-blog-page" in body,
+        "lireate-blog-list-page": "lireate-blog-list-page" in body,
         "lx-site-footer": "lx-site-footer" in body,
         "toc": ("lireate-blog-toc" in body or "data-lx-blog-toc" in body),
     }
@@ -577,7 +690,10 @@ def verify_http(
         if diag.get("php_issues"):
             page_errors.append("PHP errors in HTML")
         if label == "news_list":
-            pass
+            if not diag["markers"].get("lireate-blog-list-page"):
+                page_errors.append("missing lireate-blog-list-page (list patch/CMS not active?)")
+            if not diag["markers"].get("lx-site-footer"):
+                page_errors.append("missing lx-site-footer")
         else:
             if not diag["markers"].get("lireate-blog-page"):
                 page_errors.append("missing lireate-blog-page (patch/CMS not active?)")

@@ -20,6 +20,7 @@ COPY_FILES = (
     "lireate-blog-article.css",
     "lireate-blog-article.js",
     "lireate-blog-footer.css",
+    "lireate-blog-list.css",
 )
 
 

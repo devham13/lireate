@@ -6,7 +6,8 @@
 
 1. Подключите CSS/JS (уже в `lireate-blog-layout.inc.php`).
 2. Замените вывод одной новости на `lireate-blog-cms.inc.php` (см. комментарий в файле).
-3. Положите `data/blog-articles-index.json` в `DOCROOT/data/` для блока «Читайте также».
+3. Список `/news/`: `section#blog` → `lireate-blog-list-cms.inc.php` (см. `scripts/lireate_blog_install.py --check`).
+4. Положите `data/blog-articles-index.json` в `DOCROOT/data/` для блока «Читайте также» и fallback списка.
 
 ## Новые статьи (lireate-news)
 

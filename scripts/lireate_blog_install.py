@@ -46,27 +46,46 @@ def print_copy_plan(pairs, docroot):
 def cmd_check(office_repo, docroot):
     pairs = lib.copy_plan(office_repo)
     template = lib.find_news_template(docroot)
+    list_template = lib.find_news_list_template(docroot)
     print("docroot: {0}".format(docroot))
     print("office_repo: {0}".format(office_repo))
     print_copy_plan(pairs, docroot)
     print("")
-    print("=== CMS TEMPLATE PATCH ===")
+    print("=== CMS ARTICLE TEMPLATE PATCH ===")
     if template is None:
-        print("BLOCKER: no CMS news template found under {0}/template".format(docroot))
-        return 2
-    rel = template.relative_to(docroot)
-    print("file: {0}".format(rel))
-    original = template.read_text(encoding="utf-8", errors="replace")
-    planned = lib.plan_template_content(original)
-    if planned == original:
-        print("status: no changes needed (include + body class already present)")
+        print("WARN: no CMS article template found under {0}/template".format(docroot))
     else:
-        print("status: would patch")
-        diff = lib.unified_diff(original, planned, str(rel))
-        if diff:
-            print(diff.rstrip())
+        rel = template.relative_to(docroot)
+        print("file: {0}".format(rel))
+        original = template.read_text(encoding="utf-8", errors="replace")
+        planned = lib.plan_template_content(original)
+        if planned == original:
+            print("status: no changes needed (include + body class already present)")
         else:
-            print("(empty diff)")
+            print("status: would patch")
+            diff = lib.unified_diff(original, planned, str(rel))
+            if diff:
+                print(diff.rstrip())
+            else:
+                print("(empty diff)")
+    print("")
+    print("=== CMS NEWS LIST TEMPLATE PATCH ===")
+    if list_template is None:
+        print("WARN: no CMS /news list template found under {0}/template".format(docroot))
+    else:
+        rel = list_template.relative_to(docroot)
+        print("file: {0}".format(rel))
+        original = list_template.read_text(encoding="utf-8", errors="replace")
+        planned = lib.plan_list_template_content(original)
+        if planned == original:
+            print("status: no changes needed (list include already present)")
+        else:
+            print("status: would patch")
+            diff = lib.unified_diff(original, planned, str(rel))
+            if diff:
+                print(diff.rstrip())
+            else:
+                print("(empty diff)")
     print("")
     print("SKIP (never touched): data/db.php, docroot/.htaccess")
     return 0
@@ -79,26 +98,38 @@ def cmd_apply(office_repo, docroot, backups_root):
         raise SystemExit("BLOCKER: copy plan is empty")
 
     template = lib.find_news_template(docroot)
-    if template is None:
+    list_template = lib.find_news_list_template(docroot)
+    if template is None and list_template is None:
         raise SystemExit(
-            "BLOCKER: no CMS news template under {0}/template".format(docroot)
+            "BLOCKER: no CMS news templates under {0}/template".format(docroot)
         )
 
     backup_id = lib.make_backup_id()
     backup_dir = lib.backup_dir_for_id(backups_root, backup_id)
-    rel_template = template.relative_to(docroot)
 
     to_backup = [rel for _, rel in pairs if (docroot / rel).is_file()]
-    if rel_template not in to_backup:
-        to_backup.append(rel_template)
+    if template is not None:
+        rel_template = template.relative_to(docroot)
+        if rel_template not in to_backup:
+            to_backup.append(rel_template)
+    if list_template is not None:
+        rel_list = list_template.relative_to(docroot)
+        if rel_list not in to_backup:
+            to_backup.append(rel_list)
 
     lib.backup_files(backup_dir, docroot, to_backup)
     created = lib.apply_copies(office_repo, docroot, pairs)
     lib.write_created_manifest(backup_dir, created)
 
-    changed, notes = lib.apply_template_patch(docroot, template)
+    patch_notes = []
+    if template is not None:
+        _changed, notes = lib.apply_template_patch(docroot, template)
+        patch_notes.extend(notes)
+    if list_template is not None:
+        _changed, notes = lib.apply_list_template_patch(docroot, list_template)
+        patch_notes.extend(notes)
     print("backup: {0}".format(backup_dir))
-    print("template patch: {0}".format(", ".join(notes)))
+    print("template patch: {0}".format(", ".join(patch_notes) if patch_notes else "ok"))
 
     base = lib.site_base_url()
     if not base:
