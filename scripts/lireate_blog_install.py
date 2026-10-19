@@ -139,6 +139,11 @@ def main(argv=None):
         help="Path to .env with LIREATE_DOCROOT (default: $LIREATE_ENV_FILE)",
     )
     parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Read-only: copy plan and CMS patch diff (default when neither --apply nor --rollback)",
+    )
+    parser.add_argument(
         "--apply",
         action="store_true",
         help="Copy files, patch CMS template, verify HTTP (rollback on failure)",

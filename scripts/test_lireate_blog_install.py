@@ -4,6 +4,7 @@
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -17,6 +18,8 @@ import lireate_blog_install as install  # noqa: E402
 import lireate_blog_install_lib as lib  # noqa: E402
 
 FIXTURE_TEMPLATE = REPO_ROOT / "scripts/fixtures/cms-news-article-template.php"
+FIXTURE_NEWSTYLE = REPO_ROOT / "scripts/fixtures/cms-newstyle-article-snippet.php"
+BODY_MARKER = "LIREATE_UNIQUE_BODY_MARKER_42"
 
 
 class BlogInstallLibTests(unittest.TestCase):
@@ -42,6 +45,58 @@ class BlogInstallLibTests(unittest.TestCase):
             shutil.copy(str(FIXTURE_TEMPLATE), str(dest))
             found = lib.find_news_template(tmp)
             self.assertEqual(found, dest)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_patch_newstyle_maps_news_article(self):
+        text = FIXTURE_NEWSTYLE.read_text(encoding="utf-8")
+        planned, changed, desc = lib.patch_news_template_content(text)
+        self.assertTrue(changed)
+        self.assertIn("$_lb_art", planned)
+        self.assertIn("news_article[0]", planned)
+        self.assertIn("$category", planned)
+        self.assertIn("$catUrl", planned)
+        self.assertNotIn('id="textBox"', planned)
+        self.assertIn("datetime", planned)
+        self.assertNotIn("isset($name)", planned)
+
+    def test_newstyle_render_single_body_and_balanced_html(self):
+        snippet = FIXTURE_NEWSTYLE.read_text(encoding="utf-8")
+        planned, changed, _ = lib.patch_news_template_content(snippet)
+        self.assertTrue(changed)
+        php = (
+            "<?php\n"
+            "$_SERVER['DOCUMENT_ROOT'] = '{docroot}';\n"
+            "define('LIREATE_BLOG_ASSETS_BASE', '/template/page/news');\n"
+            "$news_article = array(array(\n"
+            "  'name' => 'Test title',\n"
+            "  'full_story' => '<p>{marker}</p><img src=\"/template/images/blog/cover-test.jpg\" alt=\"\"><p>tail</p>',\n"
+            "  'datetime' => 1760832000,\n"
+            "  'seo_url' => 'slug-one',\n"
+            "));\n"
+            "$category = 'Товарный знак';\n"
+            "$catUrl = '/news/';\n"
+            "ob_start();\n"
+            "?>\n"
+            "{planned}\n"
+            "<?php echo ob_get_clean();\n"
+        ).format(docroot=REPO_ROOT, marker=BODY_MARKER, planned=planned)
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-newstyle-render-"))
+        try:
+            script = tmp / "run.php"
+            script.write_text(php, encoding="utf-8")
+            out = subprocess.run(
+                ["php", str(script)],
+                capture_output=True,
+                text=True,
+                cwd=str(REPO_ROOT),
+            )
+            self.assertEqual(out.returncode, 0, msg=out.stderr)
+            html = out.stdout
+            self.assertEqual(html.count(BODY_MARKER), 1)
+            self.assertIn("lireate-blog-cover", html)
+            self.assertIn("cover-test.jpg", html)
+            self.assertTrue(lib.html_tags_balanced(html))
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
@@ -94,6 +149,11 @@ class BlogInstallApplyTests(unittest.TestCase):
         patched = (self.docroot / "template/page/news/article.php").read_text(encoding="utf-8")
         self.assertIn('id="textBox"', patched)
         self.assertNotIn(lib.INSTALL_MARKER, patched)
+
+    @mock.patch.object(lib, "sync_office_blog_template")
+    def test_explicit_check_flag(self, _sync):
+        code = install.main(["--check", "--env-file", str(self.env_file)])
+        self.assertEqual(code, 0)
 
     @mock.patch.object(lib, "sync_office_blog_template")
     def test_check_prints_diff(self, _sync):

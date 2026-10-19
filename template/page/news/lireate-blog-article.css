@@ -168,6 +168,21 @@ body.lireate-blog-body {
 .lireate-blog-published time {
   color: #cbd5e1;
 }
+.lireate-blog-cover {
+  margin: 0 0 28px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--lb-line);
+  background: rgba(15, 23, 42, 0.4);
+}
+.lireate-blog-cover img,
+.lireate-blog-cover .lireate-blog-cover-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+}
 .lireate-blog-prose {
   color: var(--lb-text);
   font-size: 17px;

@@ -13,6 +13,10 @@ if (!is_file($repo_blog_shared . '/lireate-blog-layout.inc.php')) {
 
 $row = isset($lireate_news_row) && is_array($lireate_news_row) ? $lireate_news_row : array();
 
+if (!isset($lireate_blog_cover_html)) {
+    $lireate_blog_cover_html = '';
+}
+
 $lireate_blog_title = isset($row['name']) ? $row['name'] : (isset($lireate_blog_title) ? $lireate_blog_title : '');
 $lireate_blog_body_html = isset($row['full_story']) ? $row['full_story'] : (isset($lireate_blog_body_html) ? $lireate_blog_body_html : '');
 $lireate_blog_date_display = isset($row['date']) ? $row['date'] : (isset($lireate_blog_date_display) ? $lireate_blog_date_display : '');
