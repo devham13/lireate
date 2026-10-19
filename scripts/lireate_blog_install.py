@@ -26,6 +26,16 @@ def resolve_office_repo():
     return REPO_ROOT
 
 
+def default_env_file_path():
+    explicit = os.environ.get("LIREATE_ENV_FILE", "").strip()
+    if explicit:
+        return Path(explicit).expanduser()
+    autopub = os.environ.get("LIREATE_AUTOPUB_HOME", "").strip()
+    if not autopub:
+        autopub = str(Path.home() / "lireate-autopub")
+    return Path(autopub).expanduser() / ".env"
+
+
 def bootstrap_env(env_file):
     env_file = Path(env_file).expanduser()
     if not env_file.is_file():
@@ -95,8 +105,8 @@ def cmd_diag(docroot, office_repo):
 
 
 def cmd_apply(office_repo, docroot, backups_root):
-    lib.sync_office_blog_template(office_repo)
     pairs = lib.copy_plan(office_repo)
+    print("deploy sources: pages/blog/_shared → template/page/news (office-repo git not modified)")
     if not pairs:
         raise SystemExit("BLOCKER: copy plan is empty")
 
@@ -180,7 +190,7 @@ def main(argv=None):
     parser.add_argument(
         "--env-file",
         default=os.environ.get("LIREATE_ENV_FILE", ""),
-        help="Path to .env with LIREATE_DOCROOT (default: $LIREATE_ENV_FILE)",
+        help="Path to .env with LIREATE_DOCROOT (default: $LIREATE_ENV_FILE or ~/lireate-autopub/.env)",
     )
     parser.add_argument(
         "--check",
@@ -206,11 +216,12 @@ def main(argv=None):
 
     env_file = args.env_file.strip()
     if not env_file:
-        raise SystemExit("BLOCKER: set LIREATE_ENV_FILE or pass --env-file")
-
-    bootstrap_env(env_file)
+        env_path = default_env_file_path()
+    else:
+        env_path = Path(env_file).expanduser()
+    bootstrap_env(str(env_path))
     office_repo = resolve_office_repo()
-    office_repo, docroot, backups_root, _ = lib.resolve_paths(office_repo, env_file)
+    office_repo, docroot, backups_root, _ = lib.resolve_paths(office_repo, str(env_path))
 
     if args.rollback:
         return cmd_rollback(backups_root, docroot, args.rollback.strip())

@@ -200,6 +200,20 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_list_diag_without_live_list_cms(self):
+        """--diag must render from office-repo when list-cms is not deployed yet."""
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-"))
+        try:
+            live = tmp / "docroot"
+            (live / "data").mkdir(parents=True)
+            (live / "data" / "db.php").write_text("<?php\n", encoding="utf-8")
+            list_cms_live = live / "template/page/news/lireate-blog-list-cms.inc.php"
+            self.assertFalse(list_cms_live.is_file())
+            code = lib.run_php_list_diag(live, REPO_ROOT)
+            self.assertEqual(code, 0)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
 
 class BlogInstallApplyTests(unittest.TestCase):
     def setUp(self):
