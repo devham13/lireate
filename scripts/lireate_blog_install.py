@@ -104,6 +104,24 @@ def cmd_diag(docroot, office_repo):
     return lib.run_php_list_diag(docroot, office_repo)
 
 
+def cmd_refresh_service_footers(office_repo, docroot, backups_root):
+    planned, _updated = lib.plan_published_service_refresh(office_repo, docroot)
+    if not planned:
+        print("No published service directories to refresh.")
+        return 0
+    backup_id = lib.make_backup_id()
+    backup_dir = lib.backup_dir_for_id(backups_root, backup_id)
+    to_backup = [rel for _src, rel in planned if (docroot / rel).is_file()]
+    lib.backup_files(backup_dir, docroot, to_backup)
+    _planned, updated = lib.refresh_published_service_includes(office_repo, docroot)
+    print("backup: {0}".format(backup_dir))
+    print("refreshed {0} file(s):".format(len(updated)))
+    for rel in updated:
+        print("  {0}".format(rel))
+    print("STATUS: OK (backup {0})".format(backup_id))
+    return 0
+
+
 def cmd_apply(office_repo, docroot, backups_root):
     pairs = lib.copy_plan(office_repo)
     print("deploy sources: pages/blog/_shared → template/page/news (office-repo git not modified)")
@@ -135,11 +153,24 @@ def cmd_apply(office_repo, docroot, backups_root):
         if rel_list not in to_backup:
             to_backup.append(rel_list)
 
+    service_refresh = lib.plan_published_service_refresh(office_repo, docroot)
+    for _src, rel in service_refresh:
+        if (docroot / rel).is_file() and rel not in to_backup:
+            to_backup.append(rel)
+
     lib.backup_files(backup_dir, docroot, to_backup)
     created = lib.apply_copies(office_repo, docroot, pairs)
     messenger_created = lib.deploy_docroot_messenger_shared(office_repo, docroot)
     created.extend(messenger_created)
     lib.write_created_manifest(backup_dir, created)
+
+    _planned_svc, service_updated = lib.refresh_published_service_includes(office_repo, docroot)
+    if service_updated:
+        print(
+            "service includes refreshed: {0} file(s) (footer/sticky/docroot _shared messenger)".format(
+                len(service_updated)
+            )
+        )
 
     patch_notes = []
     if template is not None:
@@ -225,6 +256,11 @@ def main(argv=None):
         action="store_true",
         help="php-cli render of lireate-blog-list-cms.inc.php (display_errors=1)",
     )
+    parser.add_argument(
+        "--refresh-published-service-footers",
+        action="store_true",
+        help="Copy footer/sticky + docroot _shared messenger into published service dirs (with backup)",
+    )
     args = parser.parse_args(argv)
 
     env_file = args.env_file.strip()
@@ -240,6 +276,8 @@ def main(argv=None):
         return cmd_rollback(backups_root, docroot, args.rollback.strip())
     if args.diag:
         return cmd_diag(docroot, office_repo)
+    if args.refresh_published_service_footers:
+        return cmd_refresh_service_footers(office_repo, docroot, backups_root)
     if args.apply:
         return cmd_apply(office_repo, docroot, backups_root)
     return cmd_check(office_repo, docroot)

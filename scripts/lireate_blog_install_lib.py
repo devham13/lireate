@@ -116,7 +116,8 @@ def build_php_article_collage_diag_runner(sandbox_docroot, load_php_path, layout
         "$collage_story = '<figure class=\"lx-article-cover\" data-cover-style=\"collage-v1\">'\n"
         "    . '<img src=\"/template/images/blog/diag-collage-v1.jpg\" alt=\"Diag\" width=\"860\" height=\"400\"></figure>'\n"
         "    . '<p>Collage body</p>';\n"
-        "$legacy_story = '<p>Legacy body without collage cover.</p><h2>Section</h2>';\n"
+        "$legacy_story = '<p>Legacy body without collage cover.</p>'\n"
+    "    . '<h3>Legacy section one</h3><p>Text.</p><h3>Legacy section two</h3><p>More.</p>';\n"
         "echo \"<!-- lireate-blog-diag-article-section:collage -->\\n\";\n"
         "echo lireate_blog_diag_render_article(array(\n"
         "    'full_story' => $collage_story,\n"
@@ -1126,6 +1127,121 @@ def probe_service_web_path(office_repo):
     return "/" + slug.replace("-", "_") + "/"
 
 
+def build_php_http_verify_articles_diag_runner(
+    sandbox_docroot, article_include_path, slug_paths, bodies_php_array_literal
+):
+    doc_lit = php_single_quoted_literal(str(Path(sandbox_docroot).resolve()))
+    art_lit = php_single_quoted_literal(str(Path(article_include_path).resolve()))
+    slugs_php = ",\n".join(php_single_quoted_literal(p.strip("/")) for p in slug_paths)
+    template = (
+        "<?php\n"
+        "ini_set('display_errors', '1');\n"
+        "error_reporting(E_ALL);\n"
+        "$_SERVER['DOCUMENT_ROOT'] = __DOC__;\n"
+        "$default_story = __DEFAULT__;\n"
+        "$bodies = __BODIES__;\n"
+        "$slugs = array(\n__SLUGS__\n);\n"
+        "$category = 'Товарный знак';\n"
+        "$catUrl = '/news/';\n"
+        "foreach ($slugs as $slug) {\n"
+        "  $story = isset($bodies[$slug]) ? $bodies[$slug] : $default_story;\n"
+        "  $_SERVER['REQUEST_URI'] = '/' . $slug . '/';\n"
+        "  $_SERVER['SCRIPT_FILENAME'] = __ARTICLE__;\n"
+        "  $news_article = array(array(\n"
+        "    'name' => 'HTTP verify diag ' . $slug,\n"
+        "    'full_story' => $story,\n"
+        "    'datetime' => 1760832000,\n"
+        "    'seo_url' => $slug,\n"
+        "  ));\n"
+        "  echo \"<!-- lireate-http-verify-slug:\" . $slug . \" -->\\n\";\n"
+        "  ob_start();\n"
+        "  include __ARTICLE__;\n"
+        "  echo ob_get_clean();\n"
+        "  echo \"\\n<!-- /lireate-http-verify-slug:\" . $slug . \" -->\\n\";\n"
+        "}\n"
+    )
+    return fill_php_runner_template(
+        template,
+        {
+            "DOC": doc_lit,
+            "ARTICLE": art_lit,
+            "SLUGS": slugs_php,
+            "DEFAULT": php_single_quoted_literal(DEFAULT_HTTP_VERIFY_ARTICLE_BODY),
+            "BODIES": bodies_php_array_literal,
+        },
+    )
+
+
+def _php_array_literal_from_map(string_map):
+    lines = ["array("]
+    for key, val in sorted(string_map.items()):
+        lines.append(
+            "  {0} => {1},".format(
+                php_single_quoted_literal(str(key)),
+                php_single_quoted_literal(str(val)),
+            )
+        )
+    lines.append(")")
+    return "\n".join(lines)
+
+
+def run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel):
+    if article_rel is None:
+        print("BLOCKER: no article CMS template for HTTP verify article diag")
+        return 2
+    article_include = sandbox / article_rel
+    if not article_include.is_file():
+        print("BLOCKER: article template missing in sandbox ({0})".format(article_include))
+        return 2
+    slug_paths = probe_article_paths(repo)
+    bodies = load_http_verify_article_bodies_fixture(repo)
+    bodies_lit = _php_array_literal_from_map(bodies)
+    runner = sandbox.parent / "run-http-verify-articles-diag.php"
+    runner.write_text(
+        build_php_http_verify_articles_diag_runner(
+            host_to_php_fs_path(php_bin, repo, sandbox),
+            host_to_php_fs_path(php_bin, repo, article_include),
+            slug_paths,
+            bodies_lit,
+        ),
+        encoding="utf-8",
+    )
+    print("=== PHP HTTP VERIFY ARTICLES DIAG (same markers as --apply) ===")
+    print("paths: {0}".format(", ".join(slug_paths)))
+    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "http-verify-articles")
+    fail = []
+    if code != 0:
+        fail.append("php exit {0}".format(code))
+    if re.search(r"(?i)Fatal error|Parse error|Cannot redeclare", combined):
+        fail.append("PHP fatal/parse/redeclare")
+    for slug_path in slug_paths:
+        slug = slug_path.strip("/")
+        start = "<!-- lireate-http-verify-slug:{0} -->".format(slug)
+        end = "<!-- /lireate-http-verify-slug:{0} -->".format(slug)
+        if start not in stdout:
+            fail.append("missing render chunk for {0}".format(slug))
+            continue
+        chunk = stdout.split(start, 1)[1].split(end, 1)[0]
+        errs, diag = verify_render_html_errors(chunk, {}, "article")
+        markers = diag.get("markers") or {}
+        print(
+            "  {0}: toc={1} footer={2} blog_page={3}{4}".format(
+                slug,
+                markers.get("toc"),
+                markers.get("lx-site-footer"),
+                markers.get("lireate-blog-page"),
+                (" FAIL: " + "; ".join(errs)) if errs else " OK",
+            )
+        )
+        if errs:
+            fail.append("{0}: {1}".format(slug, "; ".join(errs)))
+    if fail:
+        print("HTTP VERIFY ARTICLES RESULT: FAIL ({0})".format("; ".join(fail)))
+        return 1
+    print("HTTP VERIFY ARTICLES RESULT: PASS")
+    return 0
+
+
 def build_php_newstyle_diag_runner(sandbox_docroot, article_include_path, article_slug):
     doc_lit = php_single_quoted_literal(str(Path(sandbox_docroot).resolve()))
     art_lit = php_single_quoted_literal(str(Path(article_include_path).resolve()))
@@ -1228,10 +1344,17 @@ def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
         fail.append("php exit {0}".format(code))
     if re.search(r"(?i)Fatal error|Parse error|Cannot redeclare", combined):
         fail.append("PHP fatal/parse/redeclare")
-    if "lireate-blog-page" not in stdout:
-        fail.append("missing lireate-blog-page")
-    if "lx-site-footer" not in stdout:
-        fail.append("missing lx-site-footer")
+    marker_errors, diag = verify_render_html_errors(stdout, {}, "article")
+    if marker_errors:
+        fail.extend(marker_errors)
+    markers = diag.get("markers") or {}
+    print(
+        "newstyle_markers: blog_page={0} footer={1} toc={2}".format(
+            markers.get("lireate-blog-page"),
+            markers.get("lx-site-footer"),
+            markers.get("toc"),
+        )
+    )
     if fail:
         print("NEWSTYLE RESULT: FAIL ({0})".format("; ".join(fail)))
         print("--- stdout tail ---")
@@ -1388,6 +1511,146 @@ def diagnose_http_body(body, headers):
     }
 
 
+def verify_news_list_marker_errors(markers):
+    """Same content rules as HTTP verify for /news/ (no status line)."""
+    markers = markers or {}
+    page_errors = []
+    if markers.get("lireate-blog-list-fallback"):
+        page_errors.append("list rendered in fallback mode ({0})".format(LIST_FALLBACK_MARKER))
+    if not markers.get("lireate-blog-list-page"):
+        page_errors.append("missing lireate-blog-list-page (list patch/CMS not active?)")
+    if not markers.get("lx-site-footer"):
+        page_errors.append("missing lx-site-footer")
+    return page_errors
+
+
+def verify_article_marker_errors(markers):
+    """Same content rules as HTTP verify for article URLs (no status line)."""
+    markers = markers or {}
+    page_errors = []
+    if not markers.get("lireate-blog-page"):
+        page_errors.append("missing lireate-blog-page (patch/CMS not active?)")
+    if not markers.get("lx-site-footer"):
+        page_errors.append("missing lx-site-footer")
+    if not markers.get("toc"):
+        page_errors.append("missing TOC markup")
+    return page_errors
+
+
+def verify_render_html_errors(body, headers, page_kind):
+    """Return (errors, diag) using the same marker rules as live HTTP verify."""
+    diag = diagnose_http_body(body, headers or {})
+    markers = diag.get("markers") or {}
+    if diag.get("php_issues"):
+        errs = ["PHP errors in HTML"]
+    else:
+        errs = []
+    if page_kind == "news_list":
+        errs.extend(verify_news_list_marker_errors(markers))
+    else:
+        errs.extend(verify_article_marker_errors(markers))
+    return errs, diag
+
+
+def load_http_verify_article_bodies_fixture(office_repo):
+    path = Path(office_repo) / "scripts" / "fixtures" / "blog-http-verify-article-bodies.json"
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+DEFAULT_HTTP_VERIFY_ARTICLE_BODY = (
+    "<p>Lead paragraph for verify.</p><h2>Раздел для оглавления</h2><p>Body text.</p>"
+)
+
+DOCROOT_SHARED_PHP_NAMES = (
+    "lireate-messenger-urls.php",
+    "lireate-messenger-load.php",
+    "lireate-messenger-require.inc.php",
+)
+SERVICE_FOOTER_NAME = "lireate-service-footer.inc.php"
+SERVICE_STICKY_REL = Path("blocks") / "lireate-sticky-mobile.inc.php"
+
+
+def _docroot_shared_rel_dirs(url_path):
+    parts = [p for p in str(url_path).strip("/").split("/") if p]
+    rels = [Path("_shared")]
+    if len(parts) > 1:
+        rels.append(Path("/".join(parts[:-1])) / "_shared")
+    seen = set()
+    unique = []
+    for rel in rels:
+        key = str(rel).replace("\\", "/")
+        if key not in seen:
+            seen.add(key)
+            unique.append(rel)
+    return unique
+
+
+def plan_published_service_refresh(office_repo, docroot):
+    """Pairs (src office-repo file, relative path under docroot) for live service dirs."""
+    from lireate_hosting_services_lib import (
+        dest_dir_for_manifest,
+        dest_looks_published,
+        list_service_dirs,
+        load_manifest,
+    )
+
+    office_repo = Path(office_repo).resolve()
+    docroot = Path(docroot).resolve()
+    shared = office_repo / "pages" / "services" / "_shared"
+    planned = []
+    seen_dest = set()
+
+    def add_copy(src, rel):
+        rel_key = str(rel).replace("\\", "/")
+        if rel_key in seen_dest or not src.is_file():
+            return
+        seen_dest.add(rel_key)
+        planned.append((src, Path(rel)))
+
+    for service_dir in list_service_dirs(office_repo):
+        try:
+            manifest = load_manifest(service_dir)
+        except (ValueError, json.JSONDecodeError):
+            continue
+        dest = dest_dir_for_manifest(docroot, manifest)
+        if not dest_looks_published(dest):
+            continue
+        url_path = manifest["url_path"]
+        footer_src = service_dir / SERVICE_FOOTER_NAME
+        if not footer_src.is_file():
+            footer_src = shared / SERVICE_FOOTER_NAME
+        if footer_src.is_file():
+            add_copy(footer_src, Path(url_path) / SERVICE_FOOTER_NAME)
+        sticky_src = service_dir / SERVICE_STICKY_REL
+        if sticky_src.is_file():
+            add_copy(sticky_src, Path(url_path) / SERVICE_STICKY_REL)
+        for rel_dir in _docroot_shared_rel_dirs(url_path):
+            for name in DOCROOT_SHARED_PHP_NAMES:
+                src = shared / name
+                if src.is_file():
+                    add_copy(src, rel_dir / name)
+    return planned
+
+
+def refresh_published_service_includes(office_repo, docroot, dry_run=False):
+    planned = plan_published_service_refresh(office_repo, docroot)
+    if dry_run:
+        return [rel for _src, rel in planned], []
+    updated = []
+    for src, rel in planned:
+        dst = docroot / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(src), str(dst))
+        updated.append(rel)
+    return [rel for _src, rel in planned], updated
+
+
 def save_verify_html(logs_dir, backup_id, index, url, status, body):
     logs_dir = Path(logs_dir)
     logs_dir.mkdir(parents=True, exist_ok=True)
@@ -1450,22 +1713,10 @@ def _verify_single_http_page(
     page_errors = []
     if status != 200:
         page_errors.append("HTTP {0}".format(status))
-    if diag.get("php_issues"):
-        page_errors.append("PHP errors in HTML")
-    if label == "news_list":
-        if diag["markers"].get("lireate-blog-list-fallback"):
-            page_errors.append("list rendered in fallback mode ({0})".format(LIST_FALLBACK_MARKER))
-        if not diag["markers"].get("lireate-blog-list-page"):
-            page_errors.append("missing lireate-blog-list-page (list patch/CMS not active?)")
-        if not diag["markers"].get("lx-site-footer"):
-            page_errors.append("missing lx-site-footer")
-    else:
-        if not diag["markers"].get("lireate-blog-page"):
-            page_errors.append("missing lireate-blog-page (patch/CMS not active?)")
-        if not diag["markers"].get("lx-site-footer"):
-            page_errors.append("missing lx-site-footer")
-        if not diag["markers"].get("toc"):
-            page_errors.append("missing TOC markup")
+    marker_errors, _diag2 = verify_render_html_errors(
+        body, headers, "news_list" if label == "news_list" else "article"
+    )
+    page_errors.extend(marker_errors)
 
     if page_errors:
         print_verify_diagnosis(
@@ -1749,6 +2000,8 @@ def run_php_list_diag(live_docroot, office_repo=None):
 
     if run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel) != 0:
         fail_reasons.append("newStyle article render diag failed")
+    if run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel) != 0:
+        fail_reasons.append("HTTP verify article paths diag failed")
     if run_php_service_page_diag(sandbox, repo, php_bin) != 0:
         fail_reasons.append("service page render diag failed")
 
@@ -1826,13 +2079,16 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
         collage_no_dup = "lx-article-cover" not in prose_tail
     legacy_no_hero = COLLAGE_V1_HERO_ATTR not in legacy_chunk
     legacy_header = "lireate-blog-header" in legacy_chunk and "lireate-blog-h1" in legacy_chunk
+    legacy_marker_errors, legacy_diag = verify_render_html_errors(legacy_chunk, {}, "article")
+    legacy_toc = (legacy_diag.get("markers") or {}).get("toc")
     css_ok = COLLAGE_V1_CSS_MARKER in article_css
     print(
-        "diag_article_collage: hero_wrap={0} prose_no_dup_figure={1} legacy_no_hero={2} legacy_header={3} css_marker={4}".format(
+        "diag_article_collage: hero_wrap={0} prose_no_dup_figure={1} legacy_no_hero={2} legacy_header={3} legacy_toc={4} css_marker={5}".format(
             collage_hero,
             collage_no_dup,
             legacy_no_hero,
             legacy_header,
+            legacy_toc,
             css_ok,
         )
     )
@@ -1848,6 +2104,8 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
         fail.append("legacy has collage hero")
     if not legacy_header:
         fail.append("legacy header missing")
+    if legacy_marker_errors:
+        fail.extend(legacy_marker_errors)
     if not css_ok:
         fail.append("article css missing collage rules")
 
