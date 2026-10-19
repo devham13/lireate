@@ -12,7 +12,8 @@ INSTALL_MARKERS_LEGACY = (
     "lireate-blog-install:v2",
     "lireate-blog-install:v1",
 )
-LIST_INSTALL_MARKER = "lireate-blog-list-install:v1"
+LIST_INSTALL_MARKER = "lireate-blog-list-install:v2"
+LIST_INSTALL_MARKER_LEGACY_V1 = "lireate-blog-list-install:v1"
 LIST_FALLBACK_MARKER = "lireate-blog-list-fallback:v1"
 LIST_LEGACY_MARKER = "lireate-blog-list-legacy:snapshot"
 LIST_LEGACY_REL = Path("template/page/news/lireate-blog-list-legacy.inc.php")
@@ -113,6 +114,9 @@ def copy_plan(office_repo):
         for path in sorted(shared_blog.glob("*")):
             if path.is_file() and path.suffix in (".php", ".css", ".js"):
                 by_dest[Path("pages/blog/_shared") / path.name] = path
+    list_data = shared_blog / "lireate-blog-list-data.php"
+    if list_data.is_file():
+        by_dest[Path("template/page/news/lireate-blog-list-data.php")] = list_data
     list_cms = news_dir / "lireate-blog-list-cms.inc.php"
     if list_cms.is_file():
         by_dest[Path("template/page/news/lireate-blog-list-cms.inc.php")] = list_cms
@@ -401,6 +405,14 @@ def _replacement_block_list():
         "<?php /* %s */ ?>\n"
         "<?php require $_SERVER['DOCUMENT_ROOT'] . '%s'; ?>\n"
         "</section>\n"
+        "<?php\n"
+        "if (function_exists('lireate_blog_require_lib')) {\n"
+        "    lireate_blog_require_lib();\n"
+        "}\n"
+        "if (function_exists('lireate_blog_render_service_footer')) {\n"
+        "    lireate_blog_render_service_footer();\n"
+        "}\n"
+        "?>\n"
     ) % (LIST_INSTALL_MARKER, LIST_CMS_INCLUDE)
 
 
@@ -441,6 +453,8 @@ def patch_news_list_template_content(text):
     """Return (new_text, changed, description)."""
     if LIST_INSTALL_MARKER in text:
         return text, False, "already patched (list marker present)"
+    if LIST_INSTALL_MARKER_LEGACY_V1 in text:
+        pass
     span = _span_blog_section(text)
     if not span:
         return text, False, "section#blog not found"
@@ -898,6 +912,25 @@ def run_php_list_diag(live_docroot, office_repo=None):
     tail_lines = stdout.splitlines()
     print("--- stdout (last 60 lines) ---")
     print("\n".join(tail_lines[-60:]))
+
+    card_titles = len(re.findall(r"lireate-blog-list-card-title", stdout))
+    page_links = len(re.findall(r"lireate-blog-list-page-link", stdout))
+    total_items = None
+    total_pages = None
+    m_items = re.search(r"lireate-blog-list-diag-total-items:(\d+)", stdout)
+    m_pages = re.search(r"lireate-blog-list-diag-total-pages:(\d+)", stdout)
+    if m_items:
+        total_items = int(m_items.group(1))
+    if m_pages:
+        total_pages = int(m_pages.group(1))
+    print(
+        "diag_counts: card_titles={0} pagination_links={1} total_items={2} total_pages={3}".format(
+            card_titles,
+            page_links,
+            total_items if total_items is not None else "n/a",
+            total_pages if total_pages is not None else "n/a",
+        )
+    )
 
     fail_reasons = []
     if proc.returncode != 0:

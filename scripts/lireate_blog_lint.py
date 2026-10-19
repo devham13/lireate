@@ -10,6 +10,7 @@ REPO = Path(__file__).resolve().parents[1]
 REQUIRED = [
     REPO / "pages/blog/_shared/lireate-blog-config.php",
     REPO / "pages/blog/_shared/lireate-blog-lib.php",
+    REPO / "pages/blog/_shared/lireate-blog-list-data.php",
     REPO / "pages/blog/_shared/lireate-blog-layout.inc.php",
     REPO / "pages/blog/_shared/lireate-blog-article.css",
     REPO / "pages/blog/_shared/lireate-blog-article.js",

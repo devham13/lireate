@@ -42,9 +42,6 @@ try {
     }
 
     include $repo_blog_shared . '/lireate-blog-list.inc.php';
-    if (function_exists('lireate_blog_render_service_footer')) {
-        lireate_blog_render_service_footer();
-    }
     $lireate_blog_list_render_ok = true;
 } catch (Exception $e) {
     error_log('lireate-blog-list: ' . $e->getMessage());

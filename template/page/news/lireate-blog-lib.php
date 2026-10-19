@@ -3,6 +3,7 @@
  * Хелперы рендера статей блога LIREATE.
  */
 require_once __DIR__ . '/lireate-blog-config.php';
+require_once __DIR__ . '/lireate-blog-list-data.php';
 
 function lireate_blog_dir_up($path, $levels)
 {
@@ -589,26 +590,29 @@ function lireate_blog_list_items_from_index()
  */
 function lireate_blog_list_collect_cms_items()
 {
-    $candidates = array();
-    if (isset($GLOBALS['news']) && is_array($GLOBALS['news'])) {
-        $candidates[] = $GLOBALS['news'];
+    $bundle = lireate_blog_list_prepare_paginated_bundle();
+    if (is_array($bundle) && !empty($bundle['items'])) {
+        return $bundle['items'];
     }
-    if (isset($GLOBALS['news_list']) && is_array($GLOBALS['news_list'])) {
-        $candidates[] = $GLOBALS['news_list'];
-    }
-    if (isset($GLOBALS['news_mass']) && is_array($GLOBALS['news_mass'])) {
-        $candidates[] = $GLOBALS['news_mass'];
-    }
-    if (isset($GLOBALS['news_article']) && is_array($GLOBALS['news_article']) && count($GLOBALS['news_article']) > 1) {
-        $candidates[] = $GLOBALS['news_article'];
-    }
-    foreach ($candidates as $source) {
-        $items = lireate_blog_list_normalize_items($source);
-        if (!empty($items)) {
-            return $items;
+    $items = lireate_blog_list_items_from_index();
+    if (!empty($items)) {
+        $per = (int) LIREATE_BLOG_LIST_PER_PAGE;
+        $page = lireate_blog_list_page_from_request();
+        $totalPages = max(1, (int) ceil(count($items) / $per));
+        if ($page > $totalPages) {
+            $page = $totalPages;
         }
+        $offset = ($page - 1) * $per;
+        $slice = array_slice($items, $offset, $per);
+        $GLOBALS['lireate_blog_list_pagination'] = lireate_blog_list_build_pagination($page, $totalPages);
+        $GLOBALS['lireate_blog_list_total_items'] = count($items);
+        $GLOBALS['lireate_blog_list_total_pages'] = $totalPages;
+        if ($page === 1 && !empty($slice)) {
+            $GLOBALS['lireate_blog_list_featured'] = $slice[0];
+        }
+        return $slice;
     }
-    return lireate_blog_list_items_from_index();
+    return array();
 }
 
 function lireate_blog_list_featured_from_cms($items)
@@ -618,6 +622,10 @@ function lireate_blog_list_featured_from_cms($items)
         if ($norm !== null) {
             return $norm;
         }
+    }
+    $page = lireate_blog_list_page_from_request();
+    if ($page !== 1) {
+        return null;
     }
     if (!empty($items) && is_array($items)) {
         return $items[0];
@@ -638,38 +646,19 @@ function lireate_blog_list_pagination_from_cms()
     if (isset($GLOBALS['lireate_blog_list_pagination']) && is_array($GLOBALS['lireate_blog_list_pagination'])) {
         return $GLOBALS['lireate_blog_list_pagination'];
     }
-    $pages = array();
-    $current = 1;
-    $total = 1;
-    if (isset($GLOBALS['page']) && is_numeric($GLOBALS['page'])) {
-        $current = max(1, (int) $GLOBALS['page']);
-    } elseif (isset($_GET['page']) && is_numeric($_GET['page'])) {
-        $current = max(1, (int) $_GET['page']);
+    lireate_blog_list_prepare_paginated_bundle();
+    if (isset($GLOBALS['lireate_blog_list_pagination']) && is_array($GLOBALS['lireate_blog_list_pagination'])) {
+        return $GLOBALS['lireate_blog_list_pagination'];
     }
-    foreach (array('count_page', 'total_pages', 'pages_count', 'max_page') as $key) {
+    $current = lireate_blog_list_page_from_request();
+    $total = 1;
+    foreach (array('count_page', 'total_pages', 'pages_count', 'max_page', 'lireate_blog_list_total_pages') as $key) {
         if (isset($GLOBALS[$key]) && is_numeric($GLOBALS[$key]) && (int) $GLOBALS[$key] > 0) {
             $total = (int) $GLOBALS[$key];
             break;
         }
     }
-    if ($total < 2) {
-        return null;
-    }
-    $base = '/news/';
-    $query = $_GET;
-    for ($n = 1; $n <= $total; $n++) {
-        $query['page'] = $n;
-        $pages[] = array(
-            'num' => $n,
-            'url' => $base . '?' . http_build_query($query),
-            'current' => $n === $current,
-        );
-    }
-    return array(
-        'current' => $current,
-        'total' => $total,
-        'pages' => $pages,
-    );
+    return lireate_blog_list_build_pagination($current, $total);
 }
 
 function lireate_blog_list_rubric_is_active($rubric)
