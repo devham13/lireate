@@ -22,7 +22,7 @@ LIST_INSTALL_MARKERS_ALL = (
 )
 LIST_FOOTER_AFTER_SECTION_RE = re.compile(
     r"<\?php\s*"
-    r"if\s*\(\s*function_exists\s*\(\s*['\"]lireate_blog_require_lib['\"]\s*\)\s*\)\s*\{[^}]*\}\s*"
+    r"(?:if\s*\(\s*function_exists\s*\(\s*['\"]lireate_blog_require_lib['\"]\s*\)\s*\)\s*\{[^}]*\}\s*)?"
     r"if\s*\(\s*function_exists\s*\(\s*['\"]lireate_blog_render_service_footer['\"]\s*\)\s*\)\s*\{[^}]*"
     r"lireate_blog_render_service_footer\s*\(\s*\)\s*;\s*"
     r"\}\s*"
