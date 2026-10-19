@@ -30,6 +30,8 @@ LIST_FOOTER_AFTER_SECTION_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 LIST_FALLBACK_MARKER = "lireate-blog-list-fallback:v1"
+FOOTER_FIX_CSS_MARKER = "lireate footer/max fix:"
+FOOTER_FIX_CSS_RULE = "#blog .lx-site-footer p.lx-site-footer-title{font-size:16px"
 LIST_LEGACY_MARKER = "lireate-blog-list-legacy:snapshot"
 LIST_LEGACY_REL = Path("template/page/news/lireate-blog-list-legacy.inc.php")
 BODY_CLASS = "lireate-blog-body"
@@ -1016,6 +1018,24 @@ def run_php_list_diag(live_docroot, office_repo=None):
         fail_reasons.append("missing lireate-blog-list-page")
     if "lx-site-footer" not in stdout:
         fail_reasons.append("missing lx-site-footer")
+
+    footer_css_path = sandbox / "template/page/news/lireate-blog-footer.css"
+    footer_css_text = ""
+    if footer_css_path.is_file():
+        footer_css_text = footer_css_path.read_text(encoding="utf-8", errors="replace")
+    footer_fix_ok = FOOTER_FIX_CSS_MARKER in footer_css_text and FOOTER_FIX_CSS_RULE in footer_css_text
+    footer_link_ok = "lireate-blog-footer.css?v=2026-10-19m" in stdout
+    print(
+        "diag_footer_css: marker={0} rule={1} html_link_19m={2}".format(
+            FOOTER_FIX_CSS_MARKER in footer_css_text,
+            FOOTER_FIX_CSS_RULE in footer_css_text,
+            footer_link_ok,
+        )
+    )
+    if not footer_fix_ok:
+        fail_reasons.append("missing footer fix.css rules in deployed lireate-blog-footer.css")
+    if not footer_link_ok:
+        fail_reasons.append("missing lireate-blog-footer.css?v=2026-10-19m in list HTML")
 
     if fail_reasons:
         print("RESULT: FAIL ({0})".format("; ".join(fail_reasons)))

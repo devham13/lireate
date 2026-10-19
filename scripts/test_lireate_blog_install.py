@@ -251,6 +251,12 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_footer_fix_css_marker_in_shared(self):
+        css = (REPO_ROOT / "pages/blog/_shared/lireate-blog-footer.css").read_text(encoding="utf-8")
+        self.assertIn(lib.FOOTER_FIX_CSS_MARKER, css)
+        self.assertIn(lib.FOOTER_FIX_CSS_RULE, css)
+        self.assertIn(".lx-site-footer p.lx-site-footer-title{font-size:16px", css)
+
     def test_list_diag_without_live_list_cms(self):
         """--diag must render from office-repo when list-cms is not deployed yet."""
         tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-"))
