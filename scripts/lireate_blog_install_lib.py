@@ -57,25 +57,58 @@ def resolve_paths(office_repo, env_file):
     return office_repo, docroot, backups_root, env_file
 
 
+BLOG_SHARED_TO_TEMPLATE = (
+    "lireate-blog-config.php",
+    "lireate-blog-lib.php",
+    "lireate-blog-article.css",
+    "lireate-blog-article.js",
+    "lireate-blog-footer.css",
+    "lireate-blog-list.css",
+)
+
+
 def copy_plan(office_repo):
-    """Files to copy from office-repo into docroot (relative paths)."""
+    """Files to copy from office-repo into docroot (relative paths).
+
+    PHP/CSS under template/page/news are taken from pages/blog/_shared when present
+    so --apply/--diag never need to mutate tracked files in office-repo (sync script).
+    """
     by_dest = {}
-    repo = office_repo
+    repo = Path(office_repo)
     news_dir = repo / "template" / "page" / "news"
+    shared_blog = repo / "pages" / "blog" / "_shared"
+    for name in BLOG_SHARED_TO_TEMPLATE:
+        src = shared_blog / name
+        if src.is_file():
+            by_dest[Path("template/page/news") / name] = src
     if news_dir.is_dir():
         for path in sorted(news_dir.glob("lireate-blog*")):
-            if path.is_file():
-                by_dest[Path("template/page/news") / path.name] = path
+            if not path.is_file():
+                continue
+            rel = Path("template/page/news") / path.name
+            if rel not in by_dest:
+                by_dest[rel] = path
         cms = news_dir / "lireate-blog-cms.inc.php"
         if cms.is_file():
             by_dest[Path("template/page/news/lireate-blog-cms.inc.php")] = cms
-    lireate_dir = repo / "template" / "lireate"
-    if lireate_dir.is_dir():
-        for name in ("lireate-service-footer.inc.php", "lireate-messenger-urls.php"):
-            src = lireate_dir / name
+    footer_src = repo / "pages" / "services" / "_shared" / "lireate-service-footer.inc.php"
+    messenger_src = repo / "pages" / "services" / "_shared" / "lireate-messenger-urls.php"
+    if footer_src.is_file():
+        by_dest[Path("template/lireate/lireate-service-footer.inc.php")] = footer_src
+    else:
+        lireate_dir = repo / "template" / "lireate"
+        if lireate_dir.is_dir():
+            src = lireate_dir / "lireate-service-footer.inc.php"
             if src.is_file():
-                by_dest[Path("template/lireate") / name] = src
-    shared_blog = repo / "pages" / "blog" / "_shared"
+                by_dest[Path("template/lireate/lireate-service-footer.inc.php")] = src
+    if messenger_src.is_file():
+        by_dest[Path("template/lireate/lireate-messenger-urls.php")] = messenger_src
+    else:
+        lireate_dir = repo / "template" / "lireate"
+        if lireate_dir.is_dir():
+            src = lireate_dir / "lireate-messenger-urls.php"
+            if src.is_file():
+                by_dest[Path("template/lireate/lireate-messenger-urls.php")] = src
     if shared_blog.is_dir():
         for path in sorted(shared_blog.glob("*")):
             if path.is_file() and path.suffix in (".php", ".css", ".js"):
@@ -537,13 +570,40 @@ def restore_backup_full(backup_dir, docroot):
 
 
 def sync_office_blog_template(office_repo):
-    import subprocess
-    import sys
+    """No-op: copy_plan reads from pages/blog/_shared (does not write office-repo)."""
+    return None
 
-    script = office_repo / "scripts" / "lireate_blog_sync_template.py"
-    if not script.is_file():
-        raise SystemExit("BLOCKER: missing {0}".format(script))
-    subprocess.run([sys.executable, str(script)], cwd=str(office_repo), check=True)
+
+def build_diag_sandbox(live_docroot, office_repo):
+    """Temp docroot: blog assets from office-repo; live CMS paths symlinked read-only."""
+    import os
+    import tempfile
+
+    live_docroot = Path(live_docroot).resolve()
+    office_repo = Path(office_repo).resolve()
+    root = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-"))
+    sandbox = root / "docroot"
+    sandbox.mkdir(parents=True)
+
+    for src, rel in copy_plan(office_repo):
+        dst = sandbox / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(src), str(dst))
+
+    for rel in (
+        Path("data/db.php"),
+        Path("template/page/news/blog.php"),
+        Path("template/page/news/index.php"),
+    ):
+        live_file = live_docroot / rel
+        if live_file.is_file():
+            dst = sandbox / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            if dst.exists() or dst.is_symlink():
+                dst.unlink()
+            os.symlink(str(live_file), str(dst))
+
+    return sandbox, root
 
 
 def unified_diff(old, new, path_label):
@@ -771,73 +831,93 @@ def verify_http(
     return errors
 
 
-def run_php_list_diag(docroot, office_repo=None):
-    """Run list CMS include via php-cli; print stdout/stderr (display_errors=on)."""
+def run_php_list_diag(live_docroot, office_repo=None):
+    """php-cli list render from office-repo into temp sandbox (live docroot read-only)."""
     import os
     import subprocess
-    import tempfile
 
-    docroot = Path(docroot).resolve()
-    cms = docroot / "template/page/news/lireate-blog-list-cms.inc.php"
-    if not cms.is_file():
-        print("BLOCKER: missing {0}".format(cms))
-        return 2
-    php_bin = os.environ.get("LIREATE_PHP_BIN", "php")
+    live_docroot = Path(live_docroot).resolve()
     repo = Path(office_repo) if office_repo is not None else Path(__file__).resolve().parents[1]
-    fixture = repo
-    fixture = fixture / "scripts/fixtures/cms-news-list-template.php"
-    news_snippet = ""
+    sandbox, tmp_root = build_diag_sandbox(live_docroot, repo)
+    cms = sandbox / "template/page/news/lireate-blog-list-cms.inc.php"
+    if not cms.is_file():
+        shutil.rmtree(tmp_root, ignore_errors=True)
+        print("BLOCKER: missing list cms in office-repo sandbox ({0})".format(cms))
+        return 2
+
+    php_bin = os.environ.get("LIREATE_PHP_BIN", "php")
+    fixture = repo / "scripts/fixtures/cms-news-list-template.php"
+    news_snippet = "$news = array();"
     if fixture.is_file():
         text = fixture.read_text(encoding="utf-8", errors="replace")
-        import re as _re
-
-        m = _re.search(r"\$news\s*=\s*array\s*\(.*?\)\s*;", text, _re.DOTALL)
+        m = re.search(r"\$news\s*=\s*array\s*\(.*?\)\s*;", text, re.DOTALL)
         if m:
             news_snippet = m.group(0)
-    script = (
-        "<?php\n"
-        "ini_set('display_errors', '1');\n"
-        "error_reporting(E_ALL);\n"
-        "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
-        "$_SERVER['REQUEST_URI'] = '/news/';\n"
-        "$_GET = array();\n"
-        "{news}\n"
-        "ob_start();\n"
-        "include {cms};\n"
-        "$out = ob_get_clean();\n"
-        "echo $out;\n"
-    ).format(
-        doc=repr(str(docroot)),
-        news=news_snippet if news_snippet else "$news = array();",
-        cms=repr(str(cms)),
+
+    runner = tmp_root / "run-list.php"
+    runner.write_text(
+        (
+            "<?php\n"
+            "ini_set('display_errors', '1');\n"
+            "error_reporting(E_ALL);\n"
+            "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
+            "$_SERVER['REQUEST_URI'] = '/news/';\n"
+            "$_GET = array();\n"
+            "{news}\n"
+            "ob_start();\n"
+            "include {cms};\n"
+            "echo ob_get_clean();\n"
+        ).format(
+            doc=repr(str(sandbox)),
+            news=news_snippet,
+            cms=repr(str(cms)),
+        ),
+        encoding="utf-8",
     )
-    tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-"))
-    runner = tmp / "run-list.php"
-    runner.write_text(script, encoding="utf-8")
-    print("=== PHP LIST DIAG ===")
+
+    print("=== PHP LIST DIAG (pre-apply sandbox) ===")
+    print("live_docroot: {0}".format(live_docroot))
+    print("sandbox_docroot: {0}".format(sandbox))
     print("php: {0}".format(php_bin))
-    print("docroot: {0}".format(docroot))
-    print("include: {0}".format(cms))
+    print("include: {0} (from office-repo copy)".format(cms))
+
     proc = subprocess.run(
         [php_bin, "-d", "display_errors=1", "-d", "error_reporting=E_ALL", str(runner)],
         capture_output=True,
         text=True,
-        timeout=60,
+        timeout=90,
     )
-    if proc.stdout:
-        print("--- stdout ---")
-        print(proc.stdout[:8000])
-    if proc.stderr:
-        print("--- stderr ---")
-        print(proc.stderr[:8000])
-    print("exit: {0}".format(proc.returncode))
-    if LIST_FALLBACK_MARKER in (proc.stdout or ""):
-        print("WARN: output contains {0}".format(LIST_FALLBACK_MARKER))
-    shutil.rmtree(tmp, ignore_errors=True)
-    combined = (proc.stdout or "") + (proc.stderr or "")
-    if proc.returncode != 0 or "Fatal error" in combined or "Parse error" in combined:
-        return 1
-    return 0
+    stdout = proc.stdout or ""
+    stderr = proc.stderr or ""
+    combined = stdout + stderr
+
+    if stderr:
+        print("--- stderr (full) ---")
+        print(stderr.rstrip())
+
+    tail_lines = stdout.splitlines()
+    print("--- stdout (last 60 lines) ---")
+    print("\n".join(tail_lines[-60:]))
+
+    fail_reasons = []
+    if proc.returncode != 0:
+        fail_reasons.append("php exit {0}".format(proc.returncode))
+    if re.search(r"(?i)Fatal error|Parse error", combined):
+        fail_reasons.append("PHP fatal/parse in output")
+    if LIST_FALLBACK_MARKER in stdout:
+        fail_reasons.append("fallback marker {0}".format(LIST_FALLBACK_MARKER))
+    if "lireate-blog-list-page" not in stdout:
+        fail_reasons.append("missing lireate-blog-list-page")
+
+    if fail_reasons:
+        print("RESULT: FAIL ({0})".format("; ".join(fail_reasons)))
+        code = 1
+    else:
+        print("RESULT: PASS")
+        code = 0
+
+    shutil.rmtree(tmp_root, ignore_errors=True)
+    return code
 
 
 def backup_files(backup_dir, docroot, rel_paths):
