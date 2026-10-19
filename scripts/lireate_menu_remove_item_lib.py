@@ -42,15 +42,36 @@ def resolve_target(office_repo: Path, slug: str) -> tuple[str, str, str]:
     return slug, href, title
 
 
-def find_sidebar_templates(docroot: Path, slug: str, href: str, title: str) -> list[Path]:
+def _href_path_key(href: str) -> str:
+    return href.strip("/").split("/")[-1]
+
+
+def file_references_menu_item(text: str, slug: str, href: str, title: str) -> bool:
+    """True if this PHP source still embeds the sidebar menu entry."""
     marker = MENU_MARKER_PREFIX + slug
+    if marker in text:
+        return True
+    path_key = _href_path_key(href)
+    if not path_key:
+        return False
+    norm = _normalize_href(href)
+    norm_plain = norm.rstrip("/")
+    has_nav = "leftSideNaviInSection" in text
+    if path_key in text and (has_nav or title in text):
+        return True
+    if (norm in text or norm_plain in text) and (has_nav or title in text):
+        return True
+    return False
+
+
+def find_sidebar_templates(docroot: Path, slug: str, href: str, title: str) -> list[Path]:
     hits: list[Path] = []
     for path in _iter_php_files(docroot):
         try:
             text = path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        if marker in text or (href in text and title in text and "leftSideNaviInSection" in text):
+        if file_references_menu_item(text, slug, href, title):
             hits.append(path)
     return hits
 
@@ -59,8 +80,17 @@ def _normalize_href(href: str) -> str:
     return "/" + href.strip("/") + "/"
 
 
+def _href_matches(block_href: str, href: str) -> bool:
+    norm = _normalize_href(href)
+    bh = _normalize_href(block_href)
+    if bh == norm or bh.rstrip("/") == norm.rstrip("/"):
+        return True
+    key = _href_path_key(href)
+    return key and key in block_href
+
+
 def remove_menu_item(text: str, slug: str, href: str, title: str) -> tuple[str, bool]:
-    """Strip marker + anchor for slug; fallback: anchor by href."""
+    """Strip marker + anchor for slug; remove all matching leftSideNaviInSection links."""
     marker = MENU_MARKER_PREFIX + slug
     changed = False
 
@@ -72,21 +102,25 @@ def remove_menu_item(text: str, slug: str, href: str, title: str) -> tuple[str, 
         return ""
 
     new_text = ANCHOR_WITH_MARKER_RE.sub(repl_marker, text)
-    if changed:
-        return new_text, True
 
-    norm = _normalize_href(href)
-    for m in list(HREF_ANCHOR_RE.finditer(new_text)):
-        block_href = _normalize_href(m.group("href"))
-        if block_href != norm and m.group("href") != href:
-            continue
-        if title not in m.group(0):
-            continue
-        new_text = new_text[: m.start()] + new_text[m.end() :]
-        changed = True
-        break
+    while True:
+        removed = False
+        for m in list(HREF_ANCHOR_RE.finditer(new_text)):
+            block = m.group(0)
+            if "leftSideNaviInSection" not in block:
+                continue
+            if not _href_matches(m.group("href"), href):
+                continue
+            if title not in block and _href_path_key(href) not in m.group("href"):
+                continue
+            new_text = new_text[: m.start()] + new_text[m.end() :]
+            changed = True
+            removed = True
+            break
+        if not removed:
+            break
 
-    if marker in new_text:
+    while marker in new_text:
         new_text = re.sub(
             r"\s*<!--\s*" + re.escape(marker) + r"\s*-->\s*",
             "",
@@ -123,23 +157,45 @@ def scan_office_repo_sidebar_copies(office_repo: Path, href: str, title: str) ->
     return found
 
 
-def verify_menu_http(base_url: str, href: str, title: str, page_path: str) -> list[str]:
+def http_probe_status_body(base_url: str, path: str, cache_bust=None) -> tuple[int, str]:
     from lireate_blog_install_lib import http_probe
 
+    status, body, _url, _headers = http_probe(base_url, path, cache_bust=cache_bust)
+    return status, body
+
+
+def html_contains_sidebar_link(body: str, href: str, title: str) -> bool:
+    path_key = _href_path_key(href)
+    norm = _normalize_href(href)
+    if path_key and path_key in body and "leftSideNaviInSection" in body:
+        if (
+            'href="{0}"'.format(norm) in body
+            or 'href="{0}"'.format(norm.rstrip("/")) in body
+            or title in body
+        ):
+            return True
+    needle = 'href="{0}" class="leftSideNaviInSection"'.format(norm)
+    needle2 = 'leftSideNaviInSection">{0}</a>'.format(title)
+    return needle in body or needle2 in body
+
+
+def verify_menu_http(base_url: str, href: str, title: str, page_path: str) -> list[str]:
     errors: list[str] = []
     import time
 
     bust = str(int(time.time()))
-    home_status, home_body = http_probe(base_url, "/", cache_bust=bust)
-    if home_status != 200:
-        errors.append("homepage HTTP {0}".format(home_status))
-    else:
-        needle = 'href="{0}" class="leftSideNaviInSection"'.format(_normalize_href(href))
-        needle2 = 'leftSideNaviInSection">{0}</a>'.format(title)
-        if needle in home_body or needle2 in home_body:
-            errors.append("homepage still contains sidebar link ({0})".format(title))
+    for label, path in (
+        ("homepage", "/"),
+        ("findtz", "/findtz/"),
+    ):
+        status, body = http_probe_status_body(base_url, path, cache_bust=bust)
+        if status != 200:
+            errors.append("{0} HTTP {1}".format(label, status))
+            continue
+        if html_contains_sidebar_link(body, href, title):
+            errors.append("{0} still contains sidebar link ({1})".format(label, title))
 
-    page_status, _ = http_probe(base_url, page_path, cache_bust=bust)
+    page_status, _ = http_probe_status_body(base_url, page_path, cache_bust=bust)
     if page_status != 200:
         errors.append("service page HTTP {0} for {1}".format(page_status, page_path))
 

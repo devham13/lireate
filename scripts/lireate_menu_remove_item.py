@@ -54,16 +54,17 @@ def cmd_check(office_repo, docroot, slug: str):
     print("")
 
     templates = lib.find_sidebar_templates(docroot, slug, href, title)
+    print("scan: all DOCROOT *.php except data/db.php (marker or href path)")
+    print("files with menu entry: {0}".format(len(templates)))
     if not templates:
         print(
-            "BLOCKER: sidebar template not found under DOCROOT "
-            "(leftSideNaviInSection + marker or href)"
+            "hint: menu lives in DOCROOT PHP (e.g. template/parts/leftSideNav.php); "
+            "homepage may use a second copy — none left in docroot"
         )
-        print(
-            "hint: menu is rendered from a PHP template in DOCROOT/template/, "
-            "not from data/db.php (see docs/lireate-sidebar-menu-prodlenie.ru.md)"
-        )
-        return 2
+        print("")
+        print("SKIP (never touched): data/db.php, docroot/.htaccess")
+        print("STATUS: MENU_ALREADY_ABSENT")
+        return 0
 
     any_change = False
     for template in templates:
@@ -115,10 +116,6 @@ def cmd_apply(office_repo, docroot, backups_root, slug: str):
         return 2
 
     templates = lib.find_sidebar_templates(docroot, slug, href, title)
-    if not templates:
-        print("BLOCKER: sidebar template not found")
-        return 2
-
     to_patch: list[tuple[Path, str, str]] = []
     for template in templates:
         original = template.read_text(encoding="utf-8", errors="replace")
@@ -126,7 +123,22 @@ def cmd_apply(office_repo, docroot, backups_root, slug: str):
         if changed:
             to_patch.append((template, original, patched))
 
+    base = blog_lib.site_base_url()
+    page_path = href if href.startswith("/") else "/" + href
+
     if not to_patch:
+        print("docroot: no files need patching (already removed)")
+        if not base:
+            print("STATUS: MENU_ALREADY_ABSENT")
+            return 0
+        errors = lib.verify_menu_http(base, href, title, page_path)
+        if errors:
+            print("HTTP verify failed (menu absent in docroot but still on site?):")
+            for err in errors:
+                print("  - {0}".format(err))
+            print("STATUS: VERIFY_FAILED — search docroot for duplicate sidebar PHP")
+            return 1
+        print("HTTP OK: /, /findtz/, service page 200; menu link absent")
         print("STATUS: MENU_ALREADY_ABSENT")
         return 0
 
@@ -139,14 +151,12 @@ def cmd_apply(office_repo, docroot, backups_root, slug: str):
         template.write_text(patched, encoding="utf-8")
         print("patched: {0}".format(template.relative_to(docroot)))
 
-    base = blog_lib.site_base_url()
     if not base:
         print("WARN: no public URL in env — skipping HTTP checks")
         print("backup: {0}".format(backup_dir))
         print("STATUS: OK (files patched, backup {0})".format(backup_id))
         return 0
 
-    page_path = href if href.startswith("/") else "/" + href
     errors = lib.verify_menu_http(base, href, title, page_path)
     if errors:
         print("HTTP verify failed:")
@@ -157,7 +167,11 @@ def cmd_apply(office_repo, docroot, backups_root, slug: str):
         print("STATUS: ROLLED BACK ({0})".format(backup_id))
         return 1
 
-    print("HTTP OK: homepage without menu link; {0}{1} → 200".format(base, page_path))
+    print(
+        "HTTP OK: / and /findtz/ without menu link; service {0}{1} → 200".format(
+            base, page_path
+        )
+    )
     print("backup: {0}".format(backup_dir))
     print("STATUS: OK (backup {0})".format(backup_id))
     return 0
