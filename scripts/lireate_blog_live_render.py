@@ -17,9 +17,17 @@ def fetch_html(url, dest):
     subprocess.run(["curl", "-sL", url, "-o", str(dest)], check=True)
 
 
-def inject_local_css(html):
+def inject_local_css(html, base_href):
     article_css = (REPO / "pages/blog/_shared/lireate-blog-article.css").resolve().as_uri()
     footer_css = (REPO / "pages/blog/_shared/lireate-blog-footer.css").resolve().as_uri()
+    if not re.search(r"<base\s", html, re.I):
+        html = re.sub(
+            r"(<head[^>]*>)",
+            r'\1\n<base href="{0}">'.format(base_href),
+            html,
+            count=1,
+            flags=re.I,
+        )
     html = re.sub(
         r'href="/template/page/news/lireate-blog-article\.css\?v=[^"]+"',
         'href="{0}"'.format(article_css),
@@ -54,24 +62,36 @@ def chrome_screenshot(html_file, out_file, width, height, profile_suffix):
 
 
 def main(argv=None):
-    url = DEFAULT_URL
+    host = __import__("os").environ.get("LIREATE_PUBLIC_SITE_URL", "").strip().rstrip("/")
+    if not host:
+        host = "https://" + __import__("os").environ.get("PUBLIC_SITE_HOST", "lireate.ru")
+    url = host + "/" + DEFAULT_SLUG.strip("/") + "/"
     if argv:
         for arg in argv:
             if arg.startswith("http"):
                 url = arg
+            elif not arg.startswith("-"):
+                url = host + "/" + arg.strip("/") + "/"
     cache_dir = REPO / ".cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
     raw = cache_dir / "lireate-live-article.html"
     fetch_html(url, raw)
     rendered = cache_dir / "lireate-live-render.html"
+    base_href = host.rstrip("/") + "/"
     rendered.write_text(
-        inject_local_css(raw.read_text(encoding="utf-8", errors="replace")),
+        inject_local_css(raw.read_text(encoding="utf-8", errors="replace"), base_href),
         encoding="utf-8",
     )
     shots = Path("/opt/cursor/artifacts/screenshots")
     shots.mkdir(parents=True, exist_ok=True)
-    chrome_screenshot(rendered, shots / "blog-article-live-desktop.png", 1280, 1500, "d")
-    chrome_screenshot(rendered, shots / "blog-article-live-mobile.png", 390, 1500, "m")
+    viewports = (
+        ("blog-article-live-1280.png", 1280, 900, "1280"),
+        ("blog-article-live-1440.png", 1440, 900, "1440"),
+        ("blog-article-live-1024.png", 1024, 900, "1024"),
+        ("blog-article-live-mobile.png", 390, 1500, "m"),
+    )
+    for name, w, h, suffix in viewports:
+        chrome_screenshot(rendered, shots / name, w, h, suffix)
     print("OK: {0}".format(shots))
     return 0
 

@@ -16,6 +16,24 @@ class BlogCmsCssTests(unittest.TestCase):
     def test_articlebox_shell_override(self):
         self.assertIn("#articleBox:has(.lireate-blog-page)", self.text)
         self.assertIn(".content:has(#articleBox .lireate-blog-page)", self.text)
+        import re
+
+        content_rule = re.search(
+            r"\.content:has\(#articleBox \.lireate-blog-page\)\s*\{[^}]+\}",
+            self.text,
+            re.S,
+        )
+        self.assertIsNotNone(content_rule)
+        self.assertNotIn("padding-left", content_rule.group(0))
+        self.assertNotIn("margin-left", content_rule.group(0))
+        articlebox_rule = re.search(
+            r"#articleBox:has\(\.lireate-blog-page\)\s*\{[^}]+\}",
+            self.text,
+            re.S,
+        )
+        self.assertIsNotNone(articlebox_rule)
+        self.assertNotIn("width:", articlebox_rule.group(0))
+        self.assertNotIn("margin:", articlebox_rule.group(0))
 
     def test_h1_beats_legacy_articlebox(self):
         self.assertIn("#articleBox h1.lireate-blog-h1", self.text)
