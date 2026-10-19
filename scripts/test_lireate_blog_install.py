@@ -313,14 +313,27 @@ class BlogInstallLibTests(unittest.TestCase):
 
     def test_newstyle_patch_guards_news_article_category(self):
         snippet = FIXTURE_NEWSTYLE.read_text(encoding="utf-8")
-        planned, changed, _desc = lib.patch_news_template_content(snippet)
-        self.assertTrue(changed)
+        planned = lib.plan_template_content(snippet)
+        self.assertIn(lib.NEWSTYLE_CATEGORY_GUARD_MARKER, planned)
         self.assertIn("array_key_exists('category'", planned)
+
+    def test_diff_new_log_signatures_ignores_line_number_shift(self):
+        baseline = {
+            lib.php_error_signature(
+                "Notice", "Undefined index: category", "/doc/newStyle.php"
+            )
+        }
+        log_260 = (
+            "PHP Notice:  Undefined index: category in /doc/newStyle.php on line 260\n"
+        )
+        parsed = lib.parse_php_error_log(log_260)
+        new_sigs = lib.diff_new_log_signatures(baseline, parsed)
+        self.assertEqual(new_sigs, [])
 
     def test_diff_new_log_signatures_only_new_notices_fail(self):
         baseline = {
             lib.php_error_signature(
-                "Notice", "Undefined index: category", "/doc/newStyle.php", 26
+                "Notice", "Undefined index: category", "/doc/newStyle.php"
             )
         }
         log = (

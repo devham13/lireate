@@ -40,6 +40,7 @@ BODY_CLASS = "lireate-blog-body"
 CMS_INCLUDE = "/template/page/news/lireate-blog-cms.inc.php"
 LIST_CMS_INCLUDE = "/template/page/news/lireate-blog-list-cms.inc.php"
 LIST_SECTION_MARKERS = ('id="blog"', "Самое свежее и интересное", "articlesBlock")
+NEWSTYLE_CATEGORY_GUARD_MARKER = "lireate-blog-guard-category-index"
 
 SKIP_PATH_PARTS = {"data", "db.php"}
 FORBIDDEN_TOUCH = {".htaccess"}
@@ -379,14 +380,14 @@ PHP_LOG_BLOCKING_RE = re.compile(
 )
 
 
-def php_error_signature(level, message, filepath, line_no):
+def php_error_signature(level, message, filepath, line_no=None):
+    """Stable key for baseline diff (no line numbers — patch shifts lines)."""
     base = Path(filepath).name if filepath else ""
     msg = re.sub(r"\s+", " ", (message or "").strip())
-    return "{0}: {1} in {2} on line {3}".format(
+    return "{0}: {1} in {2}".format(
         level.capitalize() if level else "Error",
         msg[:200],
         base,
-        line_no,
     )
 
 
@@ -949,15 +950,63 @@ def _span_newstyle_article_block(text):
     return None
 
 
+def ensure_newstyle_early_category_guard(text):
+    """Prepend guard so legacy newStyle PHP above the article block cannot notice on category."""
+    if "news_article" not in text:
+        return text
+    if NEWSTYLE_CATEGORY_GUARD_MARKER in text:
+        return text
+    block = (
+        "<?php /* %s */ ?>\n"
+        "<?php\n"
+        "if (isset($news_article[0]) && is_array($news_article[0]) && !array_key_exists('category', $news_article[0])) {\n"
+        "    $news_article[0]['category'] = isset($category) ? $category : '';\n"
+        "}\n"
+        "?>\n"
+    ) % NEWSTYLE_CATEGORY_GUARD_MARKER
+    return block + text
+
+
+def guard_newstyle_bare_category_index_reads(text):
+    """Wrap remaining $news_article[0]['category'] reads (PHP 5.6, same output when key set)."""
+    if "news_article" not in text:
+        return text
+    pattern = re.compile(
+        r"\$news_article\s*\[\s*0\s*\]\s*\[\s*(['\"])category\1\s*\](?!\s*=)"
+    )
+    repl = (
+        "(isset($news_article[0]['category']) ? $news_article[0]['category'] : "
+        "(isset($category) ? $category : ''))"
+    )
+
+    def _sub(match):
+        quote = match.group(1)
+        if quote == '"':
+            return (
+                '(isset($news_article[0]["category"]) ? $news_article[0]["category"] : '
+                '(isset($category) ? $category : ""))'
+            )
+        return repl
+
+    new_text = pattern.sub(_sub, text)
+    return new_text
+
+
 def patch_news_template_content(text):
     """Return (new_text, changed, description)."""
     if _patch_is_current(text):
+        guarded = ensure_newstyle_early_category_guard(text)
+        guarded = guard_newstyle_bare_category_index_reads(guarded)
+        if guarded != text:
+            return guarded, True, "category guard on already-patched newStyle"
         return text, False, "already patched (marker present)"
     text = _strip_broken_install_blocks(text)
     span = _span_newstyle_article_block(text)
     if span:
         repl = _replacement_block_newstyle()
         new_text = text[: span[0]] + repl + text[span[1] :]
+        new_text = ensure_newstyle_early_category_guard(new_text)
+        new_text = guard_newstyle_bare_category_index_reads(new_text)
         return new_text, new_text != text, "replaced newStyle block (h1 through #textBox)"
     repl = _replacement_block_legacy()
     if LEGACY_BLOCK_RE.search(text):
@@ -1108,6 +1157,8 @@ def list_template_patch_status(original, planned):
 def plan_template_content(text):
     """Apply news + body patches for preview (idempotent)."""
     text, _, _ = patch_news_template_content(text)
+    text = ensure_newstyle_early_category_guard(text)
+    text = guard_newstyle_bare_category_index_reads(text)
     text, _ = patch_body_class_content(text)
     return text
 
