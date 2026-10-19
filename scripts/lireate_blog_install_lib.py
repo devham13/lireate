@@ -402,6 +402,14 @@ def resolve_paths(office_repo, env_file):
     return office_repo, docroot, backups_root, env_file
 
 
+DOCROOT_MESSENGER_BUNDLE_NAMES = (
+    "lireate-messenger-urls.php",
+    "lireate-messenger-load.php",
+    "lireate-messenger-require.inc.php",
+    "lireate-service-messenger.inc.php",
+    "lireate-service-messenger-include.inc.php",
+)
+
 BLOG_SHARED_TO_TEMPLATE = (
     "lireate-blog-config.php",
     "lireate-blog-load.php",
@@ -411,6 +419,27 @@ BLOG_SHARED_TO_TEMPLATE = (
     "lireate-blog-footer.css",
     "lireate-blog-list.css",
 )
+
+
+def deploy_docroot_messenger_shared(office_repo, docroot):
+    """Copy messenger bundle to docroot/_shared (live layout for blog footer + services)."""
+    docroot = Path(docroot).resolve()
+    shared_src = Path(office_repo).resolve() / "pages" / "services" / "_shared"
+    dest_dir = docroot / "_shared"
+    if not shared_src.is_dir():
+        return []
+    created = []
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    for name in DOCROOT_MESSENGER_BUNDLE_NAMES:
+        src = shared_src / name
+        if not src.is_file():
+            continue
+        dst = dest_dir / name
+        existed = dst.is_file()
+        shutil.copy2(str(src), str(dst))
+        if not existed:
+            created.append(Path("_shared") / name)
+    return created
 
 
 def copy_plan(office_repo):
@@ -447,14 +476,13 @@ def copy_plan(office_repo):
             src = lireate_dir / "lireate-service-footer.inc.php"
             if src.is_file():
                 by_dest[Path("template/lireate/lireate-service-footer.inc.php")] = src
-    if messenger_src.is_file():
+    services_shared = repo / "pages" / "services" / "_shared"
+    for name in DOCROOT_MESSENGER_BUNDLE_NAMES:
+        src = services_shared / name
+        if src.is_file():
+            by_dest[Path("template/lireate") / name] = src
+    if messenger_src.is_file() and Path("template/lireate/lireate-messenger-urls.php") not in by_dest:
         by_dest[Path("template/lireate/lireate-messenger-urls.php")] = messenger_src
-    else:
-        lireate_dir = repo / "template" / "lireate"
-        if lireate_dir.is_dir():
-            src = lireate_dir / "lireate-messenger-urls.php"
-            if src.is_file():
-                by_dest[Path("template/lireate/lireate-messenger-urls.php")] = src
     if shared_blog.is_dir():
         for path in sorted(shared_blog.glob("*")):
             if path.is_file() and path.suffix in (".php", ".css", ".js"):
@@ -1029,6 +1057,7 @@ def build_diag_sandbox(live_docroot, office_repo):
             dest.write_text(planned, encoding="utf-8")
 
     stage_service_diag_tree(sandbox, office_repo)
+    deploy_docroot_messenger_shared(office_repo, sandbox)
 
     return sandbox, root, list_rel, article_rel
 
@@ -1057,11 +1086,7 @@ def stage_service_diag_tree(sandbox, office_repo):
         target = svc_dst / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(path), str(target))
-    messenger_names = (
-        "lireate-messenger-urls.php",
-        "lireate-messenger-load.php",
-        "lireate-messenger-require.inc.php",
-    )
+    messenger_names = DOCROOT_MESSENGER_BUNDLE_NAMES
     if shared_src.is_dir():
         docroot_shared.mkdir(parents=True, exist_ok=True)
         for name in messenger_names:

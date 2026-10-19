@@ -19,9 +19,18 @@ if (!function_exists('lireate_service_require_messenger_urls')) {
         $candidates = array();
         $doc = lireate_service_docroot();
         if ($doc !== '') {
-            $candidates[] = $doc . '/_shared/lireate-messenger-urls.php';
-            $candidates[] = $doc . '/pages/services/_shared/lireate-messenger-urls.php';
-            $candidates[] = $doc . '/template/lireate/lireate-messenger-urls.php';
+            $dr = realpath($doc);
+            if ($dr !== false) {
+                $candidates[] = $dr . '/_shared/lireate-messenger-urls.php';
+                $candidates[] = $dr . '/pages/services/_shared/lireate-messenger-urls.php';
+                $candidates[] = $dr . '/pages/blog/_shared/lireate-messenger-urls.php';
+                $candidates[] = $dr . '/template/lireate/lireate-messenger-urls.php';
+            } else {
+                $candidates[] = $doc . '/_shared/lireate-messenger-urls.php';
+                $candidates[] = $doc . '/pages/services/_shared/lireate-messenger-urls.php';
+                $candidates[] = $doc . '/pages/blog/_shared/lireate-messenger-urls.php';
+                $candidates[] = $doc . '/template/lireate/lireate-messenger-urls.php';
+            }
         }
         $here = dirname(__FILE__);
         if ($here !== '') {

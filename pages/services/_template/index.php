@@ -17,7 +17,7 @@ $lireate_phone_display = '+7 (960) 048-49-57';
 $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
-require_once dirname(__DIR__) . '/_shared/lireate-messenger-require.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['TODO вопрос FAQ 1?', 'TODO краткий ответ.'],

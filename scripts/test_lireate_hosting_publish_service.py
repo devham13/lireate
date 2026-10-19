@@ -77,6 +77,8 @@ class HostingPublishTests(unittest.TestCase):
             "lireate-messenger-urls.php",
             "lireate-messenger-load.php",
             "lireate-messenger-require.inc.php",
+            "lireate-service-messenger.inc.php",
+            "lireate-service-messenger-include.inc.php",
         ):
             self.assertTrue((self.docroot / "_shared" / name).is_file(), name)
         self.assertTrue(self.state_file.is_file())
