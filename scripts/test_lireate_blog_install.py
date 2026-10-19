@@ -251,6 +251,28 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_collage_v1_prepare_strips_cover_figure(self):
+        php = (
+            "<?php\n"
+            "require '{lib}';\n"
+            "$story = '<figure class=\"lx-article-cover\" data-cover-style=\"collage-v1\">'"
+            "<img src=\"/template/images/blog/x.jpg\" alt=\"\" width=\"860\" height=\"400\"></figure><p>Hi</p>';\n"
+            "$r = lireate_blog_article_collage_prepare(array('full_story' => $story, 'cover_style' => 'collage-v1', 'seo_url' => 'x', 'name' => 'T'));\n"
+            "echo json_encode($r);\n"
+        ).format(lib=REPO_ROOT / "pages/blog/_shared/lireate-blog-lib.php")
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-collage-"))
+        try:
+            script = tmp / "run.php"
+            script.write_text(php, encoding="utf-8")
+            out = subprocess.run(["php", str(script)], capture_output=True, text=True)
+            self.assertEqual(out.returncode, 0, msg=out.stderr)
+            data = json.loads(out.stdout)
+            self.assertTrue(data["mode"])
+            self.assertNotIn("lx-article-cover", data["body"])
+            self.assertIn("lireate-blog-collage-hero", data["hero_html"])
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_footer_fix_css_marker_in_shared(self):
         css = (REPO_ROOT / "pages/blog/_shared/lireate-blog-footer.css").read_text(encoding="utf-8")
         self.assertIn(lib.FOOTER_FIX_CSS_MARKER, css)

@@ -31,6 +31,8 @@ $lb_current = isset($lireate_blog_current_url) ? $lireate_blog_current_url : '';
 $lb_desc = isset($lireate_blog_description) ? $lireate_blog_description : '';
 $lb_canonical = isset($lireate_blog_canonical) ? $lireate_blog_canonical : '';
 $lb_cover_html = isset($lireate_blog_cover_html) ? $lireate_blog_cover_html : '';
+$lb_collage_mode = !empty($lireate_blog_collage_mode);
+$lb_collage_hero = isset($lireate_blog_collage_hero_html) ? $lireate_blog_collage_hero_html : '';
 
 $lb_body = lireate_blog_prepare_body_html($lb_body);
 $lb_read_mins = lireate_blog_reading_time_minutes($lb_body);
@@ -80,9 +82,10 @@ $lb_jsonld = array_filter(
     <?php endif; ?>
 
     <article class="lireate-blog-main">
-      <header class="lireate-blog-header">
-        <div class="lireate-blog-header-top">
+      <header class="lireate-blog-header<?php echo $lb_collage_mode ? ' lireate-blog-header--collage-v1' : ''; ?>">
+        <div class="lireate-blog-header-top<?php echo $lb_collage_mode ? ' lireate-blog-header-top--collage' : ''; ?>">
           <a class="lireate-blog-pill lireate-blog-pill--back" href="/news/">‹ Все статьи блога</a>
+          <?php if (!$lb_collage_mode) : ?>
           <div class="lireate-blog-header-top-right">
             <?php if ($lb_tag !== '') : ?>
             <a class="lireate-blog-pill lireate-blog-pill--topic" href="<?php echo lireate_blog_h($lb_tag_url); ?>"><?php echo lireate_blog_h($lb_tag); ?></a>
@@ -92,8 +95,32 @@ $lb_jsonld = array_filter(
               <?php echo (int) $lb_read_mins; ?> мин читать
             </span>
           </div>
+          <?php endif; ?>
         </div>
+        <?php if ($lb_collage_mode && $lb_collage_hero !== '') : ?>
+        <div class="lireate-blog-collage-hero-wrap" data-lireate-collage-hero="1">
+          <?php echo $lb_collage_hero; ?>
+        </div>
+        <?php endif; ?>
         <h1 class="lireate-blog-h1"><?php echo lireate_blog_h($lb_title); ?></h1>
+        <?php if ($lb_collage_mode) : ?>
+        <div class="lireate-blog-collage-meta">
+          <div class="lireate-blog-collage-meta-pills">
+            <?php if ($lb_tag !== '') : ?>
+            <a class="lireate-blog-pill lireate-blog-pill--topic" href="<?php echo lireate_blog_h($lb_tag_url); ?>"><?php echo lireate_blog_h($lb_tag); ?></a>
+            <?php endif; ?>
+            <?php if ($lb_date_display !== '') : ?>
+            <span class="lireate-blog-pill lireate-blog-pill--date">
+              <time datetime="<?php echo lireate_blog_h($lb_date_iso); ?>"><?php echo lireate_blog_h($lb_date_display); ?></time>
+            </span>
+            <?php endif; ?>
+            <span class="lireate-blog-pill lireate-blog-pill--read">
+              <span class="lireate-blog-pill-clock" aria-hidden="true"></span>
+              <?php echo (int) $lb_read_mins; ?> мин читать
+            </span>
+          </div>
+        </div>
+        <?php endif; ?>
         <hr class="lireate-blog-header-rule" />
         <div class="lireate-blog-author-row">
           <div class="lireate-blog-author-block">
@@ -114,7 +141,7 @@ $lb_jsonld = array_filter(
               <?php endif; ?>
             </div>
           </div>
-          <?php if ($lb_date_display !== '') : ?>
+          <?php if (!$lb_collage_mode && $lb_date_display !== '') : ?>
           <p class="lireate-blog-published">
             Опубликовано:
             <time datetime="<?php echo lireate_blog_h($lb_date_iso); ?>"><?php echo lireate_blog_h($lb_date_display); ?></time>
@@ -122,7 +149,7 @@ $lb_jsonld = array_filter(
           <?php endif; ?>
         </div>
       </header>
-      <?php if ($lb_cover_html !== '') : ?>
+      <?php if (!$lb_collage_mode && $lb_cover_html !== '') : ?>
       <div class="lireate-blog-cover" aria-hidden="false"><?php echo $lb_cover_html; ?></div>
       <?php endif; ?>
       <div class="lireate-blog-prose" id="lireate-blog-prose">

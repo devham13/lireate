@@ -716,4 +716,103 @@ section#articleBox:has(> .lireate-blog-page) {
     text-align: left;
     width: 100%;
   }
+  .lireate-blog-collage-hero-wrap {
+    margin-bottom: 18px;
+  }
+  .lireate-blog-collage-hero,
+  .lireate-blog-collage-hero-img {
+    border-radius: 16px;
+  }
+  .lireate-blog-prose figure.inline-collage[data-inline-style="collage-v1"] {
+    margin: 24px 0;
+    border-radius: 14px;
+  }
+}
+
+/* collage-v1 article cover + inline illustrations */
+.lireate-blog-collage-hero-wrap {
+  margin: 0 0 24px;
+  width: 100%;
+}
+.lireate-blog-collage-hero {
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.45);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+}
+.lireate-blog-collage-hero-img,
+.lireate-blog-collage-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 860 / 400;
+  object-fit: cover;
+  vertical-align: middle;
+}
+.lireate-blog-header--collage-v1 .lireate-blog-h1 {
+  margin-top: 0;
+}
+.lireate-blog-collage-meta {
+  margin: 0 0 6px;
+}
+.lireate-blog-collage-meta-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.lireate-blog-pill--date {
+  background: transparent;
+  border-color: rgba(148, 163, 184, 0.35);
+  color: #cbd5e1;
+  font-weight: 600;
+}
+.lireate-blog-prose figure.lx-article-cover[data-cover-style="collage-v1"] {
+  display: none !important;
+}
+.lireate-blog-prose figure.inline-collage[data-inline-style="collage-v1"] {
+  width: 100%;
+  max-width: 100%;
+  margin: 32px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: transparent;
+}
+.lireate-blog-prose figure.inline-collage[data-inline-style="collage-v1"] img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+.lireate-blog-prose figure.inline-collage[data-inline-style="collage-v1"] figcaption {
+  margin: 10px 0 0;
+  padding: 0 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #a7b0c8;
+  text-align: center;
+}
+#articleBox .lireate-blog-prose figure.inline-collage[data-inline-style="collage-v1"] figcaption,
+#blog .lireate-blog-prose figure.inline-collage[data-inline-style="collage-v1"] figcaption {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #a7b0c8 !important;
+  max-width: none !important;
+  margin: 10px 0 0 !important;
+}
+#articleBox .lireate-blog-collage-hero-wrap,
+#blog .lireate-blog-collage-hero-wrap {
+  max-width: none !important;
+}
+#articleBox .lireate-blog-prose p.lireate-blog-subscribe-text,
+#blog .lireate-blog-subscribe-card p.lireate-blog-subscribe-text {
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+  color: #d4dce8 !important;
+  max-width: none !important;
 }
