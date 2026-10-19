@@ -97,6 +97,9 @@ def cmd_check(office_repo, docroot):
                 print("(empty diff)")
     print("")
     print("SKIP (never touched): data/db.php, docroot/.htaccess")
+    print(
+        "SKIP (blog --apply): published service dirs, docroot/_shared messenger, template/lireate service assets"
+    )
     return 0
 
 
@@ -153,32 +156,9 @@ def cmd_apply(office_repo, docroot, backups_root):
         if rel_list not in to_backup:
             to_backup.append(rel_list)
 
-    service_refresh = lib.plan_published_service_refresh(office_repo, docroot)
-    for _src, rel in service_refresh:
-        if (docroot / rel).is_file() and rel not in to_backup:
-            to_backup.append(rel)
-
     lib.backup_files(backup_dir, docroot, to_backup)
-    created = lib.apply_copies(office_repo, docroot, pairs)
-    messenger_created = lib.deploy_docroot_messenger_shared(office_repo, docroot)
-    created.extend(messenger_created)
+    created, patch_notes = lib.apply_blog_install_to_docroot(office_repo, docroot)
     lib.write_created_manifest(backup_dir, created)
-
-    _planned_svc, service_updated = lib.refresh_published_service_includes(office_repo, docroot)
-    if service_updated:
-        print(
-            "service includes refreshed: {0} file(s) (footer/sticky/docroot _shared messenger)".format(
-                len(service_updated)
-            )
-        )
-
-    patch_notes = []
-    if template is not None:
-        _changed, notes = lib.apply_template_patch(docroot, template)
-        patch_notes.extend(notes)
-    if list_template is not None:
-        _changed, notes = lib.apply_list_template_patch(docroot, list_template)
-        patch_notes.extend(notes)
     print("backup: {0}".format(backup_dir))
     print("template patch: {0}".format(", ".join(patch_notes) if patch_notes else "ok"))
 
@@ -218,6 +198,7 @@ def cmd_apply(office_repo, docroot, backups_root):
             site_base_url=base,
             verify_paths=verify_paths,
             autopub_home=backups_root.parent,
+            office_repo=office_repo,
         )
         if rollback_errors:
             print("STATUS: ROLLED BACK WITH HTTP ERRORS ({0})".format(backup_id))
@@ -230,11 +211,11 @@ def cmd_apply(office_repo, docroot, backups_root):
     return 0
 
 
-def cmd_rollback(backups_root, docroot, backup_id):
+def cmd_rollback(backups_root, docroot, backup_id, office_repo):
     backup_dir = lib.backup_dir_for_id(backups_root, backup_id)
     if not backup_dir.is_dir():
         raise SystemExit("BLOCKER: backup not found: {0}".format(backup_dir))
-    lib.restore_backup_full(backup_dir, docroot)
+    lib.restore_backup_full(backup_dir, docroot, office_repo=office_repo)
     print("STATUS: restored backup {0}".format(backup_id))
     return 0
 
@@ -254,7 +235,7 @@ def main(argv=None):
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="Copy files, patch CMS template, verify HTTP (rollback on failure)",
+        help="Copy blog/news files and patch CMS templates only (no service dirs); HTTP verify",
     )
     parser.add_argument(
         "--rollback",
@@ -283,7 +264,7 @@ def main(argv=None):
     office_repo, docroot, backups_root, _ = lib.resolve_paths(office_repo, str(env_path))
 
     if args.rollback:
-        return cmd_rollback(backups_root, docroot, args.rollback.strip())
+        return cmd_rollback(backups_root, docroot, args.rollback.strip(), office_repo)
     if args.diag:
         return cmd_diag(docroot, office_repo)
     if args.refresh_published_service_footers:

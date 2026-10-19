@@ -153,6 +153,70 @@ class BlogInstallLibTests(unittest.TestCase):
         self.assertIn("template/page/news/lireate-blog-list-legacy.inc.php", dests)
         self.assertIn("template/images/blog/author/yuriy-gorbachev.jpg", dests)
 
+    def test_copy_plan_excludes_service_template_lireate_assets(self):
+        pairs = lib.copy_plan(REPO_ROOT)
+        dests = {str(rel).replace("\\", "/") for _, rel in pairs}
+        self.assertFalse(any(p.startswith("template/lireate/") for p in dests))
+
+    def test_copy_plan_deploys_blog_site_footer_bundle_to_news(self):
+        pairs = lib.copy_plan(REPO_ROOT)
+        dests = {str(rel).replace("\\", "/") for _, rel in pairs}
+        self.assertIn("template/page/news/lireate-blog-site-footer.inc.php", dests)
+        self.assertIn(
+            "template/page/news/lireate-service-messenger-include.inc.php", dests
+        )
+
+    def test_blog_apply_simulate_leaves_service_guard_unchanged(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-apply-guard-"))
+        try:
+            doc = tmp / "docroot"
+            svc = REPO_ROOT / "pages/services/registraciya-tovarnogo-znaka-v-kitae"
+            manifest = json.loads((svc / "publish.manifest.json").read_text(encoding="utf-8"))
+            url_path = manifest["url_path"]
+            svc_live = doc / url_path
+            svc_live.mkdir(parents=True)
+            marker = svc_live / "lireate-service-footer.inc.php"
+            marker.write_text("<?php /* live marker */", encoding="utf-8")
+            (svc_live / "index.php").write_text("<?php\n", encoding="utf-8")
+            shared = doc / "_shared"
+            shared.mkdir(parents=True)
+            (shared / "lireate-messenger-urls.php").write_text("<?php\n", encoding="utf-8")
+            tpl_dir = doc / "template/page/news"
+            tpl_dir.mkdir(parents=True)
+            shutil.copy(str(FIXTURE_TEMPLATE), str(tpl_dir / "article.php"))
+            baseline = tmp / "baseline"
+            post = tmp / "post"
+            shutil.copytree(doc, baseline)
+            shutil.copytree(doc, post)
+            cgi_gate.simulate_blog_apply_on_docroot(REPO_ROOT, post)
+            changed = lib.diff_blog_apply_service_guard(baseline, post, REPO_ROOT)
+            self.assertEqual(changed, [])
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_restore_backup_skips_service_guard_paths(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-rollback-guard-"))
+        try:
+            doc = tmp / "docroot"
+            backup = tmp / "backup"
+            svc_rel = Path("registraciya_tovarnogo_znaka_v_kitae/lireate-service-footer.inc.php")
+            live = doc / svc_rel
+            live.parent.mkdir(parents=True)
+            (doc / svc_rel.parent / "index.php").write_text("<?php\n", encoding="utf-8")
+            live.write_text("<?php /* after apply wrongly */", encoding="utf-8")
+            backup.parent.mkdir(parents=True, exist_ok=True)
+            backup_svc = backup / svc_rel
+            backup_svc.parent.mkdir(parents=True, exist_ok=True)
+            backup_svc.write_text("<?php /* backed up live */", encoding="utf-8")
+            (backup / "manifest.json").write_text(
+                json.dumps({"files": [str(svc_rel).replace("\\", "/")]}),
+                encoding="utf-8",
+            )
+            lib.restore_backup(backup, doc, office_repo=REPO_ROOT)
+            self.assertIn("after apply wrongly", live.read_text(encoding="utf-8"))
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_patch_news_list_template(self):
         text = FIXTURE_LIST.read_text(encoding="utf-8")
         planned, changed, desc = lib.patch_news_list_template_content(text)
@@ -468,6 +532,7 @@ class BlogInstallLibTests(unittest.TestCase):
             self.assertEqual(out.returncode, 0, msg=out.stderr + out.stdout)
             self.assertNotIn("Cannot redeclare", out.stdout + out.stderr)
             self.assertIn("lireate-blog-page", out.stdout)
+            self.assertIn("lx-site-footer", out.stdout)
             errs, _diag = lib.verify_render_html_errors(out.stdout, {}, "article")
             self.assertEqual(errs, [])
         finally:
