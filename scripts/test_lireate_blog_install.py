@@ -20,6 +20,9 @@ import lireate_blog_install_lib as lib  # noqa: E402
 FIXTURE_TEMPLATE = REPO_ROOT / "scripts/fixtures/cms-news-article-template.php"
 FIXTURE_LIST = REPO_ROOT / "scripts/fixtures/cms-news-list-template.php"
 FIXTURE_NEWSTYLE = REPO_ROOT / "scripts/fixtures/cms-newstyle-article-snippet.php"
+FIXTURE_NEWSTYLE_LEGACY_CAT = (
+    REPO_ROOT / "scripts/fixtures/cms-newstyle-legacy-category-top.php"
+)
 BODY_MARKER = "LIREATE_UNIQUE_BODY_MARKER_42"
 
 
@@ -316,6 +319,55 @@ class BlogInstallLibTests(unittest.TestCase):
         planned = lib.plan_template_content(snippet)
         self.assertIn(lib.NEWSTYLE_CATEGORY_GUARD_MARKER, planned)
         self.assertIn("array_key_exists('category'", planned)
+
+    def test_patched_newstyle_legacy_category_php_lint_and_render(self):
+        if not shutil.which("php"):
+            self.skipTest("php-cli not available")
+        snippet = FIXTURE_NEWSTYLE_LEGACY_CAT.read_text(encoding="utf-8")
+        planned = lib.plan_template_content(snippet)
+        self.assertNotIn("isset((", planned)
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-newstyle-patch-"))
+        try:
+            doc = tmp / "docroot"
+            for src, rel in lib.copy_plan(REPO_ROOT):
+                dst = doc / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(src), str(dst))
+            article = doc / "template/page/news/newStyle.php"
+            article.parent.mkdir(parents=True, exist_ok=True)
+            article.write_text(planned, encoding="utf-8")
+            lint = subprocess.run(
+                ["php", "-l", str(article)], capture_output=True, text=True
+            )
+            self.assertEqual(lint.returncode, 0, msg=lint.stdout + lint.stderr)
+            slug = "diag-slug"
+            runner = tmp / "run.php"
+            runner.write_text(
+                lib.build_php_newstyle_diag_runner(str(doc), str(article), slug),
+                encoding="utf-8",
+            )
+            render = subprocess.run(
+                [
+                    "php",
+                    "-d",
+                    "display_errors=0",
+                    "-d",
+                    "log_errors=1",
+                    "-d",
+                    "date.timezone=Europe/Moscow",
+                    str(runner),
+                ],
+                capture_output=True,
+                text=True,
+                cwd=str(REPO_ROOT),
+            )
+            combined = render.stdout + render.stderr
+            self.assertEqual(render.returncode, 0, msg=combined)
+            self.assertNotIn("Fatal error", combined)
+            self.assertNotIn("Parse error", combined)
+            self.assertIn("lireate-blog-page", render.stdout)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
 
     def test_diff_new_log_signatures_ignores_line_number_shift(self):
         baseline = {

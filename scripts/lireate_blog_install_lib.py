@@ -967,36 +967,10 @@ def ensure_newstyle_early_category_guard(text):
     return block + text
 
 
-def guard_newstyle_bare_category_index_reads(text):
-    """Wrap remaining $news_article[0]['category'] reads (PHP 5.6, same output when key set)."""
-    if "news_article" not in text:
-        return text
-    pattern = re.compile(
-        r"\$news_article\s*\[\s*0\s*\]\s*\[\s*(['\"])category\1\s*\](?!\s*=)"
-    )
-    repl = (
-        "(isset($news_article[0]['category']) ? $news_article[0]['category'] : "
-        "(isset($category) ? $category : ''))"
-    )
-
-    def _sub(match):
-        quote = match.group(1)
-        if quote == '"':
-            return (
-                '(isset($news_article[0]["category"]) ? $news_article[0]["category"] : '
-                '(isset($category) ? $category : ""))'
-            )
-        return repl
-
-    new_text = pattern.sub(_sub, text)
-    return new_text
-
-
 def patch_news_template_content(text):
     """Return (new_text, changed, description)."""
     if _patch_is_current(text):
         guarded = ensure_newstyle_early_category_guard(text)
-        guarded = guard_newstyle_bare_category_index_reads(guarded)
         if guarded != text:
             return guarded, True, "category guard on already-patched newStyle"
         return text, False, "already patched (marker present)"
@@ -1006,7 +980,6 @@ def patch_news_template_content(text):
         repl = _replacement_block_newstyle()
         new_text = text[: span[0]] + repl + text[span[1] :]
         new_text = ensure_newstyle_early_category_guard(new_text)
-        new_text = guard_newstyle_bare_category_index_reads(new_text)
         return new_text, new_text != text, "replaced newStyle block (h1 through #textBox)"
     repl = _replacement_block_legacy()
     if LEGACY_BLOCK_RE.search(text):
@@ -1158,7 +1131,6 @@ def plan_template_content(text):
     """Apply news + body patches for preview (idempotent)."""
     text, _, _ = patch_news_template_content(text)
     text = ensure_newstyle_early_category_guard(text)
-    text = guard_newstyle_bare_category_index_reads(text)
     text, _ = patch_body_class_content(text)
     return text
 
