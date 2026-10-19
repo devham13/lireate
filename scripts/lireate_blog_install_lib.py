@@ -32,6 +32,8 @@ LIST_FOOTER_AFTER_SECTION_RE = re.compile(
 LIST_FALLBACK_MARKER = "lireate-blog-list-fallback:v1"
 FOOTER_FIX_CSS_MARKER = "lireate footer/max fix:"
 FOOTER_FIX_CSS_RULE = "#blog .lx-site-footer p.lx-site-footer-title{font-size:16px"
+COLLAGE_V1_CSS_MARKER = ".lireate-blog-collage-hero-wrap"
+COLLAGE_V1_HERO_ATTR = 'data-lireate-collage-hero="1"'
 LIST_LEGACY_MARKER = "lireate-blog-list-legacy:snapshot"
 LIST_LEGACY_REL = Path("template/page/news/lireate-blog-list-legacy.inc.php")
 BODY_CLASS = "lireate-blog-body"
@@ -265,7 +267,21 @@ def _replacement_block_newstyle():
         "}\n"
         "$_lb_story = isset($_lb_art['full_story']) ? $_lb_art['full_story'] : '';\n"
         "$lireate_blog_cover_html = '';\n"
-        "if (preg_match('/<img[^>]+src=\"([^\"]*\\\\/template\\\\/images\\\\/blog\\\\/[^\"]+)\"/i', $_lb_story, $_lb_m)) {\n"
+        "if (!function_exists('lireate_blog_require_lib')) {\n"
+        "    require_once $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-lib.php';\n"
+        "}\n"
+        "lireate_blog_require_lib();\n"
+        "$_lb_row_preview = array(\n"
+        "    'full_story' => $_lb_story,\n"
+        "    'seo_url' => $_lb_seo,\n"
+        "    'name' => isset($_lb_art['name']) ? $_lb_art['name'] : '',\n"
+        "    'cover_style' => isset($_lb_art['cover_style']) ? $_lb_art['cover_style'] : '',\n"
+        ");\n"
+        "$_lb_collage = lireate_blog_article_collage_prepare($_lb_row_preview);\n"
+        "$_lb_story = $_lb_collage['body'];\n"
+        "$lireate_blog_collage_mode = !empty($_lb_collage['mode']);\n"
+        "$lireate_blog_collage_hero_html = isset($_lb_collage['hero_html']) ? $_lb_collage['hero_html'] : '';\n"
+        "if (!$_lb_collage['mode'] && preg_match('/<img[^>]+src=\"([^\"]*\\\\/template\\\\/images\\\\/blog\\\\/[^\"]+)\"/i', $_lb_story, $_lb_m)) {\n"
         "    $lireate_blog_cover_html = '<img src=\"' . htmlspecialchars($_lb_m[1], ENT_QUOTES, 'UTF-8') . '\" alt=\"\" class=\"lireate-blog-cover-img\">';\n"
         "    $_lb_story = preg_replace('/<img[^>]+src=\"[^\"]*\\\\/template\\\\/images\\\\/blog\\\\/[^\"]+\"[^>]*>/i', '', $_lb_story, 1);\n"
         "}\n"
@@ -1024,7 +1040,7 @@ def run_php_list_diag(live_docroot, office_repo=None):
     if footer_css_path.is_file():
         footer_css_text = footer_css_path.read_text(encoding="utf-8", errors="replace")
     footer_fix_ok = FOOTER_FIX_CSS_MARKER in footer_css_text and FOOTER_FIX_CSS_RULE in footer_css_text
-    footer_link_ok = "lireate-blog-footer.css?v=2026-10-19m" in stdout
+    footer_link_ok = "lireate-blog-footer.css?v=2026-10-19n" in stdout
     print(
         "diag_footer_css: marker={0} rule={1} html_link_19m={2}".format(
             FOOTER_FIX_CSS_MARKER in footer_css_text,
@@ -1035,7 +1051,11 @@ def run_php_list_diag(live_docroot, office_repo=None):
     if not footer_fix_ok:
         fail_reasons.append("missing footer fix.css rules in deployed lireate-blog-footer.css")
     if not footer_link_ok:
-        fail_reasons.append("missing lireate-blog-footer.css?v=2026-10-19m in list HTML")
+        fail_reasons.append("missing lireate-blog-footer.css?v=2026-10-19n in list HTML")
+
+    article_code = run_php_article_collage_diag(sandbox, repo, php_bin)
+    if article_code != 0:
+        fail_reasons.append("article collage-v1 diag failed")
 
     if fail_reasons:
         print("RESULT: FAIL ({0})".format("; ".join(fail_reasons)))
@@ -1046,6 +1066,129 @@ def run_php_list_diag(live_docroot, office_repo=None):
 
     shutil.rmtree(tmp_root, ignore_errors=True)
     return code
+
+
+def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
+    """Render collage-v1 and legacy article snippets; assert hero vs classic header."""
+    import subprocess
+
+    sandbox = Path(sandbox_docroot).resolve()
+    repo = Path(office_repo).resolve()
+    shared = repo / "pages/blog/_shared"
+    layout = shared / "lireate-blog-layout.inc.php"
+    if not layout.is_file():
+        print("BLOCKER: missing {0}".format(layout))
+        return 2
+
+    runner = sandbox.parent / "run-article-collage-diag.php"
+    runner.write_text(
+        (
+            "<?php\n"
+            "ini_set('display_errors', '1');\n"
+            "error_reporting(E_ALL);\n"
+            "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
+            "require {lib};\n"
+            "function lireate_blog_diag_render_article($row, $label) {\n"
+            "    $prep = lireate_blog_article_collage_prepare($row);\n"
+            "    $lireate_blog_title = 'Diag ' . $label;\n"
+            "    $lireate_blog_body_html = lireate_blog_prepare_body_html($prep['body']);\n"
+            "    $lireate_blog_collage_mode = !empty($prep['mode']);\n"
+            "    $lireate_blog_collage_hero_html = isset($prep['hero_html']) ? $prep['hero_html'] : '';\n"
+            "    $lireate_blog_cover_html = '';\n"
+            "    $lireate_blog_date_display = '19.10.2026';\n"
+            "    $lireate_blog_date_iso = '2026-10-19';\n"
+            "    $lireate_blog_tag = 'Тест';\n"
+            "    $lireate_blog_tag_url = '/news/';\n"
+            "    $lireate_blog_current_url = '/diag-article/';\n"
+            "    ob_start();\n"
+            "    include {layout};\n"
+            "    return ob_get_clean();\n"
+            "}\n"
+            "$collage_story = '<figure class=\"lx-article-cover\" data-cover-style=\"collage-v1\">'\n"
+            "    . '<img src=\"/template/images/blog/diag-collage-v1.jpg\" alt=\"Diag\" width=\"860\" height=\"400\"></figure>'\n"
+            "    . '<p>Collage body</p>';\n"
+            "$legacy_story = '<p>Legacy body without collage cover.</p><h2>Section</h2>';\n"
+            "echo \"<!-- lireate-blog-diag-article-section:collage -->\\n\";\n"
+            "echo lireate_blog_diag_render_article(array(\n"
+            "    'full_story' => $collage_story,\n"
+            "    'cover_style' => 'collage-v1',\n"
+            "    'seo_url' => 'diag-collage-v1',\n"
+            "    'name' => 'Collage diag',\n"
+            "), 'collage');\n"
+            "echo \"<!-- lireate-blog-diag-article-section:legacy -->\\n\";\n"
+            "echo lireate_blog_diag_render_article(array(\n"
+            "    'full_story' => $legacy_story,\n"
+            "    'name' => 'Legacy diag',\n"
+            "), 'legacy');\n"
+        ).format(
+            doc=repr(str(sandbox)),
+            lib=repr(str(shared / "lireate-blog-lib.php")),
+            layout=repr(str(layout)),
+        ),
+        encoding="utf-8",
+    )
+
+    print("=== PHP ARTICLE COLLAGE DIAG ===")
+    proc = subprocess.run(
+        [php_bin, "-d", "display_errors=1", "-d", "error_reporting=E_ALL", str(runner)],
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    stdout = proc.stdout or ""
+    stderr = proc.stderr or ""
+    if stderr:
+        print("--- article diag stderr ---")
+        print(stderr.rstrip())
+
+    article_css_path = sandbox / "template/page/news/lireate-blog-article.css"
+    article_css = ""
+    if article_css_path.is_file():
+        article_css = article_css_path.read_text(encoding="utf-8", errors="replace")
+
+    collage_chunk = ""
+    legacy_chunk = ""
+    if "<!-- lireate-blog-diag-article-section:collage -->" in stdout:
+        parts = stdout.split("<!-- lireate-blog-diag-article-section:legacy -->", 1)
+        collage_chunk = parts[0]
+        legacy_chunk = parts[1] if len(parts) > 1 else ""
+    collage_hero = COLLAGE_V1_HERO_ATTR in collage_chunk
+    collage_no_dup = True
+    if 'id="lireate-blog-prose"' in collage_chunk:
+        prose_tail = collage_chunk.split('id="lireate-blog-prose"', 1)[1]
+        collage_no_dup = "lx-article-cover" not in prose_tail
+    legacy_no_hero = COLLAGE_V1_HERO_ATTR not in legacy_chunk
+    legacy_header = "lireate-blog-header" in legacy_chunk and "lireate-blog-h1" in legacy_chunk
+    css_ok = COLLAGE_V1_CSS_MARKER in article_css
+    print(
+        "diag_article_collage: hero_wrap={0} prose_no_dup_figure={1} legacy_no_hero={2} legacy_header={3} css_marker={4}".format(
+            collage_hero,
+            collage_no_dup,
+            legacy_no_hero,
+            legacy_header,
+            css_ok,
+        )
+    )
+
+    fail = []
+    if proc.returncode != 0:
+        fail.append("php exit {0}".format(proc.returncode))
+    if not collage_hero:
+        fail.append("collage hero missing")
+    if not collage_no_dup:
+        fail.append("collage duplicate figure in prose")
+    if not legacy_no_hero:
+        fail.append("legacy has collage hero")
+    if not legacy_header:
+        fail.append("legacy header missing")
+    if not css_ok:
+        fail.append("article css missing collage rules")
+
+    if fail:
+        print("ARTICLE COLLAGE RESULT: FAIL ({0})".format("; ".join(fail)))
+        return 1
+    print("ARTICLE COLLAGE RESULT: PASS")
+    return 0
 
 
 def backup_files(backup_dir, docroot, rel_paths):

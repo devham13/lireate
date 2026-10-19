@@ -360,6 +360,120 @@ function lireate_blog_prepare_body_html($html)
     return lireate_blog_ensure_h2_ids($html);
 }
 
+function lireate_blog_html_has_collage_v1_cover_figure($html)
+{
+    $html = (string) $html;
+    if ($html === '') {
+        return false;
+    }
+    if (preg_match('/<figure\b[^>]*\bclass="[^"]*\blx-article-cover\b[^"]*"[^>]*\bdata-cover-style="collage-v1"/i', $html)) {
+        return true;
+    }
+    if (preg_match('/<figure\b[^>]*\bdata-cover-style="collage-v1"[^>]*\bclass="[^"]*\blx-article-cover\b/i', $html)) {
+        return true;
+    }
+    return false;
+}
+
+function lireate_blog_strip_collage_v1_cover_figure($html)
+{
+    $html = (string) $html;
+    $patterns = array(
+        '/<figure\b[^>]*\bclass="[^"]*\blx-article-cover\b[^"]*"[^>]*\bdata-cover-style="collage-v1"[^>]*>.*?<\/figure>\s*/is',
+        '/<figure\b[^>]*\bdata-cover-style="collage-v1"[^>]*\bclass="[^"]*\blx-article-cover\b[^"]*"[^>]*>.*?<\/figure>\s*/is',
+    );
+    foreach ($patterns as $pattern) {
+        $count = 0;
+        $next = preg_replace($pattern, '', $html, 1, $count);
+        if ($count > 0 && is_string($next)) {
+            return $next;
+        }
+    }
+    return $html;
+}
+
+function lireate_blog_collage_cover_url_for_seo($seo_url)
+{
+    $seo = trim((string) $seo_url, '/');
+    if ($seo === '') {
+        return '';
+    }
+    $path = '/template/images/blog/' . $seo . '.jpg';
+    if (lireate_blog_web_path_is_file($path)) {
+        return lireate_blog_resolve_cover_url($path);
+    }
+    return '';
+}
+
+function lireate_blog_extract_first_img_src($html)
+{
+    if (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', (string) $html, $m)) {
+        return $m[1];
+    }
+    return '';
+}
+
+/**
+ * Collage-v1 cover: hero from /template/images/blog/{seo_url}.jpg or figure in body; strip duplicate figure.
+ *
+ * @return array{mode:bool,body:string,hero_html:string}
+ */
+function lireate_blog_article_collage_prepare($row)
+{
+    $story = '';
+    $cover_style = '';
+    $seo = '';
+    $title = '';
+    if (is_array($row)) {
+        $story = lireate_blog_list_row_get($row, array('full_story', 'text', 'story'), '');
+        $cover_style = lireate_blog_list_row_get($row, array('cover_style'), '');
+        $seo = lireate_blog_list_row_get($row, array('seo_url'), '');
+        $title = lireate_blog_list_row_get($row, array('name', 'title'), '');
+    }
+    $has_marker = ($cover_style === 'collage-v1') || lireate_blog_html_has_collage_v1_cover_figure($story);
+    if (!$has_marker) {
+        return array(
+            'mode' => false,
+            'body' => $story,
+            'hero_html' => '',
+        );
+    }
+    $src = '';
+    if (lireate_blog_html_has_collage_v1_cover_figure($story)) {
+        if (preg_match(
+            '/<figure\b[^>]*(?:class="[^"]*lx-article-cover[^"]*"[^>]*data-cover-style="collage-v1"|data-cover-style="collage-v1"[^>]*class="[^"]*lx-article-cover[^"]*")[^>]*>.*?<\/figure>/is',
+            $story,
+            $figure_match
+        )) {
+            $src = lireate_blog_extract_first_img_src($figure_match[0]);
+            $story = lireate_blog_strip_collage_v1_cover_figure($story);
+        }
+    }
+    if ($src === '' || strpos($src, '/template/images/blog/') === false) {
+        $from_seo = lireate_blog_collage_cover_url_for_seo($seo);
+        if ($from_seo !== '') {
+            $src = $from_seo;
+        }
+    }
+    if ($src === '') {
+        return array(
+            'mode' => false,
+            'body' => $story,
+            'hero_html' => '',
+        );
+    }
+    $alt = $title !== '' ? $title : '';
+    $hero = '<figure class="lireate-blog-collage-hero lx-article-cover" data-cover-style="collage-v1">'
+        . '<img src="' . lireate_blog_h($src) . '" alt="' . lireate_blog_h($alt) . '"'
+        . ' class="lireate-blog-collage-hero-img" width="860" height="400" loading="eager" decoding="async">'
+        . '</figure>';
+    return array(
+        'mode' => true,
+        'body' => $story,
+        'hero_html' => $hero,
+    );
+}
+
 function lireate_blog_reading_time_minutes($html)
 {
     $text = strip_tags((string) $html);
