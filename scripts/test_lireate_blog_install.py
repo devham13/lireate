@@ -227,14 +227,31 @@ class BlogInstallLibTests(unittest.TestCase):
         tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-"))
         try:
             live = tmp / "docroot"
+            tpl_dir = live / "template" / "page" / "news"
+            tpl_dir.mkdir(parents=True)
             (live / "data").mkdir(parents=True)
             (live / "data" / "db.php").write_text("<?php\n", encoding="utf-8")
+            shutil.copy(str(FIXTURE_LIST), str(tpl_dir / "blog.php"))
             list_cms_live = live / "template/page/news/lireate-blog-list-cms.inc.php"
             self.assertFalse(list_cms_live.is_file())
             code = lib.run_php_list_diag(live, REPO_ROOT)
             self.assertEqual(code, 0)
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_list_patch_strips_v2_footer_tail(self):
+        text = (
+            "<?php ?>\n"
+            "<section id=\"blog\">\n"
+            "<?php /* %s */ ?>\n"
+            "</section>\n"
+            "<?php\nif (function_exists('lireate_blog_render_service_footer')) {\n"
+            "    lireate_blog_render_service_footer();\n}\n?>\n"
+        ) % lib.LIST_INSTALL_MARKER_LEGACY_V2
+        planned, changed, _desc = lib.patch_news_list_template_content(text)
+        self.assertTrue(changed)
+        self.assertIn(lib.LIST_INSTALL_MARKER, planned)
+        self.assertNotIn("lireate_blog_render_service_footer", planned)
 
 
 class BlogInstallApplyTests(unittest.TestCase):
