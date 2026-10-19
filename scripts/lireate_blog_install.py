@@ -107,7 +107,17 @@ def cmd_apply(office_repo, docroot, backups_root):
         return 0
 
     article_path = lib.probe_article_path(office_repo)
-    errors = lib.verify_http(base, article_path)
+    logs_dir = Path(
+        __import__("os").environ.get("LIREATE_AUTOPUB_HOME") or backups_root.parent
+    ).expanduser() / "logs"
+    errors = lib.verify_http(
+        base,
+        article_path,
+        logs_dir=logs_dir,
+        backup_id=backup_id,
+        docroot=docroot,
+        autopub_home=backups_root.parent,
+    )
     if errors:
         print("HTTP verify failed:")
         for err in errors:
