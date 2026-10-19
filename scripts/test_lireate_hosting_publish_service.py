@@ -73,7 +73,12 @@ class HostingPublishTests(unittest.TestCase):
         self.assertIn("DirectoryIndex", (dest / ".htaccess").read_text(encoding="utf-8"))
         self.assertTrue((dest / ".lireate-managed.json").is_file())
         self.assertTrue((dest / "assets" / "lireate-shared" / "lireate-contact.js").is_file())
-        self.assertTrue((self.docroot / "_shared" / "lireate-messenger-urls.php").is_file())
+        for name in (
+            "lireate-messenger-urls.php",
+            "lireate-messenger-load.php",
+            "lireate-messenger-require.inc.php",
+        ):
+            self.assertTrue((self.docroot / "_shared" / name).is_file(), name)
         self.assertTrue(self.state_file.is_file())
         state = json.loads(self.state_file.read_text(encoding="utf-8"))
         self.assertIn(self.slug, state)

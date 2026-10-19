@@ -39,7 +39,11 @@ SHARED_SKIP_FILENAMES = frozenset(
 
 MANAGED_MARKER = ".lireate-managed.json"
 SHARED_ASSETS_PREFIX = Path("assets") / "lireate-shared"
-DOCROOT_SHARED_PHP_NAMES = ("lireate-messenger-urls.php",)
+DOCROOT_SHARED_PHP_NAMES = (
+    "lireate-messenger-urls.php",
+    "lireate-messenger-load.php",
+    "lireate-messenger-require.inc.php",
+)
 SERVICE_DIR_HTACCESS_REL = ".htaccess"
 SERVICE_DIR_HTACCESS_SHARED = Path("pages") / "services" / "_shared" / "service-directory.htaccess"
 

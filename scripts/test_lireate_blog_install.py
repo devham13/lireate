@@ -198,6 +198,46 @@ class BlogInstallLibTests(unittest.TestCase):
         self.assertTrue(all(cb.endswith("-r1") for _p, cb in calls))
         t.sleep.assert_not_called()
 
+    def test_service_footer_without_slug_messenger_file(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-svc-messenger-"))
+        try:
+            doc = tmp / "docroot"
+            shared = doc / "_shared"
+            shared.mkdir(parents=True)
+            svc_dir = doc / "registraciya_tovarnogo_znaka_v_kitae"
+            svc_dir.mkdir(parents=True)
+            for name in (
+                "lireate-messenger-urls.php",
+                "lireate-messenger-load.php",
+                "lireate-messenger-require.inc.php",
+            ):
+                shutil.copy2(
+                    str(REPO_ROOT / "pages/services/_shared" / name),
+                    str(shared / name),
+                )
+            shutil.copy2(
+                str(REPO_ROOT / "pages/services/_shared/lireate-service-footer.inc.php"),
+                str(svc_dir / "lireate-service-footer.inc.php"),
+            )
+            runner = tmp / "run.php"
+            runner.write_text(
+                (
+                    "<?php\n"
+                    "ini_set('display_errors', '1');\n"
+                    "error_reporting(E_ALL);\n"
+                    "$_SERVER['DOCUMENT_ROOT'] = '{doc}';\n"
+                    "include '{footer}';\n"
+                ).format(doc=doc, footer=svc_dir / "lireate-service-footer.inc.php"),
+                encoding="utf-8",
+            )
+            out = subprocess.run(["php", str(runner)], capture_output=True, text=True)
+            combined = out.stdout + out.stderr
+            self.assertEqual(out.returncode, 0, msg=combined)
+            self.assertNotIn("Failed opening required", combined)
+            self.assertIn("lx-site-footer", out.stdout)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_dual_lib_tree_article_render_no_redeclare(self):
         tmp = Path(tempfile.mkdtemp(prefix="lireate-dual-lib-"))
         try:
