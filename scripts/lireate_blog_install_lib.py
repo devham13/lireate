@@ -134,6 +134,240 @@ def build_php_article_collage_diag_runner(sandbox_docroot, lib_php_path, layout_
         {"DOC": doc_lit, "LIB": lib_lit, "LAYOUT": layout_lit},
     )
 
+
+PHP56_SOURCE_FORBIDDEN = (
+    (re.compile(r"dirname\s*\([^)]+,\s*\d"), "dirname() with levels (PHP 7+)"),
+    (re.compile(r"\?\?"), "null coalesce ?? (PHP 7+)"),
+    (re.compile(r"\?->"), "nullsafe ?-> (PHP 8+)"),
+    (re.compile(r"\bfn\s*\("), "arrow function fn() (PHP 7.4+)"),
+    (re.compile(r"\bstr_contains\s*\("), "str_contains() (PHP 8+)"),
+)
+
+PHP56_DEPLOY_REL_DIRS = (
+    Path("pages/blog/_shared"),
+    Path("pages/services/_shared"),
+    Path("template/page/news"),
+)
+
+
+def iter_deploy_php_sources(office_repo):
+    repo = Path(office_repo).resolve()
+    for rel_dir in PHP56_DEPLOY_REL_DIRS:
+        base = repo / rel_dir
+        if not base.is_dir():
+            continue
+        for path in sorted(base.rglob("*.php")):
+            if path.is_file():
+                yield path
+
+
+def scan_php56_forbidden_sources(office_repo):
+    violations = []
+    for path in iter_deploy_php_sources(office_repo):
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError as exc:
+            violations.append("{0}: unreadable ({1})".format(path, exc))
+            continue
+        for pattern, label in PHP56_SOURCE_FORBIDDEN:
+            if pattern.search(text):
+                violations.append("{0}: {1}".format(path.relative_to(office_repo), label))
+                break
+    return violations
+
+
+def php_version_string(php_bin):
+    import subprocess
+
+    try:
+        proc = subprocess.run(
+            [php_bin, "-r", "echo PHP_VERSION;"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if proc.returncode != 0:
+        return None
+    return (proc.stdout or "").strip()
+
+
+def resolve_site_php_bin():
+    import os
+
+    explicit = (os.environ.get("LIREATE_PHP_BIN") or "").strip()
+    if explicit:
+        return explicit
+    p56 = Path("/opt/php/5.6/bin/php")
+    if p56.is_file():
+        return str(p56)
+    wrapper = Path.home() / "php-bin" / "lireate.ru" / "php"
+    if wrapper.is_file():
+        try:
+            first = wrapper.read_text(encoding="utf-8", errors="replace").splitlines()[0]
+            if first.startswith("#!"):
+                interp = first[2:].strip()
+                if interp:
+                    interp_path = Path(interp)
+                    if interp_path.name == "php-cgi" or interp_path.name.endswith("-cgi"):
+                        cli = interp_path.parent / "php"
+                        if cli.is_file():
+                            return str(cli)
+                    if interp_path.is_file():
+                        return str(interp_path)
+        except OSError:
+            pass
+    return "php"
+
+
+def resolve_diag_php_bin():
+    import os
+
+    explicit = (os.environ.get("LIREATE_PHP_BIN") or "").strip()
+    if explicit:
+        return explicit
+    return resolve_site_php_bin()
+
+
+def assert_diag_php_matches_site(php_bin):
+    site_bin = resolve_site_php_bin()
+    site_ver = php_version_string(site_bin)
+    diag_ver = php_version_string(php_bin)
+    if site_ver and diag_ver and site_ver != diag_ver:
+        print(
+            "BLOCKER: diag PHP {0} ({1}) != site PHP {2} ({3})".format(
+                php_bin, diag_ver, site_bin, site_ver
+            )
+        )
+        return 2
+    return 0
+
+
+def _php_bin_uses_docker(php_bin):
+    try:
+        wrap = Path(php_bin).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return False
+    return "docker run" in wrap
+
+
+def host_to_php_fs_path(php_bin, office_repo, path):
+    repo = Path(office_repo).resolve()
+    abs_path = Path(path).resolve()
+    if _php_bin_uses_docker(php_bin):
+        rel = abs_path.relative_to(repo)
+        return "/work/{0}".format(str(rel).replace("\\", "/"))
+    return str(abs_path)
+
+
+def _php_lint_target_path(php_bin, office_repo, path):
+    return host_to_php_fs_path(php_bin, office_repo, path)
+
+
+def lint_deployed_php_with_bin(php_bin, office_repo):
+    violations = scan_php56_forbidden_sources(office_repo)
+    if violations:
+        print("PHP 5.6 source scan FAIL:")
+        for line in violations[:30]:
+            print("  - {0}".format(line))
+        return 1
+    import subprocess
+
+    for path in iter_deploy_php_sources(office_repo):
+        lint_path = _php_lint_target_path(php_bin, office_repo, path)
+        proc = subprocess.run(
+            [php_bin, "-l", lint_path],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if proc.returncode != 0:
+            print("php -l FAIL: {0}".format(path))
+            print((proc.stderr or proc.stdout or "").strip())
+            return 1
+    return 0
+
+
+def resolve_php_error_log_path(docroot=None, autopub_home=None):
+    candidates = []
+    if docroot:
+        candidates.append(Path(docroot) / "PHP_errors.log")
+    home = Path.home()
+    candidates.append(home / "www" / "public_html" / "PHP_errors.log")
+    if autopub_home:
+        candidates.append(Path(autopub_home) / "logs" / "php-error.log")
+    candidates.extend(
+        [
+            home / "logs" / "error_log",
+            home / "logs" / "php-error.log",
+        ]
+    )
+    if docroot:
+        candidates.append(Path(docroot) / "error_log")
+    for path in candidates:
+        if path and path.is_file():
+            return path
+    return None
+
+
+def snapshot_php_error_log(docroot=None, autopub_home=None):
+    path = resolve_php_error_log_path(docroot, autopub_home)
+    if path is None:
+        return None
+    try:
+        return (str(path), path.stat().st_size)
+    except OSError:
+        return None
+
+
+def check_php_error_log_since_deploy(snapshot, docroot=None, autopub_home=None):
+    if snapshot:
+        path = Path(snapshot[0])
+        offset = snapshot[1]
+    else:
+        path = resolve_php_error_log_path(docroot, autopub_home)
+        offset = 0
+    if path is None or not path.is_file():
+        return []
+    try:
+        with path.open("rb") as fh:
+            fh.seek(offset)
+            chunk = fh.read()
+    except OSError:
+        return []
+    text = chunk.decode("utf-8", errors="replace")
+    fatals = [line.strip() for line in text.splitlines() if "PHP Fatal" in line]
+    if not fatals:
+        return []
+    return [
+        "php error log ({0}): {1} new PHP Fatal line(s), last: {2}".format(
+            path, len(fatals), fatals[-1][:240]
+        )
+    ]
+
+
+def probe_article_paths(office_repo, max_count=5):
+    paths = []
+    index = Path(office_repo) / "data" / "blog-articles-index.json"
+    if index.is_file():
+        data = json.loads(index.read_text(encoding="utf-8"))
+        for article in (data.get("articles") or [])[:max_count]:
+            url = (article.get("url") or "").strip()
+            if not url:
+                continue
+            paths.append(url if url.startswith("/") else "/" + url)
+    if not paths:
+        paths.append(probe_article_path(office_repo))
+    seen = set()
+    unique = []
+    for path in paths:
+        if path not in seen:
+            seen.add(path)
+            unique.append(path)
+    return unique
+
+
 LEGACY_BLOCK_RE = re.compile(
     r"<h1\b[^>]*>.*?</h1>\s*"
     r"(?:<div\s+id=[\"']articleInfo[\"'][^>]*>.*?</div>\s*)?"
@@ -720,7 +954,9 @@ def build_diag_sandbox(live_docroot, office_repo):
 
     live_docroot = Path(live_docroot).resolve()
     office_repo = Path(office_repo).resolve()
-    root = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-"))
+    diag_parent = Path(office_repo) / ".lireate-diag-tmp"
+    diag_parent.mkdir(parents=True, exist_ok=True)
+    root = Path(tempfile.mkdtemp(prefix="lireate-blog-diag-", dir=str(diag_parent)))
     sandbox = root / "docroot"
     sandbox.mkdir(parents=True)
 
@@ -830,26 +1066,15 @@ def http_probe(base_url, path, timeout=25, cache_bust=None):
 
 
 def _php_error_tail(docroot, autopub_home, max_lines=40):
-    candidates = []
-    if docroot:
-        candidates.append(Path(docroot) / "error_log")
-    home = Path.home()
-    candidates.extend(
-        [
-            Path(autopub_home) / "logs" / "php-error.log" if autopub_home else None,
-            home / "logs" / "error_log",
-            home / "logs" / "php-error.log",
-        ]
-    )
-    for path in candidates:
-        if not path or not path.is_file():
-            continue
-        try:
-            lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
-            if lines:
-                return str(path), lines[-max_lines:]
-        except OSError:
-            continue
+    path = resolve_php_error_log_path(docroot, autopub_home)
+    if path is None:
+        return None, []
+    try:
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+        if lines:
+            return str(path), lines[-max_lines:]
+    except OSError:
+        pass
     return None, []
 
 
@@ -936,6 +1161,58 @@ def print_verify_diagnosis(label, url, status, diag, html_path=None, error_log=N
             print("  {0}".format(line))
 
 
+def _verify_single_http_page(
+    base_url,
+    label,
+    path,
+    cache_bust,
+    logs_dir,
+    backup_id,
+    log_index,
+    docroot,
+    autopub_home,
+    err_log_path,
+    err_log_lines,
+):
+    status, body, url, headers = http_probe(base_url, path, cache_bust=cache_bust)
+    diag = diagnose_http_body(body, headers)
+    html_path = None
+    if logs_dir and backup_id:
+        html_path = save_verify_html(logs_dir, backup_id, log_index, url, status, body)
+
+    page_errors = []
+    if status != 200:
+        page_errors.append("HTTP {0}".format(status))
+    if diag.get("php_issues"):
+        page_errors.append("PHP errors in HTML")
+    if label == "news_list":
+        if diag["markers"].get("lireate-blog-list-fallback"):
+            page_errors.append("list rendered in fallback mode ({0})".format(LIST_FALLBACK_MARKER))
+        if not diag["markers"].get("lireate-blog-list-page"):
+            page_errors.append("missing lireate-blog-list-page (list patch/CMS not active?)")
+        if not diag["markers"].get("lx-site-footer"):
+            page_errors.append("missing lx-site-footer")
+    else:
+        if not diag["markers"].get("lireate-blog-page"):
+            page_errors.append("missing lireate-blog-page (patch/CMS not active?)")
+        if not diag["markers"].get("lx-site-footer"):
+            page_errors.append("missing lx-site-footer")
+        if not diag["markers"].get("toc"):
+            page_errors.append("missing TOC markup")
+
+    if page_errors:
+        print_verify_diagnosis(
+            label,
+            url,
+            status,
+            diag,
+            html_path=html_path,
+            error_log=(err_log_path, err_log_lines) if err_log_lines else None,
+        )
+        return "{0}: {1}".format(url, "; ".join(page_errors))
+    return None
+
+
 def verify_http(
     base_url,
     article_path,
@@ -944,56 +1221,89 @@ def verify_http(
     docroot=None,
     autopub_home=None,
 ):
+    return verify_http_deploy(
+        base_url,
+        [article_path] if isinstance(article_path, str) else list(article_path),
+        logs_dir=logs_dir,
+        backup_id=backup_id,
+        docroot=docroot,
+        autopub_home=autopub_home,
+        deploy_log_snapshot=None,
+        wait_seconds=0,
+        rounds=1,
+    )
+
+
+def verify_http_deploy(
+    base_url,
+    article_paths,
+    logs_dir=None,
+    backup_id=None,
+    docroot=None,
+    autopub_home=None,
+    deploy_log_snapshot=None,
+    wait_seconds=90,
+    rounds=2,
+):
     import time
 
     errors = []
-    cache_bust = str(int(time.time()))
     err_log_path, err_log_lines = _php_error_tail(docroot, autopub_home)
-
-    checks = (
-        ("article", article_path),
-        ("news_list", "/news/"),
-    )
-    for idx, (label, path) in enumerate(checks, start=1):
-        status, body, url, headers = http_probe(
-            base_url, path, cache_bust=cache_bust
-        )
-        diag = diagnose_http_body(body, headers)
-        html_path = None
-        if logs_dir and backup_id:
-            html_path = save_verify_html(logs_dir, backup_id, idx, url, status, body)
-
-        page_errors = []
-        if status != 200:
-            page_errors.append("HTTP {0}".format(status))
-        if diag.get("php_issues"):
-            page_errors.append("PHP errors in HTML")
-        if label == "news_list":
-            if diag["markers"].get("lireate-blog-list-fallback"):
-                page_errors.append("list rendered in fallback mode ({0})".format(LIST_FALLBACK_MARKER))
-            if not diag["markers"].get("lireate-blog-list-page"):
-                page_errors.append("missing lireate-blog-list-page (list patch/CMS not active?)")
-            if not diag["markers"].get("lx-site-footer"):
-                page_errors.append("missing lx-site-footer")
-        else:
-            if not diag["markers"].get("lireate-blog-page"):
-                page_errors.append("missing lireate-blog-page (patch/CMS not active?)")
-            if not diag["markers"].get("lx-site-footer"):
-                page_errors.append("missing lx-site-footer")
-            if not diag["markers"].get("toc"):
-                page_errors.append("missing TOC markup")
-
-        if page_errors:
-            errors.append("{0}: {1}".format(url, "; ".join(page_errors)))
-            print_verify_diagnosis(
-                label,
-                url,
-                status,
-                diag,
-                html_path=html_path,
-                error_log=(err_log_path, err_log_lines) if err_log_lines else None,
+    log_index = 0
+    for round_idx in range(1, max(1, int(rounds)) + 1):
+        if round_idx > 1 and wait_seconds > 0:
+            print(
+                "HTTP verify round {0}/{1}: waiting {2}s for cache/propagation...".format(
+                    round_idx, rounds, wait_seconds
+                )
             )
-
+            time.sleep(wait_seconds)
+        else:
+            print("HTTP verify round {0}/{1}".format(round_idx, rounds))
+        cache_bust = "{0}-r{1}".format(int(time.time()), round_idx)
+        round_errors = []
+        for article_path in article_paths:
+            log_index += 1
+            err = _verify_single_http_page(
+                base_url,
+                "article",
+                article_path,
+                cache_bust,
+                logs_dir,
+                backup_id,
+                log_index,
+                docroot,
+                autopub_home,
+                err_log_path,
+                err_log_lines,
+            )
+            if err:
+                round_errors.append(err)
+        log_index += 1
+        err = _verify_single_http_page(
+            base_url,
+            "news_list",
+            "/news/",
+            cache_bust,
+            logs_dir,
+            backup_id,
+            log_index,
+            docroot,
+            autopub_home,
+            err_log_path,
+            err_log_lines,
+        )
+        if err:
+            round_errors.append(err)
+        log_errors = check_php_error_log_since_deploy(
+            deploy_log_snapshot, docroot=docroot, autopub_home=autopub_home
+        )
+        for line in log_errors:
+            print("=== PHP ERROR LOG ===")
+            print(line)
+        round_errors.extend(log_errors)
+        if round_errors:
+            errors.extend(round_errors)
     return errors
 
 
@@ -1028,7 +1338,19 @@ def run_php_list_diag(live_docroot, office_repo=None):
         print("BLOCKER: patched list template missing in sandbox ({0})".format(list_include))
         return 2
 
-    php_bin = os.environ.get("LIREATE_PHP_BIN", "php")
+    php_bin = resolve_diag_php_bin()
+    site_ver = php_version_string(resolve_site_php_bin())
+    diag_ver = php_version_string(php_bin)
+    print("site_php_version: {0}".format(site_ver or "n/a"))
+    print("diag_php_version: {0}".format(diag_ver or "n/a"))
+    ver_code = assert_diag_php_matches_site(php_bin)
+    if ver_code != 0:
+        shutil.rmtree(tmp_root, ignore_errors=True)
+        return ver_code
+    lint_code = lint_deployed_php_with_bin(php_bin, repo)
+    if lint_code != 0:
+        shutil.rmtree(tmp_root, ignore_errors=True)
+        return lint_code
     fixture = repo / "scripts/fixtures/cms-news-list-template.php"
     news_snippet = "$news = array();"
     if fixture.is_file():
@@ -1039,7 +1361,11 @@ def run_php_list_diag(live_docroot, office_repo=None):
 
     runner = tmp_root / "run-list.php"
     runner.write_text(
-        build_php_list_diag_runner(sandbox, list_include, news_snippet),
+        build_php_list_diag_runner(
+            host_to_php_fs_path(php_bin, repo, sandbox),
+            host_to_php_fs_path(php_bin, repo, list_include),
+            news_snippet,
+        ),
         encoding="utf-8",
     )
 
@@ -1051,7 +1377,14 @@ def run_php_list_diag(live_docroot, office_repo=None):
     print("list_cms_inc: {0} (from office-repo copy)".format(cms.relative_to(sandbox)))
 
     proc = subprocess.run(
-        [php_bin, "-d", "display_errors=1", "-d", "error_reporting=E_ALL", str(runner)],
+        [
+            php_bin,
+            "-d",
+            "display_errors=1",
+            "-d",
+            "error_reporting=E_ALL",
+            host_to_php_fs_path(php_bin, repo, runner),
+        ],
         capture_output=True,
         text=True,
         timeout=90,
@@ -1157,16 +1490,23 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
     runner = sandbox.parent / "run-article-collage-diag.php"
     runner.write_text(
         build_php_article_collage_diag_runner(
-            sandbox,
-            shared / "lireate-blog-lib.php",
-            layout,
+            host_to_php_fs_path(php_bin, repo, sandbox),
+            host_to_php_fs_path(php_bin, repo, shared / "lireate-blog-lib.php"),
+            host_to_php_fs_path(php_bin, repo, layout),
         ),
         encoding="utf-8",
     )
 
     print("=== PHP ARTICLE COLLAGE DIAG ===")
     proc = subprocess.run(
-        [php_bin, "-d", "display_errors=1", "-d", "error_reporting=E_ALL", str(runner)],
+        [
+            php_bin,
+            "-d",
+            "display_errors=1",
+            "-d",
+            "error_reporting=E_ALL",
+            host_to_php_fs_path(php_bin, repo, runner),
+        ],
         capture_output=True,
         text=True,
         timeout=60,

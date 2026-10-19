@@ -36,6 +36,10 @@ class HostingPublishTests(unittest.TestCase):
         shared.mkdir(parents=True)
         (shared / "lireate-service-dark.css").write_text("body{}", encoding="utf-8")
         (shared / "lireate-contact.js").write_text("// test", encoding="utf-8")
+        (shared / "lireate-messenger-urls.php").write_text(
+            "<?php define('LIREATE_MAX_CHANNEL_URL', 'https://example.test');\n",
+            encoding="utf-8",
+        )
         (shared / "service-directory.htaccess").write_text(
             "DirectoryIndex index.php\n", encoding="utf-8"
         )
@@ -69,6 +73,7 @@ class HostingPublishTests(unittest.TestCase):
         self.assertIn("DirectoryIndex", (dest / ".htaccess").read_text(encoding="utf-8"))
         self.assertTrue((dest / ".lireate-managed.json").is_file())
         self.assertTrue((dest / "assets" / "lireate-shared" / "lireate-contact.js").is_file())
+        self.assertTrue((self.docroot / "_shared" / "lireate-messenger-urls.php").is_file())
         self.assertTrue(self.state_file.is_file())
         state = json.loads(self.state_file.read_text(encoding="utf-8"))
         self.assertIn(self.slug, state)

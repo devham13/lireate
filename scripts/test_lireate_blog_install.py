@@ -251,6 +251,10 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_deploy_php_sources_no_php7_dirname_levels(self):
+        violations = lib.scan_php56_forbidden_sources(REPO_ROOT)
+        self.assertEqual(violations, [], msg="\n".join(violations))
+
     def test_build_article_collage_diag_runner_has_php_braces(self):
         """Runner must not use str.format on PHP (braces and !empty break format)."""
         sandbox = Path("/tmp/lireate-blog-diag-sandbox")
@@ -346,7 +350,7 @@ class BlogInstallApplyTests(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
-    @mock.patch.object(lib, "verify_http", return_value=[])
+    @mock.patch.object(lib, "verify_http_deploy", return_value=[])
     @mock.patch.object(lib, "sync_office_blog_template")
     def test_apply_deploys_and_patches(self, _sync, _verify):
         code = install.main(["--env-file", str(self.env_file), "--apply"])
@@ -357,7 +361,7 @@ class BlogInstallApplyTests(unittest.TestCase):
         self.assertIn(lib.INSTALL_MARKER, patched)
         self.assertIn(lib.BODY_CLASS, patched)
 
-    @mock.patch.object(lib, "verify_http", return_value=["https://example.test/x: missing lx-site-footer"])
+    @mock.patch.object(lib, "verify_http_deploy", return_value=["https://example.test/x: missing lx-site-footer"])
     @mock.patch.object(lib, "sync_office_blog_template")
     def test_apply_rolls_back_on_http_failure(self, _sync, _verify):
         code = install.main(["--env-file", str(self.env_file), "--apply"])

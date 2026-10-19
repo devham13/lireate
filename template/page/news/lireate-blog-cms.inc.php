@@ -6,9 +6,12 @@
  *   $lireate_news_row — name, full_story, date (d.m.Y), category_name, category_url, seo_url
  *   $lireate_news_author, $lireate_news_canonical, $lireate_news_description — опционально
  */
-$repo_blog_shared = dirname(__DIR__, 3) . '/pages/blog/_shared';
+$repo_blog_shared = dirname(dirname(dirname(__DIR__))) . '/pages/blog/_shared';
 if (!is_file($repo_blog_shared . '/lireate-blog-layout.inc.php')) {
     $repo_blog_shared = (isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/') : '') . '/pages/blog/_shared';
+}
+if (!is_file($repo_blog_shared . '/lireate-blog-layout.inc.php') && is_file(__DIR__ . '/lireate-blog-layout.inc.php')) {
+    $repo_blog_shared = __DIR__;
 }
 
 $row = isset($lireate_news_row) && is_array($lireate_news_row) ? $lireate_news_row : array();
@@ -20,6 +23,18 @@ if (!isset($lireate_blog_cover_html)) {
 $lireate_blog_title = isset($row['name']) ? $row['name'] : (isset($lireate_blog_title) ? $lireate_blog_title : '');
 $lireate_blog_body_html = isset($row['full_story']) ? $row['full_story'] : (isset($lireate_blog_body_html) ? $lireate_blog_body_html : '');
 if (!function_exists('lireate_blog_article_collage_prepare')) {
+    $lireate_blog_lib_candidates = array(
+        __DIR__ . '/lireate-blog-lib.php',
+        $repo_blog_shared . '/lireate-blog-lib.php',
+    );
+    foreach ($lireate_blog_lib_candidates as $lireate_blog_lib_path) {
+        if ($lireate_blog_lib_path !== '' && is_file($lireate_blog_lib_path)) {
+            require_once $lireate_blog_lib_path;
+            break;
+        }
+    }
+}
+if (!function_exists('lireate_blog_article_collage_prepare') && function_exists('lireate_blog_require_lib')) {
     lireate_blog_require_lib();
 }
 $_lb_collage_prep = lireate_blog_article_collage_prepare($row);

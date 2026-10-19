@@ -150,17 +150,23 @@ def cmd_apply(office_repo, docroot, backups_root):
         print("STATUS: OK (files deployed, backup {0})".format(backup_id))
         return 0
 
-    article_path = lib.probe_article_path(office_repo)
+    article_paths = lib.probe_article_paths(office_repo)
     logs_dir = Path(
         __import__("os").environ.get("LIREATE_AUTOPUB_HOME") or backups_root.parent
     ).expanduser() / "logs"
-    errors = lib.verify_http(
+    deploy_log_snapshot = lib.snapshot_php_error_log(
+        docroot=docroot, autopub_home=backups_root.parent
+    )
+    errors = lib.verify_http_deploy(
         base,
-        article_path,
+        article_paths,
         logs_dir=logs_dir,
         backup_id=backup_id,
         docroot=docroot,
         autopub_home=backups_root.parent,
+        deploy_log_snapshot=deploy_log_snapshot,
+        wait_seconds=90,
+        rounds=2,
     )
     if errors:
         print("HTTP verify failed:")
@@ -171,7 +177,7 @@ def cmd_apply(office_repo, docroot, backups_root):
         print("STATUS: ROLLED BACK ({0})".format(backup_id))
         return 1
 
-    print("HTTP OK: {0}{1}, {0}/news/".format(base, article_path))
+    print("HTTP OK: {0} articles {1}, {0}/news/".format(base, ", ".join(article_paths)))
     print("STATUS: OK (backup {0})".format(backup_id))
     return 0
 
