@@ -4,6 +4,42 @@
  */
 require_once __DIR__ . '/lireate-blog-config.php';
 
+function lireate_blog_dir_up($path, $levels)
+{
+    $path = (string) $path;
+    $levels = (int) $levels;
+    while ($levels > 0 && $path !== '') {
+        $path = dirname($path);
+        $levels -= 1;
+    }
+    return $path;
+}
+
+function lireate_blog_docroot()
+{
+    return isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+}
+
+function lireate_blog_require_lib()
+{
+    if (function_exists('lireate_blog_h')) {
+        return;
+    }
+    $doc = lireate_blog_docroot();
+    $candidates = array();
+    if ($doc !== '') {
+        $candidates[] = $doc . '/template/page/news/lireate-blog-lib.php';
+        $candidates[] = $doc . '/pages/blog/_shared/lireate-blog-lib.php';
+    }
+    $candidates[] = __DIR__ . '/lireate-blog-lib.php';
+    foreach ($candidates as $path) {
+        if ($path !== '' && is_file($path)) {
+            require_once $path;
+            return;
+        }
+    }
+}
+
 function lireate_blog_h($s)
 {
     return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
@@ -123,7 +159,7 @@ function lireate_blog_date_display_to_iso($display)
 function lireate_blog_index_path()
 {
     $candidates = array(
-        dirname(__DIR__, 3) . '/data/blog-articles-index.json',
+        lireate_blog_dir_up(__DIR__, 3) . '/data/blog-articles-index.json',
         (isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/') : '') . '/data/blog-articles-index.json',
     );
     foreach ($candidates as $path) {
@@ -179,8 +215,8 @@ function lireate_blog_render_service_footer()
         $candidates[] = $doc . '/template/lireate/lireate-service-footer.inc.php';
         $candidates[] = $doc . '/pages/services/_shared/lireate-service-footer.inc.php';
     }
-    $candidates[] = dirname(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';
-    $candidates[] = dirname(__DIR__, 3) . '/template/lireate/lireate-service-footer.inc.php';
+    $candidates[] = lireate_blog_dir_up(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';
+    $candidates[] = lireate_blog_dir_up(__DIR__, 3) . '/template/lireate/lireate-service-footer.inc.php';
     foreach ($candidates as $footer_path) {
         if ($footer_path !== '' && is_file($footer_path)) {
             include $footer_path;

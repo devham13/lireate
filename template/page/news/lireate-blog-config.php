@@ -2,7 +2,7 @@
 /**
  * Конфиг шаблона статей блога LIREATE (новости /news).
  */
-$messenger_cfg = dirname(__DIR__, 2) . '/lireate/lireate-messenger-urls.php';
+$messenger_cfg = dirname(__DIR__, 2) . '/services/_shared/lireate-messenger-urls.php';
 if (is_file($messenger_cfg)) {
     require_once $messenger_cfg;
 }

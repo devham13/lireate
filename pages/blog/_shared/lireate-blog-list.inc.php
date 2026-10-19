@@ -7,7 +7,13 @@
  * $lireate_blog_list_filters — рубрики (label, url, num?, category?)
  * $lireate_blog_list_pagination — опционально (current, total, pages[])
  */
-require_once __DIR__ . '/lireate-blog-lib.php';
+if (!function_exists('lireate_blog_h')) {
+    if (function_exists('lireate_blog_require_lib')) {
+        lireate_blog_require_lib();
+    } else {
+        require_once __DIR__ . '/lireate-blog-lib.php';
+    }
+}
 
 $lb_items = isset($lireate_blog_list_items) && is_array($lireate_blog_list_items)
     ? $lireate_blog_list_items
