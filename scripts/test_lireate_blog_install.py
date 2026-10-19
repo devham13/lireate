@@ -158,6 +158,14 @@ class BlogInstallLibTests(unittest.TestCase):
         dests = {str(rel).replace("\\", "/") for _, rel in pairs}
         self.assertFalse(any(p.startswith("template/lireate/") for p in dests))
 
+    def test_copy_plan_deploys_blog_site_footer_bundle_to_news(self):
+        pairs = lib.copy_plan(REPO_ROOT)
+        dests = {str(rel).replace("\\", "/") for _, rel in pairs}
+        self.assertIn("template/page/news/lireate-blog-site-footer.inc.php", dests)
+        self.assertIn(
+            "template/page/news/lireate-service-messenger-include.inc.php", dests
+        )
+
     def test_blog_apply_simulate_leaves_service_guard_unchanged(self):
         tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-apply-guard-"))
         try:
@@ -524,6 +532,7 @@ class BlogInstallLibTests(unittest.TestCase):
             self.assertEqual(out.returncode, 0, msg=out.stderr + out.stdout)
             self.assertNotIn("Cannot redeclare", out.stdout + out.stderr)
             self.assertIn("lireate-blog-page", out.stdout)
+            self.assertIn("lx-site-footer", out.stdout)
             errs, _diag = lib.verify_render_html_errors(out.stdout, {}, "article")
             self.assertEqual(errs, [])
         finally:

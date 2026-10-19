@@ -656,6 +656,15 @@ BLOG_SHARED_TO_TEMPLATE = (
     "lireate-blog-list.css",
 )
 
+BLOG_SITE_FOOTER_BUNDLE = (
+    "lireate-blog-site-footer.inc.php",
+    "lireate-service-messenger-include.inc.php",
+    "lireate-service-messenger.inc.php",
+    "lireate-messenger-urls.php",
+    "lireate-messenger-load.php",
+    "lireate-messenger-require.inc.php",
+)
+
 
 def deploy_docroot_messenger_shared(office_repo, docroot):
     """Copy messenger bundle to docroot/_shared (live layout for blog footer + services)."""
@@ -706,6 +715,10 @@ def copy_plan(office_repo):
         for path in sorted(shared_blog.glob("*")):
             if path.is_file() and path.suffix in (".php", ".css", ".js"):
                 by_dest[Path("pages/blog/_shared") / path.name] = path
+        for name in BLOG_SITE_FOOTER_BUNDLE:
+            src = shared_blog / name
+            if src.is_file():
+                by_dest[Path("template/page/news") / name] = src
     list_data = shared_blog / "lireate-blog-list-data.php"
     if list_data.is_file():
         by_dest[Path("template/page/news/lireate-blog-list-data.php")] = list_data

@@ -336,10 +336,14 @@ function lireate_blog_render_service_footer()
 {
     $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
     $candidates = array();
+    $candidates[] = __DIR__ . '/lireate-blog-site-footer.inc.php';
     if ($doc !== '') {
+        $candidates[] = $doc . '/template/page/news/lireate-blog-site-footer.inc.php';
+        $candidates[] = $doc . '/pages/blog/_shared/lireate-blog-site-footer.inc.php';
         $candidates[] = $doc . '/template/lireate/lireate-service-footer.inc.php';
         $candidates[] = $doc . '/pages/services/_shared/lireate-service-footer.inc.php';
     }
+    $candidates[] = lireate_blog_dir_up(__DIR__, 2) . '/blog/_shared/lireate-blog-site-footer.inc.php';
     $candidates[] = lireate_blog_dir_up(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';
     $candidates[] = lireate_blog_dir_up(__DIR__, 3) . '/template/lireate/lireate-service-footer.inc.php';
     foreach ($candidates as $footer_path) {
