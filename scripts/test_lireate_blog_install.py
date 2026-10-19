@@ -276,6 +276,47 @@ class BlogInstallLibTests(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_verify_article_markers_require_toc(self):
+        html = (
+            '<div class="lireate-blog-page">'
+            '<footer class="lx-site-footer"></footer></div>'
+        )
+        errs, diag = lib.verify_render_html_errors(html, {}, "article")
+        self.assertTrue(any("TOC" in e for e in errs))
+        self.assertFalse(diag["markers"]["toc"])
+
+    def test_verify_article_markers_h3_toc_markup(self):
+        html = (
+            '<div class="lireate-blog-page">'
+            '<nav class="lireate-blog-toc-card" data-lx-blog-toc></nav>'
+            '<footer class="lx-site-footer"></footer></div>'
+        )
+        errs, _diag = lib.verify_render_html_errors(html, {}, "article")
+        self.assertEqual(errs, [])
+
+    def test_h3_heading_ids_and_toc_extract(self):
+        if not shutil.which("php"):
+            self.skipTest("php-cli not available")
+        php = (
+            "<?php\n"
+            "require '{lib}';\n"
+            "$html = '<h3>Раздел A</h3><p>x</p><h3>Раздел B</h3>';\n"
+            "$html = lireate_blog_ensure_h2_ids($html);\n"
+            "$toc = lireate_blog_extract_toc($html);\n"
+            "echo json_encode($toc, JSON_UNESCAPED_UNICODE);\n"
+        ).format(lib=REPO_ROOT / "pages/blog/_shared/lireate-blog-lib.php")
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-h3-toc-"))
+        try:
+            script = tmp / "run.php"
+            script.write_text(php, encoding="utf-8")
+            out = subprocess.run(["php", str(script)], capture_output=True, text=True)
+            self.assertEqual(out.returncode, 0, msg=out.stderr + out.stdout)
+            data = json.loads(out.stdout)
+            self.assertEqual(len(data), 2)
+            self.assertIn("razdel", data[0]["id"].lower())
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_dual_lib_tree_article_render_no_redeclare(self):
         tmp = Path(tempfile.mkdtemp(prefix="lireate-dual-lib-"))
         try:
@@ -305,6 +346,8 @@ class BlogInstallLibTests(unittest.TestCase):
             self.assertEqual(out.returncode, 0, msg=out.stderr + out.stdout)
             self.assertNotIn("Cannot redeclare", out.stdout + out.stderr)
             self.assertIn("lireate-blog-page", out.stdout)
+            errs, _diag = lib.verify_render_html_errors(out.stdout, {}, "article")
+            self.assertEqual(errs, [])
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 

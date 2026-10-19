@@ -75,17 +75,17 @@ function lireate_blog_slugify_heading($text)
 }
 }
 
-if (!function_exists('lireate_blog_ensure_h2_ids')) {
-function lireate_blog_ensure_h2_ids($html)
+if (!function_exists('lireate_blog_ensure_heading_level_ids')) {
+function lireate_blog_ensure_heading_level_ids($html, $tag, &$used)
 {
     $html = (string) $html;
-    if ($html === '') {
+    if ($html === '' || ($tag !== 'h2' && $tag !== 'h3')) {
         return $html;
     }
-    $used = array();
+    $pattern = '/<' . $tag . '(\s[^>]*)?>(.*?)<\/' . $tag . '>/isu';
     return preg_replace_callback(
-        '/<h2(\s[^>]*)?>(.*?)<\/h2>/isu',
-        function ($m) use (&$used) {
+        $pattern,
+        function ($m) use (&$used, $tag) {
             $attrs = isset($m[1]) ? $m[1] : '';
             $inner = $m[2];
             if (preg_match('/\bid\s*=\s*["\']([^"\']+)["\']/i', $attrs, $idm)) {
@@ -104,10 +104,24 @@ function lireate_blog_ensure_h2_ids($html)
                 $attrs .= ' id="' . lireate_blog_h($id) . '"';
             }
             $used[$id] = true;
-            return '<h2' . $attrs . '>' . $inner . '</h2>';
+            return '<' . $tag . $attrs . '>' . $inner . '</' . $tag . '>';
         },
         $html
     );
+}
+}
+
+if (!function_exists('lireate_blog_ensure_h2_ids')) {
+function lireate_blog_ensure_h2_ids($html)
+{
+    $html = (string) $html;
+    if ($html === '') {
+        return $html;
+    }
+    $used = array();
+    $html = lireate_blog_ensure_heading_level_ids($html, 'h2', $used);
+    $html = lireate_blog_ensure_heading_level_ids($html, 'h3', $used);
+    return $html;
 }
 }
 
