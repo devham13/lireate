@@ -32,7 +32,9 @@ export LIREATE_AUTOPUB_HOME=~/lireate-autopub LIREATE_ENV_FILE=~/lireate-autopub
 cd ~/lireate-autopub/office-repo && git fetch origin main && git checkout -B main FETCH_HEAD && "$(cat ~/lireate-autopub/.python-interpreter)" scripts/lireate_blog_install.py --apply
 ```
 
-`--apply` делает бэкап в `~/lireate-autopub/backups/blog-install-<timestamp>/`, копирует шаблон, патчит CMS-файл одной новости (include + `body.lireate-blog-body`), проверяет HTTP; при ошибке откатывает. Откат вручную: `scripts/lireate_blog_install.py --rollback <timestamp>`. Не трогает `data/db.php` и корневой `.htaccess`.
+`--apply` делает бэкап в `~/lireate-autopub/backups/blog-install-<timestamp>/`, копирует шаблон, патчит CMS-файл одной новости (include + `body.lireate-blog-body`) и шаблон списка `/news` (`section#blog` → `lireate-blog-list-cms.inc.php`), проверяет HTTP `/news/` и одной статьи; при ошибке откатывает. Откат вручную: `scripts/lireate_blog_install.py --rollback <timestamp>`. Не трогает `data/db.php` и корневой `.htaccess`.
+
+Превью списка локально: `bash scripts/lireate_blog_preview_server.sh` → `/blog_preview/list.php` (карточки из `data/blog-articles-index.json`, обложки с `LIREATE_BLOG_PUBLIC_ORIGIN`).
 
 Перед копированием в `--apply` вызывается `lireate_blog_sync_template.py` в office-repo.
 

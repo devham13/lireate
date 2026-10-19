@@ -13,7 +13,10 @@ REQUIRED = [
     REPO / "pages/blog/_shared/lireate-blog-layout.inc.php",
     REPO / "pages/blog/_shared/lireate-blog-article.css",
     REPO / "pages/blog/_shared/lireate-blog-article.js",
+    REPO / "pages/blog/_shared/lireate-blog-list.inc.php",
+    REPO / "pages/blog/_shared/lireate-blog-list.css",
     REPO / "pages/blog/_preview/index.php",
+    REPO / "pages/blog/_preview/list.php",
     REPO / "template/page/news/lireate-blog-cms.inc.php",
     REPO / "data/blog-articles-index.json",
 ]
@@ -50,8 +53,15 @@ def main():
         capture_output=True,
         text=True,
     )
+    preview_list = subprocess.run(
+        ["php", "-l", str(REPO / "pages/blog/_preview/list.php")],
+        capture_output=True,
+        text=True,
+    )
     if preview.returncode != 0:
         errors.append("php -l preview: " + preview.stderr.strip())
+    if preview_list.returncode != 0:
+        errors.append("php -l list preview: " + preview_list.stderr.strip())
 
     lib = REPO / "pages/blog/_shared/lireate-blog-lib.php"
     test_html = '<h2>Раздел один</h2><p>x</p><h2>Второй</h2>'

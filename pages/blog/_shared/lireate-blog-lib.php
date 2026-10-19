@@ -308,3 +308,277 @@ function lireate_blog_article_jsonld($meta)
         ),
     );
 }
+
+/**
+ * Рубрики /news (как на lireate.ru CMS).
+ *
+ * @return array<int, array{label:string,url:string,num?:int,category?:int}>
+ */
+function lireate_blog_list_default_rubrics()
+{
+    return array(
+        array('label' => 'Все категории', 'url' => '/news/'),
+        array('label' => 'Новости', 'url' => '/news/?num=1&category=2', 'num' => 1, 'category' => 2),
+        array('label' => 'Товарный знак', 'url' => '/news/?num=2&category=9', 'num' => 2, 'category' => 9),
+        array('label' => 'Логотип', 'url' => '/news/?num=3&category=10', 'num' => 3, 'category' => 10),
+        array('label' => 'Фирменный стиль', 'url' => '/news/?num=4&category=11', 'num' => 4, 'category' => 11),
+        array('label' => 'Сайт', 'url' => '/news/?num=5&category=12', 'num' => 5, 'category' => 12),
+        array('label' => 'Бренд', 'url' => '/news/?num=6&category=13', 'num' => 6, 'category' => 13),
+        array('label' => 'Фирменное наименование', 'url' => '/news/?num=7&category=14', 'num' => 7, 'category' => 14),
+        array('label' => 'Бизнес', 'url' => '/news/?num=8&category=15', 'num' => 8, 'category' => 15),
+        array('label' => 'Франчайзинг и франшиза', 'url' => '/news/?num=9&category=16', 'num' => 9, 'category' => 16),
+        array('label' => 'Авторское право', 'url' => '/news/?num=10&category=17', 'num' => 10, 'category' => 17),
+        array('label' => 'Творческий псевдоним', 'url' => '/news/?num=11&category=18', 'num' => 11, 'category' => 18),
+        array('label' => 'Программа ЭВМ', 'url' => '/news/?num=12&category=19', 'num' => 12, 'category' => 19),
+        array('label' => 'Патент', 'url' => '/news/?num=13&category=20', 'num' => 13, 'category' => 20),
+    );
+}
+
+function lireate_blog_list_row_get($row, $keys, $default = '')
+{
+    if (!is_array($row)) {
+        return $default;
+    }
+    foreach ($keys as $key) {
+        if (isset($row[$key]) && $row[$key] !== '' && $row[$key] !== null) {
+            return $row[$key];
+        }
+    }
+    return $default;
+}
+
+function lireate_blog_list_format_date($row)
+{
+    $raw = lireate_blog_list_row_get($row, array('date_display', 'date', 'datetime'), '');
+    if (is_numeric($raw) && (int) $raw > 0) {
+        return date('d.m.Y', (int) $raw);
+    }
+    $raw = trim((string) $raw);
+    if ($raw !== '' && preg_match('/^\d{2}\.\d{2}\.\d{4}$/', $raw)) {
+        return $raw;
+    }
+    if ($raw !== '' && preg_match('/^\d{4}-\d{2}-\d{2}/', $raw)) {
+        $ts = strtotime($raw);
+        if ($ts) {
+            return date('d.m.Y', $ts);
+        }
+    }
+    return $raw;
+}
+
+function lireate_blog_list_cover_from_row($row)
+{
+    $cover = lireate_blog_list_row_get($row, array('cover', 'image', 'img', 'preview'), '');
+    if ($cover !== '') {
+        return lireate_blog_resolve_cover_url($cover);
+    }
+    $seo = lireate_blog_list_row_get($row, array('seo_url', 'url', 'slug'), '');
+    $seo = trim((string) $seo, '/');
+    if ($seo === '') {
+        return '';
+    }
+    return lireate_blog_resolve_cover_url('/template/images/blog/' . $seo . '.jpg');
+}
+
+function lireate_blog_list_excerpt_from_row($row)
+{
+    $text = lireate_blog_list_row_get(
+        $row,
+        array('excerpt', 'short_story', 'descr', 'description', 'announce', 'anons'),
+        ''
+    );
+    if ($text !== '') {
+        return trim(strip_tags((string) $text));
+    }
+    $full = lireate_blog_list_row_get($row, array('full_story', 'text'), '');
+    if ($full === '') {
+        return '';
+    }
+    $plain = trim(preg_replace('/\s+/u', ' ', strip_tags((string) $full)));
+    if (lireate_blog_strlen($plain) <= 220) {
+        return $plain;
+    }
+    return lireate_blog_substr($plain, 0, 217) . '…';
+}
+
+function lireate_blog_list_normalize_row($row)
+{
+    if (!is_array($row)) {
+        return null;
+    }
+    $title = lireate_blog_list_row_get($row, array('name', 'title', 'headline'), '');
+    $seo = lireate_blog_list_row_get($row, array('seo_url', 'url', 'slug'), '');
+    if ($title === '' || $seo === '') {
+        return null;
+    }
+    $seo = '/' . trim((string) $seo, '/') . '/';
+    $tag = lireate_blog_list_row_get(
+        $row,
+        array('category_name', 'category', 'tag', 'rubric', 'cat_name'),
+        ''
+    );
+    $tag_url = lireate_blog_list_row_get($row, array('category_url', 'cat_url', 'tag_url'), '');
+    $author = lireate_blog_list_row_get($row, array('author', 'author_name'), '');
+    if ($author === '') {
+        $author = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_NAME : LIREATE_BLOG_DEFAULT_AUTHOR;
+    }
+    $body_for_time = lireate_blog_list_row_get($row, array('full_story', 'short_story', 'descr', 'excerpt'), '');
+    $read_mins = lireate_blog_reading_time_minutes($body_for_time !== '' ? $body_for_time : $title);
+    $date_display = lireate_blog_list_format_date($row);
+    return array(
+        'url' => $seo,
+        'title' => $title,
+        'date_display' => $date_display,
+        'date_iso' => lireate_blog_date_display_to_iso($date_display),
+        'tag' => $tag,
+        'tag_url' => $tag_url !== '' ? $tag_url : '/news/',
+        'cover' => lireate_blog_list_cover_from_row($row),
+        'excerpt' => lireate_blog_list_excerpt_from_row($row),
+        'author' => $author,
+        'read_mins' => $read_mins,
+    );
+}
+
+/**
+ * @param mixed $source
+ * @return array<int, array<string, mixed>>
+ */
+function lireate_blog_list_normalize_items($source)
+{
+    $out = array();
+    if (!is_array($source)) {
+        return $out;
+    }
+    foreach ($source as $row) {
+        $norm = lireate_blog_list_normalize_row($row);
+        if ($norm !== null) {
+            $out[] = $norm;
+        }
+    }
+    return $out;
+}
+
+function lireate_blog_list_items_from_index()
+{
+    $data = lireate_blog_load_index();
+    $items = array();
+    foreach ($data['articles'] as $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+        $norm = lireate_blog_list_normalize_row($row);
+        if ($norm !== null) {
+            $items[] = $norm;
+        }
+    }
+    return $items;
+}
+
+/**
+ * Собрать статьи из переменных CMS (список /news).
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function lireate_blog_list_collect_cms_items()
+{
+    $candidates = array();
+    if (isset($GLOBALS['news']) && is_array($GLOBALS['news'])) {
+        $candidates[] = $GLOBALS['news'];
+    }
+    if (isset($GLOBALS['news_list']) && is_array($GLOBALS['news_list'])) {
+        $candidates[] = $GLOBALS['news_list'];
+    }
+    if (isset($GLOBALS['news_mass']) && is_array($GLOBALS['news_mass'])) {
+        $candidates[] = $GLOBALS['news_mass'];
+    }
+    if (isset($GLOBALS['news_article']) && is_array($GLOBALS['news_article']) && count($GLOBALS['news_article']) > 1) {
+        $candidates[] = $GLOBALS['news_article'];
+    }
+    foreach ($candidates as $source) {
+        $items = lireate_blog_list_normalize_items($source);
+        if (!empty($items)) {
+            return $items;
+        }
+    }
+    return lireate_blog_list_items_from_index();
+}
+
+function lireate_blog_list_featured_from_cms($items)
+{
+    if (isset($GLOBALS['lireate_blog_list_featured']) && is_array($GLOBALS['lireate_blog_list_featured'])) {
+        $norm = lireate_blog_list_normalize_row($GLOBALS['lireate_blog_list_featured']);
+        if ($norm !== null) {
+            return $norm;
+        }
+    }
+    if (!empty($items) && is_array($items)) {
+        return $items[0];
+    }
+    return null;
+}
+
+function lireate_blog_list_filters_from_cms()
+{
+    if (isset($GLOBALS['lireate_blog_list_filters']) && is_array($GLOBALS['lireate_blog_list_filters'])) {
+        return $GLOBALS['lireate_blog_list_filters'];
+    }
+    return lireate_blog_list_default_rubrics();
+}
+
+function lireate_blog_list_pagination_from_cms()
+{
+    if (isset($GLOBALS['lireate_blog_list_pagination']) && is_array($GLOBALS['lireate_blog_list_pagination'])) {
+        return $GLOBALS['lireate_blog_list_pagination'];
+    }
+    $pages = array();
+    $current = 1;
+    $total = 1;
+    if (isset($GLOBALS['page']) && is_numeric($GLOBALS['page'])) {
+        $current = max(1, (int) $GLOBALS['page']);
+    } elseif (isset($_GET['page']) && is_numeric($_GET['page'])) {
+        $current = max(1, (int) $_GET['page']);
+    }
+    foreach (array('count_page', 'total_pages', 'pages_count', 'max_page') as $key) {
+        if (isset($GLOBALS[$key]) && is_numeric($GLOBALS[$key]) && (int) $GLOBALS[$key] > 0) {
+            $total = (int) $GLOBALS[$key];
+            break;
+        }
+    }
+    if ($total < 2) {
+        return null;
+    }
+    $base = '/news/';
+    $query = $_GET;
+    for ($n = 1; $n <= $total; $n++) {
+        $query['page'] = $n;
+        $pages[] = array(
+            'num' => $n,
+            'url' => $base . '?' . http_build_query($query),
+            'current' => $n === $current,
+        );
+    }
+    return array(
+        'current' => $current,
+        'total' => $total,
+        'pages' => $pages,
+    );
+}
+
+function lireate_blog_list_rubric_is_active($rubric)
+{
+    $cat = isset($_GET['category']) ? (int) $_GET['category'] : 0;
+    $num = isset($_GET['num']) ? (int) $_GET['num'] : 0;
+    if (!is_array($rubric)) {
+        return false;
+    }
+    if ($cat === 0 && $num === 0) {
+        return !isset($rubric['category']) && !isset($rubric['num']);
+    }
+    if (isset($rubric['category']) && (int) $rubric['category'] === $cat) {
+        return true;
+    }
+    if (isset($rubric['num']) && (int) $rubric['num'] === $num) {
+        return true;
+    }
+    return false;
+}

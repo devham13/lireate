@@ -2,7 +2,7 @@
 /**
  * Конфиг шаблона статей блога LIREATE (новости /news).
  */
-$messenger_cfg = dirname(__DIR__, 2) . '/services/_shared/lireate-messenger-urls.php';
+$messenger_cfg = dirname(__DIR__, 2) . '/lireate/lireate-messenger-urls.php';
 if (is_file($messenger_cfg)) {
     require_once $messenger_cfg;
 }
@@ -40,7 +40,18 @@ if (!defined('LIREATE_BLOG_READING_WPM')) {
 }
 
 if (!defined('LIREATE_BLOG_TEMPLATE_VERSION')) {
-    define('LIREATE_BLOG_TEMPLATE_VERSION', '2026-10-19g');
+    define('LIREATE_BLOG_TEMPLATE_VERSION', '2026-10-19h');
+}
+
+if (!defined('LIREATE_BLOG_LIST_TITLE')) {
+    define('LIREATE_BLOG_LIST_TITLE', 'Блог LIREATE');
+}
+
+if (!defined('LIREATE_BLOG_LIST_LEAD')) {
+    define(
+        'LIREATE_BLOG_LIST_LEAD',
+        'Практические материалы о товарных знаках, патентах, бренде и защите интеллектуальной собственности для предпринимателей и юристов.'
+    );
 }
 
 if (!defined('LIREATE_BLOG_ASSETS_BASE')) {

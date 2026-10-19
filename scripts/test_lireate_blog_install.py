@@ -18,6 +18,7 @@ import lireate_blog_install as install  # noqa: E402
 import lireate_blog_install_lib as lib  # noqa: E402
 
 FIXTURE_TEMPLATE = REPO_ROOT / "scripts/fixtures/cms-news-article-template.php"
+FIXTURE_LIST = REPO_ROOT / "scripts/fixtures/cms-news-list-template.php"
 FIXTURE_NEWSTYLE = REPO_ROOT / "scripts/fixtures/cms-newstyle-article-snippet.php"
 BODY_MARKER = "LIREATE_UNIQUE_BODY_MARKER_42"
 
@@ -110,16 +111,20 @@ class BlogInstallLibTests(unittest.TestCase):
             url = lib.http_probe("https://example.test", "/news/", cache_bust="12345")[2]
         self.assertIn("_lireate_blog_install=12345", url)
 
-    def test_verify_news_list_skips_footer(self):
+    def test_verify_news_list_requires_list_markup(self):
         article_html = (
             '<div class="lireate-blog-page lireate-blog-body">'
             '<nav class="lireate-blog-toc-card" data-lx-blog-toc></nav>'
             '<footer class="lx-site-footer"></footer></div>'
         )
+        list_html = (
+            '<div class="lireate-blog-list-page">'
+            '<footer class="lx-site-footer"></footer></div>'
+        )
 
         def fake_probe(base, path, timeout=25, cache_bust=None):
             if path == "/news/":
-                return 200, "<html><body>news list only</body></html>", "https://x/news/", {}
+                return 200, list_html, "https://x/news/", {}
             return 200, article_html, "https://x/article/", {}
 
         with mock.patch.object(lib, "http_probe", side_effect=fake_probe):
@@ -139,7 +144,27 @@ class BlogInstallLibTests(unittest.TestCase):
         pairs = lib.copy_plan(REPO_ROOT)
         dests = {str(rel).replace("\\", "/") for _, rel in pairs}
         self.assertIn("template/page/news/lireate-blog-cms.inc.php", dests)
+        self.assertIn("template/page/news/lireate-blog-list-cms.inc.php", dests)
         self.assertIn("template/images/blog/author/yuriy-gorbachev.jpg", dests)
+
+    def test_patch_news_list_template(self):
+        text = FIXTURE_LIST.read_text(encoding="utf-8")
+        planned, changed, desc = lib.patch_news_list_template_content(text)
+        self.assertTrue(changed)
+        self.assertIn(lib.LIST_INSTALL_MARKER, planned)
+        self.assertIn("lireate_blog_list_collect_cms_items", planned)
+        self.assertNotIn("Самое свежее и интересное", planned)
+
+    def test_find_news_list_template(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-list-doc-"))
+        try:
+            dest = tmp / "template" / "page" / "news" / "list.php"
+            dest.parent.mkdir(parents=True)
+            shutil.copy(str(FIXTURE_LIST), str(dest))
+            found = lib.find_news_list_template(tmp)
+            self.assertEqual(found, dest)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 class BlogInstallApplyTests(unittest.TestCase):
