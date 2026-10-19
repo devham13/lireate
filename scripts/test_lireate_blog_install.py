@@ -14,6 +14,7 @@ from unittest import mock
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
+import lireate_blog_cgi_gate as cgi_gate  # noqa: E402
 import lireate_blog_install as install  # noqa: E402
 import lireate_blog_install_lib as lib  # noqa: E402
 
@@ -255,10 +256,6 @@ class BlogInstallLibTests(unittest.TestCase):
             shutil.copy2(
                 str(REPO_ROOT / "pages/services/_shared/lireate-service-footer.inc.php"),
                 str(svc_dir / "lireate-service-footer.inc.php"),
-            )
-            shutil.copy2(
-                str(REPO_ROOT / "pages/services/_shared/lireate-service-messenger-include.inc.php"),
-                str(svc_dir / "lireate-service-messenger-include.inc.php"),
             )
             runner = tmp / "run.php"
             runner.write_text(
@@ -581,6 +578,52 @@ class BlogInstallLibTests(unittest.TestCase):
             )
             self.assertEqual(out.returncode, 0, msg=out.stdout + out.stderr)
             self.assertIn("OK dual-lib", out.stdout)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_plan_published_service_refresh_includes_messenger_include(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-svc-refresh-plan-"))
+        try:
+            doc = tmp / "docroot"
+            svc = REPO_ROOT / "pages/services/registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat"
+            manifest = json.loads((svc / "publish.manifest.json").read_text(encoding="utf-8"))
+            url_path = manifest["url_path"]
+            dest = doc / url_path
+            dest.mkdir(parents=True)
+            (dest / "index.php").write_text("<?php\n", encoding="utf-8")
+            planned = lib.plan_published_service_refresh(REPO_ROOT, doc)
+            rels = {str(rel).replace("\\", "/") for _src, rel in planned}
+            self.assertIn(
+                "{0}/{1}".format(url_path, lib.SERVICE_MESSENGER_INCLUDE_NAME),
+                rels,
+            )
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_cgi_gate_selftest_fails_on_2b890fb_dual_lib_redeclare(self):
+        if not shutil.which("php"):
+            self.skipTest("php-cli not available")
+        cgi_bin = cgi_gate.resolve_php_cgi_bin() or shutil.which("php")
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-cgi-gate-selftest-"))
+        try:
+            doc = tmp / "docroot"
+            tpl_dir = doc / "template" / "page" / "news"
+            tpl_dir.mkdir(parents=True)
+            shutil.copy(str(FIXTURE_TEMPLATE), str(tpl_dir / "article.php"))
+            shutil.copy(str(FIXTURE_LIST), str(tpl_dir / "list.php"))
+            snippet = FIXTURE_NEWSTYLE.read_text(encoding="utf-8")
+            planned, changed, _ = lib.patch_news_template_content(snippet)
+            self.assertTrue(changed)
+            (tpl_dir / "newStyle.php").write_text(planned, encoding="utf-8")
+            cgi_gate.simulate_blog_apply_on_docroot(REPO_ROOT, doc)
+            log_path = tmp / "cgi-error.log"
+            detected = cgi_gate.gate_selftest_detects_2b890fb_dual_lib_redeclare(
+                cgi_bin, doc, REPO_ROOT, log_path
+            )
+            self.assertTrue(
+                detected,
+                msg="gate self-test must FAIL after 2b890fb-style dual-lib breakage",
+            )
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 

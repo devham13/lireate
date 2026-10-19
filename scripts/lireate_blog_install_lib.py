@@ -2023,6 +2023,7 @@ DOCROOT_SHARED_PHP_NAMES = (
     "lireate-messenger-require.inc.php",
 )
 SERVICE_FOOTER_NAME = "lireate-service-footer.inc.php"
+SERVICE_MESSENGER_INCLUDE_NAME = "lireate-service-messenger-include.inc.php"
 SERVICE_STICKY_REL = Path("blocks") / "lireate-sticky-mobile.inc.php"
 
 
@@ -2077,6 +2078,11 @@ def plan_published_service_refresh(office_repo, docroot):
             footer_src = shared / SERVICE_FOOTER_NAME
         if footer_src.is_file():
             add_copy(footer_src, Path(url_path) / SERVICE_FOOTER_NAME)
+        messenger_src = service_dir / SERVICE_MESSENGER_INCLUDE_NAME
+        if not messenger_src.is_file():
+            messenger_src = shared / SERVICE_MESSENGER_INCLUDE_NAME
+        if messenger_src.is_file():
+            add_copy(messenger_src, Path(url_path) / SERVICE_MESSENGER_INCLUDE_NAME)
         sticky_src = service_dir / SERVICE_STICKY_REL
         if sticky_src.is_file():
             add_copy(sticky_src, Path(url_path) / SERVICE_STICKY_REL)

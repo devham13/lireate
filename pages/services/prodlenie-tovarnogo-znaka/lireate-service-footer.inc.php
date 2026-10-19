@@ -3,7 +3,19 @@
  * Общий подвал страниц услуг LIREATE (компактная колонка).
  * Синхронизируется в каталог услуги: lireate-service-footer.inc.php
  */
-require_once __DIR__ . '/lireate-service-messenger-include.inc.php';
+$lx_messenger_include = __DIR__ . '/lireate-service-messenger-include.inc.php';
+if (!is_file($lx_messenger_include)) {
+    $lx_doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+    if ($lx_doc !== '') {
+        $lx_alt = $lx_doc . '/_shared/lireate-service-messenger-include.inc.php';
+        if (is_file($lx_alt)) {
+            $lx_messenger_include = $lx_alt;
+        }
+    }
+}
+if (is_file($lx_messenger_include)) {
+    require_once $lx_messenger_include;
+}
 
 $lx_footer_phone_display = isset($lireate_phone_display) ? $lireate_phone_display : '+7 (960) 048-49-57';
 $lx_footer_phone_tel = isset($lireate_phone_tel) ? $lireate_phone_tel : 'tel:+79600484957';

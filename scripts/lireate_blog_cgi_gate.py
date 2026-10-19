@@ -206,6 +206,123 @@ def run_cgi_suite(cgi_bin, docroot, office_repo, error_log_path):
     return failures, all_sigs, blocking
 
 
+_DUAL_LIB_GUARD_SNIPPET = (
+    "if (!function_exists('lireate_blog_dir_up')) {\n"
+    "    require_once dirname(__FILE__) . '/lireate-blog-load.php';\n"
+    "}"
+)
+_DUAL_LIB_BREAK_SNIPPET = "require_once dirname(__FILE__) . '/lireate-blog-load.php';"
+
+_SHARED_LOAD_DIR_UP_GUARD = (
+    "if (!function_exists('lireate_blog_dir_up')) {\n"
+    "    function lireate_blog_dir_up($path, $levels)\n"
+    "    {\n"
+    "        $path = (string) $path;\n"
+    "        $levels = (int) $levels;\n"
+    "        while ($levels > 0 && $path !== '') {\n"
+    "            $path = dirname($path);\n"
+    "            $levels -= 1;\n"
+    "        }\n"
+    "        return $path;\n"
+    "    }\n"
+    "}"
+)
+_SHARED_LOAD_DIR_UP_UNGUARDED = (
+    "function lireate_blog_dir_up($path, $levels)\n"
+    "{\n"
+    "    $path = (string) $path;\n"
+    "    $levels = (int) $levels;\n"
+    "    while ($levels > 0 && $path !== '') {\n"
+    "        $path = dirname($path);\n"
+    "        $levels -= 1;\n"
+    "    }\n"
+    "    return $path;\n"
+    "}"
+)
+_DUAL_GATE_PROBE_REL = Path("template") / "page" / "news" / "lireate-blog-dual-gate-probe.php"
+
+
+def inject_dual_lib_redeclare_breakage_like_2b890fb(docroot):
+    """
+    Test helper: revert #51 dual-lib guard (2b890fb) and drop shared load.php dir_up guard
+    so template + pages/blog load.php both execute (Cannot redeclare lireate_blog_dir_up).
+    """
+    docroot = Path(docroot).resolve()
+    lib_path = docroot / "pages" / "blog" / "_shared" / "lireate-blog-lib.php"
+    if not lib_path.is_file():
+        raise FileNotFoundError(lib_path)
+    text = lib_path.read_text(encoding="utf-8")
+    if _DUAL_LIB_GUARD_SNIPPET not in text:
+        raise ValueError("dual-lib guard missing in {0}".format(lib_path))
+    lib_path.write_text(text.replace(_DUAL_LIB_GUARD_SNIPPET, _DUAL_LIB_BREAK_SNIPPET, 1), encoding="utf-8")
+
+    load_path = docroot / "pages" / "blog" / "_shared" / "lireate-blog-load.php"
+    if not load_path.is_file():
+        raise FileNotFoundError(load_path)
+    load_text = load_path.read_text(encoding="utf-8")
+    if _SHARED_LOAD_DIR_UP_GUARD not in load_text:
+        raise ValueError("shared load dir_up guard missing in {0}".format(load_path))
+    load_path.write_text(
+        load_text.replace(_SHARED_LOAD_DIR_UP_GUARD, _SHARED_LOAD_DIR_UP_UNGUARDED, 1),
+        encoding="utf-8",
+    )
+
+
+def gate_selftest_detects_2b890fb_dual_lib_redeclare(cgi_bin, docroot, office_repo, error_log_path):
+    """
+    Returns True when CGI probe fails after injecting 2b890fb-style dual-tree redeclare breakage.
+    Used by unit tests to prove the live gate catches that regression class.
+    """
+    docroot = Path(docroot).resolve()
+    inject_dual_lib_redeclare_breakage_like_2b890fb(docroot)
+    probe = docroot / _DUAL_GATE_PROBE_REL
+    probe.parent.mkdir(parents=True, exist_ok=True)
+    doc_lit = lib.php_single_quoted_literal(str(docroot))
+    probe.write_text(
+        "<?php\n"
+        "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
+        "require_once $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-load.php';\n"
+        "require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/blog/_shared/lireate-blog-load.php';\n"
+        "require_once $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-lib.php';\n"
+        "require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/blog/_shared/lireate-blog-lib.php';\n".format(
+            doc=doc_lit
+        ),
+        encoding="utf-8",
+    )
+    error_log_path = Path(error_log_path)
+    error_log_path.parent.mkdir(parents=True, exist_ok=True)
+    error_log_path.write_text("", encoding="utf-8")
+    argv = [
+        cgi_bin,
+        "-d",
+        "display_errors=0",
+        "-d",
+        "log_errors=1",
+        "-d",
+        "error_log={0}".format(error_log_path),
+        "-d",
+        "date.timezone=Europe/Moscow",
+        str(probe),
+    ]
+    proc = subprocess.run(
+        argv,
+        capture_output=True,
+        text=True,
+        timeout=120,
+        cwd=str(docroot),
+    )
+    log_text = error_log_path.read_text(encoding="utf-8", errors="replace")
+    log_parsed = lib.parse_php_error_log(log_text)
+    haystack = ((proc.stdout or "") + (proc.stderr or "") + " " + log_text).lower()
+    for item in log_parsed.get("blocking") or []:
+        haystack += " " + (item.get("signature") or item.get("line") or "").lower()
+    if "redeclare" in haystack or "cannot redeclare" in haystack:
+        return True
+    if proc.returncode != 0 and ("fatal error" in haystack or "parse error" in haystack):
+        return True
+    return False
+
+
 def run_php_cgi_live_gate_diag(live_docroot, office_repo):
     cgi_bin = resolve_php_cgi_bin()
     if cgi_bin is None:
