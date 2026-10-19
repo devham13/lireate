@@ -111,7 +111,11 @@ def build_php_article_collage_diag_runner(sandbox_docroot, load_php_path, layout
         "    $lireate_blog_current_url = '/diag-article/';\n"
         "    ob_start();\n"
         "    include __LAYOUT__;\n"
-        "    return ob_get_clean();\n"
+        "    $html = ob_get_clean();\n"
+        "    ob_start();\n"
+        "    lireate_blog_render_service_footer();\n"
+        "    $html .= ob_get_clean();\n"
+        "    return $html;\n"
         "}\n"
         "$collage_story = '<figure class=\"lx-article-cover\" data-cover-style=\"collage-v1\">'\n"
         "    . '<img src=\"/template/images/blog/diag-collage-v1.jpg\" alt=\"Diag\" width=\"860\" height=\"400\"></figure>'\n"
@@ -261,6 +265,144 @@ def host_to_php_fs_path(php_bin, office_repo, path):
         rel = abs_path.relative_to(repo)
         return "/work/{0}".format(str(rel).replace("\\", "/"))
     return str(abs_path)
+
+
+PHP_DIAG_DEFAULT_TIMEZONE = "Europe/Moscow"
+PHP_ISSUE_LINE_RE = re.compile(
+    r"(?im)(?:^|<br\s*/?>|\n)\s*(?:<b>)?"
+    r"(Fatal error|Parse error|Warning|Notice|Deprecated)"
+    r"(?:</b>)?\s*:\s*[^\n<]+"
+    r"(?:\s+in\s+(?:<b>)?[^\n<]+?(?:</b>)?\s+on line\s+(?:<b>)?\d+(?:</b>)?)?"
+)
+PHP_ISSUE_IGNORABLE_DIAG_RE = (
+    re.compile(r"date\(\)\s*:\s*It is not safe to rely on the system's timezone settings", re.I),
+    re.compile(r"timezone settings", re.I),
+    re.compile(r"\bmysqli?_?", re.I),
+    re.compile(r"\bmysql_connect\b", re.I),
+    re.compile(r"Connection refused|Can't connect to local MySQL", re.I),
+)
+
+
+def _php_ini_candidate_paths(docroot=None):
+    import os
+
+    paths = []
+    docroot = Path(docroot).expanduser() if docroot else None
+    if docroot is not None and docroot.is_dir():
+        paths.append(docroot / ".user.ini")
+        paths.append(docroot / "php.ini")
+    autopub = (os.environ.get("LIREATE_AUTOPUB_HOME") or "").strip()
+    if autopub:
+        paths.append(Path(autopub).expanduser() / "php-bin" / "lireate.ru" / "php.ini")
+        paths.append(Path(autopub).expanduser() / "php-bin" / "lireate.ru" / ".user.ini")
+    paths.append(Path.home() / "php-bin" / "lireate.ru" / "php.ini")
+    paths.append(Path.home() / "php-bin" / "lireate.ru" / ".user.ini")
+    seen = set()
+    out = []
+    for path in paths:
+        key = str(path)
+        if key not in seen:
+            seen.add(key)
+            out.append(path)
+    return out
+
+
+def _read_ini_directive(paths, directive):
+    needle = directive.lower()
+    for path in paths:
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for line in text.splitlines():
+            line = line.strip()
+            if not line or line.startswith(";") or line.startswith("#"):
+                continue
+            if line.lower().startswith(needle + "="):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return None
+
+
+def resolve_php_diag_ini_settings(docroot=None):
+    """CLI -d flags for --diag (match live timezone; do not hide real errors)."""
+    candidates = _php_ini_candidate_paths(docroot)
+    tz = _read_ini_directive(candidates, "date.timezone") or PHP_DIAG_DEFAULT_TIMEZONE
+    display_errors = _read_ini_directive(candidates, "display_errors") or "1"
+    error_reporting = _read_ini_directive(candidates, "error_reporting") or "E_ALL"
+    return {
+        "date.timezone": tz,
+        "display_errors": display_errors,
+        "error_reporting": error_reporting,
+    }
+
+
+def format_php_diag_ini_note(docroot=None):
+    settings = resolve_php_diag_ini_settings(docroot)
+    return ", ".join("{0}={1}".format(k, settings[k]) for k in sorted(settings.keys()))
+
+
+def build_php_diag_argv(php_bin, office_repo, runner_path, docroot=None):
+    argv = [php_bin]
+    for key, val in resolve_php_diag_ini_settings(docroot).items():
+        argv.extend(["-d", "{0}={1}".format(key, val)])
+    argv.append(host_to_php_fs_path(php_bin, office_repo, runner_path))
+    return argv
+
+
+def php_issue_is_ignorable_in_diag(message):
+    text = message or ""
+    return any(pattern.search(text) for pattern in PHP_ISSUE_IGNORABLE_DIAG_RE)
+
+
+def extract_php_html_issues(body):
+    body = body or ""
+    issues = []
+    for match in PHP_ISSUE_LINE_RE.finditer(body):
+        line = match.group(0).strip()
+        line = re.sub(r"<[^>]+>", "", line)
+        line = re.sub(r"\s+", " ", line).strip()
+        if not line:
+            continue
+        start = max(0, match.start() - 150)
+        end = min(len(body), match.end() + 150)
+        context = body[start:end]
+        context = re.sub(r"\s+", " ", context).strip()
+        if len(context) > 300:
+            context = context[:300] + "…"
+        issues.append({"line": line, "context": context})
+    return issues
+
+
+def filter_php_issues_for_diag(issues):
+    blocking = []
+    ignored = []
+    for item in issues:
+        msg = item.get("line") or ""
+        if php_issue_is_ignorable_in_diag(msg):
+            ignored.append(item)
+        else:
+            blocking.append(item)
+    return blocking, ignored
+
+
+def print_php_render_issue_details(body, diag_mode=False, label="render"):
+    issues = extract_php_html_issues(body)
+    if diag_mode:
+        blocking, ignored = filter_php_issues_for_diag(issues)
+    else:
+        blocking, ignored = issues, []
+    if ignored:
+        print("php_{0}_ignored ({1}):".format(label, len(ignored)))
+        for item in ignored[:5]:
+            print("  {0}".format(item.get("line", "")))
+    if blocking:
+        print("php_{0}_errors ({1}):".format(label, len(blocking)))
+        for item in blocking[:8]:
+            print("  line: {0}".format(item.get("line", "")))
+            print("  context: {0}".format(item.get("context", "")))
+    return blocking
 
 
 def _php_lint_target_path(php_bin, office_repo, path):
@@ -1208,7 +1350,9 @@ def run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel):
     )
     print("=== PHP HTTP VERIFY ARTICLES DIAG (same markers as --apply) ===")
     print("paths: {0}".format(", ".join(slug_paths)))
-    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "http-verify-articles")
+    code, stdout, combined = _php_run_capture(
+        php_bin, repo, runner, "http-verify-articles", docroot=sandbox
+    )
     fail = []
     if code != 0:
         fail.append("php exit {0}".format(code))
@@ -1222,7 +1366,7 @@ def run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel):
             fail.append("missing render chunk for {0}".format(slug))
             continue
         chunk = stdout.split(start, 1)[1].split(end, 1)[0]
-        errs, diag = verify_render_html_errors(chunk, {}, "article")
+        errs, diag = verify_render_html_errors(chunk, {}, "article", diag_sandbox=True)
         markers = diag.get("markers") or {}
         print(
             "  {0}: toc={1} footer={2} blog_page={3}{4}".format(
@@ -1234,6 +1378,7 @@ def run_php_http_verify_articles_diag(sandbox, repo, php_bin, article_rel):
             )
         )
         if errs:
+            print_php_render_issue_details(chunk, diag_mode=True, label=slug)
             fail.append("{0}: {1}".format(slug, "; ".join(errs)))
     if fail:
         print("HTTP VERIFY ARTICLES RESULT: FAIL ({0})".format("; ".join(fail)))
@@ -1293,18 +1438,11 @@ def build_php_service_diag_runner(sandbox_docroot, service_index_path, web_path)
     )
 
 
-def _php_run_capture(php_bin, repo, runner_path, label):
+def _php_run_capture(php_bin, repo, runner_path, label, docroot=None):
     import subprocess
 
     proc = subprocess.run(
-        [
-            php_bin,
-            "-d",
-            "display_errors=1",
-            "-d",
-            "error_reporting=E_ALL",
-            host_to_php_fs_path(php_bin, repo, runner_path),
-        ],
+        build_php_diag_argv(php_bin, repo, runner_path, docroot=docroot),
         capture_output=True,
         text=True,
         timeout=90,
@@ -1338,13 +1476,13 @@ def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
     )
     print("=== PHP NEWSTYLE ARTICLE DIAG (dual lib tree) ===")
     print("article_template: {0}".format(article_rel))
-    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "newstyle")
+    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "newstyle", docroot=sandbox)
     fail = []
     if code != 0:
         fail.append("php exit {0}".format(code))
     if re.search(r"(?i)Fatal error|Parse error|Cannot redeclare", combined):
         fail.append("PHP fatal/parse/redeclare")
-    marker_errors, diag = verify_render_html_errors(stdout, {}, "article")
+    marker_errors, diag = verify_render_html_errors(stdout, {}, "article", diag_sandbox=True)
     if marker_errors:
         fail.extend(marker_errors)
     markers = diag.get("markers") or {}
@@ -1357,6 +1495,7 @@ def run_php_newstyle_path_diag(sandbox, repo, php_bin, article_rel):
     )
     if fail:
         print("NEWSTYLE RESULT: FAIL ({0})".format("; ".join(fail)))
+        print_php_render_issue_details(stdout, diag_mode=True, label="newstyle")
         print("--- stdout tail ---")
         print("\n".join(stdout.splitlines()[-40:]))
         return 1
@@ -1381,7 +1520,7 @@ def run_php_service_page_diag(sandbox, repo, php_bin):
     )
     print("=== PHP SERVICE PAGE DIAG ===")
     print("service: {0} ({1})".format(SERVICE_DIAG_SLUG, web_path))
-    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "service")
+    code, stdout, combined = _php_run_capture(php_bin, repo, runner, "service", docroot=sandbox)
     fail = []
     if code != 0:
         fail.append("php exit {0}".format(code))
@@ -1497,15 +1636,11 @@ def diagnose_http_body(body, headers):
         "toc": ("lireate-blog-toc" in body or "data-lx-blog-toc" in body),
     }
     tail = body[-300:] if len(body) > 300 else body
-    issues = re.findall(
-        r"(?:Fatal error|Parse error|Warning):\s*[^\n<]+",
-        body,
-        flags=re.IGNORECASE,
-    )
+    issues = [item["line"] for item in extract_php_html_issues(body)[:12]]
     return {
         "markers": markers,
         "tail": tail,
-        "php_issues": issues[:8],
+        "php_issues": issues,
         "cache": _cache_header_note(headers or {}),
         "length": len(body),
     }
@@ -1537,18 +1672,24 @@ def verify_article_marker_errors(markers):
     return page_errors
 
 
-def verify_render_html_errors(body, headers, page_kind):
+def verify_render_html_errors(body, headers, page_kind, diag_sandbox=False):
     """Return (errors, diag) using the same marker rules as live HTTP verify."""
     diag = diagnose_http_body(body, headers or {})
     markers = diag.get("markers") or {}
-    if diag.get("php_issues"):
-        errs = ["PHP errors in HTML"]
+    raw_issues = extract_php_html_issues(body)
+    if diag_sandbox:
+        blocking, _ignored = filter_php_issues_for_diag(raw_issues)
     else:
-        errs = []
+        blocking = raw_issues
+    errs = []
+    if blocking:
+        first = blocking[0].get("line", "PHP error in HTML")
+        errs.append("PHP errors in HTML: {0}".format(first[:240]))
     if page_kind == "news_list":
         errs.extend(verify_news_list_marker_errors(markers))
     else:
         errs.extend(verify_article_marker_errors(markers))
+    diag["php_issues_blocking"] = [item.get("line") for item in blocking]
     return errs, diag
 
 
@@ -1907,18 +2048,12 @@ def run_php_list_diag(live_docroot, office_repo=None):
     print("live_docroot: {0}".format(live_docroot))
     print("sandbox_docroot: {0}".format(sandbox))
     print("php: {0}".format(php_bin))
+    print("diag_php_ini: {0}".format(format_php_diag_ini_note(sandbox)))
     print("cms_template: {0}".format(list_rel))
     print("list_cms_inc: {0} (from office-repo copy)".format(cms.relative_to(sandbox)))
 
     proc = subprocess.run(
-        [
-            php_bin,
-            "-d",
-            "display_errors=1",
-            "-d",
-            "error_reporting=E_ALL",
-            host_to_php_fs_path(php_bin, repo, runner),
-        ],
+        build_php_diag_argv(php_bin, repo, runner, docroot=sandbox),
         capture_output=True,
         text=True,
         timeout=90,
@@ -2043,14 +2178,7 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
 
     print("=== PHP ARTICLE COLLAGE DIAG ===")
     proc = subprocess.run(
-        [
-            php_bin,
-            "-d",
-            "display_errors=1",
-            "-d",
-            "error_reporting=E_ALL",
-            host_to_php_fs_path(php_bin, repo, runner),
-        ],
+        build_php_diag_argv(php_bin, repo, runner, docroot=sandbox),
         capture_output=True,
         text=True,
         timeout=60,
@@ -2079,7 +2207,9 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
         collage_no_dup = "lx-article-cover" not in prose_tail
     legacy_no_hero = COLLAGE_V1_HERO_ATTR not in legacy_chunk
     legacy_header = "lireate-blog-header" in legacy_chunk and "lireate-blog-h1" in legacy_chunk
-    legacy_marker_errors, legacy_diag = verify_render_html_errors(legacy_chunk, {}, "article")
+    legacy_marker_errors, legacy_diag = verify_render_html_errors(
+        legacy_chunk, {}, "article", diag_sandbox=True
+    )
     legacy_toc = (legacy_diag.get("markers") or {}).get("toc")
     css_ok = COLLAGE_V1_CSS_MARKER in article_css
     print(
@@ -2111,6 +2241,7 @@ def run_php_article_collage_diag(sandbox_docroot, office_repo, php_bin="php"):
 
     if fail:
         print("ARTICLE COLLAGE RESULT: FAIL ({0})".format("; ".join(fail)))
+        print_php_render_issue_details(legacy_chunk or stdout, diag_mode=True, label="collage-legacy")
         return 1
     print("ARTICLE COLLAGE RESULT: PASS")
     return 0
