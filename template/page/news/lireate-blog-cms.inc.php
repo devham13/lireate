@@ -23,19 +23,14 @@ if (!isset($lireate_blog_cover_html)) {
 $lireate_blog_title = isset($row['name']) ? $row['name'] : (isset($lireate_blog_title) ? $lireate_blog_title : '');
 $lireate_blog_body_html = isset($row['full_story']) ? $row['full_story'] : (isset($lireate_blog_body_html) ? $lireate_blog_body_html : '');
 if (!function_exists('lireate_blog_article_collage_prepare')) {
-    $lireate_blog_lib_candidates = array(
-        __DIR__ . '/lireate-blog-lib.php',
-        $repo_blog_shared . '/lireate-blog-lib.php',
-    );
-    foreach ($lireate_blog_lib_candidates as $lireate_blog_lib_path) {
-        if ($lireate_blog_lib_path !== '' && is_file($lireate_blog_lib_path)) {
-            require_once $lireate_blog_lib_path;
-            break;
-        }
+    $lireate_blog_load = __DIR__ . '/lireate-blog-load.php';
+    if (!is_file($lireate_blog_load)) {
+        $lireate_blog_load = $repo_blog_shared . '/lireate-blog-load.php';
     }
-}
-if (!function_exists('lireate_blog_article_collage_prepare') && function_exists('lireate_blog_require_lib')) {
-    lireate_blog_require_lib();
+    if (is_file($lireate_blog_load)) {
+        require_once $lireate_blog_load;
+        lireate_blog_require_lib();
+    }
 }
 $_lb_collage_prep = lireate_blog_article_collage_prepare($row);
 $lireate_blog_body_html = $_lb_collage_prep['body'];

@@ -14,7 +14,8 @@
  * $lireate_blog_canonical — полный URL
  * $lireate_blog_cover_html — опционально, обложка (первое img из /template/images/blog/)
  */
-require_once __DIR__ . '/lireate-blog-lib.php';
+require_once __DIR__ . '/lireate-blog-load.php';
+lireate_blog_require_lib();
 
 $lb_title = isset($lireate_blog_title) ? $lireate_blog_title : '';
 $lb_body = isset($lireate_blog_body_html) ? $lireate_blog_body_html : '';

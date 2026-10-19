@@ -5,16 +5,15 @@
 $lireate_blog_list_render_ok = false;
 
 try {
-    if (!function_exists('lireate_blog_require_lib')) {
+    if (!function_exists('lireate_blog_h')) {
         $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
-        $lib_tpl = $doc !== '' ? $doc . '/template/page/news/lireate-blog-lib.php' : '';
-        $lib_shared = $doc !== '' ? $doc . '/pages/blog/_shared/lireate-blog-lib.php' : '';
-        if ($lib_tpl !== '' && is_file($lib_tpl)) {
-            require_once $lib_tpl;
-        } elseif ($lib_shared !== '' && is_file($lib_shared)) {
-            require_once $lib_shared;
+        $load_tpl = $doc !== '' ? $doc . '/template/page/news/lireate-blog-load.php' : '';
+        $load_shared = $doc !== '' ? $doc . '/pages/blog/_shared/lireate-blog-load.php' : '';
+        if ($load_tpl !== '' && is_file($load_tpl)) {
+            require_once $load_tpl;
+        } elseif ($load_shared !== '' && is_file($load_shared)) {
+            require_once $load_shared;
         }
-    } else {
         lireate_blog_require_lib();
     }
 

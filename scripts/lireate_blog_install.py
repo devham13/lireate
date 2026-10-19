@@ -117,6 +117,11 @@ def cmd_apply(office_repo, docroot, backups_root):
             "BLOCKER: no CMS news templates under {0}/template".format(docroot)
         )
 
+    print("=== PHP render gate (pre-apply, dual lib tree sandbox) ===")
+    gate_code = lib.run_php_list_diag(docroot, office_repo)
+    if gate_code != 0:
+        raise SystemExit("BLOCKER: PHP render gate failed (exit {0})".format(gate_code))
+
     backup_id = lib.make_backup_id()
     backup_dir = lib.backup_dir_for_id(backups_root, backup_id)
 

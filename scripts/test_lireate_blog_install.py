@@ -170,6 +170,66 @@ class BlogInstallLibTests(unittest.TestCase):
         self.assertIsNotNone(inner)
         self.assertIn("Самое свежее и интересное", inner)
 
+    def test_verify_http_aborts_on_5xx_without_second_round(self):
+        article_html = (
+            '<div class="lireate-blog-page lireate-blog-body">'
+            '<nav class="lireate-blog-toc-card" data-lx-blog-toc></nav>'
+            '<footer class="lx-site-footer"></footer></div>'
+        )
+        calls = []
+
+        def fake_probe(base, path, timeout=25, cache_bust=None):
+            calls.append((path, cache_bust))
+            if path == "/news/":
+                return 200, article_html, "https://x/news/", {}
+            return 500, "error", "https://x/article/", {}
+
+        with mock.patch.object(lib, "http_probe", side_effect=fake_probe):
+            with mock.patch.object(lib, "time") as t:
+                t.sleep = mock.MagicMock()
+                errors = lib.verify_http_deploy(
+                    "https://x",
+                    ["/article/"],
+                    rounds=2,
+                    wait_seconds=90,
+                )
+        self.assertTrue(errors)
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(all(cb.endswith("-r1") for _p, cb in calls))
+        t.sleep.assert_not_called()
+
+    def test_dual_lib_tree_article_render_no_redeclare(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-dual-lib-"))
+        try:
+            doc = tmp / "docroot"
+            for src, rel in lib.copy_plan(REPO_ROOT):
+                dst = doc / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(src), str(dst))
+            snippet = FIXTURE_NEWSTYLE.read_text(encoding="utf-8")
+            planned, changed, _ = lib.patch_news_template_content(snippet)
+            self.assertTrue(changed)
+            article = doc / "template/page/news/newStyle.php"
+            article.parent.mkdir(parents=True, exist_ok=True)
+            article.write_text(planned, encoding="utf-8")
+            slug = lib.probe_article_path(REPO_ROOT).strip("/")
+            runner = tmp / "run.php"
+            runner.write_text(
+                lib.build_php_newstyle_diag_runner(str(doc), str(article), slug),
+                encoding="utf-8",
+            )
+            out = subprocess.run(
+                ["php", str(runner)],
+                capture_output=True,
+                text=True,
+                cwd=str(REPO_ROOT),
+            )
+            self.assertEqual(out.returncode, 0, msg=out.stderr + out.stdout)
+            self.assertNotIn("Cannot redeclare", out.stdout + out.stderr)
+            self.assertIn("lireate-blog-page", out.stdout)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_verify_news_list_rejects_fallback(self):
         list_html = (
             '<!-- lireate-blog-list-fallback:v1 -->'
@@ -350,9 +410,10 @@ class BlogInstallApplyTests(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
+    @mock.patch.object(lib, "run_php_list_diag", return_value=0)
     @mock.patch.object(lib, "verify_http_deploy", return_value=[])
     @mock.patch.object(lib, "sync_office_blog_template")
-    def test_apply_deploys_and_patches(self, _sync, _verify):
+    def test_apply_deploys_and_patches(self, _sync, _verify, _gate):
         code = install.main(["--env-file", str(self.env_file), "--apply"])
         self.assertEqual(code, 0)
         cms = self.docroot / "template/page/news/lireate-blog-cms.inc.php"
@@ -361,9 +422,10 @@ class BlogInstallApplyTests(unittest.TestCase):
         self.assertIn(lib.INSTALL_MARKER, patched)
         self.assertIn(lib.BODY_CLASS, patched)
 
+    @mock.patch.object(lib, "run_php_list_diag", return_value=0)
     @mock.patch.object(lib, "verify_http_deploy", return_value=["https://example.test/x: missing lx-site-footer"])
     @mock.patch.object(lib, "sync_office_blog_template")
-    def test_apply_rolls_back_on_http_failure(self, _sync, _verify):
+    def test_apply_rolls_back_on_http_failure(self, _sync, _verify, _gate):
         code = install.main(["--env-file", str(self.env_file), "--apply"])
         self.assertEqual(code, 1)
         patched = (self.docroot / "template/page/news/article.php").read_text(encoding="utf-8")

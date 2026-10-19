@@ -2,50 +2,19 @@
 /**
  * Хелперы рендера статей блога LIREATE.
  */
-require_once __DIR__ . '/lireate-blog-config.php';
-require_once __DIR__ . '/lireate-blog-list-data.php';
-
-function lireate_blog_dir_up($path, $levels)
-{
-    $path = (string) $path;
-    $levels = (int) $levels;
-    while ($levels > 0 && $path !== '') {
-        $path = dirname($path);
-        $levels -= 1;
-    }
-    return $path;
+if (function_exists('lireate_blog_h')) {
+    return;
 }
+require_once __DIR__ . '/lireate-blog-load.php';
 
-function lireate_blog_docroot()
-{
-    return isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
-}
-
-function lireate_blog_require_lib()
-{
-    if (function_exists('lireate_blog_h')) {
-        return;
-    }
-    $doc = lireate_blog_docroot();
-    $candidates = array();
-    if ($doc !== '') {
-        $candidates[] = $doc . '/template/page/news/lireate-blog-lib.php';
-        $candidates[] = $doc . '/pages/blog/_shared/lireate-blog-lib.php';
-    }
-    $candidates[] = __DIR__ . '/lireate-blog-lib.php';
-    foreach ($candidates as $path) {
-        if ($path !== '' && is_file($path)) {
-            require_once $path;
-            return;
-        }
-    }
-}
-
+if (!function_exists('lireate_blog_h')) {
 function lireate_blog_h($s)
 {
     return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
 }
+}
 
+if (!function_exists('lireate_blog_strtolower')) {
 function lireate_blog_strtolower($text)
 {
     if (function_exists('mb_strtolower')) {
@@ -53,7 +22,9 @@ function lireate_blog_strtolower($text)
     }
     return strtolower($text);
 }
+}
 
+if (!function_exists('lireate_blog_strlen')) {
 function lireate_blog_strlen($text)
 {
     if (function_exists('mb_strlen')) {
@@ -61,7 +32,9 @@ function lireate_blog_strlen($text)
     }
     return strlen($text);
 }
+}
 
+if (!function_exists('lireate_blog_substr')) {
 function lireate_blog_substr($text, $start, $len = 1)
 {
     if (function_exists('mb_substr')) {
@@ -69,7 +42,9 @@ function lireate_blog_substr($text, $start, $len = 1)
     }
     return substr($text, $start, $len);
 }
+}
 
+if (!function_exists('lireate_blog_slugify_heading')) {
 function lireate_blog_slugify_heading($text)
 {
     $text = strip_tags((string) $text);
@@ -98,7 +73,9 @@ function lireate_blog_slugify_heading($text)
     $out = preg_replace('/-+/', '-', $out);
     return trim($out, '-');
 }
+}
 
+if (!function_exists('lireate_blog_ensure_h2_ids')) {
 function lireate_blog_ensure_h2_ids($html)
 {
     $html = (string) $html;
@@ -132,7 +109,9 @@ function lireate_blog_ensure_h2_ids($html)
         $html
     );
 }
+}
 
+if (!function_exists('lireate_blog_extract_toc')) {
 function lireate_blog_extract_toc($html)
 {
     $items = array();
@@ -147,7 +126,9 @@ function lireate_blog_extract_toc($html)
     }
     return $items;
 }
+}
 
+if (!function_exists('lireate_blog_date_display_to_iso')) {
 function lireate_blog_date_display_to_iso($display)
 {
     $display = trim((string) $display);
@@ -156,7 +137,9 @@ function lireate_blog_date_display_to_iso($display)
     }
     return '';
 }
+}
 
+if (!function_exists('lireate_blog_index_path')) {
 function lireate_blog_index_path()
 {
     $candidates = array(
@@ -170,7 +153,9 @@ function lireate_blog_index_path()
     }
     return $candidates[0];
 }
+}
 
+if (!function_exists('lireate_blog_load_index')) {
 function lireate_blog_load_index()
 {
     $path = lireate_blog_index_path();
@@ -183,7 +168,9 @@ function lireate_blog_load_index()
     }
     return $data;
 }
+}
 
+if (!function_exists('lireate_blog_public_origin')) {
 function lireate_blog_public_origin()
 {
     if (defined('LIREATE_BLOG_PUBLIC_ORIGIN') && LIREATE_BLOG_PUBLIC_ORIGIN !== '') {
@@ -191,7 +178,9 @@ function lireate_blog_public_origin()
     }
     return '';
 }
+}
 
+if (!function_exists('lireate_blog_resolve_cover_url')) {
 function lireate_blog_resolve_cover_url($cover)
 {
     $cover = trim((string) $cover);
@@ -207,7 +196,9 @@ function lireate_blog_resolve_cover_url($cover)
     }
     return $cover;
 }
+}
 
+if (!function_exists('lireate_blog_docroot_fs_path')) {
 function lireate_blog_docroot_fs_path($webPath)
 {
     $webPath = trim((string) $webPath);
@@ -221,7 +212,9 @@ function lireate_blog_docroot_fs_path($webPath)
     }
     return $doc . '/' . ltrim($webPath, '/');
 }
+}
 
+if (!function_exists('lireate_blog_web_path_is_file')) {
 function lireate_blog_web_path_is_file($webPath)
 {
     if (preg_match('#^https?://#i', (string) $webPath)) {
@@ -230,7 +223,9 @@ function lireate_blog_web_path_is_file($webPath)
     $fs = lireate_blog_docroot_fs_path($webPath);
     return $fs !== '' && is_file($fs);
 }
+}
 
+if (!function_exists('lireate_blog_list_first_img_src_from_html')) {
 function lireate_blog_list_first_img_src_from_html($html)
 {
     $html = (string) $html;
@@ -242,7 +237,9 @@ function lireate_blog_list_first_img_src_from_html($html)
     }
     return '';
 }
+}
 
+if (!function_exists('lireate_blog_list_cover_candidate_paths')) {
 function lireate_blog_list_cover_candidate_paths($row)
 {
     $paths = array();
@@ -299,7 +296,9 @@ function lireate_blog_list_cover_candidate_paths($row)
     }
     return $unique;
 }
+}
 
+if (!function_exists('lireate_blog_list_cover_from_row')) {
 function lireate_blog_list_cover_from_row($row)
 {
     foreach (lireate_blog_list_cover_candidate_paths($row) as $path) {
@@ -309,7 +308,9 @@ function lireate_blog_list_cover_from_row($row)
     }
     return '';
 }
+}
 
+if (!function_exists('lireate_blog_render_service_footer')) {
 function lireate_blog_render_service_footer()
 {
     $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
@@ -328,7 +329,9 @@ function lireate_blog_render_service_footer()
     }
     return false;
 }
+}
 
+if (!function_exists('lireate_blog_related_articles')) {
 function lireate_blog_related_articles($current_url, $limit = 3)
 {
     $current = '/' . trim((string) $current_url, '/');
@@ -354,12 +357,16 @@ function lireate_blog_related_articles($current_url, $limit = 3)
     );
     return array_slice($rows, 0, max(0, (int) $limit));
 }
+}
 
+if (!function_exists('lireate_blog_prepare_body_html')) {
 function lireate_blog_prepare_body_html($html)
 {
     return lireate_blog_ensure_h2_ids($html);
 }
+}
 
+if (!function_exists('lireate_blog_html_has_collage_v1_cover_figure')) {
 function lireate_blog_html_has_collage_v1_cover_figure($html)
 {
     $html = (string) $html;
@@ -374,7 +381,9 @@ function lireate_blog_html_has_collage_v1_cover_figure($html)
     }
     return false;
 }
+}
 
+if (!function_exists('lireate_blog_strip_collage_v1_cover_figure')) {
 function lireate_blog_strip_collage_v1_cover_figure($html)
 {
     $html = (string) $html;
@@ -391,7 +400,9 @@ function lireate_blog_strip_collage_v1_cover_figure($html)
     }
     return $html;
 }
+}
 
+if (!function_exists('lireate_blog_collage_cover_url_for_seo')) {
 function lireate_blog_collage_cover_url_for_seo($seo_url)
 {
     $seo = trim((string) $seo_url, '/');
@@ -404,7 +415,9 @@ function lireate_blog_collage_cover_url_for_seo($seo_url)
     }
     return '';
 }
+}
 
+if (!function_exists('lireate_blog_extract_first_img_src')) {
 function lireate_blog_extract_first_img_src($html)
 {
     if (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', (string) $html, $m)) {
@@ -412,12 +425,14 @@ function lireate_blog_extract_first_img_src($html)
     }
     return '';
 }
+}
 
 /**
  * Collage-v1 cover: hero from /template/images/blog/{seo_url}.jpg or figure in body; strip duplicate figure.
  *
  * @return array{mode:bool,body:string,hero_html:string}
  */
+if (!function_exists('lireate_blog_article_collage_prepare')) {
 function lireate_blog_article_collage_prepare($row)
 {
     $story = '';
@@ -473,7 +488,9 @@ function lireate_blog_article_collage_prepare($row)
         'hero_html' => $hero,
     );
 }
+}
 
+if (!function_exists('lireate_blog_reading_time_minutes')) {
 function lireate_blog_reading_time_minutes($html)
 {
     $text = strip_tags((string) $html);
@@ -491,7 +508,9 @@ function lireate_blog_reading_time_minutes($html)
     $mins = (int) ceil($words / $wpm);
     return $mins < 1 ? 1 : $mins;
 }
+}
 
+if (!function_exists('lireate_blog_absolute_url')) {
 function lireate_blog_absolute_url($path, $canonical_hint = '')
 {
     $path = '/' . ltrim((string) $path, '/');
@@ -512,7 +531,9 @@ function lireate_blog_absolute_url($path, $canonical_hint = '')
     }
     return $path;
 }
+}
 
+if (!function_exists('lireate_blog_article_jsonld')) {
 function lireate_blog_article_jsonld($meta)
 {
     $author = isset($meta['author']) && $meta['author'] !== ''
@@ -561,12 +582,14 @@ function lireate_blog_article_jsonld($meta)
         ),
     );
 }
+}
 
 /**
  * Рубрики /news (как на lireate.ru CMS).
  *
  * @return array<int, array{label:string,url:string,num?:int,category?:int}>
  */
+if (!function_exists('lireate_blog_list_default_rubrics')) {
 function lireate_blog_list_default_rubrics()
 {
     return array(
@@ -586,7 +609,9 @@ function lireate_blog_list_default_rubrics()
         array('label' => 'Патент', 'url' => '/news/?num=13&category=20', 'num' => 13, 'category' => 20),
     );
 }
+}
 
+if (!function_exists('lireate_blog_list_row_get')) {
 function lireate_blog_list_row_get($row, $keys, $default = '')
 {
     if (!is_array($row)) {
@@ -599,7 +624,9 @@ function lireate_blog_list_row_get($row, $keys, $default = '')
     }
     return $default;
 }
+}
 
+if (!function_exists('lireate_blog_list_format_date')) {
 function lireate_blog_list_format_date($row)
 {
     $raw = lireate_blog_list_row_get($row, array('date_display', 'date', 'datetime'), '');
@@ -618,7 +645,9 @@ function lireate_blog_list_format_date($row)
     }
     return $raw;
 }
+}
 
+if (!function_exists('lireate_blog_list_seo_path')) {
 function lireate_blog_list_seo_path($row)
 {
     $seo = lireate_blog_list_row_get($row, array('seo_url', 'url', 'slug'), '');
@@ -628,7 +657,9 @@ function lireate_blog_list_seo_path($row)
     }
     return '/' . $seo . '/';
 }
+}
 
+if (!function_exists('lireate_blog_index_article_by_path')) {
 function lireate_blog_index_article_by_path($path)
 {
     static $map = null;
@@ -648,10 +679,12 @@ function lireate_blog_index_article_by_path($path)
     }
     return isset($map[$norm]) ? $map[$norm] : null;
 }
+}
 
 /**
  * HTML для расчёта времени чтения: только full_story (CMS или index), не анонс.
  */
+if (!function_exists('lireate_blog_list_body_for_reading_time')) {
 function lireate_blog_list_body_for_reading_time($row)
 {
     $body = lireate_blog_list_row_get($row, array('full_story', 'text', 'story'), '');
@@ -670,7 +703,9 @@ function lireate_blog_list_body_for_reading_time($row)
     }
     return '';
 }
+}
 
+if (!function_exists('lireate_blog_list_read_mins_for_row')) {
 function lireate_blog_list_read_mins_for_row($row)
 {
     $preset = lireate_blog_list_row_get($row, array('reading_mins', 'read_mins'), '');
@@ -691,7 +726,9 @@ function lireate_blog_list_read_mins_for_row($row)
     $title = lireate_blog_list_row_get($row, array('name', 'title', 'headline'), '');
     return lireate_blog_reading_time_minutes($title);
 }
+}
 
+if (!function_exists('lireate_blog_list_excerpt_from_row')) {
 function lireate_blog_list_excerpt_from_row($row)
 {
     $text = lireate_blog_list_row_get(
@@ -712,7 +749,9 @@ function lireate_blog_list_excerpt_from_row($row)
     }
     return lireate_blog_substr($plain, 0, 217) . '…';
 }
+}
 
+if (!function_exists('lireate_blog_list_normalize_row')) {
 function lireate_blog_list_normalize_row($row)
 {
     if (!is_array($row)) {
@@ -749,11 +788,13 @@ function lireate_blog_list_normalize_row($row)
         'read_mins' => $read_mins,
     );
 }
+}
 
 /**
  * @param mixed $source
  * @return array<int, array<string, mixed>>
  */
+if (!function_exists('lireate_blog_list_normalize_items')) {
 function lireate_blog_list_normalize_items($source)
 {
     $out = array();
@@ -768,7 +809,9 @@ function lireate_blog_list_normalize_items($source)
     }
     return $out;
 }
+}
 
+if (!function_exists('lireate_blog_list_items_from_index')) {
 function lireate_blog_list_items_from_index()
 {
     $data = lireate_blog_load_index();
@@ -784,12 +827,14 @@ function lireate_blog_list_items_from_index()
     }
     return $items;
 }
+}
 
 /**
  * Собрать статьи из переменных CMS (список /news).
  *
  * @return array<int, array<string, mixed>>
  */
+if (!function_exists('lireate_blog_list_collect_cms_items')) {
 function lireate_blog_list_collect_cms_items()
 {
     $bundle = lireate_blog_list_prepare_paginated_bundle();
@@ -816,7 +861,9 @@ function lireate_blog_list_collect_cms_items()
     }
     return array();
 }
+}
 
+if (!function_exists('lireate_blog_list_featured_from_cms')) {
 function lireate_blog_list_featured_from_cms($items)
 {
     if (isset($GLOBALS['lireate_blog_list_featured']) && is_array($GLOBALS['lireate_blog_list_featured'])) {
@@ -834,7 +881,9 @@ function lireate_blog_list_featured_from_cms($items)
     }
     return null;
 }
+}
 
+if (!function_exists('lireate_blog_list_filters_from_cms')) {
 function lireate_blog_list_filters_from_cms()
 {
     if (isset($GLOBALS['lireate_blog_list_filters']) && is_array($GLOBALS['lireate_blog_list_filters'])) {
@@ -842,7 +891,9 @@ function lireate_blog_list_filters_from_cms()
     }
     return lireate_blog_list_default_rubrics();
 }
+}
 
+if (!function_exists('lireate_blog_list_pagination_from_cms')) {
 function lireate_blog_list_pagination_from_cms()
 {
     if (isset($GLOBALS['lireate_blog_list_pagination']) && is_array($GLOBALS['lireate_blog_list_pagination'])) {
@@ -862,7 +913,9 @@ function lireate_blog_list_pagination_from_cms()
     }
     return lireate_blog_list_build_pagination($current, $total);
 }
+}
 
+if (!function_exists('lireate_blog_list_rubric_is_active')) {
 function lireate_blog_list_rubric_is_active($rubric)
 {
     $cat = isset($_GET['category']) ? (int) $_GET['category'] : 0;
@@ -880,4 +933,5 @@ function lireate_blog_list_rubric_is_active($rubric)
         return true;
     }
     return false;
+}
 }

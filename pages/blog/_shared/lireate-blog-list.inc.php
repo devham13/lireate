@@ -8,11 +8,8 @@
  * $lireate_blog_list_pagination — опционально (current, total, pages[])
  */
 if (!function_exists('lireate_blog_h')) {
-    if (function_exists('lireate_blog_require_lib')) {
-        lireate_blog_require_lib();
-    } else {
-        require_once __DIR__ . '/lireate-blog-lib.php';
-    }
+    require_once __DIR__ . '/lireate-blog-load.php';
+    lireate_blog_require_lib();
 }
 
 $lb_items = isset($lireate_blog_list_items) && is_array($lireate_blog_list_items)
