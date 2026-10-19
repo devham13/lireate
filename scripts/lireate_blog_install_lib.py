@@ -12,8 +12,23 @@ INSTALL_MARKERS_LEGACY = (
     "lireate-blog-install:v2",
     "lireate-blog-install:v1",
 )
-LIST_INSTALL_MARKER = "lireate-blog-list-install:v2"
+LIST_INSTALL_MARKER = "lireate-blog-list-install:v3"
 LIST_INSTALL_MARKER_LEGACY_V1 = "lireate-blog-list-install:v1"
+LIST_INSTALL_MARKER_LEGACY_V2 = "lireate-blog-list-install:v2"
+LIST_INSTALL_MARKERS_ALL = (
+    LIST_INSTALL_MARKER,
+    LIST_INSTALL_MARKER_LEGACY_V2,
+    LIST_INSTALL_MARKER_LEGACY_V1,
+)
+LIST_FOOTER_AFTER_SECTION_RE = re.compile(
+    r"<\?php\s*"
+    r"if\s*\(\s*function_exists\s*\(\s*['\"]lireate_blog_require_lib['\"]\s*\)\s*\)\s*\{[^}]*\}\s*"
+    r"if\s*\(\s*function_exists\s*\(\s*['\"]lireate_blog_render_service_footer['\"]\s*\)\s*\)\s*\{[^}]*"
+    r"lireate_blog_render_service_footer\s*\(\s*\)\s*;\s*"
+    r"\}\s*"
+    r"\?>\s*",
+    re.IGNORECASE | re.DOTALL,
+)
 LIST_FALLBACK_MARKER = "lireate-blog-list-fallback:v1"
 LIST_LEGACY_MARKER = "lireate-blog-list-legacy:snapshot"
 LIST_LEGACY_REL = Path("template/page/news/lireate-blog-list-legacy.inc.php")
@@ -159,10 +174,18 @@ def find_news_list_template(docroot):
             continue
         if "news_article[0]" in text:
             continue
+        if any(m in text for m in LIST_INSTALL_MARKERS_ALL):
+            score = 110
+            if LIST_SECTION_MARKERS[2] in text:
+                score += 5
+            if path.name in ("news.php", "blog.php", "newsList.php"):
+                score += 15
+            candidates.append((score, path))
+            continue
         if not all(marker in text for marker in (LIST_SECTION_MARKERS[0], LIST_SECTION_MARKERS[1])):
             continue
         score = 70
-        if LIST_INSTALL_MARKER in text:
+        if any(m in text for m in LIST_INSTALL_MARKERS_ALL):
             score = 100
         if LIST_SECTION_MARKERS[2] in text:
             score += 10
@@ -405,14 +428,6 @@ def _replacement_block_list():
         "<?php /* %s */ ?>\n"
         "<?php require $_SERVER['DOCUMENT_ROOT'] . '%s'; ?>\n"
         "</section>\n"
-        "<?php\n"
-        "if (function_exists('lireate_blog_require_lib')) {\n"
-        "    lireate_blog_require_lib();\n"
-        "}\n"
-        "if (function_exists('lireate_blog_render_service_footer')) {\n"
-        "    lireate_blog_render_service_footer();\n"
-        "}\n"
-        "?>\n"
     ) % (LIST_INSTALL_MARKER, LIST_CMS_INCLUDE)
 
 
@@ -453,13 +468,15 @@ def patch_news_list_template_content(text):
     """Return (new_text, changed, description)."""
     if LIST_INSTALL_MARKER in text:
         return text, False, "already patched (list marker present)"
-    if LIST_INSTALL_MARKER_LEGACY_V1 in text:
-        pass
     span = _span_blog_section(text)
     if not span:
         return text, False, "section#blog not found"
     repl = _replacement_block_list()
-    new_text = text[: span[0]] + repl + text[span[1] :]
+    tail = text[span[1] :]
+    tail = LIST_FOOTER_AFTER_SECTION_RE.sub("", tail, count=1)
+    new_text = text[: span[0]] + repl + tail
+    if LIST_INSTALL_MARKER_LEGACY_V2 in text and LIST_INSTALL_MARKER not in new_text:
+        return new_text, True, "upgraded list patch v2→v3 (footer inside cms include)"
     return new_text, new_text != text, "replaced section#blog with lireate-blog-list-cms.inc.php"
 
 
@@ -589,7 +606,7 @@ def sync_office_blog_template(office_repo):
 
 
 def build_diag_sandbox(live_docroot, office_repo):
-    """Temp docroot: blog assets from office-repo; live CMS paths symlinked read-only."""
+    """Temp docroot: blog assets from office-repo; patched list CMS template like --apply."""
     import os
     import tempfile
 
@@ -604,11 +621,20 @@ def build_diag_sandbox(live_docroot, office_repo):
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(src), str(dst))
 
-    for rel in (
-        Path("data/db.php"),
-        Path("template/page/news/blog.php"),
-        Path("template/page/news/index.php"),
-    ):
+    list_rel = None
+    list_tpl_live = find_news_list_template(live_docroot)
+    if list_tpl_live is not None and list_tpl_live.is_file():
+        try:
+            original = list_tpl_live.read_text(encoding="utf-8", errors="replace")
+            planned = plan_list_template_content(original)
+            list_rel = list_tpl_live.relative_to(live_docroot)
+            dest = sandbox / list_rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(planned, encoding="utf-8")
+        except (OSError, ValueError):
+            list_rel = None
+
+    for rel in (Path("data/db.php"),):
         live_file = live_docroot / rel
         if live_file.is_file():
             dst = sandbox / rel
@@ -617,7 +643,25 @@ def build_diag_sandbox(live_docroot, office_repo):
                 dst.unlink()
             os.symlink(str(live_file), str(dst))
 
-    return sandbox, root
+    if list_rel is None:
+        for rel in (Path("template/page/news/blog.php"), Path("template/page/news/index.php")):
+            live_file = live_docroot / rel
+            if live_file.is_file():
+                dst = sandbox / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                if dst.exists() or dst.is_symlink():
+                    dst.unlink()
+                os.symlink(str(live_file), str(dst))
+                if list_rel is None and rel.name in ("blog.php", "index.php"):
+                    try:
+                        original = live_file.read_text(encoding="utf-8", errors="replace")
+                        planned = plan_list_template_content(original)
+                        dest.write_text(planned, encoding="utf-8")
+                        list_rel = rel
+                    except OSError:
+                        pass
+
+    return sandbox, root, list_rel
 
 
 def unified_diff(old, new, path_label):
@@ -846,17 +890,34 @@ def verify_http(
 
 
 def run_php_list_diag(live_docroot, office_repo=None):
-    """php-cli list render from office-repo into temp sandbox (live docroot read-only)."""
+    """php-cli list render via patched CMS list template (same path as live /news)."""
     import os
     import subprocess
 
     live_docroot = Path(live_docroot).resolve()
     repo = Path(office_repo) if office_repo is not None else Path(__file__).resolve().parents[1]
-    sandbox, tmp_root = build_diag_sandbox(live_docroot, repo)
+    sandbox, tmp_root, list_rel = build_diag_sandbox(live_docroot, repo)
     cms = sandbox / "template/page/news/lireate-blog-list-cms.inc.php"
     if not cms.is_file():
         shutil.rmtree(tmp_root, ignore_errors=True)
         print("BLOCKER: missing list cms in office-repo sandbox ({0})".format(cms))
+        return 2
+    if list_rel is None:
+        list_tpl_live = find_news_list_template(live_docroot)
+        if list_tpl_live is not None:
+            try:
+                list_rel = list_tpl_live.relative_to(live_docroot)
+            except ValueError:
+                list_rel = None
+    if list_rel is None:
+        shutil.rmtree(tmp_root, ignore_errors=True)
+        print("BLOCKER: cannot locate CMS /news list template under {0}/template".format(live_docroot))
+        return 2
+
+    list_include = sandbox / list_rel
+    if not list_include.is_file():
+        shutil.rmtree(tmp_root, ignore_errors=True)
+        print("BLOCKER: patched list template missing in sandbox ({0})".format(list_include))
         return 2
 
     php_bin = os.environ.get("LIREATE_PHP_BIN", "php")
@@ -876,24 +937,26 @@ def run_php_list_diag(live_docroot, office_repo=None):
             "error_reporting(E_ALL);\n"
             "$_SERVER['DOCUMENT_ROOT'] = {doc};\n"
             "$_SERVER['REQUEST_URI'] = '/news/';\n"
+            "$_SERVER['SCRIPT_FILENAME'] = {list};\n"
             "$_GET = array();\n"
             "{news}\n"
             "ob_start();\n"
-            "include {cms};\n"
+            "include {list};\n"
             "echo ob_get_clean();\n"
         ).format(
             doc=repr(str(sandbox)),
             news=news_snippet,
-            cms=repr(str(cms)),
+            list=repr(str(list_include)),
         ),
         encoding="utf-8",
     )
 
-    print("=== PHP LIST DIAG (pre-apply sandbox) ===")
+    print("=== PHP LIST DIAG (patched CMS list template) ===")
     print("live_docroot: {0}".format(live_docroot))
     print("sandbox_docroot: {0}".format(sandbox))
     print("php: {0}".format(php_bin))
-    print("include: {0} (from office-repo copy)".format(cms))
+    print("cms_template: {0}".format(list_rel))
+    print("list_cms_inc: {0} (from office-repo copy)".format(cms.relative_to(sandbox)))
 
     proc = subprocess.run(
         [php_bin, "-d", "display_errors=1", "-d", "error_reporting=E_ALL", str(runner)],
@@ -941,6 +1004,8 @@ def run_php_list_diag(live_docroot, office_repo=None):
         fail_reasons.append("fallback marker {0}".format(LIST_FALLBACK_MARKER))
     if "lireate-blog-list-page" not in stdout:
         fail_reasons.append("missing lireate-blog-list-page")
+    if "lx-site-footer" not in stdout:
+        fail_reasons.append("missing lx-site-footer")
 
     if fail_reasons:
         print("RESULT: FAIL ({0})".format("; ".join(fail_reasons)))
