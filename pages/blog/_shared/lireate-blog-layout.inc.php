@@ -21,7 +21,9 @@ $lb_date_display = isset($lireate_blog_date_display) ? $lireate_blog_date_displa
 $lb_date_iso = isset($lireate_blog_date_iso) ? $lireate_blog_date_iso : lireate_blog_date_display_to_iso($lb_date_display);
 $lb_author = isset($lireate_blog_author) && $lireate_blog_author !== ''
     ? $lireate_blog_author
-    : LIREATE_BLOG_DEFAULT_AUTHOR;
+    : (defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_NAME : LIREATE_BLOG_DEFAULT_AUTHOR);
+$lb_author_role = defined('LIREATE_BLOG_AUTHOR_ROLE') ? LIREATE_BLOG_AUTHOR_ROLE : '';
+$lb_avatar_path = defined('LIREATE_BLOG_AUTHOR_AVATAR_PATH') ? LIREATE_BLOG_AUTHOR_AVATAR_PATH : '';
 $lb_tag = isset($lireate_blog_tag) ? $lireate_blog_tag : '';
 $lb_tag_url = isset($lireate_blog_tag_url) ? $lireate_blog_tag_url : '/news/';
 $lb_current = isset($lireate_blog_current_url) ? $lireate_blog_current_url : '';
@@ -29,6 +31,7 @@ $lb_desc = isset($lireate_blog_description) ? $lireate_blog_description : '';
 $lb_canonical = isset($lireate_blog_canonical) ? $lireate_blog_canonical : '';
 
 $lb_body = lireate_blog_prepare_body_html($lb_body);
+$lb_read_mins = lireate_blog_reading_time_minutes($lb_body);
 $lb_toc = lireate_blog_extract_toc($lb_body);
 $lb_related = lireate_blog_related_articles($lb_current, 3);
 $lb_assets = LIREATE_BLOG_ASSETS_BASE;
@@ -40,6 +43,7 @@ $lb_jsonld = lireate_blog_article_jsonld(
         'title' => $lb_title,
         'description' => $lb_desc,
         'author' => $lb_author,
+        'author_role' => $lb_author_role,
         'date_display' => $lb_date_display,
         'date_iso' => $lb_date_iso,
         'canonical' => $lb_canonical,
@@ -52,6 +56,9 @@ $lb_jsonld = array_filter(
     }
 );
 ?>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-article.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <div class="lireate-blog-page" data-lireate-blog-version="<?php echo lireate_blog_h($lb_v); ?>">
@@ -72,17 +79,42 @@ $lb_jsonld = array_filter(
 
     <article class="lireate-blog-main">
       <header class="lireate-blog-header">
-        <?php if ($lb_tag !== '') : ?>
-        <p class="lireate-blog-tagline"><a href="<?php echo lireate_blog_h($lb_tag_url); ?>"><?php echo lireate_blog_h($lb_tag); ?></a></p>
-        <?php endif; ?>
+        <div class="lireate-blog-header-top">
+          <a class="lireate-blog-pill lireate-blog-pill--back" href="/news/">‹ Все статьи блога</a>
+          <div class="lireate-blog-header-top-right">
+            <?php if ($lb_tag !== '') : ?>
+            <a class="lireate-blog-pill lireate-blog-pill--topic" href="<?php echo lireate_blog_h($lb_tag_url); ?>"><?php echo lireate_blog_h($lb_tag); ?></a>
+            <?php endif; ?>
+            <span class="lireate-blog-pill lireate-blog-pill--read">
+              <span class="lireate-blog-pill-clock" aria-hidden="true"></span>
+              <?php echo (int) $lb_read_mins; ?> мин читать
+            </span>
+          </div>
+        </div>
         <h1 class="lireate-blog-h1"><?php echo lireate_blog_h($lb_title); ?></h1>
-        <p class="lireate-blog-byline">
-          <span class="lireate-blog-author"><?php echo lireate_blog_h($lb_author); ?></span>
+        <hr class="lireate-blog-header-rule" />
+        <div class="lireate-blog-author-row">
+          <div class="lireate-blog-author-block">
+            <?php if ($lb_avatar_path !== '') : ?>
+            <picture class="lireate-blog-author-avatar">
+              <source srcset="<?php echo lireate_blog_h($lb_avatar_path); ?>.webp" type="image/webp">
+              <img src="<?php echo lireate_blog_h($lb_avatar_path); ?>.jpg" width="40" height="40" alt="" loading="lazy" decoding="async">
+            </picture>
+            <?php endif; ?>
+            <div class="lireate-blog-author-text">
+              <p class="lireate-blog-author-name"><?php echo lireate_blog_h($lb_author); ?></p>
+              <?php if ($lb_author_role !== '') : ?>
+              <p class="lireate-blog-author-role"><?php echo lireate_blog_h($lb_author_role); ?></p>
+              <?php endif; ?>
+            </div>
+          </div>
           <?php if ($lb_date_display !== '') : ?>
-          <span class="lireate-blog-byline-sep" aria-hidden="true">·</span>
-          <time class="lireate-blog-date" datetime="<?php echo lireate_blog_h($lb_date_iso); ?>"><?php echo lireate_blog_h($lb_date_display); ?></time>
+          <p class="lireate-blog-published">
+            Опубликовано:
+            <time datetime="<?php echo lireate_blog_h($lb_date_iso); ?>"><?php echo lireate_blog_h($lb_date_display); ?></time>
+          </p>
           <?php endif; ?>
-        </p>
+        </div>
       </header>
       <div class="lireate-blog-prose" id="lireate-blog-prose">
         <?php echo $lb_body; ?>

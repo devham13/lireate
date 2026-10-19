@@ -38,6 +38,12 @@ def main():
     cfg = (REPO / "pages/blog/_shared/lireate-blog-config.php").read_text(encoding="utf-8")
     if "LIREATE_BLOG_MAX_CHANNEL_URL" not in cfg:
         errors.append("MAX URL constant missing")
+    if "LIREATE_BLOG_AUTHOR_AVATAR_PATH" not in cfg:
+        errors.append("author avatar path constant missing")
+    for ext in (".jpg", ".webp"):
+        av = REPO / ("template/images/blog/author/yuriy-gorbachev" + ext)
+        if not av.is_file():
+            errors.append("missing {0}".format(av.relative_to(REPO)))
 
     preview = subprocess.run(
         ["php", "-l", str(REPO / "pages/blog/_preview/index.php")],
