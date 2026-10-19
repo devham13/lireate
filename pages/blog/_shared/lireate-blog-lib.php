@@ -147,6 +147,30 @@ function lireate_blog_load_index()
     return $data;
 }
 
+function lireate_blog_public_origin()
+{
+    if (defined('LIREATE_BLOG_PUBLIC_ORIGIN') && LIREATE_BLOG_PUBLIC_ORIGIN !== '') {
+        return rtrim((string) LIREATE_BLOG_PUBLIC_ORIGIN, '/');
+    }
+    return '';
+}
+
+function lireate_blog_resolve_cover_url($cover)
+{
+    $cover = trim((string) $cover);
+    if ($cover === '') {
+        return '';
+    }
+    if (preg_match('#^https?://#i', $cover)) {
+        return $cover;
+    }
+    $origin = lireate_blog_public_origin();
+    if ($cover[0] === '/' && $origin !== '') {
+        return $origin . $cover;
+    }
+    return $cover;
+}
+
 function lireate_blog_related_articles($current_url, $limit = 3)
 {
     $current = '/' . trim((string) $current_url, '/');

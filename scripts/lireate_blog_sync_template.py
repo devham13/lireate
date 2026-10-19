@@ -11,6 +11,7 @@ SHARED_BLOG = REPO / "pages" / "blog" / "_shared"
 DEST_NEWS = REPO / "template" / "page" / "news"
 DEST_LIREATE = REPO / "template" / "lireate"
 FOOTER_SRC = REPO / "pages" / "services" / "_shared" / "lireate-service-footer.inc.php"
+MESSENGER_SRC = REPO / "pages" / "services" / "_shared" / "lireate-messenger-urls.php"
 DATA_INDEX = REPO / "data" / "blog-articles-index.json"
 
 COPY_FILES = (
@@ -52,6 +53,10 @@ def main():
     if FOOTER_SRC.is_file():
         dst = DEST_LIREATE / "lireate-service-footer.inc.php"
         if copy_if_changed(FOOTER_SRC, dst):
+            changed.append(str(dst.relative_to(REPO)))
+    if MESSENGER_SRC.is_file():
+        dst = DEST_LIREATE / "lireate-messenger-urls.php"
+        if copy_if_changed(MESSENGER_SRC, dst):
             changed.append(str(dst.relative_to(REPO)))
     if changed:
         print("synced: " + ", ".join(changed))

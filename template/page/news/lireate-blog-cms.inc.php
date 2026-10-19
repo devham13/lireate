@@ -30,9 +30,6 @@ $footer_candidates = array(
     dirname(__DIR__, 2) . '/lireate/lireate-service-footer.inc.php',
     dirname(__DIR__, 3) . '/pages/services/_shared/lireate-service-footer.inc.php',
 );
-if (defined('LIREATE_BLOG_ASSETS_BASE') && defined('LIREATE_BLOG_TEMPLATE_VERSION')) {
-    echo '<link rel="stylesheet" href="' . htmlspecialchars(LIREATE_BLOG_ASSETS_BASE . '/lireate-blog-footer.css', ENT_QUOTES, 'UTF-8') . '?v=' . htmlspecialchars(LIREATE_BLOG_TEMPLATE_VERSION, ENT_QUOTES, 'UTF-8') . '">';
-}
 foreach ($footer_candidates as $footer_path) {
     if (is_file($footer_path)) {
         include $footer_path;

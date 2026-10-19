@@ -23,12 +23,22 @@
 
 ## Хостинг
 
+`git pull` в office-repo **не** кладёт файлы в `public_html` сам. После merge в `main`:
+
 ```bash
+export LIREATE_AUTOPUB_HOME=~/lireate-autopub
+export LIREATE_ENV_FILE=~/lireate-autopub/.env
+cd ~/lireate-autopub/office-repo && git fetch origin main && git checkout -B main FETCH_HEAD
 python3 scripts/lireate_blog_sync_template.py
-# Скопировать на сервер в DOCROOT:
+# Скопировать в $LIREATE_DOCROOT из .env:
 #   template/page/news/*
 #   template/lireate/lireate-service-footer.inc.php
+#   template/lireate/lireate-messenger-urls.php
 #   data/blog-articles-index.json
 ```
+
+`lireate_hosting_publish.py` (lireate-news) пишет только в MySQL; шаблон `template/page/news` выкладывается отдельно.
+
+На странице новости в CMS у `<body>` — класс `lireate-blog-body`.
 
 Подключить include в шаблоне CMS одной новости (см. `template/page/news/README.md`).

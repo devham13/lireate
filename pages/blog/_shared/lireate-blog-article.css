@@ -1,4 +1,13 @@
 /* LIREATE blog article layout — dark longread */
+body.lireate-blog-body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  background: #0b0b1f;
+  color: #f1f5f9;
+}
 .lireate-blog-page {
   --lb-bg: #0b0b1f;
   --lb-text: #f1f5f9;
@@ -273,7 +282,22 @@
   aspect-ratio: 16 / 9;
   background-size: cover;
   background-position: center;
+  background-color: #12122a;
   text-decoration: none;
+}
+.lireate-blog-card-cover--fallback {
+  background-image: linear-gradient(145deg, #1e1b4b 0%, #0b0b1f 45%, #312e81 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lireate-blog-card-cover-brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  pointer-events: none;
 }
 .lireate-blog-card-tag {
   position: absolute;

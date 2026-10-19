@@ -53,6 +53,7 @@ $lb_jsonld = array_filter(
 );
 ?>
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-article.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <div class="lireate-blog-page" data-lireate-blog-version="<?php echo lireate_blog_h($lb_v); ?>">
   <div class="lireate-blog-grid">
     <?php if (!empty($lb_toc)) : ?>
@@ -134,11 +135,15 @@ $lb_jsonld = array_filter(
           $ctitle = isset($card['title']) ? $card['title'] : '';
           $cdate = isset($card['date_display']) ? $card['date_display'] : '';
           $ctag = isset($card['tag']) ? $card['tag'] : '';
-          $ccover = isset($card['cover']) ? $card['cover'] : '';
+          $ccover_raw = isset($card['cover']) ? $card['cover'] : '';
+          $ccover = lireate_blog_resolve_cover_url($ccover_raw);
           $cexcerpt = isset($card['excerpt']) ? $card['excerpt'] : '';
+          $cover_fallback = ($ccover === '');
+          $cover_style = $cover_fallback ? '' : 'background-image:url(\'' . lireate_blog_h($ccover) . '\')';
           ?>
       <article class="lireate-blog-card">
-        <a class="lireate-blog-card-cover" href="<?php echo lireate_blog_h($curl); ?>" style="background-image:url('<?php echo lireate_blog_h($ccover); ?>')">
+        <a class="lireate-blog-card-cover<?php echo $cover_fallback ? ' lireate-blog-card-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($curl); ?>"<?php echo $cover_style !== '' ? ' style="' . $cover_style . '"' : ''; ?>>
+          <?php if ($cover_fallback) : ?><span class="lireate-blog-card-cover-brand" aria-hidden="true">LIREATE</span><?php endif; ?>
           <?php if ($ctag !== '') : ?><span class="lireate-blog-card-tag"><?php echo lireate_blog_h($ctag); ?></span><?php endif; ?>
         </a>
         <div class="lireate-blog-card-body">
