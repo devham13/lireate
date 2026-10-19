@@ -7,7 +7,11 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-INSTALL_MARKER = "lireate-blog-install:v1"
+INSTALL_MARKER = "lireate-blog-install:v2"
+INSTALL_MARKERS_LEGACY = (
+    "lireate-blog-install:v2",
+    "lireate-blog-install:v1",
+)
 BODY_CLASS = "lireate-blog-body"
 CMS_INCLUDE = "/template/page/news/lireate-blog-cms.inc.php"
 
@@ -104,8 +108,10 @@ def find_news_template(docroot):
             text = path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        if INSTALL_MARKER in text:
+        if INSTALL_MARKER in text or "lireate-blog-install:v1" in text:
             score = 100
+        elif "news_article[0]" in text:
+            score = 90
         elif 'id="textBox"' in text or "id='textBox'" in text:
             score = 80
         elif "full_story" in text:
@@ -114,6 +120,8 @@ def find_news_template(docroot):
             score = 40
         else:
             continue
+        if path.name == "newStyle.php":
+            score += 20
         if "template/page/news" in str(path).replace("\\", "/"):
             score += 5
         candidates.append((score, path))
@@ -123,7 +131,7 @@ def find_news_template(docroot):
     return candidates[0][1]
 
 
-def _replacement_block():
+def _replacement_block_legacy():
     return (
         "<?php /* %s */ ?>\n"
         "<?php\n"
@@ -137,20 +145,131 @@ def _replacement_block():
         "        'seo_url' => isset($seo_url) ? $seo_url : (isset($news['seo_url']) ? $news['seo_url'] : ''),\n"
         "    );\n"
         "}\n"
+        "$lireate_blog_cover_html = '';\n"
         "require $_SERVER['DOCUMENT_ROOT'] . '%s';\n"
         "?>\n"
     ) % (INSTALL_MARKER, CMS_INCLUDE)
 
 
+def _replacement_block_newstyle():
+    return (
+        "<?php /* %s */ ?>\n"
+        "<?php\n"
+        "$_lb_art = (isset($news_article[0]) && is_array($news_article[0])) ? $news_article[0] : array();\n"
+        "$_lb_seo = '';\n"
+        "if (!empty($_lb_art['seo_url'])) {\n"
+        "    $_lb_seo = $_lb_art['seo_url'];\n"
+        "} elseif (!empty($_SERVER['REQUEST_URI'])) {\n"
+        "    $_lb_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);\n"
+        "    $_lb_seo = $_lb_path !== null ? trim($_lb_path, '/') : '';\n"
+        "}\n"
+        "$_lb_story = isset($_lb_art['full_story']) ? $_lb_art['full_story'] : '';\n"
+        "$lireate_blog_cover_html = '';\n"
+        "if (preg_match('/<img[^>]+src=\"([^\"]*\\\\/template\\\\/images\\\\/blog\\\\/[^\"]+)\"/i', $_lb_story, $_lb_m)) {\n"
+        "    $lireate_blog_cover_html = '<img src=\"' . htmlspecialchars($_lb_m[1], ENT_QUOTES, 'UTF-8') . '\" alt=\"\" class=\"lireate-blog-cover-img\">';\n"
+        "    $_lb_story = preg_replace('/<img[^>]+src=\"[^\"]*\\\\/template\\\\/images\\\\/blog\\\\/[^\"]+\"[^>]*>/i', '', $_lb_story, 1);\n"
+        "}\n"
+        "$lireate_news_row = array(\n"
+        "    'name' => isset($_lb_art['name']) ? $_lb_art['name'] : '',\n"
+        "    'full_story' => $_lb_story,\n"
+        "    'date' => !empty($_lb_art['datetime']) ? date('d.m.Y', (int) $_lb_art['datetime']) : '',\n"
+        "    'category_name' => isset($category) ? $category : '',\n"
+        "    'category_url' => isset($catUrl) ? $catUrl : '/news/',\n"
+        "    'seo_url' => $_lb_seo,\n"
+        ");\n"
+        "require $_SERVER['DOCUMENT_ROOT'] . '%s';\n"
+        "?>\n"
+    ) % (INSTALL_MARKER, CMS_INCLUDE)
+
+
+def _patch_is_current(text):
+    if INSTALL_MARKER not in text:
+        return False
+    if "news_article[0]" in text:
+        return "$_lb_art" in text
+    return True
+
+
+def _strip_broken_install_blocks(text):
+    """Remove a partial v1 inject so newStyle can be re-patched."""
+    if 'id="textBox"' not in text and "id='textBox'" not in text:
+        return text
+    for marker in INSTALL_MARKERS_LEGACY:
+        if marker not in text:
+            continue
+        if "$_lb_art" in text:
+            return text
+        stripped = re.sub(
+            r"<\?php\s*/\*\s*" + re.escape(marker) + r"\s*\*/\s*\?>.*?lireate-blog-cms\.inc\.php';\s*\?>\s*",
+            "",
+            text,
+            count=1,
+            flags=re.DOTALL | re.IGNORECASE,
+        )
+        if stripped != text:
+            return stripped
+    return text
+
+
+def _span_newstyle_article_block(text):
+    if "news_article[0]" not in text:
+        return None
+    h1 = re.search(r"<h1\b", text, re.IGNORECASE)
+    if not h1:
+        return None
+    rel_start = h1.start()
+    tbox = re.search(
+        r'<div\s+id=["\']textBox["\'][^>]*>',
+        text[rel_start:],
+        re.IGNORECASE,
+    )
+    if not tbox:
+        return None
+    open_end = rel_start + tbox.end()
+    depth = 1
+    pos = open_end
+    lower = text.lower()
+    while pos < len(text) and depth > 0:
+        next_open = lower.find("<div", pos)
+        next_close = lower.find("</div>", pos)
+        if next_close == -1:
+            return None
+        if next_open != -1 and next_open < next_close:
+            depth += 1
+            pos = next_open + 4
+        else:
+            depth -= 1
+            end = next_close + len("</div>")
+            if depth == 0:
+                return (rel_start, end)
+            pos = next_close + 6
+    return None
+
+
 def patch_news_template_content(text):
     """Return (new_text, changed, description)."""
-    if INSTALL_MARKER in text:
+    if _patch_is_current(text):
         return text, False, "already patched (marker present)"
-    repl = _replacement_block()
+    text = _strip_broken_install_blocks(text)
+    span = _span_newstyle_article_block(text)
+    if span:
+        repl = _replacement_block_newstyle()
+        new_text = text[: span[0]] + repl + text[span[1] :]
+        return new_text, new_text != text, "replaced newStyle block (h1 through #textBox)"
+    repl = _replacement_block_legacy()
     if LEGACY_BLOCK_RE.search(text):
         new_text = LEGACY_BLOCK_RE.sub(repl, text, count=1)
         return new_text, new_text != text, "replaced legacy h1/articleInfo/textBox block"
-    return text, False, "legacy block not found"
+    return text, False, "article block not found"
+
+
+def html_tags_balanced(fragment, tags=("div", "section")):
+    for tag in tags:
+        opens = len(re.findall(r"<" + tag + r"\b", fragment, re.IGNORECASE))
+        closes = len(re.findall(r"</" + tag + r">", fragment, re.IGNORECASE))
+        if opens != closes:
+            return False
+    return True
 
 
 def patch_body_class_content(text):

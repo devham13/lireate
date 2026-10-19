@@ -12,6 +12,7 @@
  * $lireate_blog_current_url — путь /slug/ для related
  * $lireate_blog_description — для JSON-LD
  * $lireate_blog_canonical — полный URL
+ * $lireate_blog_cover_html — опционально, обложка (первое img из /template/images/blog/)
  */
 require_once __DIR__ . '/lireate-blog-lib.php';
 
@@ -29,6 +30,7 @@ $lb_tag_url = isset($lireate_blog_tag_url) ? $lireate_blog_tag_url : '/news/';
 $lb_current = isset($lireate_blog_current_url) ? $lireate_blog_current_url : '';
 $lb_desc = isset($lireate_blog_description) ? $lireate_blog_description : '';
 $lb_canonical = isset($lireate_blog_canonical) ? $lireate_blog_canonical : '';
+$lb_cover_html = isset($lireate_blog_cover_html) ? $lireate_blog_cover_html : '';
 
 $lb_body = lireate_blog_prepare_body_html($lb_body);
 $lb_read_mins = lireate_blog_reading_time_minutes($lb_body);
@@ -116,6 +118,9 @@ $lb_jsonld = array_filter(
           <?php endif; ?>
         </div>
       </header>
+      <?php if ($lb_cover_html !== '') : ?>
+      <div class="lireate-blog-cover" aria-hidden="false"><?php echo $lb_cover_html; ?></div>
+      <?php endif; ?>
       <div class="lireate-blog-prose" id="lireate-blog-prose">
         <?php echo $lb_body; ?>
       </div>
