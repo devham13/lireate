@@ -6,7 +6,7 @@
 if (!defined('LIREATE_BLOG_MAX_CHANNEL_URL')) {
     define(
         'LIREATE_BLOG_MAX_CHANNEL_URL',
-        'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI'
+        'https://max.ru/channel_lireate'
     );
 }
 
