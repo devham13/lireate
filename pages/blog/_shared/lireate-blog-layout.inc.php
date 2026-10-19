@@ -97,10 +97,14 @@ $lb_jsonld = array_filter(
         <hr class="lireate-blog-header-rule" />
         <div class="lireate-blog-author-row">
           <div class="lireate-blog-author-block">
-            <?php if ($lb_avatar_path !== '') : ?>
+            <?php if ($lb_avatar_path !== '') :
+                $lb_avatar_base = '/' . trim($lb_avatar_path, '/');
+                $lb_avatar_webp = lireate_blog_h($lb_avatar_base . '.webp');
+                $lb_avatar_jpg = lireate_blog_h($lb_avatar_base . '.jpg');
+                ?>
             <picture class="lireate-blog-author-avatar">
-              <source srcset="<?php echo lireate_blog_h($lb_avatar_path); ?>.webp" type="image/webp">
-              <img src="<?php echo lireate_blog_h($lb_avatar_path); ?>.jpg" width="40" height="40" alt="" loading="lazy" decoding="async">
+              <source srcset="<?php echo $lb_avatar_webp; ?>" type="image/webp">
+              <img src="<?php echo $lb_avatar_jpg; ?>" width="40" height="40" alt="<?php echo lireate_blog_h($lb_author); ?>" loading="lazy" decoding="async" class="lireate-blog-author-avatar-img">
             </picture>
             <?php endif; ?>
             <div class="lireate-blog-author-text">
