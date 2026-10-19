@@ -23,19 +23,18 @@
 
 ## Хостинг
 
-`git pull` в office-repo **не** кладёт файлы в `public_html` сам. После merge в `main`:
+`git pull` в office-repo **не** кладёт файлы в `public_html` сам. После merge в `main` — один скрипт (проверка, затем выкладка):
 
 ```bash
-export LIREATE_AUTOPUB_HOME=~/lireate-autopub
-export LIREATE_ENV_FILE=~/lireate-autopub/.env
-cd ~/lireate-autopub/office-repo && git fetch origin main && git checkout -B main FETCH_HEAD
-python3 scripts/lireate_blog_sync_template.py
-# Скопировать в $LIREATE_DOCROOT из .env:
-#   template/page/news/*
-#   template/lireate/lireate-service-footer.inc.php
-#   template/lireate/lireate-messenger-urls.php
-#   data/blog-articles-index.json
+export LIREATE_AUTOPUB_HOME=~/lireate-autopub LIREATE_ENV_FILE=~/lireate-autopub/.env
+cd ~/lireate-autopub/office-repo && git fetch origin main && git checkout -B main FETCH_HEAD && "$(cat ~/lireate-autopub/.python-interpreter)" scripts/lireate_blog_install.py --check
+export LIREATE_AUTOPUB_HOME=~/lireate-autopub LIREATE_ENV_FILE=~/lireate-autopub/.env
+cd ~/lireate-autopub/office-repo && git fetch origin main && git checkout -B main FETCH_HEAD && "$(cat ~/lireate-autopub/.python-interpreter)" scripts/lireate_blog_install.py --apply
 ```
+
+`--apply` делает бэкап в `~/lireate-autopub/backups/blog-install-<timestamp>/`, копирует шаблон, патчит CMS-файл одной новости (include + `body.lireate-blog-body`), проверяет HTTP; при ошибке откатывает. Откат вручную: `scripts/lireate_blog_install.py --rollback <timestamp>`. Не трогает `data/db.php` и корневой `.htaccess`.
+
+Перед копированием в `--apply` вызывается `lireate_blog_sync_template.py` в office-repo.
 
 `lireate_hosting_publish.py` (lireate-news) пишет только в MySQL; шаблон `template/page/news` выкладывается отдельно.
 
