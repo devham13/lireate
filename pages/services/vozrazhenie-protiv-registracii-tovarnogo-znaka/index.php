@@ -12,7 +12,7 @@ $lireate_phone_display = '+7 (960) 048-49-57';
 $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
-require_once dirname(__DIR__) . '/_shared/lireate-messenger-require.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Куда подать возражение против регистрации товарного знака?', 'Зависит от стадии. Если заявка опубликована, но решения о регистрации нет, подаётся письменное обращение по ст. 1493 ГК РФ в Роспатент (экспертиза заявки в ФИПС). Если знак уже зарегистрирован, подаётся возражение против предоставления правовой охраны в Роспатент по ст. 1512–1513 ГК РФ: на бумаге или в электронной форме через официальный сайт по правилам приказа № 644/261. Актуальные способы подачи сверяйте на сайте ФИПС.'],

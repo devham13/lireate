@@ -137,6 +137,8 @@ def cmd_apply(office_repo, docroot, backups_root):
 
     lib.backup_files(backup_dir, docroot, to_backup)
     created = lib.apply_copies(office_repo, docroot, pairs)
+    messenger_created = lib.deploy_docroot_messenger_shared(office_repo, docroot)
+    created.extend(messenger_created)
     lib.write_created_manifest(backup_dir, created)
 
     patch_notes = []

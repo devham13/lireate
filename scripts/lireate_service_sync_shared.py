@@ -13,6 +13,13 @@ SERVICES = REPO_ROOT / "pages" / "services"
 SKIP_DIRS = {"_shared", "_template"}
 DEST_REL = Path("assets") / "lireate-shared"
 FOOTER_NAME = "lireate-service-footer.inc.php"
+MESSENGER_BUNDLE_NAMES = (
+    "lireate-messenger-urls.php",
+    "lireate-messenger-load.php",
+    "lireate-messenger-require.inc.php",
+    "lireate-service-messenger.inc.php",
+    "lireate-service-messenger-include.inc.php",
+)
 BLOCKS_DIR = SHARED / "blocks"
 
 
@@ -46,6 +53,16 @@ def sync_service(service_dir, dry_run=False):
             changed.append(footer_dst.relative_to(service_dir))
             if not dry_run:
                 shutil.copy2(str(footer_src), str(footer_dst))
+    for name in MESSENGER_BUNDLE_NAMES:
+        src = SHARED / name
+        if not src.is_file():
+            continue
+        dst = service_dir / name
+        if dst.is_file() and _sha256(src) == _sha256(dst):
+            continue
+        changed.append(dst.relative_to(service_dir))
+        if not dry_run:
+            shutil.copy2(str(src), str(dst))
     if BLOCKS_DIR.is_dir():
         for src in sorted(BLOCKS_DIR.glob("*.inc.php")):
             dst = service_dir / "blocks" / src.name
