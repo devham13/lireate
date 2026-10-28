@@ -1,6 +1,7 @@
 """Contacts page install helpers (CMS /kontaktyi/)."""
 
 import difflib
+import json
 import os
 import re
 import shutil
@@ -14,7 +15,9 @@ LEGACY_MARKER = "lireate-contacts-legacy:snapshot"
 BODY_CLASS = "lireate-contacts-body"
 BODY_CLASS_COND = "<?php if($temp['page']=='kontaktyi') echo ' lireate-contacts-body';?>"
 CMS_INCLUDE = "/template/page/kontaktyi/lireate-contacts-cms.inc.php"
-LEGACY_REL = Path("template/page/kontaktyi/lireate-contacts-legacy.inc.php")
+SHARED_DOCROOT_REL = Path("pages/kontaktyi/_shared")
+TEMPLATE_REL = Path("template/page/kontaktyi")
+LEGACY_REL = TEMPLATE_REL / "lireate-contacts-legacy.inc.php"
 SECTION_MARKERS = ("Контакты Лирейт", "title-ap", "order_form_content")
 FORBIDDEN_TOUCH = {".htaccess"}
 PAGE_CONTAINER_RE = re.compile(r'<div\s+class="page_container">', re.IGNORECASE)
@@ -50,18 +53,22 @@ def resolve_php_bin():
     return "php"
 
 
+def run_subprocess(args, timeout=30):
+    """subprocess.run compatible with Python 3.6 (no capture_output)."""
+    kwargs = dict(stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
+    try:
+        return subprocess.run(args, **kwargs, text=True)
+    except TypeError:
+        return subprocess.run(args, **kwargs, universal_newlines=True)
+
+
 def lint_php_content(php_bin, content, label="patched.php"):
     php_bin = resolve_php_bin() if not php_bin else php_bin
     tmp = tempfile.NamedTemporaryFile("w", suffix=".php", delete=False, encoding="utf-8")
     try:
         tmp.write(content)
         tmp.close()
-        proc = subprocess.run(
-            [php_bin, "-l", tmp.name],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
+        proc = run_subprocess([php_bin, "-l", tmp.name])
         if proc.returncode != 0:
             msg = (proc.stderr or proc.stdout or "").strip()
             return "{0}: {1}".format(label, msg)
@@ -124,10 +131,11 @@ def copy_plan(office_repo):
         return pairs
     for path in sorted(shared.iterdir()):
         if path.is_file() and path.suffix in (".php", ".css", ".js"):
-            pairs.append((path, Path("template/page/kontaktyi") / path.name))
+            pairs.append((path, TEMPLATE_REL / path.name))
+            pairs.append((path, SHARED_DOCROOT_REL / path.name))
     metrika = repo / "pages" / "services" / "_shared" / "lireate-metrika-goals.js"
     if metrika.is_file():
-        pairs.append((metrika, Path("template/page/kontaktyi/lireate-metrika-goals.js")))
+        pairs.append((metrika, TEMPLATE_REL / "lireate-metrika-goals.js"))
     return pairs
 
 
@@ -316,12 +324,16 @@ def apply_contacts_patch(docroot, template_path, php_bin=None):
     planned = plan_contacts_template_content(original)
     status = contacts_template_patch_status(original, planned)
     if planned == original:
-        return False, ["contacts: {0}".format(status)]
+        return False, ["contacts: {0}".format(status)], []
     lint_err = validate_planned_php(php_bin, original, planned, str(rel))
     if lint_err:
         raise SystemExit("BLOCKER: php -l failed after planned patch\n{0}".format(lint_err))
     inner = extract_contacts_legacy_inner(original)
+    created_legacy = []
     if inner and INSTALL_MARKER not in original:
+        legacy_path = docroot / LEGACY_REL
+        if not legacy_path.is_file():
+            created_legacy.append(LEGACY_REL)
         write_legacy_snapshot(docroot, inner)
     template_path.write_text(planned, encoding="utf-8")
     notes = ["contacts: patched legacy block → lireate-contacts-cms.inc.php"]
@@ -329,7 +341,7 @@ def apply_contacts_patch(docroot, template_path, php_bin=None):
         notes.append("contacts: saved legacy snapshot ({0})".format(LEGACY_REL))
     if BODY_CLASS_COND not in original and BODY_CLASS_COND in planned:
         notes.append("body class conditional for kontaktyi")
-    return True, notes
+    return True, notes, created_legacy
 
 
 def rollback_contacts_patch(docroot, template_path):
@@ -357,6 +369,35 @@ def make_backup_id():
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
+def write_created_manifest(backup_dir, created_rels):
+    backup_dir.mkdir(parents=True, exist_ok=True)
+    payload = {"created": [str(r).replace("\\", "/") for r in created_rels]}
+    (backup_dir / "created.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def remove_created_files(docroot, backup_dir):
+    created_path = backup_dir / "created.json"
+    if not created_path.is_file():
+        return []
+    notes = []
+    data = json.loads(created_path.read_text(encoding="utf-8"))
+    for rel in data.get("created") or []:
+        target = docroot / rel
+        if target.is_file():
+            target.unlink()
+            notes.append("removed created file: {0}".format(rel))
+        parent = target.parent
+        if parent.is_dir() and not any(parent.iterdir()):
+            try:
+                parent.rmdir()
+            except OSError:
+                pass
+    return notes
+
+
 def backup_files(backup_dir, docroot, rel_paths):
     backup_dir.mkdir(parents=True, exist_ok=True)
     manifest = []
@@ -379,8 +420,11 @@ def apply_contacts_install(office_repo, docroot, php_bin=None):
     notes = []
     template = find_contacts_template(docroot)
     if template is not None:
-        _changed, patch_notes = apply_contacts_patch(docroot, template, php_bin=php_bin)
+        _changed, patch_notes, patch_created = apply_contacts_patch(
+            docroot, template, php_bin=php_bin
+        )
         notes.extend(patch_notes)
+        created.extend(patch_created)
     else:
         notes.append("WARN: contacts CMS template not found under template/")
     return created, notes, template
