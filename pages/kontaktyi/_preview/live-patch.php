@@ -2,6 +2,21 @@
 /**
  * Патч live HTML /kontaktyi/ для превью (вставка отрендеренного блока контактов).
  */
+if (!function_exists('lireate_contacts_preview_absolutize_root_urls')) {
+function lireate_contacts_preview_absolutize_root_urls($html, $origin)
+{
+    $origin = rtrim((string) $origin, '/');
+    if ($origin === '') {
+        return $html;
+    }
+    return preg_replace(
+        '/(\s(?:href|src|action)=["\'])\/(?!\/)/i',
+        '$1' . $origin . '/',
+        $html
+    );
+}
+}
+
 if (!function_exists('lireate_contacts_preview_patch_html')) {
 function lireate_contacts_preview_patch_html($html, $inner_html)
 {
@@ -28,16 +43,5 @@ function lireate_contacts_preview_patch_html($html, $inner_html)
         }
     }
     return $patched;
-}
-}
-
-if (!function_exists('lireate_contacts_preview_ensure_base')) {
-function lireate_contacts_preview_ensure_base($html, $origin)
-{
-    if (stripos($html, '<base ') !== false) {
-        return $html;
-    }
-    $base = '<base href="' . htmlspecialchars(rtrim($origin, '/') . '/', ENT_QUOTES, 'UTF-8') . '">';
-    return preg_replace('/<head>/i', '<head>' . $base, $html, 1);
 }
 }

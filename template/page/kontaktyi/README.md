@@ -13,6 +13,8 @@
 
 Страница остаётся в **обычном CMS-шаблоне** с `#leftSideBar`; стиль — как `/news` (тёмный фон, карточки, бейджи).
 
-Превью с левым меню: `pages/kontaktyi/_preview/cms-shell.php` (локальный PHP-сервер).
+CSS/JS подключаются из **`/template/page/kontaktyi/`** (корневые пути, без `<base>`): `lireate-contacts.css`, `lireate-contacts.js`, `lireate-metrika-goals.js`. После `--apply` файлы лежат в `DOCROOT/template/page/kontaktyi/`.
+
+Превью с live sidebar: `live-cms-shell.php` (CSS с локального preview-origin, CMS-ассеты с prod-origin).
 
 Подробнее: `docs/lireate-contacts-hosting.ru.md`.

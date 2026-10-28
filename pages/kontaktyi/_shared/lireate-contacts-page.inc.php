@@ -27,12 +27,15 @@ $lc_phone1_tel = 'tel:+7(499)938-45-95';
 $lc_phone2_display = '+7(960)048-49-57';
 $lc_phone2_tel = 'tel:+7(960)048-49-57';
 $lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A529a47dbf50b8ccb0e900378c49ad0fc6f16257c2341fdcaf42afb0b432a7454&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true';
+$lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
+    ? LIREATE_CONTACTS_FOOTER_CSS_HREF
+    : '/template/page/news/lireate-blog-footer.css';
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-contacts.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
-<link rel="stylesheet" href="/template/page/news/lireate-blog-footer.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
+<link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_footer_css); ?>?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-contacts-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_contacts_h(LIREATE_CONTACTS_METRIKA_ID); ?>');

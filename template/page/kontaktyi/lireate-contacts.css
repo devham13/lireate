@@ -95,6 +95,23 @@ body.lireate-contacts-body {
   background: rgba(255, 255, 255, 0.04);
 }
 
+a.lireate-contacts-pill,
+a.lireate-contacts-pill:link,
+a.lireate-contacts-pill:visited,
+a.lireate-contacts-pill:hover {
+  text-decoration: none !important;
+}
+
+a.lireate-contacts-pill--solid,
+a.lireate-contacts-pill--solid:visited {
+  color: #fff !important;
+}
+
+a.lireate-contacts-pill--outline,
+a.lireate-contacts-pill--outline:visited {
+  color: #e2e8f0 !important;
+}
+
 .lireate-contacts-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
@@ -309,6 +326,7 @@ body.lireate-contacts-body:has(.lireate-contacts-page) .content.text-center {
 .lireate-contacts-team-photo {
   display: block;
   width: 100%;
+  min-height: 140px;
   aspect-ratio: 1;
   border-radius: 12px;
   background-size: cover;
@@ -493,6 +511,21 @@ body.lireate-contacts-body:has(.lireate-contacts-page) .footer-ap {
 
 body.lireate-contacts-body:has(.lireate-contacts-page) #personsSlide {
   display: none !important;
+}
+
+body.lireate-contacts-body:has(.lireate-contacts-page) .page_container:empty {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+body.lireate-contacts-body:has(.lireate-contacts-page) footer.footer-ap,
+body.lireate-contacts-body:has(.lireate-contacts-page) footer.footer:not(.lx-site-footer) {
+  display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
 body.lireate-contacts-body:has(.lireate-contacts-page) .lx-site-footer {
