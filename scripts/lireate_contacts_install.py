@@ -86,11 +86,7 @@ def cmd_apply(office_repo, docroot, backups_root):
     template = lib.find_contacts_template(docroot)
     if template is not None:
         rels.append(template.relative_to(docroot))
-        original = template.read_text(encoding="utf-8", errors="replace")
-        planned = lib.plan_contacts_template_content(original)
-        lint_err = lib.validate_planned_php(php_bin, original, planned, template.relative_to(docroot))
-        if lint_err:
-            raise SystemExit("BLOCKER: refuse apply — php -l failed\n{0}".format(lint_err))
+    lib.validate_contacts_patch_planned(docroot, template, php_bin=php_bin)
     lib.backup_files(backup_dir, docroot, rels)
     created, notes, _tpl = lib.apply_contacts_install(office_repo, docroot, php_bin=php_bin)
     lib.write_created_manifest(backup_dir, created)
