@@ -1,0 +1,397 @@
+/* LIREATE contacts — dark CMS page (/kontaktyi/), aligned with /news list */
+html.lireate-contacts-html,
+body.lireate-contacts-body {
+  margin: 0;
+  background: #0b0b1f !important;
+  color: #f1f5f9 !important;
+  font-family: Rubik, Arial, Helvetica, sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lireate-contacts-page {
+  --lc-font-ui: Rubik, Arial, Helvetica, sans-serif;
+  --lc-font-display: Unbounded, Rubik, Arial, sans-serif;
+  --lc-font-lead: Marmelad, Rubik, Arial, sans-serif;
+  --lc-bg: #0b0b1f;
+  --lc-text: #f1f5f9;
+  --lc-muted: #a7b0c8;
+  --lc-line: rgba(255, 255, 255, 0.1);
+  --lc-card: rgba(15, 23, 42, 0.72);
+  --lc-green: #34d399;
+  background: var(--lc-bg);
+  color: var(--lc-text);
+  padding-bottom: 12px;
+  font-family: var(--lc-font-ui) !important;
+}
+
+.lireate-contacts-wrap {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.lireate-contacts-hero {
+  padding: 36px 0 28px;
+  border-bottom: 1px solid var(--lc-line);
+  background:
+    radial-gradient(ellipse 80% 60% at 20% -10%, rgba(59, 130, 246, 0.22), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 0%, rgba(168, 85, 247, 0.14), transparent 50%),
+    var(--lc-bg);
+}
+
+.lireate-contacts-kicker {
+  margin: 0 0 14px !important;
+  font-size: 17px !important;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+.lireate-contacts-h1 {
+  margin: 0 0 12px !important;
+  font-family: var(--lc-font-display) !important;
+  font-size: clamp(40px, 6.5vw, 58px) !important;
+  font-weight: 800 !important;
+  line-height: 0.95 !important;
+  letter-spacing: -0.04em !important;
+  color: #fff !important;
+}
+
+.lireate-contacts-lead {
+  margin: 0 0 18px !important;
+  font-family: var(--lc-font-lead) !important;
+  font-size: clamp(18px, 2vw, 22px) !important;
+  color: rgba(241, 245, 249, 0.88) !important;
+}
+
+.lireate-contacts-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.lireate-contacts-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none !important;
+  border: 1px solid transparent;
+}
+
+.lireate-contacts-pill--solid {
+  background: linear-gradient(135deg, #4f46e5 0%, #a855f7 55%, #ec4899 100%);
+  color: #fff !important;
+}
+
+.lireate-contacts-pill--outline {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #e2e8f0 !important;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lireate-contacts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 20px;
+  padding: 28px 20px;
+}
+
+.lireate-contacts-card {
+  background: var(--lc-card);
+  border: 1px solid var(--lc-line);
+  border-radius: 20px;
+  padding: 22px 20px 24px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+.lireate-contacts-badge {
+  display: inline-flex;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.lireate-contacts-badge--green {
+  color: #052e1a;
+  background: var(--lc-green);
+  border-color: transparent;
+}
+
+.lireate-contacts-card-title {
+  margin: 0 0 16px !important;
+  font-family: var(--lc-font-display) !important;
+  font-size: clamp(22px, 3vw, 28px) !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+}
+
+.lireate-contacts-input,
+.lireate-contacts-textarea,
+.lireate-contacts-form .form-control {
+  width: 100% !important;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 12px !important;
+  color: #f8fafc !important;
+  font-family: var(--lc-font-ui) !important;
+  font-size: 15px !important;
+  padding: 12px 14px !important;
+}
+
+.lireate-contacts-textarea {
+  min-height: 120px;
+}
+
+.lireate-contacts-submit {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px 18px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+}
+
+.lireate-contacts-consent {
+  margin: 12px 0 0 !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  color: var(--lc-muted) !important;
+}
+
+.lireate-contacts-consent a {
+  color: #93c5fd !important;
+}
+
+.lireate-contacts-dl {
+  margin: 0 0 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.lireate-contacts-dl dt {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lc-muted);
+}
+
+.lireate-contacts-dl dd {
+  margin: 4px 0 0;
+  font-size: 16px;
+  color: #f8fafc;
+}
+
+.lireate-contacts-dl a {
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.lireate-contacts-sep {
+  margin: 0 8px;
+  color: var(--lc-muted);
+}
+
+.lireate-contacts-map {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--lc-line);
+  min-height: 280px;
+}
+
+.lireate-contacts-team {
+  padding-bottom: 28px;
+}
+
+.lireate-contacts-team-head {
+  margin-bottom: 16px;
+}
+
+.lireate-contacts-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.lireate-contacts-team-card {
+  appearance: none;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid var(--lc-line);
+  border-radius: 16px;
+  padding: 12px;
+  background: var(--lc-card);
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.lireate-contacts-team-card:hover {
+  border-color: rgba(59, 130, 246, 0.55);
+  transform: translateY(-2px);
+}
+
+.lireate-contacts-team-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center top;
+  margin-bottom: 10px;
+}
+
+.lireate-contacts-team-name {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.lireate-contacts-team-role {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--lc-muted);
+}
+
+.lireate-contacts-social {
+  padding-bottom: 32px;
+}
+
+.lireate-contacts-social-card {
+  text-align: center;
+}
+
+.lireate-contacts-social-label {
+  margin: 0 0 12px !important;
+  color: #e2e8f0 !important;
+}
+
+.lireate-contacts-share-row {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--lc-muted);
+}
+
+.lireate-contacts-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lireate-contacts-modal[hidden] {
+  display: none !important;
+}
+
+.lireate-contacts-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.78);
+}
+
+.lireate-contacts-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 100%);
+  background: #111827;
+  border: 1px solid var(--lc-line);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.lireate-contacts-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lireate-contacts-modal-photo {
+  width: 100%;
+  border-radius: 14px;
+  display: block;
+}
+
+.lireate-contacts-modal-name {
+  margin: 14px 0 6px !important;
+  font-size: 20px !important;
+  color: #fff !important;
+}
+
+.lireate-contacts-modal-role {
+  margin: 0 !important;
+  color: var(--lc-muted) !important;
+}
+
+body.lireate-contacts-body:has(.lireate-contacts-page) .content,
+body.lireate-contacts-body:has(.lireate-contacts-page) .container.content {
+  background: #0b0b1f !important;
+  text-align: left !important;
+}
+
+body.lireate-contacts-body:has(.lireate-contacts-page) footer:not(.lx-site-footer),
+body.lireate-contacts-body:has(.lireate-contacts-page) .footer-ap {
+  display: none !important;
+}
+
+body.lireate-contacts-body:has(.lireate-contacts-page) #personsSlide {
+  display: none !important;
+}
+
+body.lireate-contacts-body:has(.lireate-contacts-page) .lx-site-footer {
+  background: #0b0b1f !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+@media (max-width: 960px) {
+  .lireate-contacts-grid {
+    grid-template-columns: 1fr;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .lireate-contacts-hero {
+    padding-top: 24px;
+  }
+  .lireate-contacts-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
