@@ -91,6 +91,14 @@ def lint_slug(slug):
     raw = _read(index)
     html = raw
     manifest = service_dir / "publish.manifest.json"
+    page_type = "service"
+    if manifest.is_file():
+        try:
+            manifest_data = json.loads(_read(manifest))
+            page_type = manifest_data.get("page_type") or manifest_data.get("type") or "service"
+        except json.JSONDecodeError:
+            errors.append("invalid publish.manifest.json")
+    contacts_page = page_type == "contacts" or slug == "kontaktyi"
     if not manifest.is_file():
         errors.append("missing publish.manifest.json")
 
@@ -144,6 +152,8 @@ def lint_slug(slug):
                 types.add("LegalService")
             if "Organization" in raw:
                 types.add("Organization")
+            if "LocalBusiness" in raw:
+                types.add("LocalBusiness")
             if "BreadcrumbList" in raw:
                 types.add("BreadcrumbList")
             if "FAQPage" in raw:
@@ -156,14 +166,20 @@ def lint_slug(slug):
             continue
         types |= _flatten_types(data)
 
-    if "Service" not in types:
-        errors.append("JSON-LD must include @type Service")
-    if not (types & {"LegalService", "Organization"}):
-        errors.append("JSON-LD must include LegalService or Organization (LIREATE)")
-    if "BreadcrumbList" not in types:
-        errors.append("JSON-LD must include BreadcrumbList")
-    if "FAQPage" not in types:
-        errors.append("JSON-LD must include FAQPage")
+    if contacts_page:
+        if "Organization" not in types:
+            errors.append("JSON-LD must include @type Organization (contacts page)")
+        if "LocalBusiness" not in types:
+            errors.append("JSON-LD must include @type LocalBusiness (contacts page)")
+    else:
+        if "Service" not in types:
+            errors.append("JSON-LD must include @type Service")
+        if not (types & {"LegalService", "Organization"}):
+            errors.append("JSON-LD must include LegalService or Organization (LIREATE)")
+        if "BreadcrumbList" not in types:
+            errors.append("JSON-LD must include BreadcrumbList")
+        if "FAQPage" not in types:
+            errors.append("JSON-LD must include FAQPage")
 
     h2_before_h1 = re.search(r"<h2\b.*<h1\b", html, re.I | re.S)
     if h2_before_h1:
@@ -204,7 +220,7 @@ def lint_slug(slug):
     if re.search(r'id=["\']dock-max["\'][^>]*>\s*M\s*<', html, re.I):
         errors.append("dock-max must use SVG icon, not text M")
 
-    if 'id="hero-max"' not in html and "id='hero-max'" not in html:
+    if 'id="hero-max"' not in html and "id='hero-max'" not in html and not contacts_page:
         errors.append("missing hero CTA id=hero-max (Написать в Max)")
 
     if "lx-form-alt" not in html:
@@ -224,7 +240,7 @@ def lint_slug(slug):
     if "lireate-svc-page" not in html and "lireate-cn-page" not in html:
         errors.append("main must use class lireate-svc-page (or legacy lireate-cn-page)")
 
-    if "lx-nav-pill" not in html:
+    if "lx-nav-pill" not in html and not contacts_page:
         errors.append("missing lx-nav-pill (standard service layout)")
 
     has_footer_include = "lireate-service-footer.inc.php" in raw
@@ -245,7 +261,7 @@ def lint_slug(slug):
         "lireate-mascot.js",
         "lireate-hero-panel.js",
     ):
-        if script not in html:
+        if script not in html and not contacts_page:
             errors.append("must include assets/lireate-shared/" + script)
 
     if "lireate-service-footer.inc.php" not in raw and "lx-site-footer" not in html:

@@ -67,7 +67,7 @@
       }
     );
 
-    ['#link-max', '#hero-max', '#dock-max', '#form-alt-max', '.lx-dock-max'].forEach(function (sel) {
+    ['#link-max', '#hero-max', '#dock-max', '#form-alt-max', '#link-max-channel', '.lx-dock-max'].forEach(function (sel) {
       document.querySelectorAll(sel).forEach(function (el) {
         bindGoal(el, 'max');
       });
