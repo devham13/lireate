@@ -1,18 +1,32 @@
 """Contacts page install helpers (CMS /kontaktyi/)."""
 
 import difflib
+import os
 import re
 import shutil
+import subprocess
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
 INSTALL_MARKER = "lireate-contacts-install:v1"
 LEGACY_MARKER = "lireate-contacts-legacy:snapshot"
 BODY_CLASS = "lireate-contacts-body"
+BODY_CLASS_COND = "<?php if($temp['page']=='kontaktyi') echo ' lireate-contacts-body';?>"
 CMS_INCLUDE = "/template/page/kontaktyi/lireate-contacts-cms.inc.php"
 LEGACY_REL = Path("template/page/kontaktyi/lireate-contacts-legacy.inc.php")
 SECTION_MARKERS = ("Контакты Лирейт", "title-ap", "order_form_content")
 FORBIDDEN_TOUCH = {".htaccess"}
+PAGE_CONTAINER_RE = re.compile(r'<div\s+class="page_container">', re.IGNORECASE)
+TITLE_AP_RE = re.compile(
+    r'<div\s+class="title-ap"><h1>\s*Контакты\s+Лирейт\s*</h1>\s*</div>',
+    re.IGNORECASE,
+)
+INNER_CONTACTS_ROW_RE = re.compile(
+    r'<div\s+class="row"\s+style="margin-bottom:\s*20px;"',
+    re.IGNORECASE,
+)
+BODY_RE = re.compile(r"(<body\b[^>]*\bclass=[\"'])([^\"']*)([\"'])", re.IGNORECASE)
 
 
 def unified_diff(original, planned, label):
@@ -24,6 +38,39 @@ def unified_diff(original, planned, label):
             tofile=label + " (after)",
         )
     )
+
+
+def resolve_php_bin():
+    explicit = os.environ.get("PHP_BIN", "").strip()
+    for cand in (explicit, "php", "php7.4", "php8.3", "php5.6"):
+        if not cand:
+            continue
+        if shutil.which(cand):
+            return cand
+    return "php"
+
+
+def lint_php_content(php_bin, content, label="patched.php"):
+    php_bin = resolve_php_bin() if not php_bin else php_bin
+    tmp = tempfile.NamedTemporaryFile("w", suffix=".php", delete=False, encoding="utf-8")
+    try:
+        tmp.write(content)
+        tmp.close()
+        proc = subprocess.run(
+            [php_bin, "-l", tmp.name],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if proc.returncode != 0:
+            msg = (proc.stderr or proc.stdout or "").strip()
+            return "{0}: {1}".format(label, msg)
+        return None
+    finally:
+        try:
+            os.unlink(tmp.name)
+        except OSError:
+            pass
 
 
 def _iter_php_under_template(docroot):
@@ -47,13 +94,17 @@ def find_contacts_template(docroot):
             continue
         if INSTALL_MARKER in text:
             score = 120
-            if "kontakty" in path.name.lower() or "contact" in path.name.lower():
+            if path.name == "main.php":
+                score += 40
+            elif "kontakty" in path.name.lower() or "contact" in path.name.lower():
                 score += 10
             candidates.append((score, path))
             continue
         if not all(m in text for m in SECTION_MARKERS):
             continue
         score = 80
+        if path.name == "main.php":
+            score += 40
         if "kontakty" in path.name.lower() or "contact" in path.name.lower():
             score += 15
         if "page/kontaktyi" in str(path).replace("\\", "/"):
@@ -89,6 +140,48 @@ def _replacement_block():
     ) % (INSTALL_MARKER, CMS_INCLUDE)
 
 
+def _index_after_balanced_div(text, div_open):
+    gt = text.find(">", div_open)
+    if gt == -1:
+        return None
+    depth = 1
+    i = gt + 1
+    n = len(text)
+    while i < n:
+        next_div = text.find("<div", i)
+        next_close = text.find("</div>", i)
+        if next_close == -1:
+            return None
+        if next_div != -1 and next_div < next_close:
+            depth += 1
+            gt_inner = text.find(">", next_div)
+            if gt_inner == -1:
+                return None
+            i = gt_inner + 1
+            continue
+        depth -= 1
+        i = next_close + len("</div>")
+        if depth == 0:
+            return i
+    return None
+
+
+def _legacy_block_end_before_wrappers(text, start):
+    inner = INNER_CONTACTS_ROW_RE.search(text, start)
+    if inner:
+        end = _index_after_balanced_div(text, inner.start())
+        if end is not None:
+            return end
+    pc = PAGE_CONTAINER_RE.search(text, start)
+    if not pc:
+        return None
+    before = text[start : pc.start()]
+    closes = list(re.finditer(r"</div>", before, re.IGNORECASE))
+    if len(closes) < 2:
+        return None
+    return start + closes[-2].end()
+
+
 def _span_contacts_block(text):
     if INSTALL_MARKER in text:
         match = re.search(
@@ -98,17 +191,12 @@ def _span_contacts_block(text):
         )
         if match:
             return (match.start(), match.end())
-    start_match = re.search(
-        r'<div\s+class="title-ap"><h1>\s*Контакты\s+Лирейт\s*</h1>\s*</div>',
-        text,
-        flags=re.IGNORECASE,
-    )
+    start_match = TITLE_AP_RE.search(text)
     if not start_match:
         return None
-    end_match = re.search(r'<div\s+class="page_container">', text[start_match.end() :], re.IGNORECASE)
-    if not end_match:
+    end = _legacy_block_end_before_wrappers(text, start_match.start())
+    if end is None:
         return None
-    end = start_match.end() + end_match.start()
     return (start_match.start(), end)
 
 
@@ -143,18 +231,24 @@ def write_legacy_snapshot(docroot, inner_html):
     return LEGACY_REL
 
 
-BODY_RE = re.compile(r"(<body\b[^>]*\bclass=[\"'])([^\"']*)([\"'])", re.IGNORECASE)
-
-
-def patch_body_class_content(text):
-    if BODY_CLASS in text:
-        return text, False
-
+def _strip_global_body_class(text):
     def repl(match):
         classes = match.group(2)
-        if BODY_CLASS in classes.split():
-            return match.group(0)
-        return match.group(1) + classes + " " + BODY_CLASS + match.group(3)
+        classes = classes.replace(" " + BODY_CLASS, "").replace(BODY_CLASS + " ", "")
+        if classes.strip() == BODY_CLASS:
+            classes = ""
+        return match.group(1) + classes.strip() + match.group(3)
+
+    return BODY_RE.sub(repl, text, count=1)
+
+
+def patch_body_class_conditional(text):
+    if BODY_CLASS_COND in text:
+        return text, False
+    text = _strip_global_body_class(text)
+
+    def repl(match):
+        return match.group(1) + match.group(2) + BODY_CLASS_COND + match.group(3)
 
     new_text, count = BODY_RE.subn(repl, text, count=1)
     if count:
@@ -162,7 +256,9 @@ def patch_body_class_content(text):
     body_open = re.search(r"<body\b([^>]*)>", text, re.IGNORECASE)
     if not body_open:
         return text, False
-    insert = '<body class="{0}"'.format(BODY_CLASS)
+    insert = (
+        '<body class="cms-default' + BODY_CLASS_COND + '"'
+    )
     new_text = text[: body_open.start()] + insert + text[body_open.end() - 1 :]
     return new_text, True
 
@@ -180,8 +276,14 @@ def patch_contacts_template_content(text):
 
 def plan_contacts_template_content(text):
     text, _, _ = patch_contacts_template_content(text)
-    text, _ = patch_body_class_content(text)
+    text, _ = patch_body_class_conditional(text)
     return text
+
+
+def validate_planned_php(php_bin, original, planned, label):
+    if planned == original:
+        return None
+    return lint_php_content(php_bin, planned, label)
 
 
 def contacts_template_patch_status(original, planned):
@@ -206,7 +308,7 @@ def apply_copies(office_repo, docroot, pairs):
     return created
 
 
-def apply_contacts_patch(docroot, template_path):
+def apply_contacts_patch(docroot, template_path, php_bin=None):
     rel = template_path.relative_to(docroot)
     if "data" in rel.parts and template_path.name == "db.php":
         raise SystemExit("BLOCKER: refusing to patch data/db.php")
@@ -215,6 +317,9 @@ def apply_contacts_patch(docroot, template_path):
     status = contacts_template_patch_status(original, planned)
     if planned == original:
         return False, ["contacts: {0}".format(status)]
+    lint_err = validate_planned_php(php_bin, original, planned, str(rel))
+    if lint_err:
+        raise SystemExit("BLOCKER: php -l failed after planned patch\n{0}".format(lint_err))
     inner = extract_contacts_legacy_inner(original)
     if inner and INSTALL_MARKER not in original:
         write_legacy_snapshot(docroot, inner)
@@ -222,8 +327,8 @@ def apply_contacts_patch(docroot, template_path):
     notes = ["contacts: patched legacy block → lireate-contacts-cms.inc.php"]
     if inner:
         notes.append("contacts: saved legacy snapshot ({0})".format(LEGACY_REL))
-    if BODY_CLASS not in original and BODY_CLASS in planned:
-        notes.append("body class {0}".format(BODY_CLASS))
+    if BODY_CLASS_COND not in original and BODY_CLASS_COND in planned:
+        notes.append("body class conditional for kontaktyi")
     return True, notes
 
 
@@ -235,15 +340,15 @@ def rollback_contacts_patch(docroot, template_path):
     if not legacy_path.is_file():
         return False, ["contacts: legacy snapshot missing"]
     legacy_inner = legacy_path.read_text(encoding="utf-8", errors="replace")
-    marker_pos = legacy_inner.find(LEGACY_MARKER)
-    if marker_pos == -1:
+    if LEGACY_MARKER not in legacy_inner:
         return False, ["contacts: invalid legacy snapshot"]
     html_part = legacy_inner.split("?>", 1)[-1].strip()
     span = _span_contacts_block(original)
     if not span:
         return False, ["contacts: patched section not found for rollback"]
     restored = original[: span[0]] + html_part + original[span[1] :]
-    restored = restored.replace(" " + BODY_CLASS, "").replace(BODY_CLASS + " ", "")
+    restored = restored.replace(BODY_CLASS_COND, "")
+    restored = _strip_global_body_class(restored)
     template_path.write_text(restored, encoding="utf-8")
     return True, ["contacts: restored legacy block from snapshot"]
 
@@ -266,7 +371,7 @@ def backup_files(backup_dir, docroot, rel_paths):
     (backup_dir / "manifest.txt").write_text("\n".join(manifest) + "\n", encoding="utf-8")
 
 
-def apply_contacts_install(office_repo, docroot):
+def apply_contacts_install(office_repo, docroot, php_bin=None):
     office_repo = Path(office_repo).resolve()
     docroot = Path(docroot).resolve()
     pairs = copy_plan(office_repo)
@@ -274,7 +379,7 @@ def apply_contacts_install(office_repo, docroot):
     notes = []
     template = find_contacts_template(docroot)
     if template is not None:
-        _changed, patch_notes = apply_contacts_patch(docroot, template)
+        _changed, patch_notes = apply_contacts_patch(docroot, template, php_bin=php_bin)
         notes.extend(patch_notes)
     else:
         notes.append("WARN: contacts CMS template not found under template/")
