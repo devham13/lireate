@@ -73,10 +73,15 @@ def cmd_check(office_repo, docroot):
         print("OK")
     print("")
     print("=== MAIN.PHP BODY CLASS PATCH ===")
+    main_fixture = office_repo / "scripts/fixtures/cms-main-with-contacts-body.php"
     live_fixture = office_repo / "scripts/fixtures/cms-main-live.snapshot.php"
     if main_path.is_file():
         main_original = main_path.read_text(encoding="utf-8", errors="replace")
         main_label = "template/main.php"
+    elif main_fixture.is_file():
+        main_original = main_fixture.read_text(encoding="utf-8", errors="replace")
+        main_label = "scripts/fixtures/cms-main-with-contacts-body.php"
+        print("WARN: docroot main.php missing — linting contacts+main fixture")
     elif live_fixture.is_file():
         main_original = live_fixture.read_text(encoding="utf-8", errors="replace")
         main_label = "scripts/fixtures/cms-main-live.snapshot.php (production snapshot)"
@@ -107,18 +112,9 @@ def cmd_apply(office_repo, docroot, backups_root):
     main_path = lib.find_main_template(docroot)
     if index_path is not None:
         rels.append(index_path.relative_to(docroot))
-        orig = index_path.read_text(encoding="utf-8", errors="replace")
-        planned = lib.plan_docs_index_content(orig)
-        err = lib.validate_planned_php(php_bin, orig, planned, index_path.relative_to(docroot))
-        if err:
-            raise SystemExit("BLOCKER: refuse apply — docs index.php php -l failed\n{0}".format(err))
     if main_path is not None:
         rels.append(main_path.relative_to(docroot))
-        orig = main_path.read_text(encoding="utf-8", errors="replace")
-        planned = lib.plan_main_body_content(orig)
-        err = lib.validate_planned_php(php_bin, orig, planned, main_path.relative_to(docroot))
-        if err:
-            raise SystemExit("BLOCKER: refuse apply — main.php php -l failed\n{0}".format(err))
+    lib.validate_docs_patches_planned(docroot, index_path, main_path, php_bin=php_bin)
     lib.backup_files(backup_dir, docroot, rels)
     created, notes, _idx, _main = lib.apply_docs_install(office_repo, docroot, php_bin=php_bin)
     lib.write_created_manifest(backup_dir, created)

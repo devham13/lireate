@@ -29,7 +29,7 @@ INNER_CONTACTS_ROW_RE = re.compile(
     r'<div\s+class="row"\s+style="margin-bottom:\s*20px;"',
     re.IGNORECASE,
 )
-BODY_RE = re.compile(r"(<body\b[^>]*\bclass=[\"'])([^\"']*)([\"'])", re.IGNORECASE)
+import lireate_cms_main_body_class as cms_body
 
 
 def unified_diff(original, planned, label):
@@ -240,35 +240,11 @@ def write_legacy_snapshot(docroot, inner_html):
 
 
 def _strip_global_body_class(text):
-    def repl(match):
-        classes = match.group(2)
-        classes = classes.replace(" " + BODY_CLASS, "").replace(BODY_CLASS + " ", "")
-        if classes.strip() == BODY_CLASS:
-            classes = ""
-        return match.group(1) + classes.strip() + match.group(3)
-
-    return BODY_RE.sub(repl, text, count=1)
+    return cms_body.remove_static_body_class(text, BODY_CLASS)
 
 
 def patch_body_class_conditional(text):
-    if BODY_CLASS_COND in text:
-        return text, False
-    text = _strip_global_body_class(text)
-
-    def repl(match):
-        return match.group(1) + match.group(2) + BODY_CLASS_COND + match.group(3)
-
-    new_text, count = BODY_RE.subn(repl, text, count=1)
-    if count:
-        return new_text, True
-    body_open = re.search(r"<body\b([^>]*)>", text, re.IGNORECASE)
-    if not body_open:
-        return text, False
-    insert = (
-        '<body class="cms-default' + BODY_CLASS_COND + '"'
-    )
-    new_text = text[: body_open.start()] + insert + text[body_open.end() - 1 :]
-    return new_text, True
+    return cms_body.patch_contacts_body_conditional(text)
 
 
 def patch_contacts_template_content(text):
@@ -316,7 +292,21 @@ def apply_copies(office_repo, docroot, pairs):
     return created
 
 
-def apply_contacts_patch(docroot, template_path, php_bin=None):
+def validate_contacts_patch_planned(docroot, template_path, php_bin=None):
+    if template_path is None:
+        return
+    original = template_path.read_text(encoding="utf-8", errors="replace")
+    planned = plan_contacts_template_content(original)
+    if planned == original:
+        return
+    lint_err = validate_planned_php(
+        php_bin, original, planned, str(template_path.relative_to(docroot))
+    )
+    if lint_err:
+        raise SystemExit("BLOCKER: php -l failed after planned patch\n{0}".format(lint_err))
+
+
+def apply_contacts_patch(docroot, template_path, php_bin=None, skip_lint=False):
     rel = template_path.relative_to(docroot)
     if "data" in rel.parts and template_path.name == "db.php":
         raise SystemExit("BLOCKER: refusing to patch data/db.php")
@@ -325,9 +315,10 @@ def apply_contacts_patch(docroot, template_path, php_bin=None):
     status = contacts_template_patch_status(original, planned)
     if planned == original:
         return False, ["contacts: {0}".format(status)], []
-    lint_err = validate_planned_php(php_bin, original, planned, str(rel))
-    if lint_err:
-        raise SystemExit("BLOCKER: php -l failed after planned patch\n{0}".format(lint_err))
+    if not skip_lint:
+        lint_err = validate_planned_php(php_bin, original, planned, str(rel))
+        if lint_err:
+            raise SystemExit("BLOCKER: php -l failed after planned patch\n{0}".format(lint_err))
     inner = extract_contacts_legacy_inner(original)
     created_legacy = []
     if inner and INSTALL_MARKER not in original:
@@ -359,7 +350,7 @@ def rollback_contacts_patch(docroot, template_path):
     if not span:
         return False, ["contacts: patched section not found for rollback"]
     restored = original[: span[0]] + html_part + original[span[1] :]
-    restored = restored.replace(BODY_CLASS_COND, "")
+    restored = cms_body.remove_body_conditional_snippets(restored, (BODY_CLASS_COND,))
     restored = _strip_global_body_class(restored)
     template_path.write_text(restored, encoding="utf-8")
     return True, ["contacts: restored legacy block from snapshot"]
@@ -416,12 +407,13 @@ def apply_contacts_install(office_repo, docroot, php_bin=None):
     office_repo = Path(office_repo).resolve()
     docroot = Path(docroot).resolve()
     pairs = copy_plan(office_repo)
+    template = find_contacts_template(docroot)
+    validate_contacts_patch_planned(docroot, template, php_bin=php_bin)
     created = apply_copies(office_repo, docroot, pairs)
     notes = []
-    template = find_contacts_template(docroot)
     if template is not None:
         _changed, patch_notes, patch_created = apply_contacts_patch(
-            docroot, template, php_bin=php_bin
+            docroot, template, php_bin=php_bin, skip_lint=True
         )
         notes.extend(patch_notes)
         created.extend(patch_created)

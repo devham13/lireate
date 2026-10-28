@@ -21,7 +21,7 @@ LEGACY_REL = TEMPLATE_REL / "lireate-docs-legacy.inc.php"
 MAIN_REL = Path("template/main.php")
 SECTION_MARKERS = ("Документы компании:", "paddingSection section_1", "Реквизиты компании:")
 INDEX_START_RE = re.compile(r'<section\s+class="paddingSection\s+section_1">', re.IGNORECASE)
-BODY_RE = re.compile(r"(<body\b[^>]*\bclass=[\"'])([^\"']*)([\"'])", re.IGNORECASE)
+import lireate_cms_main_body_class as cms_body
 FORBIDDEN_TOUCH = {".htaccess"}
 
 
@@ -183,28 +183,11 @@ def write_legacy_snapshot(docroot, inner_html):
 
 
 def _strip_global_body_class(text):
-    def repl(match):
-        classes = match.group(2)
-        classes = classes.replace(" " + BODY_CLASS, "").replace(BODY_CLASS + " ", "")
-        if classes.strip() == BODY_CLASS:
-            classes = ""
-        return match.group(1) + classes.strip() + match.group(3)
-
-    return BODY_RE.sub(repl, text, count=1)
+    return cms_body.remove_static_body_class(text, BODY_CLASS)
 
 
 def patch_body_class_conditional(text):
-    if BODY_CLASS_COND in text:
-        return text, False
-    text = _strip_global_body_class(text)
-
-    def repl(match):
-        return match.group(1) + match.group(2) + BODY_CLASS_COND + match.group(3)
-
-    new_text, count = BODY_RE.subn(repl, text, count=1)
-    if count:
-        return new_text, True
-    return text, False
+    return cms_body.patch_docs_body_conditional(text)
 
 
 def patch_docs_index_content(text):
@@ -242,9 +225,7 @@ def apply_copies(office_repo, docroot, pairs):
     return created
 
 
-def apply_docs_patches(docroot, index_path, main_path, php_bin=None):
-    notes = []
-    created_legacy = []
+def validate_docs_patches_planned(docroot, index_path, main_path, php_bin=None):
     if index_path is not None:
         original = index_path.read_text(encoding="utf-8", errors="replace")
         planned = plan_docs_index_content(original)
@@ -254,14 +235,6 @@ def apply_docs_patches(docroot, index_path, main_path, php_bin=None):
             )
             if lint_err:
                 raise SystemExit("BLOCKER: php -l failed for docs index.php\n{0}".format(lint_err))
-            inner = extract_docs_legacy_inner(original)
-            if inner:
-                legacy_path = docroot / LEGACY_REL
-                if not legacy_path.is_file():
-                    created_legacy.append(LEGACY_REL)
-                write_legacy_snapshot(docroot, inner)
-            index_path.write_text(planned, encoding="utf-8")
-            notes.append("docs: patched template/page/docs/index.php")
     if main_path is not None:
         original = main_path.read_text(encoding="utf-8", errors="replace")
         planned = plan_main_body_content(original)
@@ -271,7 +244,40 @@ def apply_docs_patches(docroot, index_path, main_path, php_bin=None):
             )
             if lint_err:
                 raise SystemExit("BLOCKER: php -l failed for template/main.php\n{0}".format(lint_err))
-            main_path.write_text(planned, encoding="utf-8")
+
+
+def apply_docs_patches(docroot, index_path, main_path, php_bin=None, skip_lint=False):
+    notes = []
+    created_legacy = []
+    pending = []
+
+    if index_path is not None:
+        original = index_path.read_text(encoding="utf-8", errors="replace")
+        planned = plan_docs_index_content(original)
+        if planned != original:
+            pending.append(("index", index_path, original, planned))
+
+    if main_path is not None:
+        original = main_path.read_text(encoding="utf-8", errors="replace")
+        planned = plan_main_body_content(original)
+        if planned != original:
+            pending.append(("main", main_path, original, planned))
+
+    if not skip_lint:
+        validate_docs_patches_planned(docroot, index_path, main_path, php_bin=php_bin)
+
+    for kind, path, original, planned in pending:
+        if kind == "index":
+            inner = extract_docs_legacy_inner(original)
+            if inner:
+                legacy_path = docroot / LEGACY_REL
+                if not legacy_path.is_file():
+                    created_legacy.append(LEGACY_REL)
+                write_legacy_snapshot(docroot, inner)
+            path.write_text(planned, encoding="utf-8")
+            notes.append("docs: patched template/page/docs/index.php")
+        else:
+            path.write_text(planned, encoding="utf-8")
             if BODY_CLASS_COND not in original:
                 notes.append("docs: body class conditional for /docs/")
     return notes, created_legacy
@@ -298,7 +304,7 @@ def rollback_docs_index(docroot, index_path):
 
 def rollback_main_body(main_path):
     original = main_path.read_text(encoding="utf-8", errors="replace")
-    restored = original.replace(BODY_CLASS_COND, "")
+    restored = cms_body.remove_body_conditional_snippets(original, (BODY_CLASS_COND,))
     restored = _strip_global_body_class(restored)
     if restored == original:
         return False, ["main.php: body class unchanged"]
@@ -357,7 +363,6 @@ def apply_docs_install(office_repo, docroot, php_bin=None):
     office_repo = Path(office_repo).resolve()
     docroot = Path(docroot).resolve()
     pairs = copy_plan(office_repo)
-    created = apply_copies(office_repo, docroot, pairs)
     index_path = find_docs_index_template(docroot)
     main_path = find_main_template(docroot)
     notes = []
@@ -365,8 +370,10 @@ def apply_docs_install(office_repo, docroot, php_bin=None):
         notes.append("WARN: template/page/docs/index.php not found")
     if main_path is None:
         notes.append("WARN: template/main.php not found")
+    validate_docs_patches_planned(docroot, index_path, main_path, php_bin=php_bin)
+    created = apply_copies(office_repo, docroot, pairs)
     patch_notes, patch_created = apply_docs_patches(
-        docroot, index_path, main_path, php_bin=php_bin
+        docroot, index_path, main_path, php_bin=php_bin, skip_lint=True
     )
     notes.extend(patch_notes)
     created.extend(patch_created)
