@@ -26,7 +26,7 @@ python3 scripts/lireate_contacts_install.py --apply --docroot "$LIREATE_DOCROOT"
 
 Скрипт:
 
-- копирует `template/page/kontaktyi/*` и `pages/kontaktyi/_shared/*` в DOCROOT;
+- копирует `pages/kontaktyi/_shared/*` в DOCROOT (`pages/kontaktyi/_shared/` и зеркало `template/page/kontaktyi/`) и `lireate-metrika-goals.js`;
 - находит CMS PHP с блоком «Контакты Лирейт» и подключает `lireate-contacts-cms.inc.php`;
 - сохраняет snapshot legacy в `template/page/kontaktyi/lireate-contacts-legacy.inc.php`.
 
@@ -42,7 +42,7 @@ ID бэкапа печатается при `--apply` (`backup: …`).
 python3 scripts/lireate_contacts_install.py --rollback 20261028T120000Z --docroot "$LIREATE_DOCROOT"
 ```
 
-Восстанавливает файлы из бэкапа и legacy HTML-блок из snapshot.
+Восстанавливает файлы из бэкапа и legacy HTML-блок из snapshot; удаляет файлы, созданные при `--apply` (список в `created.json` рядом с бэкапом).
 
 ## Локальное превью (скриншоты / QA)
 

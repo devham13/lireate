@@ -93,6 +93,7 @@ def cmd_apply(office_repo, docroot, backups_root):
             raise SystemExit("BLOCKER: refuse apply — php -l failed\n{0}".format(lint_err))
     lib.backup_files(backup_dir, docroot, rels)
     created, notes, _tpl = lib.apply_contacts_install(office_repo, docroot, php_bin=php_bin)
+    lib.write_created_manifest(backup_dir, created)
     print("backup: {0}".format(backup_dir))
     if created:
         print("created: " + ", ".join(str(r) for r in created))
@@ -118,6 +119,7 @@ def cmd_rollback(docroot, backups_root, backup_id):
         if src.is_file():
             dst.parent.mkdir(parents=True, exist_ok=True)
             dst.write_bytes(src.read_bytes())
+    notes.extend(lib.remove_created_files(docroot, backup_dir))
     for line in notes:
         print(line)
     print("rollback restored backup {0}".format(backup_id))

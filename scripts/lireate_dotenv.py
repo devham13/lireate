@@ -25,3 +25,8 @@ def load_dotenv(path, override=False):
             continue
         os.environ[key] = val
     return True
+
+
+def load_env_file(path, override=False):
+    """Alias used by install scripts (same as load_dotenv)."""
+    return load_dotenv(path, override=override)

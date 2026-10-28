@@ -39,12 +39,7 @@ def php_render(page, source):
         lint_err = lib.lint_php_content(php_bin, body, "render.php")
         if lint_err:
             return None, lint_err
-        proc = subprocess.run(
-            [php_bin, tmp.name],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
+        proc = lib.run_subprocess([php_bin, tmp.name])
         if proc.returncode != 0:
             return None, (proc.stderr or proc.stdout or "").strip()
         return proc.stdout, None
@@ -123,6 +118,34 @@ class ContactsInstallLibTests(unittest.TestCase):
         self.assertIsNone(err_n, err_n)
         self.assertIn("News block ok", out_n)
         self.assertNotIn("lireate-contacts-body", out_n)
+
+    def test_copy_plan_includes_docroot_shared(self):
+        pairs = lib.copy_plan(REPO_ROOT)
+        rels = {str(rel).replace("\\", "/") for _src, rel in pairs}
+        self.assertIn("pages/kontaktyi/_shared/lireate-contacts.css", rels)
+        self.assertIn("template/page/kontaktyi/lireate-contacts.css", rels)
+
+    def test_rollback_removes_created_files(self):
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-contacts-rollback-"))
+        try:
+            backup_dir = tmp / "backup"
+            docroot = tmp / "docroot"
+            docroot.mkdir()
+            created_rel = lib.SHARED_DOCROOT_REL / "lireate-contacts.css"
+            target = docroot / created_rel
+            target.parent.mkdir(parents=True)
+            target.write_text("new", encoding="utf-8")
+            lib.write_created_manifest(backup_dir, [created_rel])
+            notes = lib.remove_created_files(docroot, backup_dir)
+            self.assertFalse(target.is_file())
+            self.assertTrue(any("removed created" in n for n in notes))
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_load_env_file_alias(self):
+        import lireate_dotenv as dotenv
+
+        self.assertTrue(callable(dotenv.load_env_file))
 
 
 if __name__ == "__main__":

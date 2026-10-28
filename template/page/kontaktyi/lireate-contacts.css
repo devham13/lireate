@@ -513,12 +513,14 @@ body.lireate-contacts-body:has(.lireate-contacts-page) #personsSlide {
   display: none !important;
 }
 
-body.lireate-contacts-body:has(.lireate-contacts-page) .page_container:empty {
-  display: none !important;
+body.lireate-contacts-body .page_container {
+  background: transparent !important;
+  min-height: 0 !important;
   height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
+  border: none !important;
 }
 
 body.lireate-contacts-body:has(.lireate-contacts-page) footer.footer-ap,
