@@ -1,6 +1,6 @@
 <?php
 /**
- * Данные команды с live /kontaktyi/ (personsSlide, без закомментированных карточек).
+ * Команда с live /kontaktyi/ (personsSlide; порядок как на сайте).
  */
 if (!function_exists('lireate_contacts_team_members')) {
 function lireate_contacts_team_members()
@@ -17,7 +17,7 @@ function lireate_contacts_team_members()
             'photo' => '/template/images/team/person/10.jpg',
         ),
         array(
-            'name' => 'Габдрахманова эльвира дамировна',
+            'name' => 'Габдрахманова Эльвира Дамировна',
             'role' => 'Руководитель отдела регистрации интеллектуальной собственности',
             'photo' => '/template/images/team/person/1.jpg',
         ),
@@ -30,6 +30,16 @@ function lireate_contacts_team_members()
             'name' => 'Прокопьева Алия Раифовна',
             'role' => 'Специалист по регистрации интеллектуальной собственности',
             'photo' => '/template/images/team/person/6.jpg',
+        ),
+        array(
+            'name' => 'Сенатова Валерия Станиславовна',
+            'role' => 'Специалист по регистрации интеллектуальной собственности',
+            'photo' => '/template/images/team/person/7.jpg',
+        ),
+        array(
+            'name' => 'Томилова Раиса Николаевна',
+            'role' => 'Делопроизводитель отдела по регистрации интеллектуальной собственности',
+            'photo' => '/template/images/team/person/8.jpg',
         ),
         array(
             'name' => 'Ульданова Алёна Анатольева',

@@ -41,7 +41,7 @@ python3 scripts/lireate_contacts_install.py --rollback 20261028T120000Z --docroo
 ## Локальное превью (скриншоты / QA)
 
 ```bash
-python3 scripts/lireate_contacts_sync_template.py
-cd pages/kontaktyi/_preview && php -S 127.0.0.1:8891
-# http://127.0.0.1:8891/cms-shell.php
+python3 scripts/lireate_contacts_fetch_live_snapshot.py
+bash scripts/lireate_contacts_preview_server.sh
+# http://127.0.0.1:8891/kontaktyi_preview/live-cms-shell.php
 ```

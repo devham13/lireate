@@ -202,22 +202,68 @@ body.lireate-contacts-body {
   color: #f8fafc;
 }
 
+.lireate-contacts-phones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.lireate-contacts-phones a {
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lireate-contacts-sep {
+  margin: 0;
+  color: var(--lc-muted);
+  flex-shrink: 0;
+}
+
 .lireate-contacts-dl a {
   color: #fff !important;
   text-decoration: none;
   font-weight: 600;
 }
 
-.lireate-contacts-sep {
-  margin: 0 8px;
+.lireate-contacts-recaptcha-stub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 78px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--lc-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lireate-contacts-info-card {
+  padding-bottom: 18px !important;
 }
 
 .lireate-contacts-map {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--lc-line);
-  min-height: 280px;
+  min-height: 0;
+  height: 360px;
+  max-height: 360px;
+  line-height: 0;
+  margin-bottom: 0;
+}
+
+.lireate-contacts-map iframe,
+.lireate-contacts-map > ymaps,
+.lireate-contacts-map > div {
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .lireate-contacts-team {
@@ -228,6 +274,11 @@ body.lireate-contacts-body {
   margin-bottom: 16px;
 }
 
+body.lireate-contacts-body:has(.lireate-contacts-page) .container.content.text-center,
+body.lireate-contacts-body:has(.lireate-contacts-page) .content.text-center {
+  text-align: left !important;
+}
+
 .lireate-contacts-team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -236,18 +287,22 @@ body.lireate-contacts-body {
 
 .lireate-contacts-team-card {
   appearance: none;
-  text-align: left;
+  -webkit-appearance: none;
+  text-align: left !important;
   cursor: pointer;
-  border: 1px solid var(--lc-line);
-  border-radius: 16px;
-  padding: 12px;
-  background: var(--lc-card);
-  color: inherit;
+  border: 1px solid var(--lc-line) !important;
+  border-radius: 16px !important;
+  padding: 12px !important;
+  background: var(--lc-card) !important;
+  color: var(--lc-text) !important;
+  box-shadow: none !important;
+  width: 100%;
+  max-width: 100%;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
 .lireate-contacts-team-card:hover {
-  border-color: rgba(59, 130, 246, 0.55);
+  border-color: rgba(59, 130, 246, 0.55) !important;
   transform: translateY(-2px);
 }
 
@@ -259,6 +314,7 @@ body.lireate-contacts-body {
   background-size: cover;
   background-position: center top;
   margin-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .lireate-contacts-team-name {
@@ -266,7 +322,7 @@ body.lireate-contacts-body {
   font-weight: 700;
   font-size: 14px;
   line-height: 1.35;
-  color: #fff;
+  color: #fff !important;
 }
 
 .lireate-contacts-team-role {
@@ -274,7 +330,7 @@ body.lireate-contacts-body {
   margin-top: 6px;
   font-size: 12px;
   line-height: 1.4;
-  color: var(--lc-muted);
+  color: var(--lc-muted) !important;
 }
 
 .lireate-contacts-social {
@@ -364,6 +420,70 @@ body.lireate-contacts-body:has(.lireate-contacts-page) .content,
 body.lireate-contacts-body:has(.lireate-contacts-page) .container.content {
   background: #0b0b1f !important;
   text-align: left !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  overflow-x: clip;
+}
+
+@media (min-width: 1151px) and (max-width: 1250px) {
+  body.lireate-contacts-body .content:has(.lireate-contacts-page),
+  body.lireate-contacts-body .container.content:has(.lireate-contacts-page) {
+    padding-left: 240px !important;
+  }
+}
+
+@media (min-width: 1251px) {
+  body.lireate-contacts-body .content:has(.lireate-contacts-page),
+  body.lireate-contacts-body .container.content:has(.lireate-contacts-page) {
+    padding-left: 270px !important;
+  }
+}
+
+@media (max-width: 1150px) {
+  body.lireate-contacts-body .content:has(.lireate-contacts-page),
+  body.lireate-contacts-body .container.content:has(.lireate-contacts-page) {
+    padding-left: 0 !important;
+    padding-top: 60px !important;
+  }
+}
+
+section#lireate-contacts:has(.lireate-contacts-page),
+#lireate-contacts:has(.lireate-contacts-page) {
+  background: #0b0b1f !important;
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+section#lireate-contacts .lireate-contacts-page,
+#lireate-contacts .lireate-contacts-page {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+html.lireate-contacts-html:has(.lireate-contacts-page),
+html.lireate-contacts-html:has(.lireate-contacts-page) body.lireate-contacts-body {
+  min-height: 100%;
+  background: #0b0b1f !important;
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+body.lireate-contacts-body:has(.lireate-contacts-page) .wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0b0b1f !important;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body.lireate-contacts-body:has(.lireate-contacts-page) footer:not(.lx-site-footer),
@@ -383,15 +503,72 @@ body.lireate-contacts-body:has(.lireate-contacts-page) .lx-site-footer {
 @media (max-width: 960px) {
   .lireate-contacts-grid {
     grid-template-columns: 1fr;
-    padding-top: 20px;
+    padding: 20px 16px;
+  }
+  .lireate-contacts-wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .lireate-contacts-h1 {
+    font-size: clamp(32px, 8vw, 44px) !important;
+    line-height: 1.02 !important;
+    overflow-wrap: anywhere;
   }
 }
 
 @media (max-width: 520px) {
   .lireate-contacts-hero {
-    padding-top: 24px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
   .lireate-contacts-team-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
+  .lireate-contacts-card {
+    padding: 18px 14px 20px;
+  }
+}
+
+.lireate-contacts-page h1,
+.lireate-contacts-page h2,
+.lireate-contacts-page h3,
+.lireate-contacts-page h4,
+.lireate-contacts-page p,
+.lireate-contacts-page a,
+.lireate-contacts-page span,
+.lireate-contacts-page dt,
+.lireate-contacts-page dd,
+.lireate-contacts-page label,
+.lireate-contacts-page input,
+.lireate-contacts-page textarea,
+.lireate-contacts-page button,
+section#lireate-contacts .lireate-contacts-page h1,
+section#lireate-contacts .lireate-contacts-page h2,
+section#lireate-contacts .lireate-contacts-page h3,
+section#lireate-contacts .lireate-contacts-page h4,
+section#lireate-contacts .lireate-contacts-page p,
+section#lireate-contacts .lireate-contacts-page a,
+section#lireate-contacts .lireate-contacts-page span,
+section#lireate-contacts .lireate-contacts-page dt,
+section#lireate-contacts .lireate-contacts-page dd,
+section#lireate-contacts .lireate-contacts-page input,
+section#lireate-contacts .lireate-contacts-page textarea,
+section#lireate-contacts .lireate-contacts-page button {
+  font-family: var(--lc-font-ui) !important;
+  font-style: normal !important;
+}
+
+.lireate-contacts-h1,
+.lireate-contacts-card-title,
+.lireate-contacts-modal-name {
+  font-family: var(--lc-font-display) !important;
+}
+
+.lireate-contacts-lead {
+  font-family: var(--lc-font-lead) !important;
+}
+
+.lireate-contacts-team-name {
+  font-family: var(--lc-font-ui) !important;
 }

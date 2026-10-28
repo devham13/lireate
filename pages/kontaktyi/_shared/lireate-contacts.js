@@ -52,6 +52,13 @@
         var idx = parseInt(btn.getAttribute('data-lc-team-index') || '0', 10);
         openAt(idx);
       });
+      btn.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          var idx = parseInt(btn.getAttribute('data-lc-team-index') || '0', 10);
+          openAt(idx);
+        }
+      });
     });
 
     modal.querySelectorAll('[data-lc-modal-close]').forEach(function (el) {

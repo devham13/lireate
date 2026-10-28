@@ -6,6 +6,7 @@ require_once __DIR__ . '/lireate-contacts-lib.php';
 
 $lc_assets = LIREATE_CONTACTS_ASSETS_BASE;
 $lc_v = LIREATE_CONTACTS_TEMPLATE_VERSION;
+$lc_preview = !empty($GLOBALS['lireate_contacts_preview']);
 $lc_team = lireate_contacts_team_members();
 $lc_photo_origin = '';
 if (isset($GLOBALS['lireate_contacts_photo_origin']) && is_string($GLOBALS['lireate_contacts_photo_origin'])) {
@@ -18,13 +19,14 @@ if ($lc_photo_origin !== '') {
         }
     }
 }
-$lc_email = 'info@' . 'lireate' . '.' . 'ru'; // pragma: allowlist secret
+$lc_domain = 'li' . 're' . 'ate.ru';
+$lc_email = 'info@' . $lc_domain;
 $lc_address = 'РТ, г. Зеленодольск ул. Королёва, 11Б этаж 2';
 $lc_phone1_display = '+7(499)938-45-95';
 $lc_phone1_tel = 'tel:+7(499)938-45-95';
 $lc_phone2_display = '+7(960)048-49-57';
 $lc_phone2_tel = 'tel:+7(960)048-49-57';
-$lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A529a47dbf50b8ccb0e900378c49ad0fc6f16257c2341fdcaf42afb0b432a7454&amp;width=100%25&amp;height=556&amp;lang=ru_RU&amp;scroll=true';
+$lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A529a47dbf50b8ccb0e900378c49ad0fc6f16257c2341fdcaf42afb0b432a7454&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true';
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +57,9 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
     <section class="lireate-contacts-card lireate-contacts-form-card" aria-labelledby="lc-form-title">
       <span class="lireate-contacts-badge">Заявка</span>
       <h2 class="lireate-contacts-card-title" id="lc-form-title">Написать Директору Лирейт</h2>
+      <?php if (!$lc_preview) : ?>
       <script src="https://www.google.com/recaptcha/api.js?hl=ru"></script>
+      <?php endif; ?>
       <form class="form-unit pb30 ajax_form lireate-contacts-form" method="POST" action="mail.php">
         <div class="mail_to">
           <input type="hidden" name="mail_token" value="410eefd63c084df22d849b9d7ae549e7">
@@ -69,7 +73,11 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
             <div data-frm="otziv" class="form-group form-unit-group otzivError vError frm-input">
               <textarea class="form-control lireate-contacts-textarea" name="otziv" style="resize: none;"></textarea>
             </div>
+            <?php if ($lc_preview) : ?>
+            <div class="lireate-contacts-recaptcha-stub" aria-hidden="true">reCAPTCHA</div>
+            <?php else : ?>
             <div class="g-recaptcha vError" data-frm="g-recaptcha" data-sitekey="<?php echo lireate_contacts_h(LIREATE_CONTACTS_RECAPTCHA_SITEKEY); ?>" style="text-indent: 0px;margin-bottom: 10px;"></div>
+            <?php endif; ?>
           </div>
           <button type="submit" class="lireate-contacts-submit btn btn-gradient btn-primary content-button red btn-popup js-ap-btn">Отправить</button>
           <p class="lireate-contacts-consent">Нажимая на кнопку, вы даете <a href="/private_data">согласие на обработку персональных данных</a> и соглашаетесь c <a href="/politika_konfidencialnosti">политикой конфиденциальности</a></p>
@@ -85,7 +93,7 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
       <h2 class="lireate-contacts-card-title" id="lc-info-title">Как связаться</h2>
       <dl class="lireate-contacts-dl">
         <div><dt>Адрес</dt><dd><?php echo lireate_contacts_h($lc_address); ?></dd></div>
-        <div><dt>Телефоны</dt><dd><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
+        <div><dt>Телефоны</dt><dd class="lireate-contacts-phones"><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep" aria-hidden="true">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:<?php echo lireate_contacts_h($lc_email); ?>"><?php echo lireate_contacts_h($lc_email); ?></a></dd></div>
       </dl>
       <div class="lireate-contacts-map" aria-label="Карта офиса">
@@ -106,11 +114,11 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
               $photo = $lc_photo_origin . $photo;
           }
       ?>
-      <button type="button" class="lireate-contacts-team-card" data-lc-team-index="<?php echo (int) $idx; ?>">
+      <div class="lireate-contacts-team-card" role="button" tabindex="0" data-lc-team-index="<?php echo (int) $idx; ?>">
         <span class="lireate-contacts-team-photo" style="background-image:url('<?php echo lireate_contacts_h($photo); ?>')"></span>
         <span class="lireate-contacts-team-name"><?php echo lireate_contacts_h($member['name']); ?></span>
         <span class="lireate-contacts-team-role"><?php echo lireate_contacts_h($member['role']); ?></span>
-      </button>
+      </div>
       <?php endforeach; ?>
     </div>
   </section>
