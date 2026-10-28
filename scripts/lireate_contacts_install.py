@@ -40,15 +40,18 @@ def bootstrap_env(env_file):
 
 
 def cmd_check(office_repo, docroot):
+    php_bin = lib.resolve_php_bin()
     pairs = lib.copy_plan(office_repo)
     template = lib.find_contacts_template(docroot)
     print("docroot: {0}".format(docroot))
     print("office_repo: {0}".format(office_repo))
+    print("php_bin: {0}".format(php_bin))
     print("=== COPY (office-repo → DOCROOT) ===")
     for src, rel in pairs:
         print("{0}  →  {1}".format(src, docroot / rel))
     print("")
     print("=== CMS CONTACTS TEMPLATE PATCH ===")
+    exit_code = 0
     if template is None:
         print("WARN: no CMS contacts template found under {0}/template".format(docroot))
     else:
@@ -61,12 +64,21 @@ def cmd_check(office_repo, docroot):
             diff = lib.unified_diff(original, planned, str(rel))
             if diff:
                 print(diff.rstrip())
+        print("")
+        print("=== php -l (planned patch) ===")
+        lint_err = lib.validate_planned_php(php_bin, original, planned, str(rel))
+        if lint_err:
+            print("FAIL: {0}".format(lint_err))
+            exit_code = 1
+        else:
+            print("OK: No syntax errors detected in {0}".format(rel))
     print("")
     print("SKIP (never touched): data/db.php, docroot/.htaccess")
-    return 0
+    return exit_code
 
 
 def cmd_apply(office_repo, docroot, backups_root):
+    php_bin = lib.resolve_php_bin()
     backup_id = lib.make_backup_id()
     backup_dir = backups_root / backup_id
     pairs = lib.copy_plan(office_repo)
@@ -74,8 +86,13 @@ def cmd_apply(office_repo, docroot, backups_root):
     template = lib.find_contacts_template(docroot)
     if template is not None:
         rels.append(template.relative_to(docroot))
+        original = template.read_text(encoding="utf-8", errors="replace")
+        planned = lib.plan_contacts_template_content(original)
+        lint_err = lib.validate_planned_php(php_bin, original, planned, template.relative_to(docroot))
+        if lint_err:
+            raise SystemExit("BLOCKER: refuse apply — php -l failed\n{0}".format(lint_err))
     lib.backup_files(backup_dir, docroot, rels)
-    created, notes, _tpl = lib.apply_contacts_install(office_repo, docroot)
+    created, notes, _tpl = lib.apply_contacts_install(office_repo, docroot, php_bin=php_bin)
     print("backup: {0}".format(backup_dir))
     if created:
         print("created: " + ", ".join(str(r) for r in created))
