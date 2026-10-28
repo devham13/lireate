@@ -9,6 +9,12 @@ python3 scripts/lireate_contacts_sync_template.py
 python3 scripts/lireate_contacts_install.py --check --docroot "$LIREATE_DOCROOT"
 ```
 
+`--check` и `--apply` перед изменениями гоняют `php -l` на **пропатченной копии** `template/main.php` (или другого найденного шаблона). При синтаксической ошибке — отказ (exit 1 / BLOCKER).
+
+Границы патча: от `<div class="title-ap">…Контакты Лирейт` до закрытия inner row `margin-bottom:20px` — **не** вырезаются обёрточные `</div></div>`, комментарий «Содержание» и `<?php }?>` вокруг блока kontaktyi.
+
+Класс `lireate-contacts-body` на `<body>` — только для `/kontaktyi/` через `<?php if($temp['page']=='kontaktyi') echo ' lireate-contacts-body';?>` в атрибуте `class` (не глобально на весь сайт).
+
 ## Деплой на REG.RU (с машины с доступом к DOCROOT, не Cloud Agent)
 
 ```bash
