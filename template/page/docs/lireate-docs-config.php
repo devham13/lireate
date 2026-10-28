@@ -7,7 +7,7 @@ if (!defined('LIREATE_DOCS_ASSETS_BASE')) {
 }
 
 if (!defined('LIREATE_DOCS_TEMPLATE_VERSION')) {
-    define('LIREATE_DOCS_TEMPLATE_VERSION', '2026-10-28a');
+    define('LIREATE_DOCS_TEMPLATE_VERSION', '2026-10-28b');
 }
 
 if (!defined('LIREATE_DOCS_METRIKA_ID')) {
