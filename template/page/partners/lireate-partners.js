@@ -29,7 +29,11 @@
         return;
       }
       if (photo) {
-        photo.src = member.photo || '';
+        if (member.photo) {
+          photo.src = member.photo;
+        } else {
+          photo.removeAttribute('src');
+        }
         photo.alt = member.name || '';
       }
       if (name) {
@@ -45,6 +49,9 @@
     function closeModal() {
       modal.hidden = true;
       document.documentElement.style.overflow = '';
+      if (photo) {
+        photo.removeAttribute('src');
+      }
     }
 
     document.querySelectorAll('[data-lp-team-index]').forEach(function (btn) {
