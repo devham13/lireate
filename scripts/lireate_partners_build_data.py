@@ -201,16 +201,19 @@ def emit_php(intro, partners, team):
             "if (!function_exists('lireate_partners_team_members')) {",
             "function lireate_partners_team_members()",
             "{",
-            "    return array(",
+            "    $contacts_data = __DIR__ . '/../../kontaktyi/_shared/lireate-contacts-data.php';",
+            "    if (is_file($contacts_data)) {",
+            "        require_once $contacts_data;",
+            "        if (function_exists('lireate_contacts_team_members')) {",
+            "            return lireate_contacts_team_members();",
+            "        }",
+            "    }",
+            "    return array();",
+            "}",
+            "}",
+            "",
         ]
     )
-    for t in team:
-        lines.append("        array(")
-        lines.append("            'name' => {0},".format(php_str(t["name"])))
-        lines.append("            'role' => {0},".format(php_str(t["role"])))
-        lines.append("            'photo' => {0},".format(php_str(t["photo"])))
-        lines.append("        ),")
-    lines.extend(["    );", "}", "}", ""])
     return "\n".join(lines)
 
 

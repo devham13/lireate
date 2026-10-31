@@ -2,6 +2,7 @@
 """Render partners preview HTML (no PHP) for QA screenshots."""
 
 import html
+import os
 import re
 import sys
 from pathlib import Path
@@ -10,10 +11,37 @@ REPO = Path(__file__).resolve().parents[1]
 SNAPSHOT = REPO / "pages" / "partners" / "_preview" / "fixtures" / "partners-live.snapshot.html"
 OUT = REPO / "pages" / "partners" / "_preview" / "rendered-preview.html"
 CMS_ORIGIN = "https://" + "li" + "re" + "ate.ru"  # pragma: allowlist secret
+DEFAULT_LOCAL = "http://127.0.0.1:8799"
 
 sys.path.insert(0, str(REPO / "scripts"))
 import lireate_partners_install_lib as lib  # noqa: E402
 import lireate_partners_build_data as build  # noqa: E402
+
+
+def preview_local_origin():
+    origin = os.environ.get("LIREATE_PARTNERS_PREVIEW_ORIGIN", DEFAULT_LOCAL).strip()
+    return origin.rstrip("/")
+
+
+def load_team_from_contacts_php():
+    """Parse lireate-contacts-data.php team list (15 members)."""
+    path = REPO / "pages" / "kontaktyi" / "_shared" / "lireate-contacts-data.php"
+    text = path.read_text(encoding="utf-8", errors="replace")
+    team = []
+    blocks = re.findall(
+        r"'name'\s*=>\s*'((?:\\'|[^'])*)'.*?'role'\s*=>\s*'((?:\\'|[^'])*)'.*?'photo'\s*=>\s*'((?:\\'|[^'])*)'",
+        text,
+        re.DOTALL,
+    )
+    for name, role, photo in blocks:
+        team.append(
+            {
+                "name": name.replace("\\'", "'"),
+                "role": role.replace("\\'", "'"),
+                "photo": photo.replace("\\'", "'"),
+            }
+        )
+    return team
 
 
 def render_contact(contact):
@@ -43,13 +71,21 @@ def render_contact(contact):
     return "<div>" + "".join(parts) + "</div>"
 
 
-def render_inner(intro, partners, team, assets_base, photo_origin):
+def render_inner(intro, partners, team, local_origin, photo_origin):
+    assets = local_origin + "/template/page/partners"
+    footer_css = local_origin + "/template/page/news/lireate-blog-footer.css"
+    if not (REPO / "template" / "page" / "news" / "lireate-blog-footer.css").is_file():
+        footer_css = CMS_ORIGIN + "/template/page/news/lireate-blog-footer.css"
     lines = [
+        '<link rel="preconnect" href="https://fonts.googleapis.com">',
+        '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+        '<link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">',
         '<link rel="stylesheet" href="{0}/lireate-partners.css?v=preview">'.format(
-            html.escape(assets_base)
+            html.escape(assets)
         ),
-        '<script>document.documentElement.classList.add("lireate-partners-html");'
-        'if(document.body){document.body.classList.add("lireate-partners-body");}</script>',
+        '<link rel="stylesheet" href="{0}?v=preview">'.format(html.escape(footer_css)),
+        "<script>document.documentElement.classList.add('lireate-partners-html');"
+        "if(document.body){document.body.classList.add('lireate-partners-body');}</script>",
         '<div class="lireate-partners-page">',
         '<header class="lireate-partners-hero"><div class="lireate-partners-wrap">',
         '<p class="lireate-partners-kicker">LIREATE</p>',
@@ -105,7 +141,13 @@ def render_inner(intro, partners, team, assets_base, photo_origin):
                 lines.append(render_contact(c))
             lines.append("</dl>")
         lines.append("</div></article>")
-    lines.extend(["</div></section>", '<section class="lireate-partners-wrap lireate-partners-team" aria-label="Команда LIREATE">', '<div class="lireate-partners-team-grid">'])
+    lines.extend(
+        [
+            "</div></section>",
+            '<section class="lireate-partners-wrap lireate-partners-team" aria-label="Команда LIREATE">',
+            '<div class="lireate-partners-team-grid">',
+        ]
+    )
     for member in team:
         photo = member.get("photo", "")
         if photo and not photo.startswith("http"):
@@ -123,7 +165,7 @@ def render_inner(intro, partners, team, assets_base, photo_origin):
     return "\n".join(lines)
 
 
-def patch_snapshot(page_html, inner):
+def patch_snapshot(page_html, inner, cms_origin):
     span = lib._span_partners_block(page_html)
     if not span:
         raise SystemExit("BLOCKER: partners block span not found")
@@ -131,45 +173,46 @@ def patch_snapshot(page_html, inner):
     patched = page_html[: span[0]] + section + page_html[span[1] :]
     patched = re.sub(r"<base\b[^>]*>", "", patched, flags=re.I)
     patched = re.sub(
+        r"<link\b[^>]*href=[\"'][^\"']*template/page/partners/style\.css[\"'][^>]*>",
+        "",
+        patched,
+        flags=re.I,
+    )
+    patched = re.sub(
         r'(\s(?:href|src|action)=["\'])\/(?!/)',
-        r"\1" + CMS_ORIGIN + "/",
+        r"\1" + cms_origin + "/",
         patched,
         flags=re.I,
     )
     patched = re.sub(
         r'(\sstyle="[^"]*background-image:url\()template/',
-        r"\1" + CMS_ORIGIN + "/template/",
+        r"\1" + cms_origin + "/template/",
         patched,
         flags=re.I,
     )
     if "lireate-partners-body" not in patched:
         patched = re.sub(
-            r"(<body\b[^>]*\bclass=\")([^\"]*)(\")",
+            r'(<body\b[^>]*\bclass=")([^"]*)(")',
             r"\1\2 lireate-partners-body\3",
             patched,
             count=1,
             flags=re.I,
         )
-    patched = patched.replace(
-        'href="/template/page/partners/style.css"',
-        'href="/template/page/partners/lireate-partners.css"',
-    )
     return patched
 
 
 def main():
+    local = preview_local_origin()
     text = SNAPSHOT.read_text(encoding="utf-8", errors="replace")
-    intro, partners, team = build.parse_partners_html(text)
-    inner = render_inner(
-        intro,
-        partners,
-        team,
-        assets_base="/template/page/partners",
-        photo_origin=CMS_ORIGIN,
-    )
-    patched = patch_snapshot(text, inner)
+    intro, partners, _team_live = build.parse_partners_html(text)
+    team = load_team_from_contacts_php()
+    if len(team) != 15:
+        print("BLOCKER: expected 15 team members from contacts data, got {0}".format(len(team)))
+        return 2
+    inner = render_inner(intro, partners, team, local, CMS_ORIGIN)
+    patched = patch_snapshot(text, inner, CMS_ORIGIN)
     OUT.write_text(patched, encoding="utf-8")
-    print("wrote {0}".format(OUT))
+    print("wrote {0} (team={1}, local_assets={2})".format(OUT, len(team), local))
     return 0
 
 
