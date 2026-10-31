@@ -56,16 +56,22 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
           $photo = isset($partner['photo']) ? $partner['photo'] : '';
       ?>
       <article class="lireate-partners-card">
-        <?php if ($photo !== '') : ?>
-        <div class="lireate-partners-photo" style="background-image:url('<?php echo lireate_partners_h($photo); ?>')"></div>
-        <?php endif; ?>
         <div class="lireate-partners-card-body">
-          <?php if (!empty($partner['name'])) : ?>
-          <h2 class="lireate-partners-name"><?php echo lireate_partners_h($partner['name']); ?></h2>
-          <?php endif; ?>
-          <?php if (!empty($partner['city'])) : ?>
-          <p class="lireate-partners-city"><?php echo lireate_partners_h($partner['city']); ?></p>
-          <?php endif; ?>
+          <div class="lireate-partners-head">
+            <?php if ($photo !== '') : ?>
+            <div class="lireate-partners-photo-wrap">
+              <img class="lireate-partners-photo" src="<?php echo lireate_partners_h($photo); ?>" alt="" loading="lazy" decoding="async">
+            </div>
+            <?php endif; ?>
+            <div class="lireate-partners-head-text">
+              <?php if (!empty($partner['name'])) : ?>
+              <h2 class="lireate-partners-name"><?php echo lireate_partners_h($partner['name']); ?></h2>
+              <?php endif; ?>
+              <?php if (!empty($partner['city'])) : ?>
+              <p class="lireate-partners-city"><?php echo lireate_partners_h($partner['city']); ?></p>
+              <?php endif; ?>
+            </div>
+          </div>
           <?php if (!empty($partner['fields']) && is_array($partner['fields'])) : ?>
           <dl class="lireate-partners-fields">
             <?php foreach ($partner['fields'] as $field) :
@@ -138,7 +144,7 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
     <div class="lireate-partners-modal-panel" role="dialog" aria-modal="true" aria-labelledby="lp-modal-name">
       <button type="button" class="lireate-partners-modal-close" data-lp-modal-close aria-label="Закрыть">&times;</button>
       <div class="lireate-partners-modal-photo-wrap">
-        <img class="lireate-partners-modal-photo" id="lp-modal-photo" src="" alt="">
+        <img class="lireate-partners-modal-photo" id="lp-modal-photo" alt="">
       </div>
       <h3 class="lireate-partners-modal-name" id="lp-modal-name"></h3>
       <p class="lireate-partners-modal-role" id="lp-modal-role"></p>

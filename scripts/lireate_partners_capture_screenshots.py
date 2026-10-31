@@ -78,7 +78,7 @@ def main():
             if metrics["overflowX"] > 0:
                 print("BLOCKER width {0}: overflowX={1}".format(w, metrics["overflowX"]))
                 ok = False
-            if metrics["pageHeight"] < 2500:
+            if metrics["pageHeight"] < 1800:
                 print("BLOCKER width {0}: page too short ({1}px)".format(w, metrics["pageHeight"]))
                 ok = False
             if not metrics["h1Visible"]:
@@ -89,6 +89,26 @@ def main():
                     metrics["h1Opacity"],
                     metrics["containerHeight"],
                 ))
+                ok = False
+            kicker_ok = page.evaluate(
+                """() => {
+                  const k = document.querySelector('.lireate-partners-kicker');
+                  if (!k) return false;
+                  const r = k.getBoundingClientRect();
+                  return r.top >= 4 && r.height > 0 && getComputedStyle(k).visibility !== 'hidden';
+                }"""
+            )
+            if not kicker_ok:
+                print("BLOCKER width {0}: LIREATE kicker not visible under top bar".format(w))
+                ok = False
+            modal_src = page.evaluate(
+                """() => {
+                  const img = document.getElementById('lp-modal-photo');
+                  return img ? img.getAttribute('src') : null;
+                }"""
+            )
+            if modal_src == "":
+                print("BLOCKER width {0}: empty modal img src".format(w))
                 ok = False
             shot = OUT_DIR / "partners-redesign-{0}.png".format(w)
             page.screenshot(path=str(shot), full_page=True)

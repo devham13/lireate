@@ -107,13 +107,17 @@ def render_inner(intro, partners, team, local_origin, photo_origin):
         if photo and not photo.startswith("http"):
             photo = photo_origin + photo
         lines.append('<article class="lireate-partners-card">')
+        lines.append('<div class="lireate-partners-card-body">')
+        lines.append('<div class="lireate-partners-head">')
         if photo:
+            lines.append('<div class="lireate-partners-photo-wrap">')
             lines.append(
-                '<div class="lireate-partners-photo" style="background-image:url(\'{0}\')"></div>'.format(
+                '<img class="lireate-partners-photo" src="{0}" alt="" loading="lazy">'.format(
                     html.escape(photo, quote=True)
                 )
             )
-        lines.append('<div class="lireate-partners-card-body">')
+            lines.append("</div>")
+        lines.append('<div class="lireate-partners-head-text">')
         if p.get("name"):
             lines.append(
                 '<h2 class="lireate-partners-name">{0}</h2>'.format(html.escape(p["name"]))
@@ -122,6 +126,7 @@ def render_inner(intro, partners, team, local_origin, photo_origin):
             lines.append(
                 '<p class="lireate-partners-city">{0}</p>'.format(html.escape(p["city"]))
             )
+        lines.append("</div></div>")
         if p.get("fields"):
             lines.append('<dl class="lireate-partners-fields">')
             for field in p["fields"]:
