@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render preview, verify dark styles loaded, save width screenshots."""
+"""Render preview, verify visible content, save full-page screenshots."""
 
 import os
 import sys
@@ -30,8 +30,7 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        ctx = browser.new_context()
-        probe = ctx.new_page()
+        probe = browser.new_page()
         css_resp = probe.goto(css_url, wait_until="load", timeout=60000)
         if not css_resp or css_resp.status != 200:
             print("BLOCKER: CSS not served at {0} (status={1})".format(
@@ -41,19 +40,37 @@ def main():
         probe.close()
 
         for w in widths:
-            page = browser.new_page(viewport={"width": w, "height": 900})
+            page = browser.new_page(viewport={"width": w, "height": 800})
             page.goto(url, wait_until="networkidle", timeout=120000)
+            page.evaluate("window.scrollTo(0, 0)")
             metrics = page.evaluate(
                 """() => {
                 const root = document.querySelector('.lireate-partners-page');
-                const bg = root ? getComputedStyle(root).backgroundColor : '';
+                const h1 = document.querySelector('.lireate-partners-h1');
+                const h1Rect = h1 ? h1.getBoundingClientRect() : null;
+                const h1Style = h1 ? getComputedStyle(h1) : null;
+                const container = document.querySelector('.page_container');
+                const cStyle = container ? getComputedStyle(container) : null;
                 const cards = document.querySelectorAll('.lireate-partners-card').length;
                 const team = document.querySelectorAll('.lireate-partners-team-card').length;
                 const overflowX = Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth);
-                return { bg, cards, team, overflowX };
+                const pageHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+                return {
+                  bg: root ? getComputedStyle(root).backgroundColor : '',
+                  cards,
+                  team,
+                  overflowX,
+                  pageHeight,
+                  containerHeight: cStyle ? cStyle.height : null,
+                  containerOverflow: cStyle ? cStyle.overflow : null,
+                  h1Top: h1Rect ? h1Rect.top : null,
+                  h1Height: h1Rect ? h1Rect.height : null,
+                  h1Opacity: h1Style ? h1Style.opacity : null,
+                  h1Visible: !!(h1 && h1Rect && h1Rect.height > 10 && h1Rect.top < 600 && h1Rect.top >= -20)
+                };
             }"""
             )
-            if metrics["cards"] < 20 or metrics["team"] != 15:
+            if metrics["cards"] != 27 or metrics["team"] != 15:
                 print("BLOCKER width {0}: cards={1} team={2}".format(
                     w, metrics["cards"], metrics["team"]
                 ))
@@ -61,13 +78,23 @@ def main():
             if metrics["overflowX"] > 0:
                 print("BLOCKER width {0}: overflowX={1}".format(w, metrics["overflowX"]))
                 ok = False
-            if "11, 11, 31" not in metrics["bg"] and "rgb(11, 11, 31)" not in metrics["bg"]:
-                print("BLOCKER width {0}: background not dark ({1})".format(w, metrics["bg"]))
+            if metrics["pageHeight"] < 2500:
+                print("BLOCKER width {0}: page too short ({1}px)".format(w, metrics["pageHeight"]))
+                ok = False
+            if not metrics["h1Visible"]:
+                print("BLOCKER width {0}: hero not visible (top={1}, h={2}, opacity={3}, containerH={4})".format(
+                    w,
+                    metrics["h1Top"],
+                    metrics["h1Height"],
+                    metrics["h1Opacity"],
+                    metrics["containerHeight"],
+                ))
                 ok = False
             shot = OUT_DIR / "partners-redesign-{0}.png".format(w)
             page.screenshot(path=str(shot), full_page=True)
-            print("OK {0}: {1} cards={2} team={3} bg={4}".format(
-                w, shot.name, metrics["cards"], metrics["team"], metrics["bg"]
+            height_px = shot.stat().st_size
+            print("OK {0}: {1} bytes={2} pageH={3} h1Top={4}".format(
+                w, shot.name, height_px, metrics["pageHeight"], metrics["h1Top"]
             ))
             page.close()
         browser.close()

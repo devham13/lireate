@@ -513,7 +513,17 @@ body.lireate-partners-body:has(.lireate-partners-page) #personsSlide {
   display: none !important;
 }
 
-body.lireate-partners-body .page_container {
+body.lireate-partners-body:has(.lireate-partners-page) .page_container {
+  background: transparent !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: none !important;
+}
+
+body.lireate-partners-body .page_container:not(:has(.lireate-partners-page)) {
   background: transparent !important;
   min-height: 0 !important;
   height: 0 !important;
@@ -521,6 +531,26 @@ body.lireate-partners-body .page_container {
   padding: 0 !important;
   overflow: hidden !important;
   border: none !important;
+}
+
+section#lireate-partners,
+section#lireate-partners .lireate-partners-page,
+section#lireate-partners .lireate-partners-page * {
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: none !important;
+  animation-delay: 0s !important;
+  transition: none !important;
+}
+
+section#lireate-partners .lireate-partners-page {
+  transform: none !important;
+}
+
+body.lireate-partners-body:has(.lireate-partners-page) .container.content,
+body.lireate-partners-body:has(.lireate-partners-page) .content.text-center {
+  min-height: 0 !important;
+  padding-top: 0 !important;
 }
 
 body.lireate-partners-body:has(.lireate-partners-page) footer.footer-ap,
