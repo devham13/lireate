@@ -4,6 +4,7 @@ CMS_DEFAULT = "cms-default"
 
 DOCS_BODY_COND = "<?php if($temp['page']=='docs') echo ' lireate-docs-body';?>"
 CONTACTS_BODY_COND = "<?php if($temp['page']=='kontaktyi') echo ' lireate-contacts-body';?>"
+PARTNERS_BODY_COND = "<?php if($temp['page']=='partners') echo ' lireate-partners-body';?>"
 
 
 def _insert_after_pos(text, pos, snippet):
@@ -38,6 +39,19 @@ def patch_contacts_body_conditional(text):
     else:
         pos = cms_default_insert_pos(text)
     return _insert_after_pos(text, pos, CONTACTS_BODY_COND)
+
+
+def patch_partners_body_conditional(text):
+    """Insert partners conditional after contacts snippet if present, else after cms-default."""
+    if PARTNERS_BODY_COND in text:
+        return text, False
+    if CONTACTS_BODY_COND in text:
+        pos = text.find(CONTACTS_BODY_COND) + len(CONTACTS_BODY_COND)
+    elif DOCS_BODY_COND in text:
+        pos = text.find(DOCS_BODY_COND) + len(DOCS_BODY_COND)
+    else:
+        pos = cms_default_insert_pos(text)
+    return _insert_after_pos(text, pos, PARTNERS_BODY_COND)
 
 
 def remove_body_conditional_snippets(text, snippets):
