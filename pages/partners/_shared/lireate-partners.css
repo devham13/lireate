@@ -341,6 +341,9 @@ body.lireate-partners-body:has(.lireate-partners-page) .content.text-center {
   font-size: 14px;
   line-height: 1.35;
   color: #fff !important;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: manual;
 }
 
 .lireate-partners-team-role {
@@ -709,7 +712,9 @@ section#lireate-partners .lireate-partners-page button {
   font-weight: 700 !important;
   line-height: 1.25 !important;
   color: #fff !important;
-  overflow-wrap: anywhere;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: manual;
 }
 
 .lireate-partners-city {
