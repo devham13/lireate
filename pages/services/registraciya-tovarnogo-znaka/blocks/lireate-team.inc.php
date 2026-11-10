@@ -16,7 +16,8 @@ if (!is_array($lx_team_data) || empty($lx_team_data['enabled'])) {
     return;
 }
 $lx_team_members = [];
-foreach ($lx_team_data['members'] ?? [] as $lx_member) {
+$lx_team_member_list = isset($lx_team_data['members']) && is_array($lx_team_data['members']) ? $lx_team_data['members'] : array();
+foreach ($lx_team_member_list as $lx_member) {
     if (empty($lx_member['name']) || empty($lx_member['photo'])) {
         continue;
     }
@@ -47,7 +48,7 @@ $lx_team_heading = isset($lx_team_data['heading']) ? (string) $lx_team_data['hea
         decoding="async"
       >
       <h3><?php echo htmlspecialchars($lx_member['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
-      <p><?php echo htmlspecialchars($lx_member['role'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
+      <p><?php echo htmlspecialchars(isset($lx_member['role']) ? (string) $lx_member['role'] : '', ENT_QUOTES, 'UTF-8'); ?></p>
     </article>
     <?php endforeach; ?>
   </div>
