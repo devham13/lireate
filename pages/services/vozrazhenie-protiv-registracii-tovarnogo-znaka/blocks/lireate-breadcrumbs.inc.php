@@ -19,6 +19,14 @@ if (!function_exists('lireate_service_nav_links')) {
 $lx_service_nav_links = lireate_service_nav_links();
 $lx_bc_menu_id = 'lx-breadcrumb-services-menu';
 ?>
+<style id="lx-breadcrumb-critical">
+.lireate-svc-page .lx-breadcrumb-services-menu[hidden],
+.lireate-svc-page .lx-breadcrumb-services:not(.is-open) .lx-breadcrumb-services-menu{display:none!important}
+.lireate-svc-page .lx-breadcrumb-services-menu,
+.lireate-svc-page .lx-breadcrumb-services-menu li{list-style:none!important;margin:0;padding-left:0!important}
+.lireate-svc-page .lx-breadcrumb-services-menu li::after{content:none!important}
+.lireate-svc-page button.lx-breadcrumb-services-trigger{-webkit-appearance:none;appearance:none;border:1px solid rgba(125,211,252,.45);border-radius:8px;background:rgba(15,23,42,.35)}
+</style>
 <nav class="lx-breadcrumbs lx-breadcrumbs--in-page" aria-label="Хлебные крошки">
   <ol>
     <li><a href="/">Главная</a></li>
