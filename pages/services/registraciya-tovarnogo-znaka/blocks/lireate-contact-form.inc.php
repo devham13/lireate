@@ -1,5 +1,6 @@
 <?php
 /** @var string $lireate_phone_tel $lireate_phone_display $lireate_telegram $lireate_whatsapp $lireate_max */
+$lx_spam_guard = md5(date('m.Y'));
 $lx_messenger_hint = 'Здравствуйте! Хочу зарегистрировать название ___. Мои товары или услуги — ___. Подскажите стоимость';
 $lx_messenger_body = rawurlencode($lx_messenger_hint);
 $lx_tg_prefill = (strpos($lireate_telegram, '?') === false) ? ($lireate_telegram . '?text=' . $lx_messenger_body) : ($lireate_telegram . '&text=' . $lx_messenger_body);
@@ -11,14 +12,21 @@ $lx_tg_prefill = (strpos($lireate_telegram, '?') === false) ? ($lireate_telegram
       <p class="lx-form-lead">Оставьте телефон. Специалист уточнит название и перечень товаров или услуг для расчёта</p>
       <form
         id="lireate-lead-form"
-        class="lx-lead-form--landing"
+        class="lx-lead-form--landing lx-mail-lead-form"
         data-lx-lead-handler="landing"
+        data-lx-mail-action="/mail.php"
         data-lead-topic="Заявка: расчёт регистрации товарного знака"
         data-lx-success-text="Заявка принята. Специалист свяжется с вами, чтобы уточнить детали для расчёта"
         novalidate
       >
+        <input type="hidden" name="mail_token" value="503066424d5f7b5ad2097703ef3404d2">
+        <input type="hidden" name="fuck_spamers" value="<?php echo htmlspecialchars($lx_spam_guard, ENT_QUOTES, 'UTF-8'); ?>">
+        <input type="hidden" name="mail" value="mailorder">
+        <input type="hidden" name="form-type" value="order">
+        <input type="hidden" name="tomail" value="Расчёт регистрации товарного знака (лендинг услуги)">
+        <input type="hidden" name="consent_form" value="tz-landing-registraciya">
         <label for="lf-phone">Телефон <span class="lx-req" aria-hidden="true">*</span></label>
-        <input id="lf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+7 …" inputmode="tel">
+        <input id="lf-phone" name="tel" type="tel" required autocomplete="tel" placeholder="+7 …" inputmode="tel">
         <label for="lf-name">Имя <span class="lx-opt">(необязательно)</span></label>
         <input id="lf-name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться">
         <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>

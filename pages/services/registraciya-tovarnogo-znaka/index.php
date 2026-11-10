@@ -427,6 +427,8 @@ $schema_graph = [
 <script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
 <script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
+<script src="/template/js/lireate-utm.js?v=20261031"></script>
+<script src="assets/registraciya-landing-mail.js"></script>
 <script src="assets/registraciya-landing.js"></script>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="assets/lireate-shared/lireate-metrika-goals.js"></script>

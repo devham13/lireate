@@ -91,6 +91,7 @@
       form.getAttribute('data-lx-success-text') ||
       'Заявка принята. Специалист свяжется с вами, чтобы уточнить детали для расчёта';
     var sent = false;
+    var mailApi = window.lireateLandingMail;
 
     function showError(msg) {
       if (!errEl) {
@@ -128,38 +129,44 @@
         }
         return;
       }
+      if (!mailApi || typeof mailApi.submitMailLead !== 'function') {
+        showError('Отправка временно недоступна. Обновите страницу или напишите в мессенджер.');
+        return;
+      }
       form.classList.add('is-busy');
       if (submitBtn) {
         submitBtn.disabled = true;
       }
       var name = nameEl && nameEl.value ? nameEl.value.trim() : '';
-      var topic = form.getAttribute('data-lead-topic') || 'Заявка LIREATE';
-      var body =
-        topic +
-        '%0AТел: ' +
-        encodeURIComponent(phoneNorm) +
-        (name ? '%0AИмя: ' + encodeURIComponent(name) : '');
-      var tgEl = document.getElementById('link-telegram');
-      var tg = tgEl ? tgEl.getAttribute('href') : '';
-      window.setTimeout(function () {
-        if (okEl) {
-          okEl.textContent = successText;
-          okEl.classList.add('is-visible');
-        }
-        if (!sent) {
-          sent = true;
-          reach('tz_form_success');
-          reach('zayavka');
-        }
-        if (tg && tg.indexOf('t.me') !== -1) {
-          var sep = tg.indexOf('?') === -1 ? '?' : '&';
-          window.open(tg + sep + 'text=' + body, '_blank', 'noopener,noreferrer');
-        }
-        form.classList.remove('is-busy');
-        if (submitBtn) {
-          submitBtn.disabled = false;
-        }
-      }, 200);
+      mailApi
+        .submitMailLead(form, { phoneDigits: phoneNorm, nameOptional: name })
+        .then(function (result) {
+          if (result && result.ok) {
+            if (okEl) {
+              okEl.textContent = successText;
+              okEl.classList.add('is-visible');
+            }
+            if (!sent) {
+              sent = true;
+              reach('tz_form_success');
+              reach('zayavka');
+            }
+            clearError();
+          } else {
+            reach('tz_form_error', { reason: (result && result.message) || 'unknown' });
+            showError((result && result.message) || 'Не удалось отправить заявку. Попробуйте ещё раз.');
+          }
+        })
+        .catch(function () {
+          reach('tz_form_error', { reason: 'network' });
+          showError('Сеть недоступна. Проверьте подключение и отправьте заявку снова.');
+        })
+        .then(function () {
+          form.classList.remove('is-busy');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+          }
+        });
     });
   }
 

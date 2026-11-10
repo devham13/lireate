@@ -211,6 +211,12 @@ def lint_slug(slug):
     if landing_form:
         if "Получить расчёт" not in html:
             errors.append('landing lead form submit button must read "Получить расчёт"')
+        if 'data-lx-mail-action="/mail.php"' not in html and "data-lx-mail-action='/mail.php'" not in html:
+            errors.append('landing lead form must POST to CMS /mail.php (data-lx-mail-action)')
+        if 'name="mail" value="mailorder"' not in html:
+            errors.append('landing lead form must include hidden mail=mailorder for /mail.php')
+        if "registraciya-landing-mail.js" not in html:
+            errors.append('landing page must include registraciya-landing-mail.js')
     elif "Получить консультацию" not in html:
         errors.append('submit button must read "Получить консультацию"')
     if "Отправить бриф" in html:
