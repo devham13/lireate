@@ -30,10 +30,14 @@ const ctx = { window: { lireateMailSpamGuard: phpMonth }, FormData: MockFormData
 vm.runInNewContext(mailJs, ctx);
 const api = ctx.window.lireateLeadMail;
 
-const empty = api.parseMailPhpResponse('');
-assert.equal(empty.ok, false);
-assert.equal(empty.emptyBody, true);
-assert.equal(empty.showFallback, true);
+const emptyFail = api.parseMailPhpResponse('', 0);
+assert.equal(emptyFail.ok, false);
+assert.equal(emptyFail.emptyBody, true);
+
+const emptyOk = api.parseMailPhpResponse('', 200);
+assert.equal(emptyOk.ok, true);
+assert.equal(emptyOk.assumedSuccess, true);
+assert.equal(emptyOk.emptyBody, true);
 
 const spam = api.parseMailPhpResponse('fuck spamers!');
 assert.equal(spam.ok, false);
