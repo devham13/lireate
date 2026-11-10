@@ -56,11 +56,21 @@ const landingJs = readFileSync(
   path.join(root, 'pages/services/registraciya-tovarnogo-znaka/assets/registraciya-landing.js'),
   'utf8'
 );
+const formHtml = readFileSync(
+  path.join(root, 'pages/services/registraciya-tovarnogo-znaka/blocks/lireate-contact-form.inc.php'),
+  'utf8'
+);
 assert.match(landingJs, /submitMailLead/);
 assert.match(landingJs, /reach\('tz_form_success'\)/);
 assert.match(landingJs, /reach\('zayavka'\)/);
 assert.match(landingJs, /reach\('tz_form_error'/);
 assert.match(landingJs, /if \(!sent\)/);
+assert.match(landingJs, /initHeroChannelMenu/);
 assert.doesNotMatch(landingJs, /t\.me.*submit|telegram.*submit/i);
+
+assert.match(formHtml, /lx-landing-messengers/);
+assert.match(formHtml, /data-lx-tz-placement="contact"/);
+assert.doesNotMatch(formHtml, /lx-form-alt/);
+assert.doesNotMatch(formHtml, /class="lx-contact-side"/);
 
 console.log('test_registraciya_landing_submit: OK');

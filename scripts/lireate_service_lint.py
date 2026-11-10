@@ -254,7 +254,12 @@ def lint_slug(slug):
     if 'id="hero-max"' not in html and "id='hero-max'" not in html:
         errors.append("missing hero CTA id=hero-max (Написать в Max)")
 
-    if "lx-form-alt" not in html:
+    if landing_form:
+        if "lx-landing-messengers" not in html:
+            errors.append("landing #contact must include lx-landing-messengers block")
+        if re.search(r'class=["\'][^"\']*lx-form-alt', html):
+            errors.append("landing lead form must not use lx-form-alt (use lx-landing-messengers)")
+    elif "lx-form-alt" not in html:
         errors.append("missing lx-form-alt block under lead form")
 
     if 'href="/private_data"' not in html and "href='/private_data'" not in html:

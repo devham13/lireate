@@ -73,7 +73,7 @@ async function prepPage(page) {
   await page.close();
 }
 
-// Mobile 390 — форма после #contact + нижняя панель
+// Mobile 390 — вьюпорт после #contact (форма + панель)
 {
   const page = await browser.newPage();
   await prepPage(page);
@@ -83,12 +83,68 @@ async function prepPage(page) {
     document.querySelectorAll('.lx-reveal').forEach((el) => el.classList.add('lx-active'));
     document.getElementById('contact')?.scrollIntoView({ block: 'start' });
   });
-  await new Promise((r) => setTimeout(r, 400));
-  const bar = await page.$('.lx-mobile-bar');
-  if (bar) await bar.screenshot({ path: path.join(OUT, '04-mobile-bar-390.png') });
-  const form = await page.$('#contact');
-  if (form) await form.screenshot({ path: path.join(OUT, '05-form-mobile-390.png') });
-  console.log('wrote 04-05 mobile form/bar');
+  await new Promise((r) => setTimeout(r, 500));
+  await page.screenshot({ path: path.join(OUT, '04-mobile-viewport-390-contact.png'), fullPage: false });
+  console.log('wrote 04-mobile-viewport-390-contact.png');
+  await page.close();
+}
+
+// Mobile 320 — вьюпорт формы
+{
+  const page = await browser.newPage();
+  await prepPage(page);
+  await page.setViewport({ width: 320, height: 700 });
+  await page.goto(url, { waitUntil: 'networkidle0', timeout: 120000 });
+  await page.evaluate(() => {
+    document.querySelectorAll('.lx-reveal').forEach((el) => el.classList.add('lx-active'));
+    document.getElementById('contact')?.scrollIntoView({ block: 'start' });
+  });
+  await new Promise((r) => setTimeout(r, 500));
+  await page.screenshot({ path: path.join(OUT, '05-form-mobile-320-viewport.png'), fullPage: false });
+  console.log('wrote 05-form-mobile-320-viewport.png');
+  await page.close();
+}
+
+const widths = [320, 375, 390, 768, 1440];
+for (const w of widths) {
+  const page = await browser.newPage();
+  await prepPage(page);
+  await page.setViewport({ width: w, height: w < 500 ? 844 : 900 });
+  await page.goto(url, { waitUntil: 'networkidle0', timeout: 120000 });
+  await page.evaluate(() => document.querySelectorAll('.lx-reveal').forEach((el) => el.classList.add('lx-active')));
+  const dims = await page.evaluate(() => {
+    const iw = window.innerWidth;
+  const ih = window.innerHeight;
+    let maxRight = 0;
+    const visit = (el) => {
+      if (!el || el.nodeType !== 1) return;
+      const style = window.getComputedStyle(el);
+      if (style.position === 'fixed' || style.display === 'none' || style.visibility === 'hidden') {
+        for (const ch of el.children) visit(ch);
+        return;
+      }
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0 && rect.top < ih && rect.bottom > 0) {
+        if (rect.right > maxRight) maxRight = rect.right;
+      }
+      for (const ch of el.children) visit(ch);
+    };
+    visit(document.body);
+    return {
+      sw: document.documentElement.scrollWidth,
+      cw: document.documentElement.clientWidth,
+      iw,
+      maxVisibleRight: Math.round(maxRight * 100) / 100
+    };
+  });
+  const ok = dims.maxVisibleRight <= dims.iw + 0.5;
+  console.log(
+    `overflow-check ${w}: scrollWidth=${dims.sw} clientWidth=${dims.cw} maxVisibleRight=${dims.maxVisibleRight} innerWidth=${dims.iw} ok=${ok}`
+  );
+  if (!ok) {
+    console.error(`HORIZONTAL OVERFLOW at ${w}px`);
+    process.exitCode = 1;
+  }
   await page.close();
 }
 

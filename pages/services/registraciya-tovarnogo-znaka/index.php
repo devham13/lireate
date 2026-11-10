@@ -37,6 +37,14 @@ $lx_trust_verified = [
   ['title' => 'Решение принимает Роспатент', 'text' => 'Мы сопровождаем заявку и готовим ответы экспертизе, но не гарантируем выдачу свидетельства.'],
   ['title' => 'Проверка до уплаты пошлин', 'text' => 'Поиск по реестру и оценка рисков — в сопровождении или отдельно на странице /findtz/.'],
 ];
+$lx_messenger_hint = 'Здравствуйте! Хочу зарегистрировать название ___. Мои товары или услуги — ___. Подскажите стоимость';
+$lx_messenger_body = rawurlencode($lx_messenger_hint);
+$lx_hero_tg_href = (strpos($lireate_telegram, '?') === false)
+    ? ($lireate_telegram . '?text=' . $lx_messenger_body)
+    : ($lireate_telegram . '&text=' . $lx_messenger_body);
+$lx_hero_wa_href = (strpos($lireate_whatsapp, '?') === false)
+    ? ($lireate_whatsapp . '?text=' . $lx_messenger_body)
+    : ($lireate_whatsapp . '&text=' . $lx_messenger_body);
 $lx_breadcrumb_current = 'Регистрация товарного знака';
 $lx_review_filter_services = ['prodlenie-tovarnogo-znaka', 'registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat'];
 $schema_graph = [
@@ -74,7 +82,7 @@ $schema_graph = [
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
-<body class="lireate-svc-body">
+<body class="lireate-svc-body registraciya-landing-body">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
@@ -106,9 +114,14 @@ $schema_graph = [
     <div class="lx-tags" aria-label="Темы услуги"><span>ст. 1477 ГК РФ</span><span>п. 2.1 · 2.4 · 2.11</span><span>Роспатент</span><span>логотип и название</span></div>
     <div class="lx-hero-cta">
       <a class="lx-btn lx-btn-primary" href="#contact" data-lx-tz-form-open="hero_primary">Получить расчёт стоимости</a>
-      <a class="lx-btn lx-btn-ghost" href="#contact" data-lx-tz-form-open="hero_messenger" id="hero-messenger">Написать в мессенджер</a>
-      <a class="lx-skip-link" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Telegram</a>
-      <a class="lx-skip-link" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Написать в Max</a>
+      <div class="lx-hero-channel-pick">
+        <button type="button" class="lx-btn lx-btn-ghost lx-hero-channel-toggle" id="hero-messenger-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="hero-messenger-menu">Написать в мессенджер</button>
+        <ul class="lx-hero-channel-menu" id="hero-messenger-menu" role="menu" aria-labelledby="hero-messenger-toggle" hidden>
+          <li role="none"><a role="menuitem" id="hero-telegram" class="lx-hero-channel-link" href="<?php echo htmlspecialchars($lx_hero_tg_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" data-lx-tz-messenger="telegram" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_telegramm">Telegram</a></li>
+          <li role="none"><a role="menuitem" id="hero-whatsapp" class="lx-hero-channel-link" href="<?php echo htmlspecialchars($lx_hero_wa_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-tz-messenger="whatsapp" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher">WhatsApp</a></li>
+          <li role="none"><a role="menuitem" id="hero-max" class="lx-hero-channel-link lx-hero-channel-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max" data-lx-tz-messenger="max" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher">MAX</a></li>
+        </ul>
+      </div>
     </div>
     <p class="lx-hero-caption">Чтобы начать, пришлите название бренда и кратко опишите ваши товары или услуги. В смете отдельно покажем госпошлины и стоимость сопровождения.</p>
     <div class="lx-hero-mini">
