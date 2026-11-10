@@ -80,14 +80,17 @@ def _flatten_types(obj, found=None):
 
 def _merge_service_form_fragment(raw, service_dir):
     html = raw
-    if "lireate-contact-section.inc.php" in raw:
-        for candidate in (
-            service_dir / "blocks" / "lireate-contact-section.inc.php",
-            SERVICES / "_shared" / "blocks" / "lireate-contact-section.inc.php",
-        ):
-            if candidate.is_file():
-                html += "\n" + _read(candidate)
-                break
+    form_blocks = (
+        "blocks/lireate-contact-form.inc.php",
+        "blocks/lireate-contact-section.inc.php",
+    )
+    for m in re.finditer(r"include __DIR__ \. '/([^']+\.php)';", raw):
+        rel = m.group(1)
+        if rel not in form_blocks:
+            continue
+        p = service_dir / rel
+        if p.is_file():
+            html += "\n" + _read(p)
     if "lireate-lead-scripts.inc.php" in raw:
         for candidate in (
             service_dir / "lireate-lead-scripts.inc.php",
@@ -228,7 +231,17 @@ def lint_slug(slug):
     if re.search(r'id=["\']lf-msg["\']', html, re.I):
         errors.append("lead form must not include lf-msg textarea")
 
-    if "Получить консультацию" not in html:
+    landing_form = 'data-lx-lead-handler="landing"' in html
+    if landing_form:
+        if "Получить расчёт" not in html:
+            errors.append('landing lead form submit button must read "Получить расчёт"')
+        if 'data-lx-mail-action="/mail.php"' not in html and "data-lx-mail-action='/mail.php'" not in html:
+            errors.append('landing lead form must POST to CMS /mail.php (data-lx-mail-action)')
+        if 'name="mail" value="mailorder"' not in html:
+            errors.append('landing lead form must include hidden mail=mailorder for /mail.php')
+        if "lireate-lead-mail.js" not in html:
+            errors.append('landing page must include lireate-lead-mail.js (via lireate-lead-scripts)')
+    elif "Получить консультацию" not in html:
         errors.append('submit button must read "Получить консультацию"')
     if "Отправить бриф" in html:
         errors.append('deprecated submit label "Отправить бриф"')
@@ -241,7 +254,12 @@ def lint_slug(slug):
     if 'id="hero-max"' not in html and "id='hero-max'" not in html:
         errors.append("missing hero CTA id=hero-max (Написать в Max)")
 
-    if "lx-form-alt" not in html:
+    if landing_form:
+        if "lx-landing-messengers" not in html:
+            errors.append("landing #contact must include lx-landing-messengers block")
+        if re.search(r'class=["\'][^"\']*lx-form-alt', html):
+            errors.append("landing lead form must not use lx-form-alt (use lx-landing-messengers)")
+    elif "lx-form-alt" not in html:
         errors.append("missing lx-form-alt block under lead form")
 
     if 'href="/private_data"' not in html and "href='/private_data'" not in html:

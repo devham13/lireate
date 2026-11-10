@@ -14,8 +14,11 @@ const chrome = process.env.CHROME_PATH || '/usr/local/bin/google-chrome';
 fs.mkdirSync(outDir, { recursive: true });
 
 const viewports = [
-  { w: 1280, h: 900, tag: 'desktop-1280' },
+  { w: 1440, h: 900, tag: 'desktop-1440' },
+  { w: 768, h: 1024, tag: 'tablet-768' },
+  { w: 390, h: 844, tag: 'mobile-390' },
   { w: 375, h: 812, tag: 'mobile-375' },
+  { w: 320, h: 568, tag: 'mobile-320' },
 ];
 
 const browser = await puppeteer.launch({
@@ -44,7 +47,17 @@ for (const vp of viewports) {
     document.documentElement.classList.add('lx-no-motion');
   });
   await new Promise((r) => setTimeout(r, 400));
-  await snap(page, `registraciya-${vp.tag}-hero-breadcrumbs.png`);
+  await snap(page, `registraciya-${vp.tag}-hero-form-top.png`);
+
+  const contact = await page.$('#contact');
+  if (contact) {
+    await page.evaluate(() => {
+      const c = document.getElementById('contact');
+      if (c) c.scrollIntoView({ block: 'start' });
+    });
+    await new Promise((r) => setTimeout(r, 450));
+    await snap(page, `registraciya-${vp.tag}-form-anchor.png`);
+  }
 
   const trigger = await page.$('#lx-breadcrumb-services-trigger');
   if (trigger) {

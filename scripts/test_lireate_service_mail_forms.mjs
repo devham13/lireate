@@ -41,10 +41,18 @@ assert.match(sharedForm, /name="tel"/);
 for (const slug of SLUGS) {
   const indexPath = path.join(root, "pages/services", slug, "index.php");
   const index = readFileSync(indexPath, "utf8");
-  assert.match(index, /lireate-contact-section\.inc\.php/, `${slug}: missing contact include`);
+  const landingForm = /lireate-contact-form\.inc\.php/.test(index);
+  const serviceForm = /lireate-contact-section\.inc\.php/.test(index);
+  assert.ok(serviceForm || landingForm, `${slug}: missing contact include`);
   assert.match(index, /lireate-lead-scripts\.inc\.php/, `${slug}: missing lead scripts include`);
-  const contactBlock = path.join(root, "pages/services", slug, "blocks/lireate-contact-section.inc.php");
-  const block = existsSync(contactBlock) ? readFileSync(contactBlock, "utf8") : sharedForm;
+  let block = sharedForm;
+  const localSection = path.join(root, "pages/services", slug, "blocks/lireate-contact-section.inc.php");
+  const localLanding = path.join(root, "pages/services", slug, "blocks/lireate-contact-form.inc.php");
+  if (landingForm && existsSync(localLanding)) {
+    block = readFileSync(localLanding, "utf8");
+  } else if (existsSync(localSection)) {
+    block = readFileSync(localSection, "utf8");
+  }
   assert.match(block, /data-lx-mail-action="\/mail\.php"/, `${slug}: mail action`);
   const mailAsset = path.join(root, "pages/services", slug, "assets/lireate-shared/lireate-lead-mail.js");
   assert.ok(existsSync(mailAsset), `${slug}: run lireate_service_sync_shared.py`);
