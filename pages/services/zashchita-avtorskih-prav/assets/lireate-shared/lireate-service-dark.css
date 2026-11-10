@@ -766,9 +766,13 @@ html.lx-no-motion .lx-step-card { opacity: 1; transform: none; }
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: #6366f1 rgba(11, 16, 32, 0.55);
   padding-bottom: 8px;
+}
+@supports not selector(::-webkit-scrollbar) {
+  .lx-reviews-rail-viewport {
+    scrollbar-width: thin;
+    scrollbar-color: #6366f1 rgba(11, 16, 32, 0.55);
+  }
 }
 .lx-reviews-rail-viewport::-webkit-scrollbar {
   height: 6px;
