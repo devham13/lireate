@@ -14,6 +14,8 @@ $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
+$lx_service_asset_dir = __DIR__;
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Нужна ли регистрация, чтобы охранялись авторские права?', 'Нет. По п. 4 ст. 1259 ГК РФ право возникает при создании произведения в объективной форме. Программу или БД можно дополнительно зарегистрировать по желанию (ст. 1262 ГК РФ).'],
@@ -77,7 +79,7 @@ $lx_breadcrumb_current = 'Защита авторских прав';
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?php echo htmlspecialchars($seo_title, ENT_QUOTES, 'UTF-8'); ?>">
   <meta name="twitter:description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
-  <link rel="stylesheet" href="assets/lireate-shared/lireate-service-dark.css">
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-dark.css', $lx_service_asset_dir); ?>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -318,19 +320,19 @@ $lx_breadcrumb_current = 'Защита авторских прав';
   <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX" target="_blank" rel="noopener noreferrer"></a>
 </aside>
 
-<script src="assets/lireate-shared/lireate-motion-init.js"></script>
-<script src="assets/lireate-shared/lireate-reveal.js"></script>
-<script src="assets/lireate-shared/lireate-hero-panel.js"></script>
-<script src="assets/lireate-shared/lireate-carousel.js"></script>
-<script src="assets/lireate-shared/lireate-steps-walk.js"></script>
-<script src="assets/lireate-shared/lireate-mascot.js"></script>
-<script src="assets/lireate-shared/lireate-service-extras.js"></script>
-<script src="assets/lireate-shared/lireate-calculator.js"></script>
-<script src="assets/lireate-shared/lireate-quiz.js"></script>
-<script src="assets/lireate-shared/lireate-timeline.js"></script>
-<script src="assets/lireate-shared/lireate-compare.js"></script>
-<script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
-<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
-<script src="assets/lireate-shared/lireate-contact.js"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-motion-init.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reveal.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-hero-panel.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-carousel.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-steps-walk.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mascot.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-extras.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-calculator.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-quiz.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-timeline.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-compare.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-contact.js', $lx_service_asset_dir); ?>"></script>
 </body>
 </html>
