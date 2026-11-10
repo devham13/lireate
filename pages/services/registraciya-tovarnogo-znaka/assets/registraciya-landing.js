@@ -37,6 +37,43 @@
     }
   }
 
+  function mapTzFormErrorReason(context, result) {
+    if (context === 'network') {
+      return 'network';
+    }
+    if (context === 'validation_phone') {
+      return 'validation_phone';
+    }
+    if (context === 'validation_consent') {
+      return 'validation_consent';
+    }
+    if (context === 'client_unavailable') {
+      return 'client_unavailable';
+    }
+    if (context === 'server' || (result && !result.ok && !result.assumedSuccess)) {
+      return 'server_rejected';
+    }
+    if (result && result.assumedSuccess) {
+      return 'assumed_success';
+    }
+    return 'unknown';
+  }
+
+  function initReviewMetrics() {
+    document.querySelectorAll('[data-lx-review-open]').forEach(function (btn) {
+      btn.addEventListener(
+        'click',
+        function () {
+          var card = btn.closest('.lx-review-frame');
+          var placement = card ? 'reviews_rail' : 'page';
+          var kind = btn.getAttribute('data-lx-review-video') === '1' ? 'video' : 'dialog';
+          reach('tz_review_open', { placement: placement, kind: kind });
+        },
+        { passive: true }
+      );
+    });
+  }
+
   function bindFormOpen() {
     document.querySelectorAll('[data-lx-tz-form-open]').forEach(function (el) {
       el.addEventListener('click', function (ev) {
@@ -188,6 +225,7 @@
       }
       var phoneNorm = mailApi.normalizePhoneRu(phoneEl ? phoneEl.value : '');
       if (!phoneNorm) {
+        reach('tz_form_error', { reason: mapTzFormErrorReason('validation_phone') });
         showError('Укажите корректный номер телефона России (+7 …).');
         if (phoneEl) {
           phoneEl.focus();
@@ -195,6 +233,7 @@
         return;
       }
       if (consent && !consent.checked) {
+        reach('tz_form_error', { reason: mapTzFormErrorReason('validation_consent') });
         showError('Нужно согласие на обработку персональных данных.');
         if (consent) {
           consent.focus();
@@ -202,6 +241,7 @@
         return;
       }
       if (!mailApi || typeof mailApi.submitMailLead !== 'function') {
+        reach('tz_form_error', { reason: mapTzFormErrorReason('client_unavailable') });
         showError('Отправка временно недоступна. Обновите страницу или напишите в мессенджер.');
         return;
       }
@@ -225,7 +265,7 @@
             }
             clearError();
           } else {
-            reach('tz_form_error', { reason: (result && result.message) || 'unknown' });
+            reach('tz_form_error', { reason: mapTzFormErrorReason('server', result) });
             showError((result && result.message) || 'Не удалось отправить заявку. Попробуйте ещё раз.');
           }
         })
@@ -248,11 +288,13 @@
       initHeroChannelMenu();
       bindMessengers();
       initLandingLeadForm();
+      initReviewMetrics();
     });
   } else {
     bindFormOpen();
     initHeroChannelMenu();
     bindMessengers();
     initLandingLeadForm();
+    initReviewMetrics();
   }
 })();

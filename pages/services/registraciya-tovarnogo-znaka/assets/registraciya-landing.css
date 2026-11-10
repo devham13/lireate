@@ -4,7 +4,14 @@ body.registraciya-landing-body {
 }
 .registraciya-tovarnogo-znaka-page {
   min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
   box-sizing: border-box;
+}
+@supports not (overflow: clip) {
+  .registraciya-tovarnogo-znaka-page {
+    overflow-x: hidden;
+  }
 }
 body.registraciya-landing-body .lx-nav-shell {
   padding-left: 12px;
@@ -19,6 +26,20 @@ body.registraciya-landing-body .lx-reviews-rail-next {
 body.registraciya-landing-body .lx-reviews-rail-viewport {
   overflow-x: auto;
   max-width: 100%;
+  width: 100%;
+  contain: inline-size;
+}
+body.registraciya-landing-body #reviews,
+body.registraciya-landing-body .lx-reviews-rail {
+  overflow-x: clip;
+  max-width: 100%;
+  min-width: 0;
+}
+@supports not (overflow: clip) {
+  body.registraciya-landing-body #reviews,
+  body.registraciya-landing-body .lx-reviews-rail {
+    overflow-x: hidden;
+  }
 }
 @media (max-width: 360px) {
   body.registraciya-landing-body .lx-nav-pill {
@@ -287,4 +308,35 @@ body.registraciya-landing-body .lx-reviews-rail-viewport {
 }
 .registraciya-tovarnogo-znaka-page .lx-hero-channel-link--max {
   color: #f9a8d4;
+}
+
+/* Футер: без 100vw — иначе ~8px горизонтального overflow (полоса прокрутки) */
+body.registraciya-landing-body {
+  overflow-x: clip;
+}
+@supports not (overflow: clip) {
+  body.registraciya-landing-body {
+    overflow-x: hidden;
+  }
+}
+body.registraciya-landing-body .lx-site-footer {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+body.registraciya-landing-body .lx-site-footer-inner {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+
+/* Лента отзывов после цены — компактнее на лендинге */
+body.registraciya-landing-body #reviews.lx-section {
+  padding-top: 2.5rem;
+  padding-bottom: 2rem;
 }

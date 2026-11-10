@@ -152,7 +152,10 @@ $schema_graph = [
 
 <?php include __DIR__ . '/blocks/lireate-contact-form.inc.php'; ?>
 <?php include __DIR__ . '/blocks/lireate-pricing-brief.inc.php'; ?>
-<?php include __DIR__ . '/blocks/lireate-review-highlight.inc.php'; ?>
+<?php
+$lx_reviews_intro = 'Видео и переписки с клиентами LIREATE — реальные кейсы по регистрации товарных знаков.';
+include __DIR__ . '/blocks/lireate-reviews.inc.php';
+?>
 <?php include __DIR__ . '/blocks/lireate-trust.inc.php'; ?>
 
 <section class="lx-section lx-reveal" id="when">
@@ -340,8 +343,6 @@ $schema_graph = [
 </section>
 
 <?php include __DIR__ . '/blocks/lireate-team.inc.php'; ?>
-
-<?php include __DIR__ . '/blocks/lireate-reviews.inc.php'; ?>
 
 <section class="lx-section lx-reveal" id="refusal-1493">
   <span class="lx-section-label">Отказ и возражения</span>
