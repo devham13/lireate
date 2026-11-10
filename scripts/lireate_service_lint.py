@@ -215,6 +215,8 @@ def lint_slug(slug):
     if 'id="lireate-lead-form"' in html or "id='lireate-lead-form'" in html:
         if 'data-lx-mail-action="/mail.php"' not in html and "data-lx-mail-action='/mail.php'" not in html:
             errors.append('lead form must POST to /mail.php (data-lx-mail-action)')
+        if 'name="mail_token"' not in html:
+            errors.append('lead form must include hidden mail_token for /mail.php')
         if 'name="mail" value="mailorder"' not in html:
             errors.append('lead form must include hidden mail=mailorder for /mail.php')
         if "Откроем мессенджер" in html:

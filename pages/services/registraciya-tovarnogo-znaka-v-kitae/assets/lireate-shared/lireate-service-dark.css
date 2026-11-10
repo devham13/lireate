@@ -1170,6 +1170,10 @@ html.lx-review-lightbox-open { overflow: hidden; }
 }
 .lx-msg-btn--max:hover { border-color: rgba(244, 114, 182, 0.55); }
 .lx-msg-btn .lx-svg-icon { width: 20px; height: 20px; }
+.lx-form-alt.is-visible .lx-form-alt-label,
+.lx-form-alt.is-visible .lx-form-alt-icons {
+  opacity: 1;
+}
 .lx-form-alt {
   display: flex;
   flex-wrap: wrap;
