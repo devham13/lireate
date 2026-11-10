@@ -120,12 +120,26 @@
     var nameRequired = nameEl && nameEl.hasAttribute('required');
     var sent = false;
 
-    function showError(msg) {
+  function revealFallbackChannels() {
+      var alt = form.querySelector('.lx-form-alt');
+      if (alt) {
+        alt.classList.add('is-visible');
+      }
+    }
+
+    function showError(msg, withFallback) {
       if (!errEl) {
         return;
       }
-      errEl.textContent = msg;
+      var text = msg || 'Не удалось отправить заявку.';
+      if (withFallback && mailApi && typeof mailApi.leadFallbackHint === 'function') {
+        text += ' ' + mailApi.leadFallbackHint();
+      }
+      errEl.textContent = text;
       errEl.hidden = false;
+      if (withFallback) {
+        revealFallbackChannels();
+      }
     }
 
     function clearError() {
@@ -186,11 +200,14 @@
             }
             clearError();
           } else {
-            showError((result && result.message) || 'Не удалось отправить заявку. Попробуйте ещё раз.');
+            showError(
+              (result && result.message) || 'Не удалось отправить заявку. Попробуйте ещё раз.',
+              !!(result && result.showFallback)
+            );
           }
         })
         .catch(function () {
-          showError('Сеть недоступна. Проверьте подключение и отправьте заявку снова.');
+          showError('Сеть недоступна. Проверьте подключение и отправьте заявку снова.', true);
         })
         .then(function () {
           form.classList.remove('is-busy');
