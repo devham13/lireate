@@ -18,6 +18,7 @@ $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['TODO вопрос FAQ 1?', 'TODO краткий ответ.'],
@@ -42,11 +43,7 @@ $schema_graph = [
     ],
     [
       '@type' => 'BreadcrumbList',
-      'itemListElement' => [
-        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $site_root . '/'],
-        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $site_root . '/uslugi/'],
-        ['@type' => 'ListItem', 'position' => 3, 'name' => 'TODO', 'item' => $canonical],
-      ],
+      'itemListElement' => lireate_breadcrumb_schema_items($site_root, 'TODO', $canonical),
     ],
     [
       '@type' => 'FAQPage',
@@ -214,6 +211,7 @@ include __DIR__ . '/../_shared/blocks/lireate-reviews.inc.php';
 <script src="assets/lireate-shared/lireate-motion-init.js"></script>
 <script src="assets/lireate-shared/lireate-reveal.js"></script>
 <script src="assets/lireate-shared/lireate-reviews.js"></script>
+<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>

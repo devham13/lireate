@@ -13,6 +13,7 @@ $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Куда подать возражение против регистрации товарного знака?', 'Зависит от стадии. Если заявка опубликована, но решения о регистрации нет, подаётся письменное обращение по ст. 1493 ГК РФ в Роспатент (экспертиза заявки в ФИПС). Если знак уже зарегистрирован, подаётся возражение против предоставления правовой охраны в Роспатент по ст. 1512–1513 ГК РФ: на бумаге или в электронной форме через официальный сайт по правилам приказа № 644/261. Актуальные способы подачи сверяйте на сайте ФИПС.'],
@@ -31,11 +32,7 @@ $schema_graph = [
   '@graph' => [
     ['@type' => 'Service', '@id' => $canonical . '#service', 'name' => 'Возражение против регистрации товарного знака', 'url' => $canonical, 'description' => $seo_description, 'areaServed' => 'RU', 'provider' => ['@id' => $canonical . '#organization']],
     ['@type' => ['LegalService', 'Organization'], '@id' => $canonical . '#organization', 'name' => 'LIREATE', 'url' => $site_root . '/', 'telephone' => '+7-960-048-49-57', 'sameAs' => [$lireate_telegram, $lireate_whatsapp, $lireate_max]],
-    ['@type' => 'BreadcrumbList', 'itemListElement' => [
-      ['@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $site_root . '/'],
-      ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $site_root . '/uslugi/'],
-      ['@type' => 'ListItem', 'position' => 3, 'name' => 'Возражение против регистрации товарного знака', 'item' => $canonical],
-    ]],
+    ['@type' => 'BreadcrumbList', 'itemListElement' => lireate_breadcrumb_schema_items($site_root, 'Возражение против регистрации товарного знака', $canonical)],
     ['@type' => 'FAQPage', 'mainEntity' => array_map(static function ($pair) {
       return ['@type' => 'Question', 'name' => $pair[0], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $pair[1]]];
     }, $faq_entities)],
@@ -546,6 +543,7 @@ $schema_graph = [
 <script src="assets/lireate-shared/lireate-service-extras.js"></script>
 <script src="assets/lireate-shared/lireate-reviews.js"></script>
 <script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
+<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>

@@ -13,6 +13,7 @@ $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID') ?: '';
 $faq_entities = [
@@ -24,7 +25,7 @@ $faq_entities = [
   ['Что если Роспатент откажет?', 'Отказ не означает, что регистрация невозможна: можно подать возражение заявителя по ст. 1500 ГК РФ, доработать обозначение или подать новую заявку, но пошлины, как правило, не возвращаются. Возражения против отказа и переподача — отдельные услуги LIREATE по договору.'],
   ['Что такое обращение по ст. 1493 ГК РФ и при чём тут регистрация моего знака?', 'Ст. 1493 — это не «ответ на отказ по вашей заявке», а право любого лица подать обращение против чужой заявки после публикации сведений и до решения о регистрации. Если конкурент подал сходное обозначение, вы можете оспорить его заявку — подробнее на странице возражения против регистрации товарного знака.'],
   ['Нужен ли бренд на Wildberries или Ozon, если есть свидетельство?', 'Маркетплейсы часто просят подтвердить права на название и логотип. Свидетельство Роспатента — сильный аргумент, но площадка может запросить дополнительные документы. Регистрация в реестре не заменяет договор с площадкой: мы помогаем подготовить пакет под вашу ситуацию.'],
-  ['Чем базовое сопровождение отличается от оплаты за результат?', 'При базовой регистрации вознаграждение LIREATE и пошлины разделены по этапам договора без привязки к «оплате только при свидетельстве». Модель с оплатой за результат описана отдельно — на странице регистрации с оплатой за результат.'],
+  ['Чем базовое сопровождение отличается от оплаты за результат?', 'При базовой регистрации вознаграждение LIREATE и пошлины разделены по этапам договора без привязки к «оплате только при свидетельстве».'],
   ['Кто может подать заявку: ИП или ООО?', 'Заявку подаёт юридическое лицо или гражданин (ст. 1492 ГК РФ). Индивидуальные предприниматели и компании подают на общих основаниях; заявитель указывается в заявке и впоследствии фигурирует в свидетельстве как правообладатель. Выбор заявителя влияет на дальнейшие договоры и лицензии, поэтому лучше обсудить его до подачи.'],
   ['Что происходит после регистрации и нужно ли продлевать знак?', 'Охрана действует 10 лет с даты подачи заявки и может продлеваться на следующие 10 лет без ограничения числа продлений (ст. 1491 ГК РФ). Мы можем напомнить о дате и подготовить продление — подробнее на странице продления товарного знака.'],
 ];
@@ -35,11 +36,7 @@ $schema_graph = [
   '@graph' => [
     ['@type' => 'Service', '@id' => $canonical . '#service', 'name' => 'Регистрация товарного знака', 'serviceType' => 'Регистрация товарного знака в Роспатенте', 'url' => $canonical, 'description' => $seo_description, 'areaServed' => 'RU', 'provider' => ['@id' => $canonical . '#organization']],
     ['@type' => ['LegalService', 'Organization'], '@id' => $canonical . '#organization', 'name' => 'LIREATE', 'url' => $site_root . '/', 'telephone' => '+7-960-048-49-57', 'sameAs' => [$lireate_telegram, $lireate_whatsapp, $lireate_max]],
-    ['@type' => 'BreadcrumbList', 'itemListElement' => [
-      ['@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $site_root . '/'],
-      ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $site_root . '/uslugi/'],
-      ['@type' => 'ListItem', 'position' => 3, 'name' => 'Регистрация товарного знака', 'item' => $canonical],
-    ]],
+    ['@type' => 'BreadcrumbList', 'itemListElement' => lireate_breadcrumb_schema_items($site_root, 'Регистрация товарного знака', $canonical)],
     ['@type' => 'FAQPage', 'mainEntity' => array_map(static function ($pair) {
       return ['@type' => 'Question', 'name' => $pair[0], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $pair[1]]];
     }, $faq_entities)],
@@ -79,6 +76,7 @@ $schema_graph = [
       <a href="#pricing">Стоимость</a>
       <a href="#terms">Сроки</a>
       <a href="#refusal-1493">Отказ и возражения</a>
+      <a href="#team">Команда</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Заявка</a>
     </nav>
@@ -95,7 +93,7 @@ $schema_graph = [
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · под ключ</p>
     <h1>Регистрация товарного знака</h1>
-    <p class="lx-hero-lead">Сопровождение в Роспатенте под ключ: проверка обозначения, подача заявки, ответы экспертизе. Вознаграждение LIREATE и госпошлины разделены по смете; решение принимает Роспатент — гарантировать регистрацию нельзя. Нужна модель с оплатой за результат — см. <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">регистрацию с оплатой за результат</a>.</p>
+    <p class="lx-hero-lead">Сопровождение в Роспатенте под ключ: проверка обозначения, подача заявки, ответы экспертизе. Вознаграждение LIREATE и госпошлины разделены по смете; решение принимает Роспатент — гарантировать регистрацию нельзя.</p>
     <div class="lx-tags" aria-label="Темы услуги"><span>ст. 1477 ГК РФ</span><span>п. 2.1 · 2.4 · 2.11</span><span>Роспатент</span><span>логотип и название</span></div>
     <div class="lx-hero-cta">
       <a class="lx-btn lx-btn-primary" href="#contact">Оставить заявку</a>
@@ -317,6 +315,8 @@ $schema_graph = [
   <p>Если зарубежный рынок входит в ваши планы, помните: право на товарный знак территориально. Регистрация в России не создаёт охраны в Китае или других странах; для КНР см. <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрацию товарного знака в Китае</a>.</p>
 </section>
 
+<?php include __DIR__ . '/blocks/lireate-team.inc.php'; ?>
+
 <?php include __DIR__ . '/blocks/lireate-reviews.inc.php'; ?>
 
 <section class="lx-section lx-reveal" id="refusal-1493">
@@ -449,6 +449,7 @@ $schema_graph = [
 <script src="assets/lireate-shared/lireate-timeline.js"></script>
 <script src="assets/lireate-shared/lireate-reviews.js"></script>
 <script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
+<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="assets/lireate-shared/lireate-metrika-goals.js"></script>
