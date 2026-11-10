@@ -43,7 +43,7 @@ $lx_team_heading = isset($lx_team_data['heading']) ? (string) $lx_team_data['hea
         alt="<?php echo htmlspecialchars($lx_member['name'], ENT_QUOTES, 'UTF-8'); ?>"
         width="96"
         height="96"
-        loading="lazy"
+        loading="eager"
         decoding="async"
       >
       <h3><?php echo htmlspecialchars($lx_member['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
