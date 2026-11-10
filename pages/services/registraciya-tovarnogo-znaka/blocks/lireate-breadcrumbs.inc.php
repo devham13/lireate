@@ -3,7 +3,19 @@
 if (!isset($lx_breadcrumb_current) || $lx_breadcrumb_current === '') {
     return;
 }
-require_once dirname(__DIR__) . '/lireate-service-nav-links.php';
+if (!function_exists('lireate_service_nav_links')) {
+    $lx_services_root = dirname(dirname(__DIR__));
+    $lx_nav_file = $lx_services_root . '/lireate-service-nav-links.php';
+    if (!is_file($lx_nav_file)) {
+        $lx_nav_file = $lx_services_root . '/_shared/lireate-service-nav-links.php';
+    }
+    if (is_file($lx_nav_file)) {
+        require_once $lx_nav_file;
+    }
+}
+if (!function_exists('lireate_service_nav_links')) {
+    return;
+}
 $lx_service_nav_links = lireate_service_nav_links();
 $lx_bc_menu_id = 'lx-breadcrumb-services-menu';
 ?>
