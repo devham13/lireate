@@ -3,7 +3,9 @@
 
 import argparse
 import json
+import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -76,6 +78,108 @@ def _flatten_types(obj, found=None):
         for item in obj:
             _flatten_types(item, found)
     return found
+
+
+_STRONG_GLUE_AFTER_CLOSE = re.compile(
+    r"</(?:strong|b)>\s*<(?:span|small)>\s*[A-Za-zА-Яа-яЁё0-9]",
+    re.UNICODE,
+)
+_STRONG_GLUE_INLINE = re.compile(
+    r"</(?:strong|b)>\s*[A-Za-zА-Яа-яЁё0-9]",
+    re.UNICODE,
+)
+
+
+def _render_service_html(service_dir):
+    index = service_dir / "index.php"
+    if not index.is_file():
+        return ""
+    host = os.environ.get("LIREATE_LINT_HTTP_HOST", "example.test")
+    env = {**os.environ, "HTTP_HOST": host}
+    try:
+        proc = subprocess.run(
+            ["php", "-d", "display_errors=0", "index.php"],
+            cwd=str(service_dir),
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=45,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+    if proc.returncode != 0:
+        return ""
+    return proc.stdout
+
+
+def _lint_strong_label_glue(rendered):
+    """Inline glue (trust list и аналоги), без block-layout strong+span в карточках."""
+    issues = []
+    trust = re.search(
+        r'<section[^>]*\bid=["\']trust["\'][^>]*>.*?</section>',
+        rendered,
+        re.I | re.S,
+    )
+    chunks = [trust.group(0)] if trust else []
+    for chunk in chunks:
+        for pat, label in (
+            (_STRONG_GLUE_AFTER_CLOSE, "strong/b label glued to following span/small"),
+            (_STRONG_GLUE_INLINE, "strong/b glued to text without separator"),
+        ):
+            for m in pat.finditer(chunk):
+                start = max(0, m.start() - 24)
+                snippet = re.sub(r"\s+", " ", chunk[start : m.end() + 32]).strip()
+                issues.append("{0}: …{1}…".format(label, snippet))
+    return issues
+
+
+def _lint_strong_glue_sources(service_dir):
+    """Исходники: trust-блок и прочие inline </strong><span> без разделителя."""
+    issues = []
+    trust = service_dir / "blocks" / "lireate-trust.inc.php"
+    if trust.is_file():
+        text = _read(trust)
+        if re.search(r"</strong>\s*<span>", text) and not re.search(
+            r"</strong>\s*—\s*<span>", text
+        ):
+            issues.append(
+                "blocks/lireate-trust.inc.php must separate title and text with em dash"
+            )
+    block_skip = ("lx-price-card", "lx-mini-stat", "lx-kpi")
+    for path in sorted((service_dir / "blocks").glob("*.php")):
+        if path.name == "lireate-trust.inc.php":
+            continue
+        text = _read(path)
+        for m in re.finditer(r"</(?:strong|b)>\s*<(?:span|small)>", text):
+            line_start = text.rfind("\n", 0, m.start()) + 1
+            line_end = text.find("\n", m.end())
+            if line_end == -1:
+                line_end = len(text)
+            line = text[line_start:line_end]
+            if any(tok in line for tok in block_skip):
+                continue
+            if re.search(r"</(?:strong|b)>\s*(?:—|\.)\s*<", line):
+                continue
+            issues.append(
+                "{0}: inline strong glued to span/small".format(
+                    path.relative_to(service_dir)
+                )
+            )
+    index = service_dir / "index.php"
+    if index.is_file():
+        text = _read(index)
+        for m in re.finditer(r"</(?:strong|b)>\s*<(?:span|small)>", text):
+            line_start = text.rfind("\n", 0, m.start()) + 1
+            line_end = text.find("\n", m.end())
+            if line_end == -1:
+                line_end = len(text)
+            line = text[line_start:line_end]
+            if any(tok in line for tok in block_skip):
+                continue
+            if re.search(r"</(?:strong|b)>\s*(?:—|\.)\s*<", line):
+                continue
+            issues.append("index.php: inline strong glued to span/small")
+    return issues
 
 
 def _merge_service_form_fragment(raw, service_dir):
@@ -308,6 +412,15 @@ def lint_slug(slug):
             errors.append("demo review card allowed only in pages/services/_template")
         if "Пример оформления" in raw:
             errors.append("demo review badge must not appear on published service pages")
+
+    for issue in _lint_strong_glue_sources(service_dir):
+        errors.append("source HTML glue: " + issue)
+    rendered = _render_service_html(service_dir)
+    if rendered:
+        for issue in _lint_strong_label_glue(rendered):
+            errors.append("rendered HTML: " + issue)
+    else:
+        warnings.append("could not render index.php for strong-label glue check")
 
     return errors, warnings
 
