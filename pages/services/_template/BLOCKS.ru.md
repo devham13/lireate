@@ -12,7 +12,7 @@
 | Breadcrumbs | `blocks/lireate-breadcrumbs.inc.php` + `$lx_breadcrumb_current` | — |
 | Hero + маскот | `.lx-hero-mascot-slot` `data-lx-mascot="…"` | `lireate-motion-init.js`, `lireate-mascot.js`, `lireate-hero-panel.js`, `lireate-service-extras.js` |
 | Route card | `.lx-glass.lx-glass-anim` + `.lx-route` | `lireate-hero-panel.js` |
-| Форма + согласие | `#lireate-lead-form`, `/private_data`, `/politika_konfidencialnosti` | `lireate-contact.js` |
+| Форма + согласие | `blocks/lireate-contact-section.inc.php` → `/mail.php` | `lireate-lead-scripts.inc.php` (utm + lead-mail + contact) |
 | Футер | `lireate-service-footer.inc.php` | — |
 | Sticky mobile | `blocks/lireate-sticky-mobile.inc.php` | `lireate-mobile-bar.js` |
 | Reduced motion | — | `lireate-motion-init.js` |
