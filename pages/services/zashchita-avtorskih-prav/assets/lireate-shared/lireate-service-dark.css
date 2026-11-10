@@ -1272,8 +1272,9 @@ html.lx-review-lightbox-open { overflow: hidden; }
 .lx-reveal.lx-active { opacity: 1; transform: none; }
 .lx-breadcrumbs { padding: 100px 0 0; font-size: 13px; }
 .lx-breadcrumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; color: #64748b; }
-.lx-breadcrumbs li::after { content: "/"; margin-left: 8px; color: #475569; }
-.lx-breadcrumbs li:last-child::after { content: none; }
+.lx-breadcrumbs > ol > li::after { content: "/"; margin-left: 8px; color: #475569; }
+.lx-breadcrumbs > ol > li:last-child::after { content: none; }
+.lx-breadcrumb-services-menu li::after { content: none !important; }
 .lx-breadcrumbs a { color: #7dd3fc; text-decoration: none; }
 .lx-breadcrumbs [aria-current="page"] { color: #cbd5e1; }
 
