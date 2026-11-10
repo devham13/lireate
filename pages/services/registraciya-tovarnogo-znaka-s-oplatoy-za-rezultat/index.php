@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 header('Content-Type: text/html; charset=utf-8');
 $path = '/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
@@ -31,11 +32,7 @@ $schema_graph = [
   '@graph' => [
     ['@type' => 'Service', '@id' => $canonical . '#service', 'name' => 'Регистрация товарного знака с оплатой за результат', 'serviceType' => 'Регистрация товарного знака в Роспатенте', 'url' => $canonical, 'description' => $seo_description, 'areaServed' => 'RU', 'provider' => ['@id' => $canonical . '#organization']],
     ['@type' => ['LegalService', 'Organization'], '@id' => $canonical . '#organization', 'name' => 'LIREATE', 'url' => $site_root . '/', 'telephone' => '+7-960-048-49-57', 'sameAs' => [$lireate_telegram, $lireate_whatsapp, $lireate_max]],
-    ['@type' => 'BreadcrumbList', 'itemListElement' => [
-      ['@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $site_root . '/'],
-      ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $site_root . '/uslugi/'],
-      ['@type' => 'ListItem', 'position' => 3, 'name' => 'Регистрация товарного знака с оплатой за результат', 'item' => $canonical],
-    ]],
+    ['@type' => 'BreadcrumbList', 'itemListElement' => lireate_breadcrumb_schema_items($site_root, 'Регистрация товарного знака с оплатой за результат', $canonical)],
     ['@type' => 'FAQPage', 'mainEntity' => array_map(static function ($pair) {
       return ['@type' => 'Question', 'name' => $pair[0], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $pair[1]]];
     }, $faq_entities)],
@@ -454,6 +451,7 @@ $schema_graph = [
 <script src="assets/lireate-shared/lireate-timeline.js"></script>
 <script src="assets/lireate-shared/lireate-reviews.js"></script>
 <script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
+<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>

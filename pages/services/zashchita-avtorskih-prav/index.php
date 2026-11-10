@@ -333,6 +333,7 @@ $lx_breadcrumb_current = 'Защита авторских прав';
 <script src="assets/lireate-shared/lireate-timeline.js"></script>
 <script src="assets/lireate-shared/lireate-compare.js"></script>
 <script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
+<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>

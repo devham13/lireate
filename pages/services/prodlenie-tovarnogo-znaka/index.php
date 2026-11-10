@@ -13,6 +13,7 @@ $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Какой срок действия товарного знака?', 'По ст. 1491 ГК РФ — 10 лет с даты подачи заявки; продление возможно неограниченно при уплате пошлин.'],
@@ -29,11 +30,7 @@ $schema_graph = [
   '@graph' => [
     ['@type' => 'Service', '@id' => $canonical . '#service', 'name' => 'Продление товарного знака', 'url' => $canonical, 'description' => $seo_description, 'areaServed' => 'RU', 'provider' => ['@id' => $canonical . '#organization']],
     ['@type' => ['LegalService', 'Organization'], '@id' => $canonical . '#organization', 'name' => 'LIREATE', 'url' => $site_root . '/', 'telephone' => '+7-960-048-49-57', 'sameAs' => [$lireate_telegram, $lireate_whatsapp, $lireate_max]],
-    ['@type' => 'BreadcrumbList', 'itemListElement' => [
-      ['@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $site_root . '/'],
-      ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $site_root . '/uslugi/'],
-      ['@type' => 'ListItem', 'position' => 3, 'name' => 'Продление товарного знака', 'item' => $canonical],
-    ]],
+    ['@type' => 'BreadcrumbList', 'itemListElement' => lireate_breadcrumb_schema_items($site_root, 'Продление товарного знака', $canonical)],
     ['@type' => 'FAQPage', 'mainEntity' => array_map(static function ($pair) {
       return ['@type' => 'Question', 'name' => $pair[0], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $pair[1]]];
     }, $faq_entities)],
@@ -259,6 +256,7 @@ $schema_graph = [
 <script src="assets/lireate-shared/lireate-calculator.js"></script>
 <script src="assets/lireate-shared/lireate-reviews.js"></script>
 <script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
+<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
 </body>
 </html>
