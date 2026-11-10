@@ -13,6 +13,7 @@ SERVICES = REPO_ROOT / "pages" / "services"
 SKIP_DIRS = {"_shared", "_template"}
 DEST_REL = Path("assets") / "lireate-shared"
 FOOTER_NAME = "lireate-service-footer.inc.php"
+LEAD_SCRIPTS_NAME = "lireate-lead-scripts.inc.php"
 MESSENGER_BUNDLE_NAMES = (
     "lireate-messenger-urls.php",
     "lireate-messenger-load.php",
@@ -54,6 +55,13 @@ def sync_service(service_dir, dry_run=False):
             changed.append(footer_dst.relative_to(service_dir))
             if not dry_run:
                 shutil.copy2(str(footer_src), str(footer_dst))
+    lead_scripts_src = SHARED / LEAD_SCRIPTS_NAME
+    if lead_scripts_src.is_file():
+        lead_dst = service_dir / LEAD_SCRIPTS_NAME
+        if not lead_dst.is_file() or _sha256(lead_scripts_src) != _sha256(lead_dst):
+            changed.append(lead_dst.relative_to(service_dir))
+            if not dry_run:
+                shutil.copy2(str(lead_scripts_src), str(lead_dst))
     for name in MESSENGER_BUNDLE_NAMES:
         src = SHARED / name
         if not src.is_file():

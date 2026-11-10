@@ -480,39 +480,12 @@ $schema_graph = [
 
 <?php include __DIR__ . '/blocks/lireate-reviews.inc.php'; ?>
 
-<section class="lx-section lx-reveal" id="contact">
-  <div class="lx-contact">
-    <div>
-      <span class="lx-section-label">Контакт</span>
-      <h2>Заявка на консультацию</h2>
-      <p>Опишите ситуацию: номер чужой заявки или знака, ваши права и сферу деятельности. Мы определим стадию, подскажем подходящую процедуру и оценим основания. Исход рассмотрения гарантировать нельзя: решение принимает Роспатент или суд.</p>
-      <p>Телефон: <a href="<?php echo htmlspecialchars($lireate_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lireate_phone_display, ENT_QUOTES, 'UTF-8'); ?></a></p>
-      <div class="lx-msg-grid">
-        <a class="lx-msg-btn" id="link-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
-        <a class="lx-msg-btn" id="link-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp"><span>WhatsApp</span></a>
-        <a class="lx-msg-btn lx-msg-btn--max" id="link-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>MAX</span></a>
-      </div>
-    </div>
-    <div class="lx-form-panel">
-      <form id="lireate-lead-form" data-lead-topic="Заявка: возражение против регистрации товарного знака" novalidate>
-        <label for="lf-name">Имя</label>
-        <input id="lf-name" name="name" type="text" required autocomplete="name" placeholder="Как к вам обращаться">
-        <label for="lf-phone">Телефон</label>
-        <input id="lf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+7 …">
-        <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
-        <button type="submit" class="lx-btn lx-btn-primary" style="width:100%;margin-top:12px;">Получить консультацию</button>
-        <div class="lx-form-alt">
-          <span class="lx-form-alt-label">или напишите нам</span>
-          <div class="lx-form-alt-icons">
-            <a id="form-alt-telegram" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" aria-label="Telegram"></a>
-            <a id="form-alt-max" class="lx-form-alt-link lx-form-alt-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max-white" aria-label="MAX"></a>
-          </div>
-        </div>
-        <p class="lx-form-success" id="lf-success" role="status">Спасибо! Откроем мессенджер с готовым текстом — отправьте сообщение, чтобы заявка дошла до юриста.</p>
-      </form>
-    </div>
-  </div>
-</section>
+<?php
+$lx_lead_topic = 'Заявка: возражение против регистрации товарного знака';
+$lx_lead_tomail = 'Возражение против регистрации ТЗ — заявка с сайта';
+$lx_lead_consent_form = 'lx-vozrazhenie-tz';
+include __DIR__ . '/blocks/lireate-contact-section.inc.php';
+?>
 
 <section class="lx-section lx-reveal" id="related">
   <span class="lx-section-label">LIREATE</span>
@@ -546,6 +519,6 @@ $schema_graph = [
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-contact.js', $lx_service_asset_dir); ?>"></script>
+<?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 </body>
 </html>
