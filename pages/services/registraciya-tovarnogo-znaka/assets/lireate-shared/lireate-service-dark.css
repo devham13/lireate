@@ -1278,22 +1278,38 @@ html.lx-review-lightbox-open { overflow: hidden; }
 .lx-breadcrumbs a { color: #7dd3fc; text-decoration: none; }
 .lx-breadcrumbs [aria-current="page"] { color: #cbd5e1; }
 
-.lx-breadcrumb-services { position: relative; display: inline-flex; align-items: center; }
+.lx-breadcrumb-services {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  vertical-align: middle;
+}
+.lireate-svc-page .lx-breadcrumbs > ol > li.lx-breadcrumb-services {
+  align-items: center;
+}
 .lx-breadcrumb-services-trigger {
   font: inherit;
   color: #7dd3fc;
-  background: transparent;
-  border: none;
-  padding: 0;
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(125, 211, 252, 0.45);
+  border-radius: 8px;
+  padding: 4px 10px 4px 9px;
   margin: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   -webkit-appearance: none;
   appearance: none;
   text-decoration: none;
-  line-height: inherit;
+  line-height: 1.35;
+  font-size: 13px;
+}
+.lx-breadcrumb-services.is-open .lx-breadcrumb-services-trigger {
+  border-color: rgba(125, 211, 252, 0.7);
+  background: rgba(30, 41, 59, 0.75);
+  color: #bae6fd;
 }
 .lx-breadcrumb-services-trigger::after {
   content: "";
@@ -1307,9 +1323,9 @@ html.lx-review-lightbox-open { overflow: hidden; }
 .lx-breadcrumb-services-trigger:hover,
 .lx-breadcrumb-services-trigger:focus-visible {
   color: #bae6fd;
-  outline: 1px solid rgba(125, 211, 252, 0.45);
-  outline-offset: 2px;
-  border-radius: 4px;
+  border-color: rgba(125, 211, 252, 0.65);
+  outline: 2px solid rgba(125, 211, 252, 0.25);
+  outline-offset: 1px;
 }
 .lx-breadcrumb-services-menu {
   position: absolute;
