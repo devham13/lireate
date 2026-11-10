@@ -1278,17 +1278,22 @@ html.lx-review-lightbox-open { overflow: hidden; }
 .lx-breadcrumbs a { color: #7dd3fc; text-decoration: none; }
 .lx-breadcrumbs [aria-current="page"] { color: #cbd5e1; }
 
-.lx-breadcrumb-services { position: relative; }
+.lx-breadcrumb-services { position: relative; display: inline-flex; align-items: center; }
 .lx-breadcrumb-services-trigger {
   font: inherit;
   color: #7dd3fc;
   background: transparent;
   border: none;
   padding: 0;
+  margin: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  text-decoration: none;
+  line-height: inherit;
 }
 .lx-breadcrumb-services-trigger::after {
   content: "";
@@ -1320,9 +1325,20 @@ html.lx-review-lightbox-open { overflow: hidden; }
   border-radius: 12px;
   box-shadow: 0 18px 40px rgba(2, 6, 23, 0.55);
   backdrop-filter: blur(10px);
+  display: none !important;
 }
-.lx-breadcrumb-services.is-open .lx-breadcrumb-services-menu[hidden] {
-  display: block;
+.lx-breadcrumb-services-menu li {
+  list-style: none !important;
+  margin: 0;
+}
+.lx-breadcrumb-services-menu[hidden] {
+  display: none !important;
+}
+.lx-breadcrumb-services:not(.is-open) .lx-breadcrumb-services-menu {
+  display: none !important;
+}
+.lx-breadcrumb-services.is-open .lx-breadcrumb-services-menu {
+  display: block !important;
 }
 .lx-breadcrumb-services-menu a {
   display: block;
@@ -1349,19 +1365,27 @@ html.lx-review-lightbox-open { overflow: hidden; }
   }
 }
 
-/* Блок команды (страницы услуг) */
+/* Блок команды (страницы услуг) — сетка как /team */
+.lireate-svc-page #team {
+  scroll-margin-top: 96px;
+}
 .lx-team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
   margin-top: 20px;
 }
 .lx-team-grid--roster {
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .lx-team-grid--roster {
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1280px) {
+  .lx-team-grid--roster {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 .lx-team-card {

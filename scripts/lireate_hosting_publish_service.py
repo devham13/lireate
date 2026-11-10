@@ -46,6 +46,7 @@ DOCROOT_SHARED_PHP_NAMES = (
     "lireate-service-messenger.inc.php",
     "lireate-service-messenger-include.inc.php",
     "lireate-service-nav-links.php",
+    "lireate-service-assets.php",
 )
 SERVICE_DIR_HTACCESS_REL = ".htaccess"
 SERVICE_DIR_HTACCESS_SHARED = Path("pages") / "services" / "_shared" / "service-directory.htaccess"

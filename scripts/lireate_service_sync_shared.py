@@ -19,6 +19,7 @@ MESSENGER_BUNDLE_NAMES = (
     "lireate-messenger-require.inc.php",
     "lireate-service-messenger.inc.php",
     "lireate-service-messenger-include.inc.php",
+    "lireate-service-assets.php",
 )
 BLOCKS_DIR = SHARED / "blocks"
 
