@@ -5,7 +5,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Продление товарного знака — LIREATE';
-$seo_description = 'Продление товарного знака в Роспатенте: сроки по ст. 1491 ГК РФ, пошлины п. 2.22, онлайн-подача и риски пропуска дедлайна. Сопровождение LIREATE.';
+$seo_description = 'Продление товарного знака в Роспатенте: сроки по ст. 1491 ГК РФ, пошлины п. 2.22, онлайн-подача и риски пропуска дедлайна. Сопровождение LIREATE.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -19,8 +19,8 @@ $lx_service_asset_dir = __DIR__;
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Какой срок действия товарного знака?', 'По ст. 1491 ГК РФ — 10 лет с даты подачи заявки; продление возможно неограниченно при уплате пошлин.'],
-  ['Когда подавать заявление?', 'В последний год действия права; при пропуске — дополнительные 6 месяцев с пошлиной по п. 2.25 Положения о пошлинах.'],
-  ['Сколько стоит продление в Роспатенте?', 'П. 2.22: 22 000 руб. + 2 000 руб. за класс свыше 5 и 500 руб. за позицию свыше 10 в классе. Сверяйте с rospatent.gov.ru.'],
+  ['Когда подавать заявление?', 'В последний год действия права; при пропуске — дополнительные 6 месяцев с пошлиной по п. 2.25 Положения о пошлинах.'],
+  ['Сколько стоит продление в Роспатенте?', 'П. 2.22: 22 000 руб. + 2 000 руб. за класс свыше 5 и 500 руб. за позицию свыше 10 в классе. Сверяйте с rospatent.gov.ru.'],
   ['Можно ли продлить онлайн?', 'Да, через портал Роспатента и Госуслуги с корректной оплатой и кодом юридически значимого действия.'],
   ['Что если не продлить вовремя?', 'Исключительное право прекращается; обозначение может занять третье лицо.'],
   ['Гарантируете ли продление?', 'Нет. Решение принимает Роспатент после проверки документов и оплаты.'],
@@ -87,7 +87,7 @@ $schema_graph = [
     <p class="lx-eyebrow">LIREATE · товарные знаки · продление</p>
     <h1>Продление товарного знака</h1>
     <p class="lx-hero-lead">Сверяем дедлайн по реестру, считаем пошлины и сопровождаем подачу — без гарантий решения Роспатента.</p>
-    <div class="lx-tags"><span>ст. 1491 ГК РФ</span><span>п. 2.22</span><span>ФИПС</span></div>
+    <div class="lx-tags"><span>ст. 1491 ГК РФ</span><span>п. 2.22</span><span>ФИПС</span></div>
     <div class="lx-hero-cta">
       <a class="lx-btn lx-btn-primary" href="#contact">Оставить заявку</a>
       <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Написать в Telegram</span></a>
@@ -102,8 +102,8 @@ $schema_graph = [
   <div class="lx-glass lx-glass-anim" aria-label="Календарь продления">
     <div class="lx-panel-head"><span>Календарь · ориентиры</span><span class="lx-live">Роспатент</span></div>
     <div class="lx-kpi-row">
-      <div class="lx-kpi"><b class="lx-stat-value">п. 2.22</b><small>базовая пошлина 22 000 ₽</small></div>
-      <div class="lx-kpi"><b class="lx-stat-value">п. 2.25</b><small>ходатайство 3 000 ₽</small></div>
+      <div class="lx-kpi"><b class="lx-stat-value">п. 2.22</b><small>базовая пошлина 22 000 ₽</small></div>
+      <div class="lx-kpi"><b class="lx-stat-value">п. 2.25</b><small>ходатайство 3 000 ₽</small></div>
       <div class="lx-kpi"><b class="lx-stat-value">онлайн</b><small>подача через портал ведомства</small></div>
     </div>
     <ul class="lx-feed">
@@ -133,7 +133,7 @@ $schema_graph = [
       <ol class="lx-carousel-track">
         <li class="lx-carousel-slide"><article class="lx-card"><h3>Истекает 10 лет</h3><p>Ст. 1491 ГК РФ; сверка по ФИПС.</p></article></li>
         <li class="lx-carousel-slide"><article class="lx-card"><h3>Портфель брендов</h3><p>Единый календарь дедлайнов.</p></article></li>
-        <li class="lx-carousel-slide"><article class="lx-card"><h3>Пропущен последний год</h3><p>6 месяцев и пошлина п. 2.25.</p></article></li>
+        <li class="lx-carousel-slide"><article class="lx-card"><h3>Пропущен последний год</h3><p>6 месяцев и пошлина п. 2.25.</p></article></li>
         <li class="lx-carousel-slide"><article class="lx-card"><h3>Смена правообладателя</h3><p>Сверка реестра и договоров.</p></article></li>
         <li class="lx-carousel-slide"><article class="lx-card"><h3>Экспорт в КНР</h3><p>Отдельно — <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрация в Китае</a>.</p></article></li>
       </ol>
@@ -161,13 +161,13 @@ $schema_graph = [
   <span class="lx-section-label">Стоимость</span>
   <h2>Пошлины Роспатента и услуги LIREATE</h2>
   <div class="lx-price-grid">
-    <div class="lx-price-card"><strong data-lx-count-end="22000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">22 000 ₽</strong><span>п. 2.22 — базовая пошлина за продление (ПП РФ № 941, rospatent.gov.ru)</span></div>
+    <div class="lx-price-card"><strong data-lx-count-end="22000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">22 000 ₽</strong><span>п. 2.22 — базовая пошлина за продление (ПП РФ № 941, rospatent.gov.ru)</span></div>
     <div class="lx-price-card"><strong>по смете</strong><span>сопровождение LIREATE отдельно от госпошлин</span></div>
   </div>
   <div class="lx-calc" data-lx-calc="prodlenie-tz" id="calc">
     <label>Классов МКТУ <input type="number" data-lx-calc-classes min="1" max="45" value="5"></label>
-    <label><input type="checkbox" data-lx-calc-late> Льготные 6 месяцев (п. 2.25, +3 000 ₽)</label>
-    <p class="lx-calc-out">Ориентир госпошлины: <strong data-lx-calc-out-gov>22 000 ₽</strong></p>
+    <label><input type="checkbox" data-lx-calc-late> Льготные 6 месяцев (п. 2.25, +3 000 ₽)</label>
+    <p class="lx-calc-out">Ориентир госпошлины: <strong data-lx-calc-out-gov>22 000 ₽</strong></p>
     <p class="lx-calc-note">Только официальные пошлины; не оферта. Сверяйте с rospatent.gov.ru.</p>
   </div>
 </section>

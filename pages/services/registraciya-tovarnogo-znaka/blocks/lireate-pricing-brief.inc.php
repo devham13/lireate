@@ -13,11 +13,11 @@
       <tbody>
         <tr>
           <td>Подача и экспертиза</td>
-          <td>17&nbsp;000&nbsp;₽ на первом этапе <span class="lx-table-note">(п.&nbsp;2.1 — 4&nbsp;000&nbsp;₽ + п.&nbsp;2.4 — 13&nbsp;000&nbsp;₽)</span></td>
+          <td>17 000 ₽ на первом этапе <span class="lx-table-note">(п. 2.1 — 4 000 ₽ + п. 2.4 — 13 000 ₽)</span></td>
         </tr>
         <tr>
           <td>Регистрация и электронное свидетельство</td>
-          <td>18&nbsp;000&nbsp;₽ после положительного решения <span class="lx-table-note">(п.&nbsp;2.11)</span></td>
+          <td>18 000 ₽ после положительного решения <span class="lx-table-note">(п. 2.11)</span></td>
         </tr>
         <tr>
           <td>Работа LIREATE</td>
@@ -26,6 +26,6 @@
       </tbody>
     </table>
   </div>
-  <p class="lx-pricing-brief-total">Госпошлины за полный базовый цикл составят <strong>35&nbsp;000&nbsp;₽</strong>. <a href="#pricing">Подробная разбивка и допклассы</a>. Модель <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">с оплатой за результат</a> — отдельная страница.</p>
+  <p class="lx-pricing-brief-total">Госпошлины за полный базовый цикл составят <strong>35 000 ₽</strong>. <a href="#pricing">Подробная разбивка и допклассы</a>. Модель <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">с оплатой за результат</a> — отдельная страница.</p>
   <a class="lx-btn lx-btn-primary lx-cta-to-form" href="#contact" data-lx-tz-form-open="pricing_brief">Получить расчёт</a>
 </section>
