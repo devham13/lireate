@@ -19,17 +19,6 @@
     }
   }
 
-  function normalizePhone(raw) {
-    var digits = (raw || '').replace(/\D/g, '');
-    if (digits.length === 11 && (digits.charAt(0) === '7' || digits.charAt(0) === '8')) {
-      return digits;
-    }
-    if (digits.length === 10) {
-      return '7' + digits;
-    }
-    return '';
-  }
-
   function scrollToContact(focusForm) {
     var contact = document.getElementById('contact');
     if (!contact) {
@@ -91,7 +80,7 @@
       form.getAttribute('data-lx-success-text') ||
       'Заявка принята. Специалист свяжется с вами, чтобы уточнить детали для расчёта';
     var sent = false;
-    var mailApi = window.lireateLandingMail;
+    var mailApi = window.lireateLeadMail;
 
     function showError(msg) {
       if (!errEl) {
@@ -114,7 +103,7 @@
       if (form.classList.contains('is-busy')) {
         return;
       }
-      var phoneNorm = normalizePhone(phoneEl ? phoneEl.value : '');
+      var phoneNorm = mailApi.normalizePhoneRu(phoneEl ? phoneEl.value : '');
       if (!phoneNorm) {
         showError('Укажите корректный номер телефона России (+7 …).');
         if (phoneEl) {

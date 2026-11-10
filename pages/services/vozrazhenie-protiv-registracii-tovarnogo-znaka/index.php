@@ -14,6 +14,8 @@ $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
+$lx_service_asset_dir = __DIR__;
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
   ['Куда подать возражение против регистрации товарного знака?', 'Зависит от стадии. Если заявка опубликована, но решения о регистрации нет, подаётся письменное обращение по ст. 1493 ГК РФ в Роспатент (экспертиза заявки в ФИПС). Если знак уже зарегистрирован, подаётся возражение против предоставления правовой охраны в Роспатент по ст. 1512–1513 ГК РФ: на бумаге или в электронной форме через официальный сайт по правилам приказа № 644/261. Актуальные способы подачи сверяйте на сайте ФИПС.'],
@@ -54,7 +56,7 @@ $schema_graph = [
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?php echo htmlspecialchars($seo_title, ENT_QUOTES, 'UTF-8'); ?>">
   <meta name="twitter:description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
-  <link rel="stylesheet" href="assets/lireate-shared/lireate-service-dark.css">
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-dark.css', $lx_service_asset_dir); ?>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -478,39 +480,12 @@ $schema_graph = [
 
 <?php include __DIR__ . '/blocks/lireate-reviews.inc.php'; ?>
 
-<section class="lx-section lx-reveal" id="contact">
-  <div class="lx-contact">
-    <div>
-      <span class="lx-section-label">Контакт</span>
-      <h2>Заявка на консультацию</h2>
-      <p>Опишите ситуацию: номер чужой заявки или знака, ваши права и сферу деятельности. Мы определим стадию, подскажем подходящую процедуру и оценим основания. Исход рассмотрения гарантировать нельзя: решение принимает Роспатент или суд.</p>
-      <p>Телефон: <a href="<?php echo htmlspecialchars($lireate_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lireate_phone_display, ENT_QUOTES, 'UTF-8'); ?></a></p>
-      <div class="lx-msg-grid">
-        <a class="lx-msg-btn" id="link-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
-        <a class="lx-msg-btn" id="link-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp"><span>WhatsApp</span></a>
-        <a class="lx-msg-btn lx-msg-btn--max" id="link-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>MAX</span></a>
-      </div>
-    </div>
-    <div class="lx-form-panel">
-      <form id="lireate-lead-form" data-lead-topic="Заявка: возражение против регистрации товарного знака" novalidate>
-        <label for="lf-name">Имя</label>
-        <input id="lf-name" name="name" type="text" required autocomplete="name" placeholder="Как к вам обращаться">
-        <label for="lf-phone">Телефон</label>
-        <input id="lf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+7 …">
-        <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
-        <button type="submit" class="lx-btn lx-btn-primary" style="width:100%;margin-top:12px;">Получить консультацию</button>
-        <div class="lx-form-alt">
-          <span class="lx-form-alt-label">или напишите нам</span>
-          <div class="lx-form-alt-icons">
-            <a id="form-alt-telegram" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" aria-label="Telegram"></a>
-            <a id="form-alt-max" class="lx-form-alt-link lx-form-alt-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max-white" aria-label="MAX"></a>
-          </div>
-        </div>
-        <p class="lx-form-success" id="lf-success" role="status">Спасибо! Откроем мессенджер с готовым текстом — отправьте сообщение, чтобы заявка дошла до юриста.</p>
-      </form>
-    </div>
-  </div>
-</section>
+<?php
+$lx_lead_topic = 'Заявка: возражение против регистрации товарного знака';
+$lx_lead_tomail = 'Возражение против регистрации ТЗ — заявка с сайта';
+$lx_lead_consent_form = 'lx-vozrazhenie-tz';
+include __DIR__ . '/blocks/lireate-contact-section.inc.php';
+?>
 
 <section class="lx-section lx-reveal" id="related">
   <span class="lx-section-label">LIREATE</span>
@@ -535,15 +510,15 @@ $schema_graph = [
   <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX" target="_blank" rel="noopener noreferrer"></a>
 </aside>
 
-<script src="assets/lireate-shared/lireate-motion-init.js"></script>
-<script src="assets/lireate-shared/lireate-reveal.js"></script>
-<script src="assets/lireate-shared/lireate-hero-panel.js"></script>
-<script src="assets/lireate-shared/lireate-mascot.js"></script>
-<script src="assets/lireate-shared/lireate-compare.js"></script>
-<script src="assets/lireate-shared/lireate-service-extras.js"></script>
-<script src="assets/lireate-shared/lireate-reviews.js"></script>
-<script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
-<script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
-<script src="assets/lireate-shared/lireate-contact.js"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-motion-init.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reveal.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-hero-panel.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mascot.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-compare.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-extras.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
+<?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 </body>
 </html>

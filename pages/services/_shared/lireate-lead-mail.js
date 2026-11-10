@@ -37,9 +37,6 @@
     return { ok: false, message: 'Не удалось отправить заявку. Попробуйте позже.' };
   }
 
-  /**
-   * Собирает тело POST для /mail.php (как legacy ajax_form + consent-gate + lireate-utm.js).
-   */
   function buildMailLeadBody(form, phoneDigits, nameOptional) {
     var fd = new FormData();
     var nodes = form.querySelectorAll('input[type="hidden"]');
@@ -96,7 +93,7 @@
     });
   }
 
-  root.lireateLandingMail = {
+  root.lireateLeadMail = {
     normalizePhoneRu: normalizePhoneRu,
     parseMailPhpResponse: parseMailPhpResponse,
     buildMailLeadBody: buildMailLeadBody,

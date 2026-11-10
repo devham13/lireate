@@ -4,6 +4,9 @@
   var MAX_BLOB =
     'M50.76 0.26c27.54 0 49.13 22.34 49.13 49.89S77.61 99.49 51.02 99.49c-9.44 0-14.01-1.33-21.37-6.54-.51-.36-1.2-.27-1.63.19-5.66 6.04-20.17 10.28-20.83 2.03 0-14.39-7.19-23.73-7.19-45.3C0 21.55 23.22 0.26 50.76 0.26zm.77 24.55c-13.06-.69-23.26 8.39-25.51 22.57-1.86 11.75 1.44 26.07 4.27 26.79 1.2.31 4.08-1.88 6.18-3.86.39-.37 1-.44 1.46-.15 3.27 2 6.97 3.5 11.05 3.71 13.41.7 25.3-9.8 26.01-23.21.7-13.41-10.02-25.14-23.43-25.84z';
 
+  var root = document.documentElement;
+  var COUNTER_ID = parseInt(root.getAttribute('data-lireate-metrika-id') || '0', 10);
+
   var ICONS = {
     telegram:
       '<svg class="lx-svg-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
@@ -35,6 +38,21 @@
       '"/></svg>'
   };
 
+  function reachGoal(goalId, params) {
+    if (!goalId || typeof window.ym !== 'function' || !COUNTER_ID) {
+      return;
+    }
+    try {
+      if (params && typeof params === 'object') {
+        window.ym(COUNTER_ID, 'reachGoal', goalId, params);
+      } else {
+        window.ym(COUNTER_ID, 'reachGoal', goalId);
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
   function iconHtml(name) {
     if (name === 'max') {
       return ICONS.max('lxMaxG' + Math.random().toString(36).slice(2, 9));
@@ -58,7 +76,7 @@
   function initMessengerLinks(cfg) {
     var tg = cfg.telegram || 'https://t.me/lireate_patent';
     var wa = cfg.whatsapp || 'https://wa.me/79600484957';
-    var max = cfg.max || 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI'; // LIREATE_MAX_CHAT_URL
+    var max = cfg.max || 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI';
     setHref('link-telegram', tg);
     setHref('link-whatsapp', wa);
     setHref('link-max', max);
@@ -89,31 +107,97 @@
     if (form.getAttribute('data-lx-lead-handler') === 'landing') {
       return;
     }
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (!form.checkValidity()) {
-        form.reportValidity();
+    var mailApi = window.lireateLeadMail;
+    var nameEl = document.getElementById('lf-name');
+    var phoneEl = document.getElementById('lf-phone');
+    var consent = document.getElementById('lf-consent');
+    var okEl = document.getElementById('lf-success');
+    var errEl = document.getElementById('lf-error');
+    var submitBtn = form.querySelector('.lx-form-submit, button[type="submit"]');
+    var successText =
+      form.getAttribute('data-lx-success-text') ||
+      'Заявка принята. Мы свяжемся с вами в ближайшее время.';
+    var nameRequired = nameEl && nameEl.hasAttribute('required');
+    var sent = false;
+
+    function showError(msg) {
+      if (!errEl) {
         return;
       }
-      var nameEl = document.getElementById('lf-name');
-      var phoneEl = document.getElementById('lf-phone');
-      var name = nameEl ? nameEl.value.trim() : '';
-      var phone = phoneEl ? phoneEl.value.trim() : '';
-      var topic = form.getAttribute('data-lead-topic') || 'Заявка LIREATE';
-      var body =
-        topic +
-        '%0AИмя: ' +
-        encodeURIComponent(name) +
-        '%0AТел: ' +
-        encodeURIComponent(phone);
-      var tgEl = document.getElementById('link-telegram') || document.getElementById('form-alt-telegram');
-      var tg = tgEl ? tgEl.href : '';
-      if (tg && tg.indexOf('t.me') !== -1) {
-        var sep = tg.indexOf('?') === -1 ? '?' : '&';
-        window.open(tg + sep + 'text=' + body, '_blank', 'noopener,noreferrer');
+      errEl.textContent = msg;
+      errEl.hidden = false;
+    }
+
+    function clearError() {
+      if (errEl) {
+        errEl.hidden = true;
+        errEl.textContent = '';
       }
-      var ok = document.getElementById('lf-success');
-      if (ok) ok.classList.add('is-visible');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearError();
+      if (form.classList.contains('is-busy')) {
+        return;
+      }
+      if (!mailApi || typeof mailApi.submitMailLead !== 'function') {
+        showError('Отправка временно недоступна. Обновите страницу или напишите в мессенджер.');
+        return;
+      }
+      var name = nameEl && nameEl.value ? nameEl.value.trim() : '';
+      if (nameRequired && !name) {
+        showError('Укажите, как к вам обращаться.');
+        if (nameEl) {
+          nameEl.focus();
+        }
+        return;
+      }
+      var phoneNorm = mailApi.normalizePhoneRu(phoneEl ? phoneEl.value : '');
+      if (!phoneNorm) {
+        showError('Укажите корректный номер телефона России (+7 …).');
+        if (phoneEl) {
+          phoneEl.focus();
+        }
+        return;
+      }
+      if (consent && !consent.checked) {
+        showError('Нужно согласие на обработку персональных данных.');
+        if (consent) {
+          consent.focus();
+        }
+        return;
+      }
+      form.classList.add('is-busy');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+      }
+      mailApi
+        .submitMailLead(form, { phoneDigits: phoneNorm, nameOptional: name })
+        .then(function (result) {
+          if (result && result.ok) {
+            if (okEl) {
+              okEl.textContent = successText;
+              okEl.classList.add('is-visible');
+            }
+            if (!sent) {
+              sent = true;
+              reachGoal('zayavka');
+            }
+            clearError();
+          } else {
+            showError((result && result.message) || 'Не удалось отправить заявку. Попробуйте ещё раз.');
+          }
+        })
+        .catch(function () {
+          showError('Сеть недоступна. Проверьте подключение и отправьте заявку снова.');
+        })
+        .then(function () {
+          form.classList.remove('is-busy');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+          }
+        });
     });
   }
 

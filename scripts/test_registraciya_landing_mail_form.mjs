@@ -6,19 +6,19 @@ import assert from 'node:assert/strict';
 
 // top-level await for mock submit
 import { readFileSync } from 'node:fs';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const mailJs = readFileSync(
-  path.join(root, 'pages/services/registraciya-tovarnogo-znaka/assets/registraciya-landing-mail.js'),
+  path.join(root, 'pages/services/registraciya-tovarnogo-znaka/assets/lireate-shared/lireate-lead-mail.js'),
   'utf8'
 );
 
 const sandbox = { window: {}, FormData: MockFormData };
-vm.runInNewContext(mailJs + '\n;this.lireateLandingMail = window.lireateLandingMail;', sandbox);
-const api = sandbox.window.lireateLandingMail;
+vm.runInNewContext(mailJs + '\n;this.lireateLeadMail = window.lireateLeadMail;', sandbox);
+const api = sandbox.window.lireateLeadMail;
 
 function MockFormData() {
   this._m = new Map();
@@ -51,5 +51,6 @@ assert.match(formHtml, /name="form-type" value="order"/);
 assert.match(formHtml, /name="mail" value="mailorder"/);
 assert.match(formHtml, /name="tel"/);
 assert.doesNotMatch(formHtml, /name="phone"/);
+assert.match(formHtml, /data-lx-lead-handler="landing"/);
 
 console.log('test_registraciya_landing_mail_form: OK');

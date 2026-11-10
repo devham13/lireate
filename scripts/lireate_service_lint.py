@@ -78,16 +78,27 @@ def _flatten_types(obj, found=None):
     return found
 
 
-def _merge_included_php(raw, service_dir):
-    """Подмешивает только блок формы — иначе lint ловит ложные срабатывания на team/reviews."""
+def _merge_service_form_fragment(raw, service_dir):
     html = raw
+    form_blocks = (
+        "blocks/lireate-contact-form.inc.php",
+        "blocks/lireate-contact-section.inc.php",
+    )
     for m in re.finditer(r"include __DIR__ \. '/([^']+\.php)';", raw):
         rel = m.group(1)
-        if rel != "blocks/lireate-contact-form.inc.php":
+        if rel not in form_blocks:
             continue
         p = service_dir / rel
         if p.is_file():
             html += "\n" + _read(p)
+    if "lireate-lead-scripts.inc.php" in raw:
+        for candidate in (
+            service_dir / "lireate-lead-scripts.inc.php",
+            SERVICES / "_shared" / "lireate-lead-scripts.inc.php",
+        ):
+            if candidate.is_file():
+                html += "\n" + _read(candidate)
+                break
     return html
 
 
@@ -102,7 +113,7 @@ def lint_slug(slug):
         return ["missing index.php or index.html"], warnings
 
     raw = _read(index)
-    html = _merge_included_php(raw, service_dir)
+    html = _merge_service_form_fragment(raw, service_dir)
     manifest = service_dir / "publish.manifest.json"
     if not manifest.is_file():
         errors.append("missing publish.manifest.json")
@@ -197,6 +208,17 @@ def lint_slug(slug):
 
     if "lireate-contact.js" not in html:
         errors.append("must include assets/lireate-shared/lireate-contact.js")
+    if "lireate-lead-mail.js" not in html:
+        errors.append("must include assets/lireate-shared/lireate-lead-mail.js")
+    if "lireate-utm.js" not in html:
+        errors.append("must include /template/js/lireate-utm.js for lead forms")
+    if 'id="lireate-lead-form"' in html or "id='lireate-lead-form'" in html:
+        if 'data-lx-mail-action="/mail.php"' not in html and "data-lx-mail-action='/mail.php'" not in html:
+            errors.append('lead form must POST to /mail.php (data-lx-mail-action)')
+        if 'name="mail" value="mailorder"' not in html:
+            errors.append('lead form must include hidden mail=mailorder for /mail.php')
+        if "Откроем мессенджер" in html:
+            errors.append('lead form success text must not mention Telegram deep link on submit')
 
     if re.search(r'id=["\']lf-email["\']', html, re.I):
         errors.append("lead form must not include lf-email (use name + phone only)")
@@ -215,8 +237,8 @@ def lint_slug(slug):
             errors.append('landing lead form must POST to CMS /mail.php (data-lx-mail-action)')
         if 'name="mail" value="mailorder"' not in html:
             errors.append('landing lead form must include hidden mail=mailorder for /mail.php')
-        if "registraciya-landing-mail.js" not in html:
-            errors.append('landing page must include registraciya-landing-mail.js')
+        if "lireate-lead-mail.js" not in html:
+            errors.append('landing page must include lireate-lead-mail.js (via lireate-lead-scripts)')
     elif "Получить консультацию" not in html:
         errors.append('submit button must read "Получить консультацию"')
     if "Отправить бриф" in html:

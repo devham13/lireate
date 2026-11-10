@@ -81,14 +81,7 @@
       bindGoal(el, el.getAttribute('data-lx-ym-goal'));
     });
 
-    var form = document.getElementById('lireate-lead-form');
-    if (form && form.getAttribute('data-lx-lead-handler') !== 'landing') {
-      form.addEventListener('submit', function () {
-        if (form.checkValidity()) {
-          reach(GOALS.lead);
-        }
-      });
-    }
+    /* Цель zayavka — после успешного /mail.php в lireate-contact.js */
   }
 
   if (document.readyState === 'loading') {
