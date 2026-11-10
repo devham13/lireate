@@ -78,6 +78,19 @@ def _flatten_types(obj, found=None):
     return found
 
 
+def _merge_included_php(raw, service_dir):
+    """Подмешивает только блок формы — иначе lint ловит ложные срабатывания на team/reviews."""
+    html = raw
+    for m in re.finditer(r"include __DIR__ \. '/([^']+\.php)';", raw):
+        rel = m.group(1)
+        if rel != "blocks/lireate-contact-form.inc.php":
+            continue
+        p = service_dir / rel
+        if p.is_file():
+            html += "\n" + _read(p)
+    return html
+
+
 def lint_slug(slug):
     errors = []
     warnings = []
@@ -89,7 +102,7 @@ def lint_slug(slug):
         return ["missing index.php or index.html"], warnings
 
     raw = _read(index)
-    html = raw
+    html = _merge_included_php(raw, service_dir)
     manifest = service_dir / "publish.manifest.json"
     if not manifest.is_file():
         errors.append("missing publish.manifest.json")
@@ -194,7 +207,11 @@ def lint_slug(slug):
     if re.search(r'id=["\']lf-msg["\']', html, re.I):
         errors.append("lead form must not include lf-msg textarea")
 
-    if "Получить консультацию" not in html:
+    landing_form = 'data-lx-lead-handler="landing"' in html
+    if landing_form:
+        if "Получить расчёт" not in html:
+            errors.append('landing lead form submit button must read "Получить расчёт"')
+    elif "Получить консультацию" not in html:
         errors.append('submit button must read "Получить консультацию"')
     if "Отправить бриф" in html:
         errors.append('deprecated submit label "Отправить бриф"')

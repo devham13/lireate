@@ -82,7 +82,7 @@
     });
 
     var form = document.getElementById('lireate-lead-form');
-    if (form) {
+    if (form && form.getAttribute('data-lx-lead-handler') !== 'landing') {
       form.addEventListener('submit', function () {
         if (form.checkValidity()) {
           reach(GOALS.lead);

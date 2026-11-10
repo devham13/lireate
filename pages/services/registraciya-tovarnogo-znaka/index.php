@@ -17,17 +17,23 @@ require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID') ?: '';
 $faq_entities = [
-  ['Гарантируете ли вы регистрацию?', 'Нет. Решение принимает Роспатент по результатам экспертизы: регистрация или отказ по основаниям ст. 1483 ГК РФ. Мы снижаем риск за счёт проверки до подачи и подготовки ответов, но обещать результат, который зависит от государственного органа, нельзя.'],
   ['Сколько стоят госпошлины за регистрацию товарного знака?', 'По таблице Роспатента (публикация 03.10.2025): 4 000 ₽ за формальную экспертизу (п. 2.1), 13 000 ₽ за экспертизу по существу (п. 2.4) и 18 000 ₽ за регистрацию и электронное свидетельство (п. 2.11). Для одного класса МКТУ и до 10 позиций в перечне это 35 000 ₽. За каждый дополнительный класс и позиции сверх 10 пошлины растут. Сверяйте суммы на rospatent.gov.ru.'],
-  ['Сколько длится регистрация товарного знака?', 'По регламенту — не более 18 месяцев и 2 недель с приёма заявки до выдачи свидетельства, включая до 12 месяцев на экспертизу по существу. На практике срок чаще короче, но запросы экспертизы и доплаты его увеличивают. Мы называем ориентир после проверки и не обещаем фиксированную дату.'],
   ['Чем «под ключ» отличается от просто подачи заявки?', 'Подача заявки — один этап. «Под ключ» включает проверку обозначения, подбор классов МКТУ, подготовку и подачу, контроль платежей и переписку с экспертизой до решения Роспатента. Состав работ фиксируется в договоре, чтобы вы знали, за что отвечает исполнитель.'],
-  ['Регистрируете ли вы логотип?', 'Да, регистрируется словесное, изобразительное и комбинированное обозначение. Форму подачи выбираем на этапе проверки: иногда имеет смысл подавать отдельно название и отдельно логотип. Для проверки названия предварительно воспользуйтесь страницей /findtz/.'],
   ['Что если Роспатент откажет?', 'Отказ не означает, что регистрация невозможна: можно подать возражение заявителя по ст. 1500 ГК РФ, доработать обозначение или подать новую заявку, но пошлины, как правило, не возвращаются. Возражения против отказа и переподача — отдельные услуги LIREATE по договору.'],
+  ['Можно ли заказать только проверку названия до подачи?', 'Да. Предварительный поиск по реестру — на странице /findtz/ или как отдельный этап сопровождения. Проверка не заменяет заявку в Роспатент, но помогает принять решение до уплаты пошлин.'],
+  ['Гарантируете ли вы регистрацию?', 'Нет. Решение принимает Роспатент по результатам экспертизы: регистрация или отказ по основаниям ст. 1483 ГК РФ. Мы снижаем риск за счёт проверки до подачи и подготовки ответов, но обещать результат, который зависит от государственного органа, нельзя.'],
+  ['Сколько длится регистрация товарного знака?', 'По регламенту — не более 18 месяцев и 2 недель с приёма заявки до выдачи свидетельства, включая до 12 месяцев на экспертизу по существу. На практике срок чаще короче, но запросы экспертизы и доплаты его увеличивают. Мы называем ориентир после проверки и не обещаем фиксированную дату.'],
+  ['Регистрируете ли вы логотип?', 'Да, регистрируется словесное, изобразительное и комбинированное обозначение. Форму подачи выбираем на этапе проверки: иногда имеет смысл подавать отдельно название и отдельно логотип. Для проверки названия предварительно воспользуйтесь страницей /findtz/.'],
   ['Что такое обращение по ст. 1493 ГК РФ и при чём тут регистрация моего знака?', 'Ст. 1493 — это не «ответ на отказ по вашей заявке», а право любого лица подать обращение против чужой заявки после публикации сведений и до решения о регистрации. Если конкурент подал сходное обозначение, вы можете оспорить его заявку — подробнее на странице возражения против регистрации товарного знака.'],
   ['Нужен ли бренд на Wildberries или Ozon, если есть свидетельство?', 'Маркетплейсы часто просят подтвердить права на название и логотип. Свидетельство Роспатента — сильный аргумент, но площадка может запросить дополнительные документы. Регистрация в реестре не заменяет договор с площадкой: мы помогаем подготовить пакет под вашу ситуацию.'],
-  ['Чем базовое сопровождение отличается от оплаты за результат?', 'При базовой регистрации вознаграждение LIREATE и пошлины разделены по этапам договора без привязки к «оплате только при свидетельстве».'],
+  ['Чем базовое сопровождение отличается от оплаты за результат?', 'При базовой регистрации вознаграждение LIREATE и пошлины разделены по этапам договора без привязки к «оплате только при свидетельстве». Альтернативная модель — на странице регистрации с оплатой за результат.'],
   ['Кто может подать заявку: ИП или ООО?', 'Заявку подаёт юридическое лицо или гражданин (ст. 1492 ГК РФ). Индивидуальные предприниматели и компании подают на общих основаниях; заявитель указывается в заявке и впоследствии фигурирует в свидетельстве как правообладатель. Выбор заявителя влияет на дальнейшие договоры и лицензии, поэтому лучше обсудить его до подачи.'],
   ['Что происходит после регистрации и нужно ли продлевать знак?', 'Охрана действует 10 лет с даты подачи заявки и может продлеваться на следующие 10 лет без ограничения числа продлений (ст. 1491 ГК РФ). Мы можем напомнить о дате и подготовить продление — подробнее на странице продления товарного знака.'],
+];
+$lx_trust_verified = [
+  ['title' => 'Пошлины по таблице Роспатента', 'text' => '17 000 ₽ на этапе подачи и экспертизы и 18 000 ₽ после положительного решения — суммы из таблицы от 03.10.2025 (п. 2.1, 2.4, 2.11).'],
+  ['title' => 'Решение принимает Роспатент', 'text' => 'Мы сопровождаем заявку и готовим ответы экспертизе, но не гарантируем выдачу свидетельства.'],
+  ['title' => 'Проверка до уплаты пошлин', 'text' => 'Поиск по реестру и оценка рисков — в сопровождении или отдельно на странице /findtz/.'],
 ];
 $lx_breadcrumb_current = 'Регистрация товарного знака';
 $lx_review_filter_services = ['prodlenie-tovarnogo-znaka', 'registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat'];
@@ -60,6 +66,7 @@ $schema_graph = [
   <meta name="twitter:title" content="<?php echo htmlspecialchars($seo_title, ENT_QUOTES, 'UTF-8'); ?>">
   <meta name="twitter:description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="assets/lireate-shared/lireate-service-dark.css">
+  <link rel="stylesheet" href="assets/registraciya-landing.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -88,18 +95,20 @@ $schema_graph = [
 
 <?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
 
-<section class="lx-hero" id="top">
+<section class="lx-hero lx-hero--landing" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="registration"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · под ключ</p>
-    <h1>Регистрация товарного знака</h1>
-    <p class="lx-hero-lead">Сопровождение в Роспатенте под ключ: проверка обозначения, подача заявки, ответы экспертизе. Вознаграждение LIREATE и госпошлины разделены по смете; решение принимает Роспатент — гарантировать регистрацию нельзя.</p>
+    <h1>Регистрация товарного знака под ключ в Роспатенте</h1>
+    <p class="lx-hero-lead">Проверим название или логотип, подберём классы под ваши товары и услуги и сопроводим заявку до решения Роспатента.</p>
     <div class="lx-tags" aria-label="Темы услуги"><span>ст. 1477 ГК РФ</span><span>п. 2.1 · 2.4 · 2.11</span><span>Роспатент</span><span>логотип и название</span></div>
     <div class="lx-hero-cta">
-      <a class="lx-btn lx-btn-primary" href="#contact">Оставить заявку</a>
-      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Написать в Telegram</span></a>
-      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>Написать в Max</span></a>
+      <a class="lx-btn lx-btn-primary" href="#contact" data-lx-tz-form-open="hero_primary">Получить расчёт стоимости</a>
+      <a class="lx-btn lx-btn-ghost" href="#contact" data-lx-tz-form-open="hero_messenger" id="hero-messenger">Написать в мессенджер</a>
+      <a class="lx-skip-link" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Telegram</a>
+      <a class="lx-skip-link" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Написать в Max</a>
     </div>
+    <p class="lx-hero-caption">Чтобы начать, пришлите название бренда и кратко опишите ваши товары или услуги. В смете отдельно покажем госпошлины и стоимость сопровождения.</p>
     <div class="lx-hero-mini">
       <div class="lx-mini-stat"><strong class="lx-stat-value" data-lx-count-end="35000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">35 000 ₽</strong><span>пошлины за базовый цикл, 1 класс</span></div>
       <div class="lx-mini-stat"><strong class="lx-stat-value">18 мес. 2 нед.</strong><span>максимум по регламенту</span></div>
@@ -107,12 +116,7 @@ $schema_graph = [
     </div>
   </div>
   <div class="lx-glass lx-glass-anim" aria-label="Маршрут регистрации">
-    <div class="lx-panel-head"><span>Регистрация · ориентиры</span><span class="lx-live">Роспатент</span></div>
-    <div class="lx-kpi-row">
-      <div class="lx-kpi"><b class="lx-stat-value">п. 2.1</b><small>формальная экспертиза 4 000 ₽</small></div>
-      <div class="lx-kpi"><b class="lx-stat-value">п. 2.4</b><small>экспертиза по существу 13 000 ₽</small></div>
-      <div class="lx-kpi"><b class="lx-stat-value">п. 2.11</b><small>регистрация и свидетельство 18 000 ₽</small></div>
-    </div>
+    <div class="lx-panel-head"><span>Регистрация · маршрут</span><span class="lx-live">Роспатент</span></div>
     <ul class="lx-feed">
       <li>Проверка обозначения по реестру и подбор классов МКТУ</li>
       <li>Подготовка и подача заявки, контроль платежей</li>
@@ -130,6 +134,11 @@ $schema_graph = [
     </div>
   </div>
 </section>
+
+<?php include __DIR__ . '/blocks/lireate-contact-form.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-pricing-brief.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-review-highlight.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-trust.inc.php'; ?>
 
 <section class="lx-section lx-reveal" id="when">
   <span class="lx-section-label">Когда нужна</span>
@@ -230,7 +239,7 @@ $schema_graph = [
   <p>Отдельной строкой, от нашего вознаграждения не зависящей, всегда идут пошлины Роспатента. Если в смете они «растворены» в общей цифре, вы не сможете проверить, сколько на самом деле стоит сопровождение, — просите разбивку.</p>
 
   <h3>Допклассы МКТУ и ускоренная экспертиза</h3>
-  <p>Каждый дополнительный класс увеличивает все три пошлины, а длинный перечень в одном классе — пошлину по п. 2.4. Для примера, по формулам таблицы Роспатента:</p>
+  <p>Дополнительные классы увеличивают пошлины за подачу и экспертизу. Пошлина за регистрацию и электронное свидетельство увеличивается с шестого класса. Длинный перечень в одном классе повышает пошлину по п. 2.4. Для примера, по формулам таблицы Роспатента:</p>
   <div class="lx-card-grid">
     <article class="lx-card"><h3>1 класс, до 10 позиций</h3><p>4 000 + 13 000 + 18 000 = <strong>35 000 ₽</strong></p></article>
     <article class="lx-card"><h3>3 класса, до 10 позиций в каждом</h3><p>(4 000 + 2×1 000) + (13 000 + 2×2 500) + 18 000 = 6 000 + 18 000 + 18 000 = <strong>42 000 ₽</strong></p></article>
@@ -377,41 +386,8 @@ $schema_graph = [
     <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
     <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>MAX</span></a>
   </div>
-  <p style="margin:0;font-size:13px;color:#64748b;">Форма ниже — имя и телефон; можно также написать напрямую в мессенджер.</p>
+  <p style="margin:0;font-size:13px;color:#64748b;">Форма расчёта — в начале страницы в блоке «Получить расчёт регистрации».</p>
 </aside>
-
-<section class="lx-section lx-reveal" id="contact">
-  <div class="lx-contact">
-    <div>
-      <span class="lx-section-label">Контакт</span>
-      <h2>Заявка и мессенджеры</h2>
-      <p>Телефон: <a href="<?php echo htmlspecialchars($lireate_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lireate_phone_display, ENT_QUOTES, 'UTF-8'); ?></a></p>
-      <div class="lx-msg-grid">
-        <a class="lx-msg-btn" id="link-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
-        <a class="lx-msg-btn" id="link-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp"><span>WhatsApp</span></a>
-        <a class="lx-msg-btn lx-msg-btn--max" id="link-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>MAX</span></a>
-      </div>
-    </div>
-    <div class="lx-form-panel">
-      <form id="lireate-lead-form" data-lead-topic="Заявка: регистрация товарного знака" novalidate>
-        <label for="lf-name">Имя</label>
-        <input id="lf-name" name="name" type="text" required autocomplete="name" placeholder="Как к вам обращаться">
-        <label for="lf-phone">Телефон</label>
-        <input id="lf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+7 …">
-        <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
-        <button type="submit" class="lx-btn lx-btn-primary" style="width:100%;margin-top:12px;">Получить консультацию</button>
-        <div class="lx-form-alt">
-          <span class="lx-form-alt-label">или напишите нам</span>
-          <div class="lx-form-alt-icons">
-            <a id="form-alt-telegram" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" aria-label="Telegram"></a>
-            <a id="form-alt-max" class="lx-form-alt-link lx-form-alt-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max-white" aria-label="MAX"></a>
-          </div>
-        </div>
-        <p class="lx-form-success" id="lf-success" role="status">Спасибо! Откроем мессенджер с готовым текстом — отправьте сообщение, чтобы заявка дошла до юриста.</p>
-      </form>
-    </div>
-  </div>
-</section>
 
 <section class="lx-section lx-reveal" id="related">
   <span class="lx-section-label">LIREATE</span>
@@ -432,7 +408,7 @@ $schema_graph = [
 </main>
 
 <?php include __DIR__ . '/lireate-service-footer.inc.php'; ?>
-<?php include __DIR__ . '/blocks/lireate-sticky-mobile.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-sticky-mobile-landing.inc.php'; ?>
 
 <aside class="lx-dock" aria-label="Быстрый контакт">
   <a href="#contact" class="lx-dock-lead" title="Оставить заявку" aria-label="Оставить заявку"></a>
@@ -451,6 +427,7 @@ $schema_graph = [
 <script src="assets/lireate-shared/lireate-mobile-bar.js"></script>
 <script src="assets/lireate-shared/lireate-breadcrumbs.js"></script>
 <script src="assets/lireate-shared/lireate-contact.js"></script>
+<script src="assets/registraciya-landing.js"></script>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="assets/lireate-shared/lireate-metrika-goals.js"></script>
 </body>

@@ -86,6 +86,9 @@
   function initLeadForm() {
     var form = document.getElementById('lireate-lead-form');
     if (!form) return;
+    if (form.getAttribute('data-lx-lead-handler') === 'landing') {
+      return;
+    }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.checkValidity()) {
