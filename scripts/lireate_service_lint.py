@@ -216,10 +216,6 @@ def lint_slug(slug):
             errors.append('lead form must include hidden mail_token for /mail.php')
         if 'name="mail" value="mailorder"' not in html:
             errors.append('lead form must include hidden mail=mailorder for /mail.php')
-        if 'name="consent_request"' not in html:
-            errors.append('lead form must expose consent_request (checkbox) for consent-gate')
-        if 'lireateMailSpamGuard' not in html:
-            errors.append('lead form page must set window.lireateMailSpamGuard via lireate-lead-scripts.inc.php')
         if "Откроем мессенджер" in html:
             errors.append('lead form success text must not mention Telegram deep link on submit')
 

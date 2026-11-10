@@ -22,15 +22,38 @@
     return '';
   }
 
-  function parseMailPhpResponse(text) {
+  function extractJsonPayload(text) {
     var trimmed = String(text || '').trim();
+    if (!trimmed) {
+      return '';
+    }
+    var first = trimmed.indexOf('[');
+    if (first < 0) {
+      first = trimmed.indexOf('{');
+    }
+    if (first > 0) {
+      return trimmed.slice(first);
+    }
+    return trimmed;
+  }
+
+  /**
+   * mail.php при успехе печатает json_encode(array('success')) → ["success"].
+   * После echo вызывается fastcgi_finish_request() — на части хостингов тело
+   * обрывается до нуля байт при HTTP 200, хотя письмо/amo уже ушли.
+   */
+  function parseMailPhpResponse(text, httpStatus) {
+    var trimmed = String(text || '').trim();
+    var status = httpStatus || 0;
     if (trimmed === '') {
+      if (status === 200) {
+        return { ok: true, assumedSuccess: true, emptyBody: true };
+      }
       return {
         ok: false,
         emptyBody: true,
         showFallback: true,
-        message:
-          'Сервер принял запрос, но не вернул ответ. Заявка могла не дойти — позвоните или напишите в мессенджер ниже.'
+        message: 'Пустой ответ сервера. Попробуйте ещё раз или напишите в мессенджер.'
       };
     }
     if (/^fuck spamers!/i.test(trimmed)) {
@@ -42,9 +65,13 @@
       };
     }
     var data;
+    var jsonSlice = extractJsonPayload(trimmed);
     try {
-      data = JSON.parse(trimmed);
+      data = JSON.parse(jsonSlice || trimmed);
     } catch (e) {
+      if (status === 200 && /\bsuccess\b/i.test(trimmed)) {
+        return { ok: true, assumedSuccess: true };
+      }
       return {
         ok: false,
         showFallback: true,
@@ -113,13 +140,6 @@
       }
       fd.append(el.name, el.value);
     }
-    var checks = form.querySelectorAll('input[type="checkbox"][name]:checked') || [];
-    for (var c = 0; c < checks.length; c++) {
-      var box = checks[c];
-      if (box.name) {
-        fd.set(box.name, box.value || '1');
-      }
-    }
     fd.set('tel', phoneDigits);
     if (nameOptional) {
       fd.set('name', nameOptional);
@@ -161,7 +181,7 @@
     var action = form.getAttribute('data-lx-mail-action') || '/mail.php';
     var mock = form.getAttribute('data-lx-mail-mock') === '1' || opts.mock === true;
     if (mock) {
-      return Promise.resolve(parseMailPhpResponse(opts.mockResponse || '["success"]'));
+      return Promise.resolve(parseMailPhpResponse(opts.mockResponse || '["success"]', opts.httpStatus || 200));
     }
     var validation = validateMailLeadForm(form);
     if (!validation.ok) {
@@ -177,12 +197,9 @@
       headers: { Accept: 'application/json, text/plain, */*' }
     }).then(function (res) {
       return res.text().then(function (text) {
-        var parsed = parseMailPhpResponse(text);
+        var parsed = parseMailPhpResponse(text, res.status);
         if (!parsed.ok && res.status === 422 && !parsed.message) {
           parsed.message = 'Подтвердите согласие на обработку персональных данных.';
-        }
-        if (!parsed.ok && res.status === 200 && parsed.emptyBody) {
-          parsed.showFallback = true;
         }
         parsed.httpStatus = res.status;
         return parsed;
