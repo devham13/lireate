@@ -1,4 +1,8 @@
 /* Лендинг registraciya-tovarnogo-znaka — только эта страница */
+.registraciya-tovarnogo-znaka-page {
+  overflow-x: clip;
+  max-width: 100%;
+}
 .registraciya-tovarnogo-znaka-page #contact {
   scroll-margin-top: 88px;
 }
