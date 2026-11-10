@@ -29,4 +29,26 @@ if (!function_exists('lireate_service_asset_query')) {
     {
         echo lireate_service_asset_href($relative_path, $service_dir);
     }
+
+    /**
+     * Неразрывные пробелы в суммах (17{NNBSP}000{NBSP}₽) и в «п.{NBSP}2.1».
+     *
+     * @param string $text
+     * @return string
+     */
+    function lireate_typography_nb($text)
+    {
+        if (!is_string($text) || $text === '') {
+            return $text;
+        }
+        $nnbs = "\xE2\x80\xAF";
+        $nbsp = "\xC2\xA0";
+        do {
+            $prev = $text;
+            $text = preg_replace('/(\d) (\d{3})(?!\d)/u', '$1' . $nnbs . '$2', $text);
+        } while ($prev !== $text);
+        $text = preg_replace('/(\d) ₽/u', '$1' . $nbsp . '₽', $text);
+        $text = preg_replace('/п\. (\d)/u', 'п.' . $nbsp . '$1', $text);
+        return $text;
+    }
 }

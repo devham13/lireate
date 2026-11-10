@@ -22,9 +22,13 @@ if (empty($lx_trust_verified) || !is_array($lx_trust_verified)) {
 ?>
     <li><strong><?php echo htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8'); ?></strong> — <span><?php
     if (!empty($item['text_html'])) {
-        echo $item['text_html'];
+        echo function_exists('lireate_typography_nb')
+            ? lireate_typography_nb($item['text_html'])
+            : $item['text_html'];
     } else {
-        echo htmlspecialchars($item['text'], ENT_QUOTES, 'UTF-8');
+        $plain = isset($item['text']) ? $item['text'] : '';
+        $plain = function_exists('lireate_typography_nb') ? lireate_typography_nb($plain) : $plain;
+        echo htmlspecialchars($plain, ENT_QUOTES, 'UTF-8');
     }
 ?></span></li>
 <?php endforeach; ?>

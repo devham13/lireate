@@ -18,12 +18,12 @@ require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
 $lx_service_asset_dir = __DIR__;
 $lireate_max = LIREATE_MAX_CHAT_URL;
 $faq_entities = [
-  ['Нужна ли регистрация, чтобы охранялись авторские права?', 'Нет. По п. 4 ст. 1259 ГК РФ право возникает при создании произведения в объективной форме. Программу или БД можно дополнительно зарегистрировать по желанию (ст. 1262 ГК РФ).'],
-  ['Что охраняется, а что нет?', 'Охраняются результаты творческого труда из ст. 1259 ГК РФ. Не охраняются идеи, методы и факты (п. 5 ст. 1259). Оценка делается по конкретным файлам.'],
-  ['Сколько стоит госрегистрация программы для ЭВМ?', 'Пошлины — ст. 333.30 НК РФ. На странице госуслуги Роспатента ориентир 5 000 руб. за регистрацию; сверяйте с rospatent.gov.ru. Услуги LIREATE оплачиваются отдельно.'],
+  ['Нужна ли регистрация, чтобы охранялись авторские права?', 'Нет. По п. 4 ст. 1259 ГК РФ право возникает при создании произведения в объективной форме. Программу или БД можно дополнительно зарегистрировать по желанию (ст. 1262 ГК РФ).'],
+  ['Что охраняется, а что нет?', 'Охраняются результаты творческого труда из ст. 1259 ГК РФ. Не охраняются идеи, методы и факты (п. 5 ст. 1259). Оценка делается по конкретным файлам.'],
+  ['Сколько стоит госрегистрация программы для ЭВМ?', 'Пошлины — ст. 333.30 НК РФ. На странице госуслуги Роспатента ориентир 5 000 руб. за регистрацию; сверяйте с rospatent.gov.ru. Услуги LIREATE оплачиваются отдельно.'],
   ['Можно ли защитить логотип без товарного знака?', 'Логотип может охраняться как произведение, но для обозначения товаров и услуг нужна регистрация ТЗ (ст. 1477, 1481 ГК РФ). См. <a href="/findtz/">проверку знака</a>.'],
   ['Что делать, если контент скопировали?', 'Зафиксируйте нарушение, соберите доказательства авторства, подайте жалобу на платформу и направьте претензию. При необходимости — суд (ст. 1250, 1252, 1301 ГК РФ).'],
-  ['Какая ответственность за нарушение?', 'По ст. 1301 ГК РФ возможна компенсация от 10 000 до 5 000 000 руб. по усмотрению суда либо в двукратном размере стоимости использования. Конкретную сумму не обещаем.'],
+  ['Какая ответственность за нарушение?', 'По ст. 1301 ГК РФ возможна компенсация от 10 000 до 5 000 000 руб. по усмотрению суда либо в двукратном размере стоимости использования. Конкретную сумму не обещаем.'],
   ['Гарантируете ли регистрацию или выигрыш в суде?', 'Нет. Решения принимают Роспатент, платформы и суд. Мы готовим материалы и сопровождаем процедуру без гарантии исхода.'],
 ];
 $schema_graph = [
@@ -121,7 +121,7 @@ $lx_breadcrumb_current = 'Защита авторских прав';
     </div>
     <div class="lx-hero-mini">
       <div class="lx-mini-stat"><strong class="lx-stat-value" data-lx-count-end="70" data-lx-count-suffix=" лет">70 лет</strong><span>срок после смерти автора (ст. 1281)</span></div>
-      <div class="lx-mini-stat"><strong class="lx-stat-value" data-lx-count-end="5000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">5 000 ₽</strong><span>ориентир пошлины за регистрацию ПО</span></div>
+      <div class="lx-mini-stat"><strong class="lx-stat-value" data-lx-count-end="5000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">5 000 ₽</strong><span>ориентир пошлины за регистрацию ПО</span></div>
       <div class="lx-mini-stat"><strong class="lx-stat-value">от 2 нед.</strong><span>типичный срок аудита и претензии</span></div>
     </div>
   </div>
@@ -194,10 +194,10 @@ $lx_breadcrumb_current = 'Защита авторских прав';
   <h2>Стоимость сопровождения и госпошлины</h2>
   <div class="lx-price-grid">
     <div class="lx-price-card"><strong>по смете</strong><span>сопровождение LIREATE: аудит, претензия, суд — после брифа</span></div>
-    <div class="lx-price-card"><strong data-lx-count-end="5000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">5 000 ₽</strong><span>ориентир пошлины Роспатента за регистрацию ПО (ст. 333.30 НК РФ, rospatent.gov.ru)</span></div>
+    <div class="lx-price-card"><strong data-lx-count-end="5000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">5 000 ₽</strong><span>ориентир пошлины Роспатента за регистрацию ПО (ст. 333.30 НК РФ, rospatent.gov.ru)</span></div>
   </div>
   <div class="lx-calc" data-lx-calc="po-reg" id="calc">
-    <p class="lx-calc-out">Госпошлина за регистрацию ПО: <strong data-lx-calc-out-gov>5 000 ₽</strong></p>
+    <p class="lx-calc-out">Госпошлина за регистрацию ПО: <strong data-lx-calc-out-gov>5 000 ₽</strong></p>
     <p class="lx-calc-note">Калькулятор показывает только ориентир пошлины Роспатента (ст. 333.30 НК РФ). Услуги LIREATE — по смете. Не является офертой.</p>
   </div>
   <p>Госпошлина за иск — по ст. 333.19 или 333.21 НК РФ. Итог определяют ведомство и суд.</p>
@@ -207,7 +207,7 @@ $lx_breadcrumb_current = 'Защита авторских прав';
   <span class="lx-section-label">Сроки</span>
   <h2>Сроки маршрута защиты</h2>
   <div class="lx-timeline" data-lx-timeline>
-    <div class="lx-timeline-mascot" aria-hidden="true"><svg class="lx-mascot" viewBox="0 0 72 108"><circle cx="36" cy="28" r="18" fill="#f8fafc"/><rect x="34" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/><rect x="41" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/></svg></div>
+    <div class="lx-timeline-mascot" aria-hidden="true"><svg class="lx-mascot" viewBox="0 0 72 108"><circle cx="36" cy="28" r="18" fill="#f8fafc"/><rect x="34" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/><rect x="41" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/></svg></div>
     <ol class="lx-timeline-steps">
       <li class="lx-timeline-step"><strong>Аудит — 1–3 дня</strong><p>Объекты и договоры.</p></li>
       <li class="lx-timeline-step"><strong>Доказательства — 1–5 дней</strong><p>Фиксация нарушения.</p></li>
@@ -237,7 +237,7 @@ $lx_breadcrumb_current = 'Защита авторских прав';
   <span class="lx-section-label">Мини-тест</span>
   <h2>Нужна ли вам защита авторских прав?</h2>
   <div class="lx-quiz" data-lx-quiz data-lx-quiz-threshold="2" data-lx-quiz-yes="Похоже, нужен аудит и маршрут — оставьте заявку." data-lx-quiz-no="Пока достаточно самопроверки; при сомнениях — консультация.">
-    <div class="lx-quiz-mascot" aria-hidden="true"><svg viewBox="0 0 72 108" class="lx-mascot"><circle cx="36" cy="28" r="18" fill="#f8fafc"/><rect x="34" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/><rect x="41" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/></svg></div>
+    <div class="lx-quiz-mascot" aria-hidden="true"><svg viewBox="0 0 72 108" class="lx-mascot"><circle cx="36" cy="28" r="18" fill="#f8fafc"/><rect x="34" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/><rect x="41" y="26" width="3" height="8" rx="1.5" fill="#0f172a"/></svg></div>
     <div class="lx-quiz-step"><h3>Чужой контент используют без разрешения?</h3><div class="lx-quiz-options"><button type="button" data-quiz-answer data-quiz-weight="2">Да</button><button type="button" data-quiz-answer data-quiz-weight="0">Нет</button></div></div>
     <div class="lx-quiz-step" hidden><h3>Есть исходники или договоры с авторами?</h3><div class="lx-quiz-options"><button type="button" data-quiz-answer data-quiz-weight="0">Да, всё оформлено</button><button type="button" data-quiz-answer data-quiz-weight="2">Не уверен</button></div></div>
     <div class="lx-quiz-step" hidden><h3>Нужна регистрация ПО в Роспатенте?</h3><div class="lx-quiz-options"><button type="button" data-quiz-answer data-quiz-weight="1">Рассматриваем</button><button type="button" data-quiz-answer data-quiz-weight="0">Нет</button></div></div>
