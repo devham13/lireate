@@ -59,6 +59,7 @@ $schema_graph = [
   <meta name="twitter:title" content="<?php echo htmlspecialchars($seo_title, ENT_QUOTES, 'UTF-8'); ?>">
   <meta name="twitter:description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-dark.css', $lx_service_asset_dir); ?>">
+  <link rel="stylesheet" href="/template/css/lireate-service-mobile-bar.css?v=20261111svc1" /><!-- lireate_design_service_mobile_bar_css_v1 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -190,6 +191,12 @@ $schema_graph = [
 <section class="lx-section lx-reveal" id="risks">
   <span class="lx-section-label">Риски</span>
   <h2>Риски подачи без проверки</h2>
+  <div class="lx-risk-grid">
+    <div class="lx-risk-item"><h3>Потеря пошлин</h3><p>При отказе по ст. 1483 ГК РФ пошлины за пройденные этапы, как правило, не возвращаются.</p></div>
+    <div class="lx-risk-item"><h3>Ложная уверенность</h3><p>«Не нашёл в поиске» ≠ отсутствие сходных знаков в смежных классах.</p></div>
+    <div class="lx-risk-item"><h3>Задержка запуска</h3><p>Месяцы экспертизы с запросами — время, которое можно сэкономить на этапе брифа.</p></div>
+    <div class="lx-risk-item"><h3>Споры с конкурентами</h3><p>Регистрация сходного знака может привести к обращению третьих лиц по ст. 1493 ГК РФ.</p></div>
+  </div>
   <p>Проверка не устраняет риски полностью: в реестр могут появиться новые заявки после даты поиска. Мы указываем дату среза базы в отчёте. При высоких ставках на бренд имеет смысл повторить поиск ближе к подаче или заказать платный поиск ФИПС для ускорения корреспонденции экспертизы — без обещания конкретного срока.</p>
   <p>Если конкурент уже подал сходную заявку, возможна процедура <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">возражения против регистрации</a> по ст. 1493 ГК РФ — это отдельная услуга от предварительной проверки вашего знака.</p>
 </section>
@@ -263,10 +270,11 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mascot.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-extras.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
+  <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
+  <script defer src="/template/js/lireate-service-mobile-bar.js?v=20261111svc3"></script>
 </body>
 </html>

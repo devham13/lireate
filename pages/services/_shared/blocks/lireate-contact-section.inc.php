@@ -44,6 +44,8 @@ $lx_spam_guard = md5(date('m.Y'));
       <form
         id="lireate-lead-form"
         class="lx-mail-lead-form"
+        method="POST"
+        action="/mail.php"
         data-lx-mail-action="/mail.php"
         data-lead-topic="<?php echo htmlspecialchars($lx_lead_topic, ENT_QUOTES, 'UTF-8'); ?>"
         data-lx-success-text="<?php echo htmlspecialchars($lx_lead_success_text, ENT_QUOTES, 'UTF-8'); ?>"
