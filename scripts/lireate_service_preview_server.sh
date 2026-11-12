@@ -16,5 +16,6 @@ link proverka-tovarnogo-znaka findtz
 link registraciya-tovarnogo-znaka registraciya_tovarnogo_znaka
 ln -sfn "$ROOT/template" "$DOCROOT/template"
 ln -sfn "$ROOT/pages/services/_shared" "$DOCROOT/_shared"
-echo "Preview: http://127.0.0.1:${PORT}/findtz/ (and registraciya_tovarnogo_znaka/)"
-exec php -S "127.0.0.1:${PORT}" -t "$DOCROOT"
+export LIREATE_PREVIEW_DOCROOT="$DOCROOT"
+echo "Preview: http://127.0.0.1:${PORT}/findtz/ (proxy /images + /_shared from LIREATE_PUBLIC_SITE_URL)"
+exec php -S "127.0.0.1:${PORT}" -t "$DOCROOT" "$ROOT/scripts/lireate_preview_proxy_router.php"
