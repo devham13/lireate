@@ -126,7 +126,7 @@ $schema_graph = [
 <section class="lx-section lx-reveal" id="when">
   <span class="lx-section-label">Когда нужна</span>
   <h2>Проверка товарного знака: когда заказывать поиск</h2>
-  <p>Проверка нужна до уплаты госпошлин за регистрацию. Минимальный цикл пошлин за один класс МКТУ — 35 000 ₽ (п. 2.1, 2.4 и 2.11 таблицы Роспатента); эти суммы уходят в бюджет независимо от того, зарегистрируют знак или откажут. Поэтому разумно сначала оценить, нет ли в реестре сходных обозначений и не описывает ли ваше название товар напрямую.</p>
+  <p>Проверка нужна до уплаты госпошлин за регистрацию. В базовом случае (один класс МКТУ, до 10 наименований) подача и экспертиза стоят 17 000 ₽. Ещё 18 000 ₽ за регистрацию платят после положительного решения Роспатента. Поэтому разумно сначала оценить, нет ли в реестре сходных обозначений и не описывает ли ваше название товар напрямую.</p>
   <div class="lx-carousel" data-lx-carousel tabindex="0" aria-label="Когда нужна проверка">
     <button type="button" class="lx-carousel-prev" aria-label="Предыдущий слайд">‹</button>
     <div class="lx-carousel-viewport">
@@ -240,6 +240,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
   <h2>Смежные услуги</h2>
   <div class="lx-related-grid">
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация товарного знака</strong></a>
+    <a class="lx-related-card" href="/kak-zaregistrirovat-tovarnyy-znak-samostoyatelno-2026/"><span class="lx-related-card-type">Инструкция</span><strong>Как зарегистрировать товарный знак самостоятельно</strong></a>
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
     <a class="lx-related-card" href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/"><span class="lx-related-card-type">Услуга</span><strong>Возражение против регистрации</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
