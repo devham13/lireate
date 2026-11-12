@@ -12,6 +12,12 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SERVICES = REPO_ROOT / "pages" / "services"
 SHARED_MARK = "assets/lireate-shared/lireate-service-dark.css"
+LIVE_PARITY_SLUGS = frozenset(
+    {
+        "registraciya-tovarnogo-znaka",
+        "proverka-tovarnogo-znaka",
+    }
+)
 
 
 def _read(path):
@@ -112,6 +118,31 @@ def _render_service_html(service_dir):
     return proc.stdout
 
 
+def _lint_live_parity_markers(slug, rendered):
+    """Маркеры live-паритета для registraciya/findtz (генерируемый PHP-вывод)."""
+    if slug not in LIVE_PARITY_SLUGS or not rendered:
+        return []
+    issues = []
+    needles = (
+        ("vk-cases-title", 'id="lireate-vk-cases-title"'),
+        ("dock-whatsapp", 'id="dock-whatsapp"'),
+        ("canonical-mobile-bar", 'data-lx-svc-mobile-bar="canonical"'),
+        ("vozrazhenie-url", "/vozrazhenie_protiv_registracii_tovarnogo_znaka/"),
+        ("vk-cases-stylesheet", "/_shared/lireate-vk-cases.css"),
+        ("wa-me-dock", "wa.me/79600484957"),
+    )
+    for label, needle in needles:
+        if needle not in rendered:
+            issues.append("live parity marker missing: {0}".format(label))
+    if "vozrazhenie-protiv-registracii-tovarnogo-znaka" in rendered:
+        issues.append("live parity: hyphenated vozrazhenie URL must not appear")
+    if slug == "proverka-tovarnogo-znaka" and "lx-risk-grid" in rendered:
+        issues.append("live parity: lx-risk-grid duplicate block must be absent on findtz")
+    if slug == "registraciya-tovarnogo-znaka" and "lx-risk-grid" in rendered:
+        issues.append("live parity: lx-risk-grid duplicate block must be absent on registration")
+    return issues
+
+
 def _lint_strong_label_glue(rendered):
     """Inline glue (trust list и аналоги), без block-layout strong+span в карточках."""
     issues = []
@@ -180,6 +211,16 @@ def _lint_strong_glue_sources(service_dir):
                 continue
             issues.append("index.php: inline strong glued to span/small")
     return issues
+
+
+def _expand_php_includes(raw, service_dir):
+    html = raw
+    for m in re.finditer(r"include __DIR__ \. '/([^']+\.php)';", raw):
+        rel = m.group(1)
+        p = service_dir / rel
+        if p.is_file():
+            html += "\n" + _read(p)
+    return html
 
 
 def _merge_service_form_fragment(raw, service_dir):
@@ -421,6 +462,11 @@ def lint_slug(slug):
             errors.append("rendered HTML: " + issue)
     else:
         warnings.append("could not render index.php for strong-label glue check")
+
+    parity_html = rendered if rendered else _expand_php_includes(raw, service_dir)
+    if slug in LIVE_PARITY_SLUGS:
+        for issue in _lint_live_parity_markers(slug, parity_html):
+            errors.append(issue)
 
     return errors, warnings
 

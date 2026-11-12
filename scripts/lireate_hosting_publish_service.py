@@ -48,6 +48,10 @@ DOCROOT_SHARED_PHP_NAMES = (
     "lireate-service-nav-links.php",
     "lireate-service-assets.php",
 )
+DOCROOT_SHARED_STATIC_NAMES = (
+    "lireate-vk-cases.css",
+    "vk-cases.json",
+)
 SERVICE_DIR_HTACCESS_REL = ".htaccess"
 SERVICE_DIR_HTACCESS_SHARED = Path("pages") / "services" / "_shared" / "service-directory.htaccess"
 
@@ -84,13 +88,13 @@ def _docroot_shared_rel_dirs(url_path):
     return unique
 
 
-def _append_docroot_shared_php(plan, office_repo, url_path, docroot_path):
+def _append_docroot_shared_static(plan, office_repo, url_path, docroot_path, names):
     shared_dir = office_repo / "pages" / "services" / "_shared"
     if not shared_dir.is_dir():
         return
     rel_dirs = _docroot_shared_rel_dirs(url_path)
     existing = {item["rel"] for item in plan}
-    for name in DOCROOT_SHARED_PHP_NAMES:
+    for name in names:
         src = shared_dir / name
         if not src.is_file():
             continue
@@ -108,6 +112,15 @@ def _append_docroot_shared_php(plan, office_repo, url_path, docroot_path):
                 }
             )
             existing.add(rel)
+
+
+def _append_docroot_shared_php(plan, office_repo, url_path, docroot_path):
+    _append_docroot_shared_static(
+        plan, office_repo, url_path, docroot_path, DOCROOT_SHARED_PHP_NAMES
+    )
+    _append_docroot_shared_static(
+        plan, office_repo, url_path, docroot_path, DOCROOT_SHARED_STATIC_NAMES
+    )
 
 
 def _canonical_service_htaccess_path(office_repo):

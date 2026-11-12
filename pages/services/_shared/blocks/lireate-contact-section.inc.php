@@ -65,6 +65,7 @@ $lx_spam_guard = md5(date('m.Y'));
           <span class="lx-form-alt-label">или напишите нам</span>
           <div class="lx-form-alt-icons">
             <a id="form-alt-telegram" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" data-lx-ym-goal="perehod_v_telegramm" aria-label="Telegram"></a>
+            <a id="form-alt-whatsapp" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-ym-goal="perehod_v_messendzher" aria-label="WhatsApp"></a>
             <a id="form-alt-max" class="lx-form-alt-link lx-form-alt-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max-white" data-lx-ym-goal="perehod_v_messendzher" aria-label="MAX"></a>
           </div>
         </div>

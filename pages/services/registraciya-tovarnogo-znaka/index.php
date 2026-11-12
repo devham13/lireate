@@ -150,6 +150,7 @@ $schema_graph = [
   </div>
 </section>
 
+<?php include __DIR__ . '/blocks/lireate-vk-cases.inc.php'; ?>
 <?php include __DIR__ . '/blocks/lireate-contact-form.inc.php'; ?>
 <?php include __DIR__ . '/blocks/lireate-pricing-brief.inc.php'; ?>
 <?php
@@ -348,7 +349,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
     <li>при необходимости изменить обозначение или перечень и подать новую заявку;</li>
     <li>не путать отказ по своей заявке с обращением по ст. 1493 против чужой.</li>
   </ul>
-  <p>Подготовка и подача обращения по ст. 1493, а также возражение заявителя на отказ — отдельные услуги LIREATE. Подробный маршрут по чужим заявкам: <a href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/">возражение против регистрации товарного знака</a>.</p>
+  <p>Подготовка и подача обращения по ст. 1493, а также возражение заявителя на отказ — отдельные услуги LIREATE. Подробный маршрут по чужим заявкам: <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">возражение против регистрации товарного знака</a>.</p>
   <div class="lx-hero-cta" style="margin-top:20px;">
     <a class="lx-btn lx-btn-primary" href="#contact">Обсудить отказ или чужую заявку</a>
     <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" data-lx-ym-goal="perehod_v_telegramm"><span>Telegram</span></a>
@@ -370,7 +371,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
   <p>«Регистрация торговой марки в России» и «как зарегистрировать бренд» — про одну процедуру: заявка в Роспатент, экспертиза, пошлины (ориентир 35 000 ₽ за базовый цикл одного класса), свидетельство. Сначала имеет смысл <a href="/findtz/">проверить обозначение</a>, затем согласовать перечень товаров и услуг.</p>
 
   <h3>Возражение на заявку в порядке ст. 1493</h3>
-  <p>Если речь о <strong>чужой</strong> заявке — это обращение по ст. 1493 ГК РФ, а не ответ на отказ по вашей. Срок — до решения о регистрации чужого знака. Мы оцениваем сходство и однородность и готовим документы; см. <a href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/">услугу возражения</a>.</p>
+  <p>Если речь о <strong>чужой</strong> заявке — это обращение по ст. 1493 ГК РФ, а не ответ на отказ по вашей. Срок — до решения о регистрации чужого знака. Мы оцениваем сходство и однородность и готовим документы; см. <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">услугу возражения</a>.</p>
 </section>
 
 <section class="lx-section lx-reveal" id="faq">
@@ -404,24 +405,25 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
   <p>Регистрация — начало, а не конец работы с товарным знаком. Вот что обычно нужно рядом.</p>
   <div class="lx-related-grid">
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация с оплатой за результат</strong></a>
-    <a class="lx-related-card" href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/"><span class="lx-related-card-type">Услуга</span><strong>Возражение против регистрации</strong></a>
+    <a class="lx-related-card" href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Возражение против регистрации</strong></a>
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
     <a class="lx-related-card" href="/zashchita_avtorskih_prav/"><span class="lx-related-card-type">Услуга</span><strong>Защита авторских прав</strong></a>
     <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
     <a class="lx-related-card" href="/contacts/"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>
-  <p>Нужна проверка знака до подачи — начните со страницы <a href="/findtz/">/findtz/</a>. Нужно продлить уже зарегистрированный знак — смотрите <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>. Планируете выход на рынок Китая — отдельный маршрут описан на странице <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрации в КНР</a>. Для контента, дизайна и программ — <a href="/zashchita_avtorskih_prav/">защита авторских прав</a>. Обращение по ст. 1493 против чужой заявки — <a href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/">возражение против регистрации</a>.</p>
+  <p>Нужна проверка знака до подачи — начните со страницы <a href="/findtz/">/findtz/</a>. Нужно продлить уже зарегистрированный знак — смотрите <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>. Планируете выход на рынок Китая — отдельный маршрут описан на странице <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрации в КНР</a>. Для контента, дизайна и программ — <a href="/zashchita_avtorskih_prav/">защита авторских прав</a>. Обращение по ст. 1493 против чужой заявки — <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">возражение против регистрации</a>.</p>
 </section>
 
 </main>
 
 <?php include __DIR__ . '/lireate-service-footer.inc.php'; ?>
-<?php include __DIR__ . '/blocks/lireate-sticky-mobile-landing.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-sticky-mobile.inc.php'; ?>
 
 <aside class="lx-dock" aria-label="Быстрый контакт">
   <a href="#contact" class="lx-dock-lead" title="Оставить заявку" aria-label="Оставить заявку"></a>
   <a id="dock-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" title="Telegram" aria-label="Telegram" target="_blank" rel="noopener noreferrer"></a>
+  <a id="dock-whatsapp" class="lx-dock-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" title="WhatsApp" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher"></a>
   <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX" target="_blank" rel="noopener noreferrer"></a>
 </aside>
 

@@ -1262,6 +1262,7 @@ html.lx-review-lightbox-open { overflow: hidden; }
 }
 .lx-dock a:hover { transform: translateY(-2px); }
 .lx-dock a .lx-svg-icon { width: 24px; height: 24px; }
+.lx-dock a.lx-dock-whatsapp { background: #25d366; }
 .lx-dock a.lx-dock-max {
   background: linear-gradient(135deg, #f472b6 0%, #8b5cf6 100%);
   color: #fff;
@@ -1558,7 +1559,7 @@ html.lx-review-lightbox-open { overflow: hidden; }
 .lx-mobile-bar-btn .lx-svg-icon { width: 22px; height: 22px; }
 html.lx-no-motion .lx-timeline-mascot { transition: none; }
 @media (max-width: 960px) {
-  body.lireate-svc-body { padding-bottom: 72px; }
+  body.lireate-svc-body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
   .lx-mobile-bar { display: flex; }
   .lx-dock { display: none; }
   .lx-related-grid { grid-template-columns: 1fr; }
