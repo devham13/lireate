@@ -136,10 +136,24 @@ def _lint_live_parity_markers(slug, rendered):
             issues.append("live parity marker missing: {0}".format(label))
     if "vozrazhenie-protiv-registracii-tovarnogo-znaka" in rendered:
         issues.append("live parity: hyphenated vozrazhenie URL must not appear")
-    if slug == "proverka-tovarnogo-znaka" and "lx-risk-grid" in rendered:
-        issues.append("live parity: lx-risk-grid duplicate block must be absent on findtz")
-    if slug == "registraciya-tovarnogo-znaka" and "lx-risk-grid" in rendered:
-        issues.append("live parity: lx-risk-grid duplicate block must be absent on registration")
+    risk_count = len(re.findall(r'<div\s+class=["\']lx-risk-grid["\']', rendered, re.I))
+    if slug == "proverka-tovarnogo-znaka":
+        if risk_count != 1:
+            issues.append(
+                "live parity: findtz must have exactly one lx-risk-grid block (found {0})".format(
+                    risk_count
+                )
+            )
+    if slug == "registraciya-tovarnogo-znaka" and risk_count > 0:
+        issues.append("live parity: lx-risk-grid must be absent on registration")
+    if (
+        slug in LIVE_PARITY_SLUGS
+        and 'action="/mail.php"' not in rendered
+        and "action='/mail.php'" not in rendered
+    ):
+        issues.append("live parity: lead form must have action=/mail.php POST fallback")
+    if slug in LIVE_PARITY_SLUGS and "lireate-service-mobile-bar.css" not in rendered:
+        issues.append("live parity: template lireate-service-mobile-bar.css must be linked")
     return issues
 
 
