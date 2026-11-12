@@ -83,8 +83,10 @@
     setHref('hero-telegram', tg);
     setHref('hero-max', max);
     setHref('dock-telegram', tg);
+    setHref('dock-whatsapp', wa);
     setHref('dock-max', max);
     setHref('form-alt-telegram', tg);
+    setHref('form-alt-whatsapp', wa);
     setHref('form-alt-max', max);
   }
 
@@ -95,10 +97,45 @@
     var dockLead = document.querySelector('.lx-dock-lead, .lx-dock a[href="#contact"]');
     applyIcon(dockLead, 'lead');
     applyIcon(document.getElementById('dock-telegram'), 'telegram');
+    applyIcon(document.getElementById('dock-whatsapp'), 'whatsapp');
     var dockMax = document.getElementById('dock-max');
     if (dockMax) {
       applyIcon(dockMax, 'max-white');
     }
+  }
+
+  function bindPhoneMask(input) {
+    if (!input || input.getAttribute('data-lx-phone-mask') === '1') {
+      return;
+    }
+    input.setAttribute('data-lx-phone-mask', '1');
+    input.addEventListener('input', function () {
+      var digits = (input.value || '').replace(/\D/g, '');
+      if (digits.charAt(0) === '8') {
+        digits = '7' + digits.slice(1);
+      }
+      if (digits && digits.charAt(0) !== '7') {
+        digits = '7' + digits;
+      }
+      digits = digits.slice(0, 11);
+      var out = '';
+      if (digits.length > 0) {
+        out = '+7';
+      }
+      if (digits.length > 1) {
+        out += ' (' + digits.slice(1, 4);
+      }
+      if (digits.length >= 4) {
+        out += ') ' + digits.slice(4, 7);
+      }
+      if (digits.length >= 7) {
+        out += '-' + digits.slice(7, 9);
+      }
+      if (digits.length >= 9) {
+        out += '-' + digits.slice(9, 11);
+      }
+      input.value = out;
+    });
   }
 
   function initLeadForm() {
@@ -110,13 +147,14 @@
     var mailApi = window.lireateLeadMail;
     var nameEl = document.getElementById('lf-name');
     var phoneEl = document.getElementById('lf-phone');
+    bindPhoneMask(phoneEl);
     var consent = document.getElementById('lf-consent');
     var okEl = document.getElementById('lf-success');
     var errEl = document.getElementById('lf-error');
     var submitBtn = form.querySelector('.lx-form-submit, button[type="submit"]');
     var successText =
       form.getAttribute('data-lx-success-text') ||
-      'Заявка принята. Мы свяжемся с вами в ближайшее время.';
+      'Спасибо, заявка принята.';
     var nameRequired = nameEl && nameEl.hasAttribute('required');
     var sent = false;
 

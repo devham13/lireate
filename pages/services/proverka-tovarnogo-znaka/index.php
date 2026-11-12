@@ -190,14 +190,8 @@ $schema_graph = [
 <section class="lx-section lx-reveal" id="risks">
   <span class="lx-section-label">Риски</span>
   <h2>Риски подачи без проверки</h2>
-  <div class="lx-risk-grid">
-    <div class="lx-risk-item"><h3>Потеря пошлин</h3><p>При отказе по ст. 1483 ГК РФ пошлины за пройденные этапы, как правило, не возвращаются.</p></div>
-    <div class="lx-risk-item"><h3>Ложная уверенность</h3><p>«Не нашёл в поиске» ≠ отсутствие сходных знаков в смежных классах.</p></div>
-    <div class="lx-risk-item"><h3>Задержка запуска</h3><p>Месяцы экспертизы с запросами — время, которое можно сэкономить на этапе брифа.</p></div>
-    <div class="lx-risk-item"><h3>Споры с конкурентами</h3><p>Регистрация сходного знака может привести к обращению третьих лиц по ст. 1493 ГК РФ.</p></div>
-  </div>
   <p>Проверка не устраняет риски полностью: в реестр могут появиться новые заявки после даты поиска. Мы указываем дату среза базы в отчёте. При высоких ставках на бренд имеет смысл повторить поиск ближе к подаче или заказать платный поиск ФИПС для ускорения корреспонденции экспертизы — без обещания конкретного срока.</p>
-  <p>Если конкурент уже подал сходную заявку, возможна процедура <a href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/">возражения против регистрации</a> по ст. 1493 ГК РФ — это отдельная услуга от предварительной проверки вашего знака.</p>
+  <p>Если конкурент уже подал сходную заявку, возможна процедура <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">возражения против регистрации</a> по ст. 1493 ГК РФ — это отдельная услуга от предварительной проверки вашего знака.</p>
 </section>
 
 <section class="lx-section lx-reveal" id="queries">
@@ -215,7 +209,7 @@ $schema_graph = [
 
   <h3>Экспертиза товарного знака</h3>
   <p>Государственная экспертиза начинается после заявки. Предварительная экспертиза в LIREATE — аналитика до пошлин, чтобы вы понимали вероятный сценарий в Роспатенте.</p>
-  <p>После проверки логичный следующий шаг — регистрация или продление уже действующего знака. Для действующих свидетельств смотрите <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>; если спор касается чужой заявки, а не вашей — <a href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/">возражение против регистрации</a>.</p>
+  <p>После проверки логичный следующий шаг — регистрация или продление уже действующего знака. Для действующих свидетельств смотрите <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>; если спор касается чужой заявки, а не вашей — <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">возражение против регистрации</a>.</p>
 </section>
 
 <?php include __DIR__ . '/blocks/lireate-reviews.inc.php'; ?>
@@ -228,6 +222,7 @@ $schema_graph = [
 <?php endforeach; ?>
 </section>
 
+<?php include __DIR__ . '/blocks/lireate-vk-cases.inc.php'; ?>
 <?php
 $lx_lead_topic = 'Заявка: проверка товарного знака';
 $lx_lead_tomail = 'Проверка товарного знака — заявка с сайта';
@@ -242,7 +237,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация товарного знака</strong></a>
     <a class="lx-related-card" href="/kak-zaregistrirovat-tovarnyy-znak-samostoyatelno-2026/"><span class="lx-related-card-type">Инструкция</span><strong>Как зарегистрировать товарный знак самостоятельно</strong></a>
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
-    <a class="lx-related-card" href="/vozrazhenie-protiv-registracii-tovarnogo-znaka/"><span class="lx-related-card-type">Услуга</span><strong>Возражение против регистрации</strong></a>
+    <a class="lx-related-card" href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Возражение против регистрации</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
     <a class="lx-related-card" href="/contacts/"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>
@@ -256,6 +251,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <aside class="lx-dock" aria-label="Быстрый контакт">
   <a href="#contact" class="lx-dock-lead" title="Оставить заявку" aria-label="Оставить заявку"></a>
   <a id="dock-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" title="Telegram" aria-label="Telegram" target="_blank" rel="noopener noreferrer"></a>
+  <a id="dock-whatsapp" class="lx-dock-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" title="WhatsApp" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher"></a>
   <a id="dock-max" class="lx-dock-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" title="MAX" aria-label="MAX" target="_blank" rel="noopener noreferrer"></a>
 </aside>
 

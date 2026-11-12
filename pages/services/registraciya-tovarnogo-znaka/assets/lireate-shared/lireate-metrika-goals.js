@@ -49,6 +49,7 @@
       '#link-telegram',
       '#hero-telegram',
       '#dock-telegram',
+      '#dock-whatsapp',
       '#form-alt-telegram',
       '.lx-mobile-bar-btn[data-lx-icon="telegram"]',
       '.lx-site-footer-social-btn--tg'
@@ -59,7 +60,7 @@
       });
     });
 
-    ['#link-whatsapp', '.lx-mobile-bar-btn[data-lx-icon="whatsapp"]', '.lx-site-footer-social-btn--wa'].forEach(
+    ['#link-whatsapp', '#form-alt-whatsapp', '.lx-mobile-bar-btn[data-lx-icon="whatsapp"]', '.lx-site-footer-social-btn--wa'].forEach(
       function (sel) {
         document.querySelectorAll(sel).forEach(function (el) {
           bindGoal(el, 'whatsapp');
@@ -67,7 +68,15 @@
       }
     );
 
-    ['#link-max', '#hero-max', '#dock-max', '#form-alt-max', '.lx-dock-max'].forEach(function (sel) {
+    [
+      '#link-max',
+      '#hero-max',
+      '#dock-max',
+      '#form-alt-max',
+      '.lx-dock-max',
+      '.lx-mobile-bar-btn--max',
+      '.lx-mobile-bar-btn[data-lx-icon="max-white"]'
+    ].forEach(function (sel) {
       document.querySelectorAll(sel).forEach(function (el) {
         bindGoal(el, 'max');
       });
