@@ -28,13 +28,34 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-dev-shm-usage'],
 });
 
-async function capture(page, url, file, w, h, fullPage) {
-  await page.setViewport({ width: w, height: h, deviceScaleFactor: 1 });
+async function capture(page, url, file, w, h, isMobile) {
+  await page.setViewport({
+    width: w,
+    height: h,
+    deviceScaleFactor: 1,
+    isMobile: !!isMobile,
+    hasTouch: !!isMobile,
+  });
   await page.goto(url, { waitUntil: 'networkidle2', timeout: 90000 });
   await new Promise((r) => setTimeout(r, 2500));
-  const horiz = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2);
-  if (horiz) console.warn('WARN horizontal scroll', file, url);
-  await page.screenshot({ path: file, fullPage });
+  const metrics = await page.evaluate(async () => {
+    window.scrollTo(200, 0);
+    await new Promise((r) => requestAnimationFrame(r));
+    const main = document.querySelector('main.lireate-svc-page, main');
+    return {
+      scrollWidth: document.documentElement.scrollWidth,
+      scrollX: window.scrollX,
+      innerWidth: window.innerWidth,
+      mainWidth: main ? main.getBoundingClientRect().width : null,
+    };
+  });
+  if (isMobile && (metrics.scrollWidth !== 390 || metrics.scrollX !== 0)) {
+    throw new Error(`${file}: mobile scrollWidth=${metrics.scrollWidth} scrollX=${metrics.scrollX}`);
+  }
+  if (!isMobile && metrics.mainWidth && Math.round(metrics.mainWidth) !== 1120) {
+    throw new Error(`${file}: desktop mainWidth=${metrics.mainWidth}`);
+  }
+  await page.screenshot({ path: file, fullPage: true });
   assertPng(file);
   console.log('OK', file);
 }
@@ -42,7 +63,7 @@ async function capture(page, url, file, w, h, fullPage) {
 for (const r of routes) {
   const page = await browser.newPage();
   const url = BASE + r.path;
-  await capture(page, url, `${OUT}/${r.tag}-desktop-1440-full.png`, 1440, 900, true);
+  await capture(page, url, `${OUT}/${r.tag}-desktop-1440-full.png`, 1440, 900, false);
   await capture(page, url, `${OUT}/${r.tag}-mobile-390-full.png`, 390, 844, true);
   const risks = await page.$('#risks .lx-risk-grid');
   const form = await page.$('form#lireate-lead-form[action="/mail.php"]');

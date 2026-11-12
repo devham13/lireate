@@ -46,7 +46,7 @@ if ($lx_vk_json_path !== '') {
     ?>
     <article class="lireate-vk-case-card">
       <div class="lireate-vk-case-media" data-lireate-case-media="img">
-        <img src="<?php echo htmlspecialchars($lx_img, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($lx_title, ENT_QUOTES, 'UTF-8'); ?>" width="400" height="225" loading="lazy" decoding="async" onerror="lireateVkCaseImgError(this)">
+        <img class="lireate-vk-case-img" src="<?php echo htmlspecialchars($lx_img, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($lx_title, ENT_QUOTES, 'UTF-8'); ?>" width="400" height="225" loading="lazy" decoding="async" onerror="lireateVkCaseImgError(this)">
       </div>
       <div class="lireate-vk-case-body">
 <?php if ($lx_dt !== '') : ?>
