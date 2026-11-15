@@ -5,6 +5,10 @@
 $lireate_blog_list_render_ok = false;
 
 try {
+    if (function_exists('lireate_blog_list_canonical_path')) {
+        $GLOBALS['lireate_blog_list_canonical_path'] = lireate_blog_list_canonical_path();
+    }
+
     if (!function_exists('lireate_blog_h')) {
         $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
         $load_tpl = $doc !== '' ? $doc . '/template/page/news/lireate-blog-load.php' : '';

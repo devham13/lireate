@@ -4,8 +4,8 @@ $path = '/prodlenie_tovarnogo_znaka/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
-$seo_title = 'Продление товарного знака — LIREATE';
-$seo_description = 'Продление товарного знака в Роспатенте: сроки по ст. 1491 ГК РФ, пошлины п. 2.22, онлайн-подача и риски пропуска дедлайна. Сопровождение LIREATE.';
+$seo_title = 'Продление товарного знака в Роспатенте — Лирейт';
+$seo_description = 'Проверим срок действия товарного знака, подготовим заявление на продление и рассчитаем пошлины по вашему перечню классов МКТУ. Сопровождение LIREATE по смете.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -85,7 +85,7 @@ $schema_graph = [
   <div class="lx-hero-mascot-slot" data-lx-mascot="renewal"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · продление</p>
-    <h1>Продление товарного знака</h1>
+    <h1>Продление товарного знака в Роспатенте</h1>
     <p class="lx-hero-lead">Сверяем дедлайн по реестру, считаем пошлины и сопровождаем подачу — без гарантий решения Роспатента.</p>
     <div class="lx-tags"><span>ст. 1491 ГК РФ</span><span>п. 2.22</span><span>ФИПС</span></div>
     <div class="lx-hero-cta">

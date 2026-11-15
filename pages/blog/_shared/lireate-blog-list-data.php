@@ -21,6 +21,31 @@ function lireate_blog_list_page_from_request()
 }
 }
 
+/**
+ * Self-canonical path for /news pagination (SEO audit queue 04).
+ */
+if (!function_exists('lireate_blog_list_canonical_path')) {
+function lireate_blog_list_canonical_path()
+{
+    $page = lireate_blog_list_page_from_request();
+    $view = isset($_GET['view']) ? (string) $_GET['view'] : '';
+    if ($view === '' && $page <= 1) {
+        return '/news';
+    }
+    $qs = array();
+    if ($view !== '') {
+        $qs['view'] = $view;
+    }
+    if ($page > 1) {
+        $qs['page'] = (string) $page;
+    }
+    if (empty($qs)) {
+        return '/news';
+    }
+    return '/news?' . http_build_query($qs, '', '&', PHP_QUERY_RFC3986);
+}
+}
+
 if (!function_exists('lireate_blog_list_category_from_request')) {
 function lireate_blog_list_category_from_request()
 {

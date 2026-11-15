@@ -4,8 +4,8 @@ $path = '/registraciya_tovarnogo_znaka_v_kitae/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
-$seo_title = 'Регистрация товарного знака в Китае — LIREATE';
-$seo_description = 'Регистрация товарного знака в Китае: МКТУ, перевод, подача в CNIPA, ответы ведомству, риски экспорта и маркетплейсов. Сопровождение LIREATE.';
+$seo_title = 'Регистрация товарного знака в Китае (CNIPA) — Лирейт';
+$seo_description = 'Проверка названия, подбор классов и варианта написания, подача заявки в CNIPA и ответы ведомству. Стоимость и сроки LIREATE — после брифа по вашему знаку.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -84,7 +84,7 @@ $schema_graph = [
   <div class="lx-hero-mascot-slot" data-lx-mascot="china"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · Китай · CNIPA</p>
-    <h1>Регистрация товарного знака в&nbsp;Китае</h1>
+    <h1>Регистрация товарного знака в Китае</h1>
     <p class="lx-hero-lead">Маршрут подачи в CNIPA: аудит знака, классы МКТУ, перевод и ответы на уведомления — без гарантий исхода экспертизы.</p>
     <div class="lx-tags" aria-label="Темы услуги">
       <span>CNIPA</span><span>МКТУ</span><span>Мадрид / КНР</span><span>Маркетплейсы</span>

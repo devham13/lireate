@@ -4,8 +4,8 @@ $path = '/vozrazhenie_protiv_registracii_tovarnogo_znaka/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
-$seo_title = 'Возражение против регистрации товарного знака — LIREATE';
-$seo_description = 'Возражение против регистрации ТЗ в Роспатенте: обращение по ст. 1493 ГК РФ, оспаривание по ст. 1512–1513, основания, документы и пошлины. Сопровождение LIREATE.';
+$seo_title = 'Возражение против регистрации чужого знака — Лирейт';
+$seo_description = 'Проверим чужую заявку или знак, оценим основания и предложим порядок действий в Роспатенте. Сопровождение LIREATE — после изучения материалов.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -88,7 +88,7 @@ $schema_graph = [
   <div class="lx-hero-mascot-slot" data-lx-mascot="registration"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · Роспатент · ФИПС</p>
-    <h1>Возражение на регистрацию чужого товарного знака</h1>
+    <h1>Возражение против регистрации чужого товарного знака</h1>
     <p class="lx-hero-lead">Проверим основания по ст.&nbsp;1483 ГК&nbsp;РФ, подготовим обращение по ст.&nbsp;1493 и подадим в Роспатент после публикации чужой заявки — до решения о регистрации. При необходимости сопровождаем оспаривание уже зарегистрированного знака. Исход определяет ведомство; гарантировать отказ в регистрации нельзя.</p>
     <div class="lx-tags" aria-label="Темы услуги">
       <span>ст. 1493 ГК РФ</span><span>ст. 1483</span><span>Роспатент</span><span>бюллетень ФИПС</span><span>МКТУ</span>
