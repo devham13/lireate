@@ -29,3 +29,5 @@ jobs:
           python3 -m unittest scripts.test_lireate_service_live_markers -q
       - name: href integrity (services + template guards)
         run: python3 -m unittest scripts.test_lireate_href_integrity -q
+      - name: blog href SQL escape (--apply helpers)
+        run: python3 -m unittest scripts.test_lireate_seo_p1_blog_hrefs -q
