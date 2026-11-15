@@ -24,11 +24,11 @@ $lt_footer_css = defined('LIREATE_TEAM_FOOTER_CSS_HREF')
     ? LIREATE_TEAM_FOOTER_CSS_HREF
     : '/template/page/news/lireate-blog-footer.css';
 ?>
-<link rel="preconnect" href="https://fonts.googleapis.com>
-<link rel="preconnect" href="https://fonts.gstatic.com crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap rel="stylesheet">
-<link rel="stylesheet" href="<?php echo lireate_team_h($lt_assets); ?>/lireate-team.css?v=<?php echo lireate_team_h($lt_v); ?>>
-<link rel="stylesheet" href="<?php echo lireate_team_h($lt_footer_css); ?>?v=<?php echo lireate_team_h($lt_v); ?>>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?php echo lireate_team_h($lt_assets); ?>/lireate-team.css?v=<?php echo lireate_team_h($lt_v); ?>">
+<link rel="stylesheet" href="<?php echo lireate_team_h($lt_footer_css); ?>?v=<?php echo lireate_team_h($lt_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-team-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_team_h(LIREATE_TEAM_METRIKA_ID); ?>');
@@ -47,10 +47,10 @@ if (document.body) { document.body.classList.add('lireate-team-body'); }
       <p class="lireate-team-tagline"><?php echo lireate_team_h($lt_tagline); ?></p>
       <?php endif; ?>
       <div class="lireate-team-hero-actions" aria-label="Связаться с LIREATE">
-        <a class="lireate-team-pill lireate-team-pill--solid" href="<?php echo lireate_team_h(LIREATE_TEAM_MAX_CHAT_URL); ?> target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">Max</a>
-        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_TELEGRAM_URL); ?> target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_telegramm">Telegram</a>
-        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_WHATSAPP_URL); ?> target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">WhatsApp</a>
-        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE_TEL); ?> data-lx-ym-goal="perehod_v_telefon"><?php echo lireate_team_h(LIREATE_TEAM_PHONE_DISPLAY); ?></a>
+        <a class="lireate-team-pill lireate-team-pill--solid" href="<?php echo lireate_team_h(LIREATE_TEAM_MAX_CHAT_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">Max</a>
+        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_telegramm">Telegram</a>
+        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_WHATSAPP_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">WhatsApp</a>
+        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE_TEL); ?>" data-lx-ym-goal="perehod_v_telefon"><?php echo lireate_team_h(LIREATE_TEAM_PHONE_DISPLAY); ?></a>
       </div>
     </div>
   </header>
@@ -76,11 +76,11 @@ if (document.body) { document.body.classList.add('lireate-team-body'); }
         <span class="lireate-team-badge">Как работаем</span>
         <h2 class="lireate-team-card-title">С клиентом — коротко</h2>
         <ol class="lireate-team-steps">
-          <li>Свяжитесь через <a href="/kontaktyi>контакты</a>, мессенджеры или телефон — мы перезвоним в ближайшее время.</li>
+          <li>Свяжитесь через <a href="/kontaktyi">контакты</a>, мессенджеры или телефон — мы перезвоним в ближайшее время.</li>
           <li>Обсуждаем задачу: товарные знаки, патенты, авторские права и сопутствующие процедуры.</li>
           <li>Готовим документы и сопровождаем в Роспатенте, ФАС, ФТС, СИП и судах — по вашей ситуации.</li>
         </ol>
-        <p class="lireate-team-text lireate-team-text--muted">Подробнее об офисе и форме заявки — на странице <a href="/kontaktyi>Контакты</a>.</p>
+        <p class="lireate-team-text lireate-team-text--muted">Подробнее об офисе и форме заявки — на странице <a href="/kontaktyi">Контакты</a>.</p>
       </article>
     </div>
   </section>

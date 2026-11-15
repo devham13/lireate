@@ -92,9 +92,9 @@ $lx_org_jsonld = [
       </a>
     </div>
     <div class="lx-site-footer-nav">
-      <a href="/politika_konfidencialnosti>Политика конфиденциальности</a>
-      <a href="/private_data>Согласие на обработку персональных данных</a>
-      <a href="/news>Блог</a>
+      <a href="/politika_konfidencialnosti">Политика конфиденциальности</a>
+      <a href="/private_data">Согласие на обработку персональных данных</a>
+      <a href="/news">Блог</a>
       <details class="lx-site-footer-requisites">
         <summary>Реквизиты</summary>
         <div class="lx-site-footer-requisites-panel">

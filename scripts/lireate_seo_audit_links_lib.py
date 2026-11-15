@@ -133,17 +133,6 @@ def patch_text_content(text: str, replacements: list[dict]) -> tuple[str, int]:
             patched = patched.replace(needle, 'href="{0}"'.format(good))
             changes += 1
 
-    for item in _replacement_lookup(replacements):
-        src = str(item.get("from") or "")
-        dst = str(item.get("to") or "")
-        if not src or src.startswith("http"):
-            continue
-        for quote in ('"', "'"):
-            for variant in {src, src.rstrip("/"), src.rstrip("/") + "/"}:
-                token = "{0}{1}{0}".format(quote, variant)
-                if token in patched and variant != dst:
-                    patched = patched.replace(token, "{0}{1}{0}".format(quote, dst))
-                    changes += 1
     return patched, changes
 
 

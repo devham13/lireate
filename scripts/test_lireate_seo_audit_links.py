@@ -62,6 +62,31 @@ class SeoAuditLinksTests(unittest.TestCase):
         self.assertEqual(n, 1)
         self.assertIn("{0}/registraciya_tovarnogo_znaka/".format(host), patched)
 
+    def test_href_keeps_closing_quote_php_and_external(self):
+        replacements = lib.load_replacements(REPO)
+        html = (
+            '<link rel="preconnect" href="https://fonts.googleapis.com">'
+            '<a href="<?php echo foo(); ?>" target="_blank">x</a>'
+            '<a href="/kontaktyi/">y</a>'
+        )
+        patched, _ = lib.patch_text_content(html, replacements)
+        self.assertIn('href="https://fonts.googleapis.com">', patched)
+        self.assertIn('?>" target="_blank"', patched)
+        self.assertIn('href="/kontaktyi"', patched)
+        self.assertNotIn('href="/kontaktyi>', patched)
+
+    def test_markup_lint_seo_audit_templates(self):
+        import lireate_seo_audit_markup_lint as markup_lint
+
+        paths = [
+            REPO / "pages/team/_shared/lireate-team-page.inc.php",
+            REPO / "template/page/team/lireate-team-page.inc.php",
+            REPO / "template/page/news/lireate-blog-list.inc.php",
+            REPO / "template/lireate/lireate-service-footer.inc.php",
+        ]
+        issues = markup_lint.lint_paths([p for p in paths if p.is_file()])
+        self.assertEqual(issues, [], msg="\n".join(issues))
+
 
 if __name__ == "__main__":
     unittest.main()
