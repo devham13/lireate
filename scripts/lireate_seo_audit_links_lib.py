@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 MANIFEST_REL = Path("data/seo-audit-2026-11-15/link-replacements.json")
+MANIFEST_P2_REL = Path("data/seo-audit-2026-11-15/link-replacements-p2.json")
 INSTALL_MARKER = "lireate-seo-audit-links:2026-11-15"
 HREF_ATTR_RE = re.compile(
     r"(?P<prefix>\bhref\s*=\s*)(?P<quote>['\"])(?P<url>[^'\"]*)(?P=quote)",
@@ -17,10 +18,10 @@ HREF_ATTR_RE = re.compile(
 )
 
 
-def load_replacements(office_repo: Path) -> list[dict]:
-    path = office_repo / MANIFEST_REL
+def load_replacements(office_repo: Path, manifest_rel: Path | None = None) -> list[dict]:
+    path = office_repo / (manifest_rel or MANIFEST_REL)
     if not path.is_file():
-        raise FileNotFoundError("missing {0}".format(MANIFEST_REL))
+        raise FileNotFoundError("missing {0}".format(path.relative_to(office_repo)))
     data = json.loads(path.read_text(encoding="utf-8"))
     items = data.get("replacements") or []
     if not items:

@@ -62,6 +62,12 @@ class SeoAuditLinksTests(unittest.TestCase):
         self.assertEqual(n, 1)
         self.assertIn("{0}/registraciya_tovarnogo_znaka/".format(host), patched)
 
+    def test_p2_manifest_loads(self):
+        replacements = lib.load_replacements(REPO, lib.MANIFEST_P2_REL)
+        self.assertGreaterEqual(len(replacements), 40)
+        priorities = {r.get("priority") for r in replacements}
+        self.assertEqual(priorities, {"P2"})
+
 
 if __name__ == "__main__":
     unittest.main()

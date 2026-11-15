@@ -33,10 +33,16 @@ def resolve_docroot(args: argparse.Namespace) -> Path | None:
     return Path(raw).expanduser().resolve()
 
 
-def cmd_check(root: Path, office_repo: Path, include_html: bool) -> int:
-    replacements = lib.load_replacements(office_repo)
+def resolve_manifest(args: argparse.Namespace) -> Path:
+    if getattr(args, "queue", "p1") == "p2":
+        return lib.MANIFEST_P2_REL
+    return lib.MANIFEST_REL
+
+
+def cmd_check(root: Path, office_repo: Path, include_html: bool, manifest_rel: Path) -> int:
+    replacements = lib.load_replacements(office_repo, manifest_rel)
     hits = lib.scan_tree(root, replacements, include_html=include_html)
-    print("manifest: {0}".format(lib.MANIFEST_REL))
+    print("manifest: {0}".format(manifest_rel))
     print("root: {0}".format(root))
     print("rules: {0}".format(len(replacements)))
     print("files with href changes: {0}".format(len(hits)))
@@ -53,8 +59,8 @@ def cmd_check(root: Path, office_repo: Path, include_html: bool) -> int:
     return 0
 
 
-def cmd_apply(root: Path, office_repo: Path, include_html: bool, backups_root: Path) -> int:
-    replacements = lib.load_replacements(office_repo)
+def cmd_apply(root: Path, office_repo: Path, include_html: bool, backups_root: Path, manifest_rel: Path) -> int:
+    replacements = lib.load_replacements(office_repo, manifest_rel)
     hits = lib.scan_tree(root, replacements, include_html=include_html)
     if not hits:
         print("STATUS: no href changes needed")
@@ -78,9 +84,9 @@ def cmd_apply(root: Path, office_repo: Path, include_html: bool, backups_root: P
     return 0
 
 
-def cmd_office_sync(office_repo: Path) -> int:
+def cmd_office_sync(office_repo: Path, manifest_rel: Path) -> int:
     """Patch trackable PHP/HTML in office repo (service pages, fixtures)."""
-    replacements = lib.load_replacements(office_repo)
+    replacements = lib.load_replacements(office_repo, manifest_rel)
     applied = lib.apply_tree(office_repo, replacements, include_html=True)
     print("office-repo: {0}".format(office_repo))
     print("patched: {0}".format(len(applied)))
@@ -109,16 +115,23 @@ def main() -> int:
         default=os.environ.get("LIREATE_AUTOPUB_HOME", str(Path.home() / "lireate-autopub"))
         + "/backups/seo-audit-links",
     )
+    parser.add_argument(
+        "--queue",
+        choices=("p1", "p2"),
+        default="p1",
+        help="p1 = link-replacements.json; p2 = link-replacements-p2.json",
+    )
     args = parser.parse_args()
     office_repo = resolve_office_repo()
+    manifest_rel = resolve_manifest(args)
     if args.office_sync:
-        return cmd_office_sync(office_repo)
+        return cmd_office_sync(office_repo, manifest_rel)
     if not args.check and not args.apply:
         parser.error("use --check, --apply, or --office-sync")
     root = resolve_docroot(args)
     if args.check:
-        return cmd_check(root, office_repo, args.include_html)
-    return cmd_apply(root, office_repo, args.include_html, Path(args.backups_root).expanduser())
+        return cmd_check(root, office_repo, args.include_html, manifest_rel)
+    return cmd_apply(root, office_repo, args.include_html, Path(args.backups_root).expanduser(), manifest_rel)
 
 
 if __name__ == "__main__":
