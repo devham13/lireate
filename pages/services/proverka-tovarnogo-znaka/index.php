@@ -4,8 +4,8 @@ $path = '/findtz/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
-$seo_title = 'Проверка товарного знака перед регистрацией — LIREATE';
-$seo_description = 'Проверка товарного знака перед регистрацией: поиск по реестру Роспатента, оценка рисков сходства. Сопровождение LIREATE по смете, без гарантий экспертизы.';
+$seo_title = 'Проверка товарного знака перед регистрацией — Лирейт';
+$seo_description = 'Проверка обозначения по базам Роспатента: сходство, однородность, риски отказа, отчёт с рекомендациями. По смете; гарантий регистрации нет.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -90,7 +90,7 @@ $schema_graph = [
   <div class="lx-hero-mascot-slot" data-lx-mascot="search"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · поиск по реестру</p>
-    <h1>Проверка товарного знака</h1>
+    <h1>Проверка товарного знака перед регистрацией</h1>
     <p class="lx-hero-lead">Поиск по реестру Роспатента и оценка рисков до подачи заявки: сходство, однородность, основания отказа по ст. 1483 ГК РФ. Отчёт и рекомендации — по смете; регистрацию и исход экспертизы гарантировать нельзя.</p>
     <div class="lx-tags"><span>ФИПС</span><span>реестр ТЗ</span><span>МКТУ</span><span>ст. 1483 ГК РФ</span></div>
     <div class="lx-hero-cta">
