@@ -1,0 +1,42 @@
+{
+  "audit_date": "2026-11-15",
+  "queue": "03-cms-meta",
+  "pages": [
+    {
+      "path": "/",
+      "cms_page": "main",
+      "needles": ["$temp['page']==''", "$temp['page']==\"\"", "class=\"mainPage\"", "title-ap"],
+      "prefer_files": ["template/main.php", "index.php"]
+    },
+    {
+      "path": "/uslugi/",
+      "cms_page": "uslugi",
+      "needles": ["$temp['page']=='uslugi'", "Услуги патентного бюро"],
+      "prefer_files": ["template/main.php"]
+    },
+    {
+      "path": "/mktu/",
+      "cms_page": "mktu",
+      "needles": ["$temp['page']=='mktu'", "/mktu"],
+      "prefer_files": ["template/main.php"]
+    },
+    {
+      "path": "/patent/",
+      "cms_page": "patent",
+      "needles": ["$temp['page']=='patent'", "Патентование изобретений"],
+      "prefer_files": ["template/main.php"]
+    },
+    {
+      "path": "/patent_prom_obr/",
+      "cms_page": "patent_prom_obr",
+      "needles": ["$temp['page']=='patent_prom_obr'", "patent_prom_obr", "промышленных образцов"],
+      "prefer_files": ["template/main.php"]
+    },
+    {
+      "path": "/kontaktyi/",
+      "cms_page": "kontaktyi",
+      "needles": ["$temp['page']=='kontaktyi'", "Контакты Лирейт", "lireate-contacts"],
+      "prefer_files": ["template/main.php", "template/page/kontaktyi"]
+    }
+  ]
+}

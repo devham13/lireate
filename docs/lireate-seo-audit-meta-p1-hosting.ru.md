@@ -18,7 +18,26 @@
 
 ## Хостинг CMS (главная, /uslugi/, /mktu, /patent, статьи, legacy-лендинги)
 
-Правки Title, Description, H1 выполняются в PHP-шаблонах DOCROOT (не в `data/db.php`). Используйте манифест как эталон; для массовой замены ссылок — PR1 (`lireate_seo_audit_links_install.py`).
+Маршруты CMS: `data/seo-audit-2026-11-15/p1-cms-pages.json` (6 URL). Скрипт: `scripts/lireate_seo_audit_meta_install.py` + `lireate_seo_audit_meta_lib.py`.
+
+```bash
+export LIREATE_DOCROOT=$HOME/www/public_html
+python3 scripts/lireate_seo_audit_meta_install.py --mode meta --check
+python3 scripts/lireate_seo_audit_meta_install.py --mode meta --apply
+```
+
+Правки Title, Description, H1 выполняются в PHP-шаблонах DOCROOT (не в `data/db.php`). Бэкап: `~/lireate-autopub/backups/seo-audit-meta/<timestamp>/`.
+
+### Тезис о заявителях (ст. 1478 ГК РФ)
+
+Манифест: `data/seo-audit-2026-11-15/p1-content-replacements.json` (статья `kak_samostoyatelno_podgotovit_…` на хостинге).
+
+```bash
+python3 scripts/lireate_seo_audit_meta_install.py --mode content --check
+python3 scripts/lireate_seo_audit_meta_install.py --mode content --apply
+```
+
+Для массовой замены ссылок — PR1 (`lireate_seo_audit_links_install.py`).
 
 ### Блог `/news` — canonical пагинации (очередь 04)
 

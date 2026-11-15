@@ -235,7 +235,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 <section class="lx-section lx-reveal" id="pricing">
   <span class="lx-section-label">Стоимость</span>
   <h2>Стоимость регистрации: госпошлины и услуги LIREATE</h2>
-  <p>Полная стоимость складывается из двух частей: пошлины Роспатента (они известны заранее) и вознаграждение за сопровождение (определяется после брифа). Пошлины ниже взяты из официальной таблицы Роспатента, опубликованной 03.10.2025: <a href="https://rospatent.gov.ru/ru/activities/dues/table" target="_blank" rel="noopener noreferrer">rospatent.gov.ru/ru/activities/dues/table</a>. Перед платежом сверяйте суммы с таблицей и с <a href="https://new.fips.ru/podacha-zayavki/kalkulyator-poshlin/" target="_blank" rel="noopener noreferrer">калькулятором пошлин ФИПС</a>: размеры могут меняться.</p>
+  <p>Полная стоимость складывается из двух частей: пошлины Роспатента (они известны заранее) и вознаграждение за сопровождение (определяется после брифа). Разбор по этапам и примеры — в <a href="/kakie_gosposhlinyi_neobxodimo_oplatit_za_registraciyu_tovarnogo_znaka/">статье о госпошлинах за регистрацию товарного знака</a>; подбор классов — в материале <a href="/struktura_mktu_kak_opredelit_klass_dlya_tovara_i_uslugi/">о структуре МКТУ</a>. Пошлины ниже взяты из официальной таблицы Роспатента, опубликованной 03.10.2025: <a href="https://rospatent.gov.ru/ru/activities/dues/table" target="_blank" rel="noopener noreferrer">rospatent.gov.ru/ru/activities/dues/table</a>. Перед платежом сверяйте суммы с таблицей и с <a href="https://new.fips.ru/podacha-zayavki/kalkulyator-poshlin/" target="_blank" rel="noopener noreferrer">калькулятором пошлин ФИПС</a>: размеры могут меняться.</p>
 
   <h3>Ориентир госпошлин Роспатента (1 класс МКТУ, этапы)</h3>
   <div class="lx-price-grid">
@@ -410,6 +410,9 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
     <a class="lx-related-card" href="/zashchita_avtorskih_prav/"><span class="lx-related-card-type">Услуга</span><strong>Защита авторских прав</strong></a>
     <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
+    <a class="lx-related-card" href="/kakie_gosposhlinyi_neobxodimo_oplatit_za_registraciyu_tovarnogo_znaka/"><span class="lx-related-card-type">Статья</span><strong>Госпошлины за регистрацию ТЗ</strong></a>
+    <a class="lx-related-card" href="/struktura_mktu_kak_opredelit_klass_dlya_tovara_i_uslugi/"><span class="lx-related-card-type">Статья</span><strong>Классы МКТУ</strong></a>
+    <a class="lx-related-card" href="/kak-zaregistrirovat-tovarnyy-znak-samostoyatelno-2026/"><span class="lx-related-card-type">Инструкция</span><strong>Самостоятельная регистрация</strong></a>
     <a class="lx-related-card" href="/kontaktyi"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>
   <p>Нужна проверка знака до подачи — начните со страницы <a href="/findtz/">/findtz/</a>. Нужно продлить уже зарегистрированный знак — смотрите <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>. Планируете выход на рынок Китая — отдельный маршрут описан на странице <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрации в КНР</a>. Для контента, дизайна и программ — <a href="/zashchita_avtorskih_prav/">защита авторских прав</a>. Обращение по ст. 1493 против чужой заявки — <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">возражение против регистрации</a>.</p>

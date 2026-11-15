@@ -22,6 +22,8 @@ jobs:
         run: python3 -m unittest scripts.test_lireate_blog_install.BlogInstallLibTests.test_deploy_php_sources_no_php7_dirname_levels -q
       - name: SEO-audit link patch tests
         run: python3 -m unittest scripts.test_lireate_seo_audit_links -q
+      - name: SEO-audit CMS meta patch tests
+        run: python3 -m unittest scripts.test_lireate_seo_audit_meta -q
       - name: Service live-parity markers
         run: |
           python3 scripts/lireate_service_sync_shared.py --slug registraciya-tovarnogo-znaka
