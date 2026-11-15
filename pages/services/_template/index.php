@@ -165,7 +165,7 @@ include __DIR__ . '/../_shared/blocks/lireate-reviews.inc.php';
   <ul class="lx-related-links">
     <li><a href="/uslugi/">Каталог услуг</a></li>
     <li><a href="/news/">Новости</a></li>
-    <li><a href="/contacts/">Контакты и телефон</a></li>
+    <li><a href="/kontaktyi">Контакты и телефон</a></li>
   </ul>
 </section>
 

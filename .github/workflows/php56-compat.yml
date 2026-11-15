@@ -27,3 +27,5 @@ jobs:
           python3 scripts/lireate_service_lint.py --slug registraciya-tovarnogo-znaka
           python3 scripts/lireate_service_lint.py --slug proverka-tovarnogo-znaka
           python3 -m unittest scripts.test_lireate_service_live_markers -q
+      - name: href integrity (services + template guards)
+        run: python3 -m unittest scripts.test_lireate_href_integrity -q

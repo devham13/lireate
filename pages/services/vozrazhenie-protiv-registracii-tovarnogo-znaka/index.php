@@ -373,7 +373,7 @@ $schema_graph = [
     <a class="lx-btn lx-btn-primary" href="https://t.me/lireate_patent" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
   </div>
 
-  <p>Если ваши права на собственный знак скоро истекают, смотрите страницу про <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>. Для консультации — <a href="/contacts/">контакты</a>.</p>
+  <p>Если ваши права на собственный знак скоро истекают, смотрите страницу про <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>. Для консультации — <a href="/kontaktyi">контакты</a>.</p>
 </section>
 
 <section class="lx-section lx-reveal" id="cost">
@@ -495,7 +495,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
     <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
     <a class="lx-related-card" href="/news/"><span class="lx-related-card-type">Блог</span><strong>Новости LIREATE</strong></a>
-    <a class="lx-related-card" href="/contacts/"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
+    <a class="lx-related-card" href="/kontaktyi"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>
 </section>
 
