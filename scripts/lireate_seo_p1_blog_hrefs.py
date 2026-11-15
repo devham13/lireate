@@ -10,7 +10,6 @@ Does not read or modify data/db.php.
 from __future__ import print_function
 
 import argparse
-import json
 import os
 import re
 import subprocess
@@ -20,7 +19,23 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 
-# Longer patterns first
+# Path segment exactly as on live / in news.seo_url (no normalization).
+DONOR_PATHS = [
+    "kak_proverit_brend_na_wildberries_svoboden_li_tovarnyy_znak",
+    "rospatent-fips-proverit-tovarnyy-znak-onlayn-besplatno",
+    "vozrazhenie_v_pps_na_pravovuyu_oxranu_tz_st_1513_14_000_rub_i_srok_5_let",
+    "graficheskiy_tovarnyy_znak_smeshchenie_do_podachi",
+    "mozhno_li_ispolzovat_logotipyi_kompaniy_v_video_chek_list_riskov",
+    "rezhim_kommercheskoy_taynyi_kak_vvesti_chtobyi_dokazat_razglashenie",
+    "mozhno_li_pokazyivat_chuzhie_logotipyi_i_emblemyi_v_video_i_na_oblozhkax",
+    "avtorskoe-voznagrazhdenie-po-gk-rf",
+    "dorabotka-logotipa-pered-registraciey-tovarnogo-znaka",
+    "patent_na_poleznuyu_model_rospatent",
+    "sposobyi_zaschityi_izobreteniya_patent_nou_xau_ili_publikaciya",
+    "kak_annulirovat_patent_konkurenta_esli_ego_pretenzii_nepravomernyi",
+]
+
+# Longer patterns first; only real broken fragments (no no-op pairs).
 REPLACEMENTS = [
     ("/blog/kak-opredelit-klass-mktu/", "/struktura_mktu_kak_opredelit_klass_dlya_tovara_i_uslugi/"),
     (
@@ -52,7 +67,6 @@ REPLACEMENTS = [
     ("href='/patentovanie'", "href='/patent'"),
 ]
 
-ANNULIROVAT_SLUG = "kak_annulirovat_patent_konkurenta_esli_ego_pretenzii_nepravomernyi"
 ANNULIROVAT_OLD = (
     "href=\u2019 https://base.garant.ru/10164072/a043ec3f83d5eb0d75040138a0a43bc2/"
     "\u2019 target=\u2019_blank\u2019"
@@ -62,20 +76,28 @@ ANNULIROVAT_NEW = (
     'target="_blank"'
 )
 
-DONOR_SLUGS = [
-    "kak_proverit_brend_na_wildberries_i_kupit_tovarnyiy_znak_u_drugogo_prodavtsa",
-    "rospatent_fips_proverit_tovarnogo_znaka_onlayn",
-    "vozrazhenie_v_pps_na_pravovuyu_oxranu_tz_st_1513_gk_rf",
-    "graficheskiy_tovarnyy_znak_smeshchenie_do_podachi",
-    "mozhno_li_ispolzovat_logotipyi_kompaniy_v_video_i_na_oblozhkah",
-    "rezhim_kommercheskoy_taynyi_kak_vvesti_chtobyi_dokazat_razglashenie",
-    "mozhno_li_pokazyivat_chuzhie_logotipyi_i_emblemyi_v_video_i_na_oblozhkax",
-    "avtorskoe-voznagrazhdenie-po-gk-rf",
-    "dorabotka_logotipa_pered_registraciey_tovarnogo_znaka",
-    "patent_na_poleznuyu_model_rospatent",
-    "sposobyi_zaschityi_izobreteniya_patent_nou_xau_ili_publikaciya",
-    ANNULIROVAT_SLUG,
-]
+FORBIDDEN_AFTER_FIX = (
+    "prava_ot_dizajnera",
+    "/blog/kak-opredelit-klass-mktu/",
+    "/blog/konkurent-zaregistriroval-pohozhiy-tovarnyy-znak/",
+    "/blog/mozhno-li-pokazyvat-chuzhie-logotipy-v-video-i-na-oblozhkah/",
+    'href="/izobretenie"',
+    'href="/patentovanie"',
+    "/sposoby-zashchity-izobreteniya/",
+    "/sposoby_zashchity_izobreteniya",
+    "/rezhim-kommercheskoj-tajny-kak-vvesti/",
+)
+
+
+def site_base():
+    base = (
+        os.environ.get("LIREATE_PUBLIC_SITE_URL")
+        or os.environ.get("PUBLIC_SITE_URL")
+        or ""
+    ).rstrip("/")
+    if not base and os.environ.get("PUBLIC_SITE_HOST", "").strip():
+        base = "https://" + os.environ["PUBLIC_SITE_HOST"].strip().lstrip("https://").lstrip("http://")
+    return base
 
 
 def apply_story_fixes(story):
@@ -87,49 +109,50 @@ def apply_story_fixes(story):
             changed.append((old, new))
     if ANNULIROVAT_OLD in out:
         out = out.replace(ANNULIROVAT_OLD, ANNULIROVAT_NEW)
-        changed.append(("typographic garant href", ANNULIROVAT_NEW[:40] + "…"))
+        changed.append((ANNULIROVAT_OLD, ANNULIROVAT_NEW))
     return out, changed
 
 
-def fetch_live(slug):
-    base = os.environ.get("LIREATE_PUBLIC_SITE_URL", "").rstrip("/")
+def rows_for_story(seo_url, story):
+    rows = []
+    for old, new in REPLACEMENTS:
+        if old in story:
+            rows.append({"seo_url": seo_url, "old": old, "new": new})
+    if ANNULIROVAT_OLD in story:
+        rows.append({"seo_url": seo_url, "old": ANNULIROVAT_OLD, "new": ANNULIROVAT_NEW})
+    return rows
+
+
+def fetch_live_article(path):
+    base = site_base()
     if not base:
         raise SystemExit("BLOCKER: set LIREATE_PUBLIC_SITE_URL for --source live")
-    url = base + "/" + slug + "/"
+    url = base + "/" + path + "/"
     proc = subprocess.run(
-        ["curl", "-sS", "-o", "/dev/null", "-w", "%{http_code}", url],
+        ["curl", "-sSL", "-o", "/dev/null", "-w", "%{http_code}", url],
         capture_output=True,
         text=True,
     )
     if proc.stdout.strip() != "200":
-        return None
-    html = subprocess.check_output(["curl", "-sS", url], text=True, errors="replace")
+        return None, url, proc.stdout.strip()
+    html = subprocess.check_output(["curl", "-sSL", url], text=True, errors="replace")
     m = re.search(r'<div\s+id=["\']textBox["\'][^>]*>(.*)</div>', html, re.I | re.S)
     if m:
-        return m.group(1)
-    return html
+        return m.group(1), url, "200"
+    return html, url, "200"
 
 
 def check_live():
     rows = []
-    for slug in DONOR_SLUGS:
-        body = fetch_live(slug)
+    skip_count = 0
+    for path in DONOR_PATHS:
+        body, url, code = fetch_live_article(path)
         if body is None:
-            print("SKIP (not 200):", slug)
+            print("SKIP (not {0}): {1}  ({2})".format(code, path, url))
+            skip_count += 1
             continue
-        for old, new in REPLACEMENTS:
-            if old in body:
-                rows.append({"source": "live", "seo_url": slug, "old": old, "new": new})
-        if ANNULIROVAT_OLD in body:
-            rows.append(
-                {
-                    "source": "live",
-                    "seo_url": slug,
-                    "old": ANNULIROVAT_OLD[:50] + "…",
-                    "new": ANNULIROVAT_NEW,
-                }
-            )
-    return rows
+        rows.extend(rows_for_story(path, body))
+    return rows, skip_count
 
 
 def mysql_env_ok():
@@ -163,22 +186,23 @@ def mysql_query(sql):
 def check_mysql():
     if not mysql_env_ok():
         raise SystemExit("BLOCKER: MySQL env not set (LIREATE_MYSQL_*)")
-    in_list = ",".join("'" + s.replace("'", "''") + "'" for s in DONOR_SLUGS)
-    sql = "SELECT seo_url, full_story FROM news WHERE seo_url IN ({0})".format(in_list)
-    raw = mysql_query(sql)
     rows = []
-    for line in raw.splitlines():
-        if "\t" not in line:
+    skip_count = 0
+    for path in DONOR_PATHS:
+        esc = path.replace("'", "''")
+        sql = "SELECT seo_url, full_story FROM news WHERE seo_url = '{0}' OR alt_name = '{0}' LIMIT 1".format(esc)
+        raw = mysql_query(sql).strip()
+        if not raw:
+            print("SKIP (no row):", path)
+            skip_count += 1
             continue
-        slug, story = line.split("\t", 1)
-        for old, new in REPLACEMENTS:
-            if old in story:
-                rows.append({"source": "mysql", "seo_url": slug, "old": old, "new": new})
-        if ANNULIROVAT_OLD in story:
-            rows.append(
-                {"source": "mysql", "seo_url": slug, "old": "typographic garant", "new": ANNULIROVAT_NEW}
-            )
-    return rows
+        if "\t" not in raw:
+            print("SKIP (bad row):", path)
+            skip_count += 1
+            continue
+        slug, story = raw.split("\t", 1)
+        rows.extend(rows_for_story(slug, story))
+    return rows, skip_count
 
 
 def cmd_apply(backups_root):
@@ -188,28 +212,40 @@ def cmd_apply(backups_root):
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     backup_dir = backups_root / ("seo-p1-blog-hrefs-{0}".format(stamp))
     backup_dir.mkdir(parents=True, exist_ok=True)
-    in_list = ",".join("'" + s.replace("'", "''") + "'" for s in DONOR_SLUGS)
-    sql = "SELECT seo_url, full_story FROM news WHERE seo_url IN ({0})".format(in_list)
-    raw = mysql_query(sql)
     updated = 0
-    for line in raw.splitlines():
-        if "\t" not in line:
+    for path in DONOR_PATHS:
+        esc = path.replace("'", "''")
+        sql = "SELECT seo_url, full_story FROM news WHERE seo_url = '{0}' OR alt_name = '{0}' LIMIT 1".format(esc)
+        raw = mysql_query(sql).strip()
+        if not raw or "\t" not in raw:
             continue
-        slug, story = line.split("\t", 1)
+        slug, story = raw.split("\t", 1)
         new_story, changes = apply_story_fixes(story)
         if not changes:
             continue
         (backup_dir / (slug + ".full_story.html")).write_text(story, encoding="utf-8")
-        esc = new_story.replace("\\", "\\\\").replace("'", "\\'")
-        upd = "UPDATE news SET full_story = '{0}' WHERE seo_url = '{1}'".format(
-            esc, slug.replace("'", "''")
-        )
+        esc_story = new_story.replace("\\", "\\\\").replace("'", "\\'")
+        upd = "UPDATE news SET full_story = '{0}' WHERE seo_url = '{1}'".format(esc_story, slug.replace("'", "''"))
         mysql_query(upd)
         updated += 1
         print("APPLY", slug, len(changes), "replacement(s)")
     print("backup:", backup_dir)
     print("updated rows:", updated)
     return 0
+
+
+def verify_after_fix_live():
+    """After virtual fix, forbidden href fragments must be gone (live)."""
+    bad = []
+    for path in DONOR_PATHS:
+        body, _url, code = fetch_live_article(path)
+        if body is None:
+            continue
+        fixed, _ = apply_story_fixes(body)
+        for needle in FORBIDDEN_AFTER_FIX:
+            if needle in fixed:
+                bad.append("{0}: still contains {1}".format(path, needle))
+    return bad
 
 
 def main():
@@ -236,24 +272,25 @@ def main():
     if source == "auto":
         source = "mysql" if mysql_env_ok() else "live"
     if source == "mysql":
-        rows = check_mysql()
+        rows, skip_count = check_mysql()
     else:
-        rows = check_live()
+        rows, skip_count = check_live()
     if not rows:
         print("OK: no matching broken hrefs in scanned articles")
-        return 0
-    for row in rows:
-        print(
-            "{seo_url}\t{old}\t=>\t{new}".format(
-                seo_url=row["seo_url"],
-                old=row["old"],
-                new=row["new"],
-            )
-        )
-    print("TOTAL", len(rows), "replacement(s); source=", source)
+    else:
+        by_article = {}
+        for row in rows:
+            by_article.setdefault(row["seo_url"], []).append(row)
+        for seo_url in sorted(by_article.keys()):
+            print("---", seo_url, "---")
+            for row in by_article[seo_url]:
+                print("  {old}\t=>\t{new}".format(old=row["old"], new=row["new"]))
+        print("TOTAL", len(rows), "replacement(s); articles=", len(by_article), "; skips=", skip_count, "; source=", source)
     print(
         "Articles in repo: blog templates only; bodies live in MySQL news.full_story on hosting DOCROOT."
     )
+    if source == "live":
+        print("NOTE: FORBIDDEN_* scan runs after --apply on hosting (live still has broken hrefs until then).")
     return 0
 
 
