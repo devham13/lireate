@@ -429,8 +429,10 @@ def lint_slug(slug):
         if bad in html:
             errors.append("forbidden privacy URL {0}; use /private_data and /politika_konfidencialnosti".format(bad))
 
-    if not re.search(r'href=["\']tel:', html, re.I) and "/contacts/" not in html:
-        warnings.append("no tel: link; ensure /contacts/ for phone")
+    if not re.search(r'href=["\']tel:', html, re.I) and not re.search(
+        r'href=["\']/kontaktyi|/contacts/', html, re.I
+    ):
+        warnings.append("no tel: link; ensure /kontaktyi or tel: for phone")
 
     if "lireate-svc-page" not in html and "lireate-cn-page" not in html:
         errors.append("main must use class lireate-svc-page (or legacy lireate-cn-page)")
