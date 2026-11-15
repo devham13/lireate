@@ -5,7 +5,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Возражение против регистрации чужого знака — Лирейт';
-$seo_description = 'Проверим чужую заявку или знак, оценим основания и предложим порядок действий в Роспатенте. Сопровождение LIREATE — после изучения материалов.';
+$seo_description = 'Возражение против регистрации ТЗ в Роспатенте: обращение по ст. 1493 ГК РФ, оспаривание по ст. 1512–1513, основания, документы и пошлины. Сопровождение LIREATE — после изучения материалов.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';

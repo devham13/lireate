@@ -131,18 +131,13 @@ if (!function_exists('lireate_blog_extract_toc')) {
 function lireate_blog_extract_toc($html)
 {
     $items = array();
-    if (!preg_match_all(
-        '/<(h2|h3)\b[^>]*\sid=["\']([^"\']+)["\'][^>]*>(.*?)<\/\1>/isu',
-        (string) $html,
-        $m,
-        PREG_SET_ORDER
-    )) {
+    if (!preg_match_all('/<h2[^>]*\sid=["\']([^"\']+)["\'][^>]*>(.*?)<\/h2>/isu', (string) $html, $m, PREG_SET_ORDER)) {
         return $items;
     }
     foreach ($m as $row) {
         $items[] = array(
-            'id' => $row[2],
-            'text' => trim(strip_tags($row[3])),
+            'id' => $row[1],
+            'text' => trim(strip_tags($row[2])),
         );
     }
     return $items;

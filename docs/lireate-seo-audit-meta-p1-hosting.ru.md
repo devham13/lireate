@@ -2,23 +2,23 @@
 
 Манифест: `data/seo-audit-2026-11-15/p1-metadata.json` (лист «Страницы», приоритет P1 с заполненными Title/Description/H1).
 
+Пути CMS в манифесте **без завершающего слэша** — как live: `/patent`, `/mktu`, `/kontaktyi`, `/news`, `/uslugi`.
+
 ## Уже в репозитории (страницы услуг LIREATE)
 
-После merge обновляются `pages/services/<slug>/index.php`:
+После merge обновляются `pages/services/<slug>/index.php` (кроме `/registraciya_tovarnogo_znaka/` и `/findtz/` — отдельный PR после **#76**):
 
-- `/registraciya_tovarnogo_znaka/`
 - `/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/`
-- `/findtz/`
 - `/prodlenie_tovarnogo_znaka/`
 - `/registraciya_tovarnogo_znaka_v_kitae/`
 - `/vozrazhenie_protiv_registracii_tovarnogo_znaka/`
 - `/zashchita_avtorskih_prav/`
 
-Публикуются через `lireate_hosting_publish_service.py` как обычно.
+Публикация новых/изменённых longread-услуг — только **`lireate_hosting_publish_service.py` без `--update`** (режим update перезаписывает live и затирает правки вне репозитория). Существующие slug на хостинге править вручную в DOCROOT или дождаться согласованного деплоя.
 
-## Хостинг CMS (главная, /uslugi/, /mktu, /patent, статьи, legacy-лендинги)
+## Хостинг CMS (главная, /uslugi, /mktu, /patent, статьи, legacy-лендинги)
 
-Правки Title, Description, H1 выполняются в PHP-шаблонах DOCROOT (не в `data/db.php`). Используйте манифест как эталон; для массовой замены ссылок — PR1 (`lireate_seo_audit_links_install.py`).
+Правки Title, Description, H1 выполняются в PHP-шаблонах DOCROOT (не в `data/db.php`). Для массовой замены ссылок — PR1 (`lireate_seo_audit_links_install.py`).
 
 ### Блог `/news` — canonical пагинации (очередь 04)
 
