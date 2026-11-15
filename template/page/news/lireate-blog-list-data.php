@@ -314,7 +314,7 @@ function lireate_blog_list_pagination_url($pageNum)
         $query['page'] = $pageNum;
     }
     $qs = http_build_query($query);
-    return '/news/' . ($qs !== '' ? '?' . $qs : '');
+    return '/news' . ($qs !== '' ? '?' . $qs : '');
 }
 }
 

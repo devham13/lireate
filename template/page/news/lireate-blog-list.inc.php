@@ -33,11 +33,11 @@ $lb_max = LIREATE_BLOG_MAX_CHANNEL_URL;
 $lb_avatar = defined('LIREATE_BLOG_AUTHOR_AVATAR_PATH') ? LIREATE_BLOG_AUTHOR_AVATAR_PATH : '';
 $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_NAME : LIREATE_BLOG_DEFAULT_AUTHOR;
 ?>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-list.css?v=<?php echo lireate_blog_h($lb_v); ?>">
-<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<link rel="preconnect" href="https://fonts.googleapis.com>
+<link rel="preconnect" href="https://fonts.gstatic.com crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap rel="stylesheet">
+<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-list.css?v=<?php echo lireate_blog_h($lb_v); ?>>
+<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>>
 <script>
 document.documentElement.classList.add('lireate-blog-html');
 if (document.body) { document.body.classList.add('lireate-blog-body'); }
@@ -87,8 +87,8 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
         <?php endif; ?>
       </h1>
       <div class="lireate-blog-list-hero-actions">
-        <a class="lireate-blog-list-pill lireate-blog-list-pill--solid" href="<?php echo lireate_blog_h($lb_max); ?>" target="_blank" rel="noopener noreferrer">Канал в Max</a>
-        <a class="lireate-blog-list-pill lireate-blog-list-pill--outline" href="/news/">Все материалы</a>
+        <a class="lireate-blog-list-pill lireate-blog-list-pill--solid" href="<?php echo lireate_blog_h($lb_max); ?> target="_blank" rel="noopener noreferrer">Канал в Max</a>
+        <a class="lireate-blog-list-pill lireate-blog-list-pill--outline" href="/news>Все материалы</a>
       </div>
     </div>
   </header>
@@ -194,7 +194,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
       <nav class="lireate-blog-list-pagination" aria-label="Страницы блога">
         <div class="lireate-blog-list-pagination-inner">
           <?php if ($lb_prev !== null && $lb_prev !== '') : ?>
-          <a class="lireate-blog-list-page-nav lireate-blog-list-page-nav--prev" href="<?php echo lireate_blog_h($lb_prev); ?>">Назад</a>
+          <a class="lireate-blog-list-page-nav lireate-blog-list-page-nav--prev" href="<?php echo lireate_blog_h($lb_prev); ?>>Назад</a>
           <?php else : ?>
           <span class="lireate-blog-list-page-nav lireate-blog-list-page-nav--prev is-disabled" aria-hidden="true">Назад</span>
           <?php endif; ?>
@@ -215,7 +215,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
           <a class="lireate-blog-list-page-link<?php echo $is_current ? ' is-current' : ''; ?>" href="<?php echo lireate_blog_h($page_item['url']); ?>"<?php echo $is_current ? ' aria-current="page"' : ''; ?>><?php echo lireate_blog_h(isset($page_item['num']) ? $page_item['num'] : ''); ?></a>
           <?php endforeach; ?>
           <?php if ($lb_next !== null && $lb_next !== '') : ?>
-          <a class="lireate-blog-list-page-nav lireate-blog-list-page-nav--next" href="<?php echo lireate_blog_h($lb_next); ?>">Далее</a>
+          <a class="lireate-blog-list-page-nav lireate-blog-list-page-nav--next" href="<?php echo lireate_blog_h($lb_next); ?>>Далее</a>
           <?php else : ?>
           <span class="lireate-blog-list-page-nav lireate-blog-list-page-nav--next is-disabled" aria-hidden="true">Далее</span>
           <?php endif; ?>
@@ -230,7 +230,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
       <div class="lireate-blog-subscribe-card lireate-blog-list-subscribe-card">
         <p class="lireate-blog-subscribe-label">MAX</p>
         <p class="lireate-blog-subscribe-text">Разборы кейсов по товарным знакам и ИС в канале LIREATE в Max</p>
-        <a class="lireate-blog-subscribe-btn" href="<?php echo lireate_blog_h($lb_max); ?>" target="_blank" rel="noopener noreferrer">
+        <a class="lireate-blog-subscribe-btn" href="<?php echo lireate_blog_h($lb_max); ?> target="_blank" rel="noopener noreferrer">
           <span class="lireate-blog-subscribe-btn-icon" aria-hidden="true"></span>
           Подписаться
         </a>

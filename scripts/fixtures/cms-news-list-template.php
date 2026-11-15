@@ -27,7 +27,7 @@ $news = isset($news) ? $news : array(
     <div class="sectionPos">
         <h2>Самое свежее и интересное</h2>
         <div class="tags">
-            <a href="/news/">Все категории</a>
+            <a href="/news">Все категории</a>
             <a href="?num=2&amp;category=9" id="cat2">Товарный знак</a>
         </div>
         <div class="blogFace">

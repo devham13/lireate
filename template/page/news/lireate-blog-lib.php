@@ -613,20 +613,20 @@ if (!function_exists('lireate_blog_list_default_rubrics')) {
 function lireate_blog_list_default_rubrics()
 {
     return array(
-        array('label' => 'Все категории', 'url' => '/news/'),
-        array('label' => 'Новости', 'url' => '/news/?num=1&category=2', 'num' => 1, 'category' => 2),
-        array('label' => 'Товарный знак', 'url' => '/news/?num=2&category=9', 'num' => 2, 'category' => 9),
-        array('label' => 'Логотип', 'url' => '/news/?num=3&category=10', 'num' => 3, 'category' => 10),
-        array('label' => 'Фирменный стиль', 'url' => '/news/?num=4&category=11', 'num' => 4, 'category' => 11),
-        array('label' => 'Сайт', 'url' => '/news/?num=5&category=12', 'num' => 5, 'category' => 12),
-        array('label' => 'Бренд', 'url' => '/news/?num=6&category=13', 'num' => 6, 'category' => 13),
-        array('label' => 'Фирменное наименование', 'url' => '/news/?num=7&category=14', 'num' => 7, 'category' => 14),
-        array('label' => 'Бизнес', 'url' => '/news/?num=8&category=15', 'num' => 8, 'category' => 15),
-        array('label' => 'Франчайзинг и франшиза', 'url' => '/news/?num=9&category=16', 'num' => 9, 'category' => 16),
-        array('label' => 'Авторское право', 'url' => '/news/?num=10&category=17', 'num' => 10, 'category' => 17),
-        array('label' => 'Творческий псевдоним', 'url' => '/news/?num=11&category=18', 'num' => 11, 'category' => 18),
-        array('label' => 'Программа ЭВМ', 'url' => '/news/?num=12&category=19', 'num' => 12, 'category' => 19),
-        array('label' => 'Патент', 'url' => '/news/?num=13&category=20', 'num' => 13, 'category' => 20),
+        array('label' => 'Все категории', 'url' => '/news'),
+        array('label' => 'Новости', 'url' => '/news?num=1&category=2', 'num' => 1, 'category' => 2),
+        array('label' => 'Товарный знак', 'url' => '/news?num=2&category=9', 'num' => 2, 'category' => 9),
+        array('label' => 'Логотип', 'url' => '/news?num=3&category=10', 'num' => 3, 'category' => 10),
+        array('label' => 'Фирменный стиль', 'url' => '/news?num=4&category=11', 'num' => 4, 'category' => 11),
+        array('label' => 'Сайт', 'url' => '/news?num=5&category=12', 'num' => 5, 'category' => 12),
+        array('label' => 'Бренд', 'url' => '/news?num=6&category=13', 'num' => 6, 'category' => 13),
+        array('label' => 'Фирменное наименование', 'url' => '/news?num=7&category=14', 'num' => 7, 'category' => 14),
+        array('label' => 'Бизнес', 'url' => '/news?num=8&category=15', 'num' => 8, 'category' => 15),
+        array('label' => 'Франчайзинг и франшиза', 'url' => '/news?num=9&category=16', 'num' => 9, 'category' => 16),
+        array('label' => 'Авторское право', 'url' => '/news?num=10&category=17', 'num' => 10, 'category' => 17),
+        array('label' => 'Творческий псевдоним', 'url' => '/news?num=11&category=18', 'num' => 11, 'category' => 18),
+        array('label' => 'Программа ЭВМ', 'url' => '/news?num=12&category=19', 'num' => 12, 'category' => 19),
+        array('label' => 'Патент', 'url' => '/news?num=13&category=20', 'num' => 13, 'category' => 20),
     );
 }
 }
@@ -801,7 +801,7 @@ function lireate_blog_list_normalize_row($row)
         'date_display' => $date_display,
         'date_iso' => lireate_blog_date_display_to_iso($date_display),
         'tag' => $tag,
-        'tag_url' => $tag_url !== '' ? $tag_url : '/news/',
+        'tag_url' => $tag_url !== '' ? $tag_url : '/news',
         'cover' => lireate_blog_list_cover_from_row($row),
         'excerpt' => lireate_blog_list_excerpt_from_row($row),
         'author' => $author,

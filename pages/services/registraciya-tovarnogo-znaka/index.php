@@ -410,7 +410,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
     <a class="lx-related-card" href="/zashchita_avtorskih_prav/"><span class="lx-related-card-type">Услуга</span><strong>Защита авторских прав</strong></a>
     <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
-    <a class="lx-related-card" href="/contacts/"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
+    <a class="lx-related-card" href="/kontaktyi"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>
   <p>Нужна проверка знака до подачи — начните со страницы <a href="/findtz/">/findtz/</a>. Нужно продлить уже зарегистрированный знак — смотрите <a href="/prodlenie_tovarnogo_znaka/">продление товарного знака</a>. Планируете выход на рынок Китая — отдельный маршрут описан на странице <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрации в КНР</a>. Для контента, дизайна и программ — <a href="/zashchita_avtorskih_prav/">защита авторских прав</a>. Обращение по ст. 1493 против чужой заявки — <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">возражение против регистрации</a>.</p>
 </section>

@@ -42,7 +42,7 @@ if ($demo_only) {
         'service_tag' => 'Услуга',
         'text' => 'Здесь будет краткий фрагмент реального отзыва клиента. Текст остаётся в HTML для индексации, полная версия открывается по клику.',
         'text_full' => 'Здесь будет полный текст отзыва клиента после согласования с автором. На боевых страницах подставляются только проверенные цитаты с lireate.ru или сообщества VK — без выдуманных имён и формулировок.',
-        'source_url' => '/reviews/',
+        'source_url' => '/reviews',
     ];
 } else {
     $reviews_path = dirname(__DIR__) . '/assets/lireate-shared/reviews.json';
@@ -120,7 +120,7 @@ foreach ($items as $idx => $item) :
     $type = isset($item['type']) ? $item['type'] : 'text';
     $author = isset($item['author']) ? $item['author'] : '';
     $tag = isset($item['service_tag']) ? $item['service_tag'] : 'Товарный знак';
-    $source = isset($item['source_url']) ? $item['source_url'] : '/reviews/';
+    $source = isset($item['source_url']) ? $item['source_url'] : '/reviews';
     $accent = $lx_review_accents[$idx % count($lx_review_accents)];
     $is_demo = ($type === 'demo');
     $card_id = isset($item['id']) ? $item['id'] : ('review-' . $idx);

@@ -1,0 +1,348 @@
+{
+  "audit_date": "2026-11-15",
+  "queue": "01-links-navigation",
+  "replacements": [
+    {
+      "from": "/blog/kak-opredelit-klass-mktu/",
+      "to": "/struktura_mktu_kak_opredelit_klass_dlya_tovara_i_uslugi/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/blog/konkurent-zaregistriroval-pohozhiy-tovarnyy-znak/",
+      "to": "/konkurent_zaregistriroval_pohozhiy_tovarnyy_znak/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/blog/mozhno-li-pokazyvat-chuzhie-logotipy-v-video-i-na-oblozhkah/",
+      "to": "/mozhno_li_pokazyivat_chuzhie_logotipyi_i_emblemyi_v_video_i_na_oblozhkax/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/chek_list_kartinyi_russkix_xudozhnikov_v_kommercii_sroki_i_isklyucheniya",
+      "to": "/chek_list_kartinyi_russkix_xudozhnikov_v_kommercii_sroki_i_isklyucheniya/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/chuzhoy_logotip_ili_nazvanie_v_video/",
+      "to": "/mozhno_li_pokazyivat_chuzhie_logotipyi_i_emblemyi_v_video_i_na_oblozhkax/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/contacts/",
+      "to": "/kontaktyi",
+      "priority": "P1",
+      "observation": "Закрыт robots.txt"
+    },
+    {
+      "from": "/dogovor-na-razrabotku-logotipa-prava-ot-dizajnera/",
+      "to": "/dogovor_na_razrabotku_logotipa_kak_poluchit_prava_ot_dizaynera/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/dogovor_na_razrabotku_logotipa_kak_poluchit_prava_ot_dizajnera/",
+      "to": "/dogovor_na_razrabotku_logotipa_kak_poluchit_prava_ot_dizaynera/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/ekspertiza_tovarnogo_znaka",
+      "to": "/ekspertiza_tovarnogo_znaka/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/findtz",
+      "to": "/findtz/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/izobretenie",
+      "to": "/patent",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/kak_annulirovat_patent_konkurenta_esli_ego_pretenzii_nepravomernyi/’",
+      "to": "https://www.consultant.ru/document/cons_doc_LAW_64629/d64961e488e2fc6119b55f68178ea9051a94353f/",
+      "priority": "P1",
+      "observation": "Некорректный href"
+    },
+    {
+      "from": "/kak_zapolnit_zayavku_na_tovarnyiy_znak",
+      "to": "/kak_zapolnit_zayavku_na_tovarnyiy_znak/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/kak_zaschitit_tovarnyiy_znak_i_reputaciyu_biznesa_v_seti",
+      "to": "/kak_zaschitit_tovarnyiy_znak_i_reputaciyu_biznesa_v_seti/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/konkurent_zaregistriroval_pohozhiy_tovarnyy_znak",
+      "to": "/konkurent_zaregistriroval_pohozhiy_tovarnyy_znak/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/kontaktyi/",
+      "to": "/kontaktyi",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/lichnaya-perepiska-avtorskoe-pravo",
+      "to": "/lichnaya-perepiska-avtorskoe-pravo/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/mezhdunarodnaja_registracija_tovarnogo_znaka",
+      "to": "/mezhdunarodnaja_registracija_tovarnogo_znaka/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/naricatelnye-brendy-aspirin-obobshchenie",
+      "to": "/naricatelnye-brendy-aspirin-obobshchenie/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/narushenie-tovarnogo-znaka-na-marketpleyse",
+      "to": "/narushenie-tovarnogo-znaka-na-marketpleyse/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/",
+      "to": "/news",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=1&category=2",
+      "to": "/news?num=1&category=2",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=10&category=17",
+      "to": "/news?num=10&category=17",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=11&category=18",
+      "to": "/news?num=11&category=18",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=12&category=19",
+      "to": "/news?num=12&category=19",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=13&category=20",
+      "to": "/news?num=13&category=20",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=2&category=9",
+      "to": "/news?num=2&category=9",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=3&category=10",
+      "to": "/news?num=3&category=10",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=4&category=11",
+      "to": "/news?num=4&category=11",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=5&category=12",
+      "to": "/news?num=5&category=12",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=6&category=13",
+      "to": "/news?num=6&category=13",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=7&category=14",
+      "to": "/news?num=7&category=14",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=8&category=15",
+      "to": "/news?num=8&category=15",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?num=9&category=16",
+      "to": "/news?num=9&category=16",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?view=news",
+      "to": "/news?view=news",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?view=news&page=2",
+      "to": "/news?view=news&page=2",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/news/?view=news&page=27",
+      "to": "/news?view=news&page=27",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/otvet_na_pretenziyu_pravoobladatelya_tovarnogo_znaka_poryadok_srok_30_dney_i_obrazec",
+      "to": "/otvet_na_pretenziyu_pravoobladatelya_tovarnogo_znaka_poryadok_srok_30_dney_i_obrazec/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/patentovanie",
+      "to": "/patent",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/poisk_tovarnyh_znakov",
+      "to": "/poisk_tovarnyh_znakov/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/prekrashhenie_pravovoj_ohrany",
+      "to": "/prekrashhenie_pravovoj_ohrany/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/priznanie_tovarnogo_znaka_obshheizvestnym",
+      "to": "/priznanie_tovarnogo_znaka_obshheizvestnym/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/prodlenie_registracii_tovarnogo_znaka",
+      "to": "/prodlenie_registracii_tovarnogo_znaka/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta",
+      "to": "/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/reg-tz-main",
+      "to": "/registraciya_tovarnogo_znaka/",
+      "priority": "P1",
+      "observation": "menu/home/mktu → действующая услуга"
+    },
+    {
+      "from": "/reg-tz-main/",
+      "to": "/registraciya_tovarnogo_znaka/",
+      "priority": "P1",
+      "observation": "menu/home/mktu → действующая услуга"
+    },
+    {
+      "from": "/registracija_naimenovanija_mesta_proishozhdenija_tovarov",
+      "to": "/registracija_naimenovanija_mesta_proishozhdenija_tovarov/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/registracija_torgovyh_marok_i_logotipov",
+      "to": "/registracija_torgovyh_marok_i_logotipov/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/registraciya_tovarnogo_znaka",
+      "to": "/registraciya_tovarnogo_znaka/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/reviews/",
+      "to": "/reviews",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/rezhim-kommercheskoj-tajny-kak-vvesti/",
+      "to": "/rezhim_kommercheskoy_taynyi_kak_vvesti_chtobyi_dokazat_razglashenie/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/spory_po_ispolzovaniju_tovarnogo_znaka",
+      "to": "/spory_po_ispolzovaniju_tovarnogo_znaka/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/sposoby-zashchity-izobreteniya/",
+      "to": "/sposobyi_zaschityi_izobreteniya_patent_nou_xau_ili_publikaciya/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/sposoby_zashchity_izobreteniya",
+      "to": "/sposobyi_zaschityi_izobreteniya_patent_nou_xau_ili_publikaciya/",
+      "priority": "P1",
+      "observation": "404"
+    },
+    {
+      "from": "/team/",
+      "to": "/team",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/tovarnyi_znak_info",
+      "to": "/tovarnyi_znak_info/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    },
+    {
+      "from": "/zashhita_firmennogo_naimenovanija",
+      "to": "/zashhita_firmennogo_naimenovanija/",
+      "priority": "P2",
+      "observation": "301 → 200"
+    }
+  ]
+}

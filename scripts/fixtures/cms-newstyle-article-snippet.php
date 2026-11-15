@@ -10,7 +10,7 @@
   <a href="<?php echo $catUrl; ?>" id="tag"><?php echo htmlspecialchars($category); ?></a>
   <p><?php echo date('d.m.Y', $news_article[0]['datetime']); ?></p>
 </div>
-<a class="returnBlog" href="/news/">Вернуться к другим новостям</a>
+<a class="returnBlog" href="/news">Вернуться к другим новостям</a>
 <?php
 $imgBlock = '';
 if (preg_match('/<img[^>]+src="([^"]*\\/template\\/images\\/blog\\/[^"]+)"/i', $news_article[0]['full_story'], $m)) {
