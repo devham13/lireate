@@ -111,6 +111,21 @@ body.lireate-cn-body {
   margin: 0 auto;
   padding: 0 20px 80px;
 }
+/* VK cases (#75): без overflow, даже если /_shared/lireate-vk-cases.css не подгрузился */
+.lireate-vk-cases,
+.lireate-vk-cases-grid,
+.lireate-vk-case-card,
+.lireate-vk-case-media {
+  min-width: 0;
+  max-width: 100%;
+}
+.lireate-vk-case-media img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
 .lx-hero {
   padding: 120px 0 64px;
   display: grid;

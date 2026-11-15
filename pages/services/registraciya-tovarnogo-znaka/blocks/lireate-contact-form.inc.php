@@ -20,6 +20,8 @@ $lx_spam_guard = md5(date('m.Y'));
       <form
         id="lireate-lead-form"
         class="lx-lead-form--landing lx-mail-lead-form"
+        method="POST"
+        action="/mail.php"
         data-lx-lead-handler="landing"
         data-lx-mail-action="/mail.php"
         data-lead-topic="Заявка: расчёт регистрации товарного знака"
