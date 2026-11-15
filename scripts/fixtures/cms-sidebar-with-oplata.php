@@ -3,8 +3,8 @@
 ?>
         <div class="leftSideNaviButton js-question">
             <span>Товарный знак</span>
-            <a href="/findtz" class="leftSideNaviInSection">Проверка товарного знака</a>
-            <a href="/registraciya_tovarnogo_znaka" class="leftSideNaviInSection">Регистрация товарного знака</a>
+            <a href="/findtz/" class="leftSideNaviInSection">Проверка товарного знака</a>
+            <a href="/registraciya_tovarnogo_znaka/" class="leftSideNaviInSection">Регистрация товарного знака</a>
             <!-- lireate-menu:registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat -->
             <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/" class="leftSideNaviInSection">Регистрация товарного знака с оплатой за результат</a>
 

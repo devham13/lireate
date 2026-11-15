@@ -27,7 +27,7 @@ $lb_author = isset($lireate_blog_author) && $lireate_blog_author !== ''
 $lb_author_role = defined('LIREATE_BLOG_AUTHOR_ROLE') ? LIREATE_BLOG_AUTHOR_ROLE : '';
 $lb_avatar_path = defined('LIREATE_BLOG_AUTHOR_AVATAR_PATH') ? LIREATE_BLOG_AUTHOR_AVATAR_PATH : '';
 $lb_tag = isset($lireate_blog_tag) ? $lireate_blog_tag : '';
-$lb_tag_url = isset($lireate_blog_tag_url) ? $lireate_blog_tag_url : '/news/';
+$lb_tag_url = isset($lireate_blog_tag_url) ? $lireate_blog_tag_url : '/news';
 $lb_current = isset($lireate_blog_current_url) ? $lireate_blog_current_url : '';
 $lb_desc = isset($lireate_blog_description) ? $lireate_blog_description : '';
 $lb_canonical = isset($lireate_blog_canonical) ? $lireate_blog_canonical : '';
@@ -85,7 +85,7 @@ $lb_jsonld = array_filter(
     <article class="lireate-blog-main">
       <header class="lireate-blog-header<?php echo $lb_collage_mode ? ' lireate-blog-header--collage-v1' : ''; ?>">
         <div class="lireate-blog-header-top<?php echo $lb_collage_mode ? ' lireate-blog-header-top--collage' : ''; ?>">
-          <a class="lireate-blog-pill lireate-blog-pill--back" href="/news/">‹ Все статьи блога</a>
+          <a class="lireate-blog-pill lireate-blog-pill--back" href="/news">‹ Все статьи блога</a>
           <?php if (!$lb_collage_mode) : ?>
           <div class="lireate-blog-header-top-right">
             <?php if ($lb_tag !== '') : ?>
@@ -196,7 +196,7 @@ $lb_jsonld = array_filter(
   <section class="lireate-blog-related" aria-labelledby="lireate-blog-related-heading">
     <div class="lireate-blog-related-head">
       <h2 id="lireate-blog-related-heading" class="lireate-blog-related-title">Читайте также</h2>
-      <a class="lireate-blog-related-all" href="/news/">Все статьи блога →</a>
+      <a class="lireate-blog-related-all" href="/news">Все статьи блога →</a>
     </div>
     <div class="lireate-blog-related-grid">
       <?php foreach ($lb_related as $card) :

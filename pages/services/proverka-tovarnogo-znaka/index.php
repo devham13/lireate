@@ -239,7 +239,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
     <a class="lx-related-card" href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Возражение против регистрации</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
-    <a class="lx-related-card" href="/contacts/"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
+    <a class="lx-related-card" href="/kontaktyi"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>
 </section>
 

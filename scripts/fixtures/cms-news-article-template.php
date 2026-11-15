@@ -14,10 +14,10 @@ $seo_url = isset($seo_url) ? $seo_url : 'test_news_article';
 <body class="cms-default">
 <h1><?php echo htmlspecialchars($name); ?></h1>
 <div id="articleInfo">
-  <a href="/news/" id="tag"><?php echo htmlspecialchars($category_name); ?></a>
+  <a href="/news" id="tag"><?php echo htmlspecialchars($category_name); ?></a>
   <p><?php echo htmlspecialchars($date); ?></p>
 </div>
-<a class="returnBlog" href="/news/">Вернуться к другим новостям</a>
+<a class="returnBlog" href="/news">Вернуться к другим новостям</a>
 <div id="textBox">
 <?php echo $full_story; ?>
 </div>

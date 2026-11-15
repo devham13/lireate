@@ -48,7 +48,7 @@ $lx_h_yt = isset($lx_highlight['youtube_id']) ? $lx_highlight['youtube_id'] : ''
       <?php if ($lx_h_watch !== '') : ?>
       <p><a href="<?php echo htmlspecialchars($lx_h_watch, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Смотреть видео на YouTube</a><?php if ($lx_h_yt !== '') : ?> (id <?php echo htmlspecialchars($lx_h_yt, ENT_QUOTES, 'UTF-8'); ?>)<?php endif; ?></p>
       <?php endif; ?>
-      <p class="lx-muted">Видео размещено на <a href="/reviews/">странице отзывов LIREATE</a>.</p>
+      <p class="lx-muted">Видео размещено на <a href="/reviews">странице отзывов LIREATE</a>.</p>
     </div>
   </article>
 </section>
