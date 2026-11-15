@@ -5,7 +5,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Регистрация товарного знака под ключ в Роспатенте — Лирейт';
-$seo_description = 'Регистрация товарного знака в Роспатенте под ключ: проверка обозначения, подача заявки, ответы экспертизе. Пошлины отдельно, гарантий регистрации нет.';
+$seo_description = 'Проверим обозначение, подберём классы МКТУ, подготовим заявку и сопроводим экспертизу. Пошлины и работа — отдельными строками; гарантий регистрации нет.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
