@@ -1,0 +1,482 @@
+{
+  "updated": "2026-10-18",
+  "notes": "Текстовые цитаты на /reviews/ не опубликованы — только видео (YouTube). VK: отдельные video-записи добавляйте с embed_url и watch_url. chat_screenshots: { type, image, author, text, services, service_tag } — только реальные файлы от владельца.",
+  "items": [
+    {
+      "id": "video-AEzy1-l7Ca8",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Матвеев Павел Владимирович (НЕРУД ГРУПП)",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Тула (ИП Матвеев Павел Владимирович (НЕРУД ГРУПП))",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "AEzy1-l7Ca8",
+      "embed_url": "https://www.youtube.com/embed/AEzy1-l7Ca8",
+      "watch_url": "https://www.youtube.com/watch?v=AEzy1-l7Ca8",
+      "poster_url": "/template/img/page/video_rewiev/images/Неруд_груп.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-3m7YixLDClE",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ООО \"Экстрим-клуб\"",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Курган (ООО \"Экстрим-клуб\")",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "3m7YixLDClE",
+      "embed_url": "https://www.youtube.com/embed/3m7YixLDClE",
+      "watch_url": "https://www.youtube.com/watch?v=3m7YixLDClE",
+      "poster_url": "/template/img/page/video_rewiev/images/лунополис.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-MWi7g1sklS8",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ООО \"РенАвто\"",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Ярославль (ООО \"РенАвто\")",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "MWi7g1sklS8",
+      "embed_url": "https://www.youtube.com/embed/MWi7g1sklS8",
+      "watch_url": "https://www.youtube.com/watch?v=MWi7g1sklS8",
+      "poster_url": "/template/img/page/video_rewiev/images/arivent.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-Px12egVRVeY",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Рябинин Дмитрий Анатольевич",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Владимир (ИП Рябинин Дмитрий Анатольевич)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "Px12egVRVeY",
+      "embed_url": "https://www.youtube.com/embed/Px12egVRVeY",
+      "watch_url": "https://www.youtube.com/watch?v=Px12egVRVeY",
+      "poster_url": "/template/img/page/video_rewiev/images/varter.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-lI5alWawyRo",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Колтунов Павел",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Челябинск (ИП Колтунов Павел)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "lI5alWawyRo",
+      "embed_url": "https://www.youtube.com/embed/lI5alWawyRo",
+      "watch_url": "https://www.youtube.com/watch?v=lI5alWawyRo",
+      "poster_url": "/template/img/page/video_rewiev/images/abadec.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-t1AKrBHElww",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ООО \"Бентакс\" & ООО \"Штайнберг Хеми\"",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Новосибирск (ООО \"Бентакс\" & ООО \"Штайнберг Хеми\")",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "t1AKrBHElww",
+      "embed_url": "https://www.youtube.com/embed/t1AKrBHElww",
+      "watch_url": "https://www.youtube.com/watch?v=t1AKrBHElww",
+      "poster_url": "/template/img/page/video_rewiev/images/bentax.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-I2zm71InlQk",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ООО \"Авилон\"",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Казань (ООО \"Авилон\")",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "I2zm71InlQk",
+      "embed_url": "https://www.youtube.com/embed/I2zm71InlQk",
+      "watch_url": "https://www.youtube.com/watch?v=I2zm71InlQk",
+      "poster_url": "/template/img/page/video_rewiev/images/кот.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-wK96gzXOToA",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Синявская Татьяна Михайловна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Краснодар (ИП Синявская Татьяна Михайловна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "wK96gzXOToA",
+      "embed_url": "https://www.youtube.com/embed/wK96gzXOToA",
+      "watch_url": "https://www.youtube.com/watch?v=wK96gzXOToA",
+      "poster_url": "/template/img/page/video_rewiev/images/ts.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-wzqLQ31iwvs",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Осмаев Саид-Эми Адамович",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Чеченская Республика, с. Курчалой (ИП Осмаев Саид-Эми Адамович)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "wzqLQ31iwvs",
+      "embed_url": "https://www.youtube.com/embed/wzqLQ31iwvs",
+      "watch_url": "https://www.youtube.com/watch?v=wzqLQ31iwvs",
+      "poster_url": "/template/img/page/video_rewiev/images/berti.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-j2JCaGtOcIo",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Амаева Лариса Махмудовна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Грозный (ИП Амаева Лариса Махмудовна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "j2JCaGtOcIo",
+      "embed_url": "https://www.youtube.com/embed/j2JCaGtOcIo",
+      "watch_url": "https://www.youtube.com/watch?v=j2JCaGtOcIo",
+      "poster_url": "/template/img/page/video_rewiev/images/kingsman.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-U7CRtDjRCHU",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Силакова Елена Владимировна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Краснодарский край Усть-Лабинск (ИП Силакова Елена Владимировна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "U7CRtDjRCHU",
+      "embed_url": "https://www.youtube.com/embed/U7CRtDjRCHU",
+      "watch_url": "https://www.youtube.com/watch?v=U7CRtDjRCHU",
+      "poster_url": "/template/img/page/video_rewiev/images/доктор_дукин.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-6x78wuIowBk",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Ахметова Карина Юрьевна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Нальчик (ИП Ахметова Карина Юрьевна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "6x78wuIowBk",
+      "embed_url": "https://www.youtube.com/embed/6x78wuIowBk",
+      "watch_url": "https://www.youtube.com/watch?v=6x78wuIowBk",
+      "poster_url": "/template/img/page/video_rewiev/images/doza.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-H5q7VIv1Fxc",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Зуева Наталья Вячеславовна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Калининградская область, г. Гвардейск (ИП Зуева Наталья Вячеславовна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "H5q7VIv1Fxc",
+      "embed_url": "https://www.youtube.com/embed/H5q7VIv1Fxc",
+      "watch_url": "https://www.youtube.com/watch?v=H5q7VIv1Fxc",
+      "poster_url": "/template/img/page/video_rewiev/images/happy_natka.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-w-37Ilcfmkk",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Ахтырский Максим Михайслович",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Московская область г. Коломна (ИП Ахтырский Максим Михайслович)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "w-37Ilcfmkk",
+      "embed_url": "https://www.youtube.com/embed/w-37Ilcfmkk",
+      "watch_url": "https://www.youtube.com/watch?v=w-37Ilcfmkk",
+      "poster_url": "/template/img/page/video_rewiev/images/своя_культура.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-UJelYNqQSD8",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Кочарян Нуне Артуриковна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г. Москва (ИП Кочарян Нуне Артуриковна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "UJelYNqQSD8",
+      "embed_url": "https://www.youtube.com/embed/UJelYNqQSD8",
+      "watch_url": "https://www.youtube.com/watch?v=UJelYNqQSD8",
+      "poster_url": "/template/img/page/video_rewiev/images/happ_mind.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-2g0HzUrrjGI",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "Ип Яковер Андрей Александрович",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г.Азов (Ип Яковер Андрей Александрович)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "2g0HzUrrjGI",
+      "embed_url": "https://www.youtube.com/embed/2g0HzUrrjGI",
+      "watch_url": "https://www.youtube.com/watch?v=2g0HzUrrjGI",
+      "poster_url": "/template/img/page/video_rewiev/images/шаурма.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-eHprFWz2mTA",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ООО \"Курортные отели Элиза\"",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Калининградская область г. Зеленоградск (ООО \"Курортные отели Элиза\")",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "eHprFWz2mTA",
+      "embed_url": "https://www.youtube.com/embed/eHprFWz2mTA",
+      "watch_url": "https://www.youtube.com/watch?v=eHprFWz2mTA",
+      "poster_url": "/template/img/page/video_rewiev/images/hotels.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-OCnSq2DWU-4",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Ивлева Надежда Александровна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г. Набережные челны (ИП Ивлева Надежда Александровна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "OCnSq2DWU-4",
+      "embed_url": "https://www.youtube.com/embed/OCnSq2DWU-4",
+      "watch_url": "https://www.youtube.com/watch?v=OCnSq2DWU-4",
+      "poster_url": "/template/img/page/video_rewiev/images/balabuy.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-kNZuxhDb2Ak",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ИП Длужневская Доната Владимировна",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Республика Башкортостан, с. Иглино (ИП Длужневская Доната Владимировна)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "kNZuxhDb2Ak",
+      "embed_url": "https://www.youtube.com/embed/kNZuxhDb2Ak",
+      "watch_url": "https://www.youtube.com/watch?v=kNZuxhDb2Ak",
+      "poster_url": "/template/img/page/video_rewiev/images/strigoon.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-Tfp1eYKPN-0",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ООО \"Авангард\"",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Вологодская область г. Череповец (ООО \"Авангард\")",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "Tfp1eYKPN-0",
+      "embed_url": "https://www.youtube.com/embed/Tfp1eYKPN-0",
+      "watch_url": "https://www.youtube.com/watch?v=Tfp1eYKPN-0",
+      "poster_url": "/template/img/page/video_rewiev/images/avenue.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-i53xiPiTHeU",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "ООО \"Торговый дом Эмиз\"",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г. Казань (ООО \"Торговый дом Эмиз\")",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "i53xiPiTHeU",
+      "embed_url": "https://www.youtube.com/embed/i53xiPiTHeU",
+      "watch_url": "https://www.youtube.com/watch?v=i53xiPiTHeU",
+      "poster_url": "/template/img/page/video_rewiev/images/эмиз.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-icQWx1MFR3k",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "atelie",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, Пензенская обл, г. Заречный",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "icQWx1MFR3k",
+      "embed_url": "https://www.youtube.com/embed/icQWx1MFR3k",
+      "watch_url": "https://www.youtube.com/watch?v=icQWx1MFR3k",
+      "poster_url": "/template/img/page/video_rewiev/images/atelie.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-GHSxT9liDiE",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "Рыбаков Игорь Николаевич",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г. Солнечногорск (Рыбаков Игорь Николаевич)",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "GHSxT9liDiE",
+      "embed_url": "https://www.youtube.com/embed/GHSxT9liDiE",
+      "watch_url": "https://www.youtube.com/watch?v=GHSxT9liDiE",
+      "poster_url": "/template/img/page/video_rewiev/images/banipk.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-EFbDYvhO7X8",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "kidsmile",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г. Сургут",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "EFbDYvhO7X8",
+      "embed_url": "https://www.youtube.com/embed/EFbDYvhO7X8",
+      "watch_url": "https://www.youtube.com/watch?v=EFbDYvhO7X8",
+      "poster_url": "/template/img/page/video_rewiev/images/kidsmile.jpg",
+      "service_tag": "Товарный знак"
+    },
+    {
+      "id": "video-wzQMIv12RjM",
+      "type": "video",
+      "services": [
+        "prodlenie-tovarnogo-znaka",
+        "registraciya-tovarnogo-znaka-v-kitae"
+      ],
+      "author": "WayToy",
+      "text": "",
+      "case_line": "Видеоотзыв на странице LIREATE, г. Грозный",
+      "source_url": "/reviews/",
+      "source_label": "Видео отзывы — lireate.ru",
+      "date": null,
+      "youtube_id": "wzQMIv12RjM",
+      "embed_url": "https://www.youtube.com/embed/wzQMIv12RjM",
+      "watch_url": "https://www.youtube.com/watch?v=wzQMIv12RjM",
+      "poster_url": "/template/img/page/video_rewiev/images/WayToy.jpg",
+      "service_tag": "Товарный знак"
+    }
+  ],
+  "chat_screenshots": []
+}
