@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """CI: blog list pagination URLs and invalid page noindex (PHP, no DB)."""
-import json
 import os
+import shutil
 import subprocess
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -83,6 +84,57 @@ class BlogListPaginationUrlTests(unittest.TestCase):
 
 
 class BlogListInvalidPageNoindexTests(unittest.TestCase):
+    def test_noindex_signals_include_x_robots_header_in_source(self):
+        text = LIST_DATA.read_text(encoding="utf-8")
+        self.assertIn("X-Robots-Tag: noindex, follow", text)
+        self.assertIn("headers_sent()", text)
+        self.assertIn("lireate_blog_list_apply_noindex_signals", text)
+
+    def test_noindex_x_robots_header_via_php_builtin_server(self):
+        if not shutil.which("php"):
+            self.skipTest("php-cli not available")
+        import socket
+        import urllib.request
+
+        tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-xrobots-"))
+        try:
+            data = str(LIST_DATA).replace("\\", "\\\\").replace("'", "\\'")
+            (tmp / "index.php").write_text(
+                (
+                    "<?php\n"
+                    "$_GET = array('page' => '0');\n"
+                    "require '{data}';\n"
+                    "lireate_blog_list_mark_invalid_page_noindex(5);\n"
+                    "echo 'ok';\n"
+                ).format(data=data),
+                encoding="utf-8",
+            )
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+            sock.close()
+            proc = subprocess.Popen(
+                ["php", "-S", "127.0.0.1:{0}".format(port), "-t", str(tmp)],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            try:
+                time.sleep(0.3)
+                req = urllib.request.Request(
+                    "http://127.0.0.1:{0}/index.php".format(port),
+                    method="GET",
+                )
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    header = resp.headers.get("X-Robots-Tag", "")
+                self.assertIn("noindex", header.lower())
+            finally:
+                proc.terminate()
+                proc.wait(timeout=5)
+        finally:
+            import shutil as _sh
+
+            _sh.rmtree(tmp, ignore_errors=True)
+
     def test_noindex_page_zero_abc_overflow(self):
         php = (
             "<?php\n"

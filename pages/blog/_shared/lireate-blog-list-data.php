@@ -8,6 +8,16 @@ if (!defined('LIREATE_BLOG_LIST_PER_PAGE')) {
     define('LIREATE_BLOG_LIST_PER_PAGE', 12);
 }
 
+if (!function_exists('lireate_blog_list_apply_noindex_signals')) {
+function lireate_blog_list_apply_noindex_signals()
+{
+    $GLOBALS['lireate_robots_noindex'] = true;
+    if (!headers_sent()) {
+        header('X-Robots-Tag: noindex, follow');
+    }
+}
+}
+
 if (!function_exists('lireate_blog_list_mark_invalid_page_noindex')) {
 function lireate_blog_list_mark_invalid_page_noindex($totalPages)
 {
@@ -15,18 +25,22 @@ function lireate_blog_list_mark_invalid_page_noindex($totalPages)
         return;
     }
     $raw = trim((string) $_GET['page']);
+    $invalid = false;
     if ($raw === '' || !ctype_digit($raw)) {
-        $GLOBALS['lireate_robots_noindex'] = true;
-        return;
+        $invalid = true;
+    } else {
+        $num = (int) $raw;
+        if ($num < 1) {
+            $invalid = true;
+        } else {
+            $totalPages = max(1, (int) $totalPages);
+            if ($num > $totalPages) {
+                $invalid = true;
+            }
+        }
     }
-    $num = (int) $raw;
-    if ($num < 1) {
-        $GLOBALS['lireate_robots_noindex'] = true;
-        return;
-    }
-    $totalPages = max(1, (int) $totalPages);
-    if ($num > $totalPages) {
-        $GLOBALS['lireate_robots_noindex'] = true;
+    if ($invalid) {
+        lireate_blog_list_apply_noindex_signals();
     }
 }
 }

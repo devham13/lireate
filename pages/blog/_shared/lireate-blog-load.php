@@ -39,9 +39,16 @@ if (!function_exists('lireate_blog_resolve_lib_realpath')) {
         $resolved = '';
         $candidates = array();
         $doc = lireate_blog_docroot();
+        $previewShared = getenv('LIREATE_BLOG_PREVIEW_USE_SHARED');
+        $preferShared = $previewShared !== false && $previewShared !== '' && $previewShared !== '0';
         if ($doc !== '') {
-            $candidates[] = $doc . '/template/page/news/lireate-blog-lib.php';
-            $candidates[] = $doc . '/pages/blog/_shared/lireate-blog-lib.php';
+            if ($preferShared) {
+                $candidates[] = $doc . '/pages/blog/_shared/lireate-blog-lib.php';
+                $candidates[] = $doc . '/template/page/news/lireate-blog-lib.php';
+            } else {
+                $candidates[] = $doc . '/template/page/news/lireate-blog-lib.php';
+                $candidates[] = $doc . '/pages/blog/_shared/lireate-blog-lib.php';
+            }
         }
         $here = dirname(__FILE__);
         if ($here !== '') {
