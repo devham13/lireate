@@ -8,10 +8,12 @@ if ($docroot === false || $docroot === '') {
     $docroot = $repo;
 }
 $_SERVER['DOCUMENT_ROOT'] = $docroot;
+putenv('LIREATE_BLOG_PREVIEW_USE_SHARED=1');
 if (!defined('LIREATE_BLOG_ASSETS_BASE')) {
     define('LIREATE_BLOG_ASSETS_BASE', '/template/page/news');
 }
-require_once dirname(__DIR__) . '/_shared/lireate-blog-lib.php';
+require_once dirname(__DIR__) . '/_shared/lireate-blog-load.php';
+lireate_blog_require_lib();
 
 $all = lireate_blog_list_items_from_index();
 $per = (int) LIREATE_BLOG_LIST_PER_PAGE;
@@ -19,21 +21,44 @@ $previewPage = getenv('LIREATE_BLOG_PREVIEW_PAGE');
 $page = $previewPage !== false && $previewPage !== ''
     ? max(1, (int) $previewPage)
     : (isset($_GET['page']) ? max(1, (int) $_GET['page']) : 1);
-$totalPages = max(1, (int) ceil(count($all) / $per));
 $forcePages = getenv('LIREATE_BLOG_PREVIEW_FORCE_PAGES');
-if ($forcePages !== false && $forcePages !== '') {
+$previewPaginate = $forcePages !== false && $forcePages !== '';
+if ($previewPaginate) {
+    $per = 3;
     $totalPages = max(2, (int) $forcePages);
+    $need = $totalPages * $per;
+    $base = $all;
+    $i = 0;
+    while (count($all) < $need && !empty($base)) {
+        $row = $base[$i % count($base)];
+        if (!is_array($row)) {
+            break;
+        }
+        $copy = $row;
+        $pageIdx = (int) floor(count($all) / $per) + 1;
+        $suffix = ' — демо стр. ' . $pageIdx . ' #' . (count($all) + 1);
+        if (isset($copy['name'])) {
+            $copy['name'] = (string) $copy['name'] . $suffix;
+        }
+        if (isset($copy['title'])) {
+            $copy['title'] = (string) $copy['title'] . $suffix;
+        }
+        $all[] = $copy;
+        $i++;
+    }
+} else {
+    $totalPages = max(1, (int) ceil(count($all) / $per));
 }
 if ($page > $totalPages) {
     $page = $totalPages;
 }
+if ($page > 1) {
+    $_GET['page'] = (string) $page;
+} else {
+    unset($_GET['page']);
+}
 $offset = ($page - 1) * $per;
 $slice = array_slice($all, $offset, $per);
-if (count($slice) < $per && $forcePages !== false && $forcePages !== '') {
-    while (count($slice) < $per && !empty($all)) {
-        $slice[] = $all[count($slice) % count($all)];
-    }
-}
 $lireate_blog_list_items = lireate_blog_list_normalize_items($slice);
 $GLOBALS['lireate_blog_list_total_items'] = $forcePages !== false && $forcePages !== ''
     ? $totalPages * $per

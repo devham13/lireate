@@ -8,11 +8,52 @@ if (!defined('LIREATE_BLOG_LIST_PER_PAGE')) {
     define('LIREATE_BLOG_LIST_PER_PAGE', 12);
 }
 
+if (!function_exists('lireate_blog_list_apply_noindex_signals')) {
+function lireate_blog_list_apply_noindex_signals()
+{
+    $GLOBALS['lireate_robots_noindex'] = true;
+    if (!headers_sent()) {
+        header('X-Robots-Tag: noindex, follow');
+    }
+}
+}
+
+if (!function_exists('lireate_blog_list_mark_invalid_page_noindex')) {
+function lireate_blog_list_mark_invalid_page_noindex($totalPages)
+{
+    if (!isset($_GET['page'])) {
+        return;
+    }
+    $raw = trim((string) $_GET['page']);
+    $invalid = false;
+    if ($raw === '' || !ctype_digit($raw)) {
+        $invalid = true;
+    } else {
+        $num = (int) $raw;
+        if ($num < 1) {
+            $invalid = true;
+        } else {
+            $totalPages = max(1, (int) $totalPages);
+            if ($num > $totalPages) {
+                $invalid = true;
+            }
+        }
+    }
+    if ($invalid) {
+        lireate_blog_list_apply_noindex_signals();
+    }
+}
+}
+
 if (!function_exists('lireate_blog_list_page_from_request')) {
 function lireate_blog_list_page_from_request()
 {
-    if (isset($_GET['page']) && is_numeric($_GET['page'])) {
-        return max(1, (int) $_GET['page']);
+    if (isset($_GET['page'])) {
+        $raw = trim((string) $_GET['page']);
+        if (ctype_digit($raw)) {
+            return max(1, (int) $raw);
+        }
+        return 1;
     }
     if (isset($GLOBALS['page']) && is_numeric($GLOBALS['page'])) {
         return max(1, (int) $GLOBALS['page']);
@@ -308,13 +349,13 @@ if (!function_exists('lireate_blog_list_pagination_url')) {
 function lireate_blog_list_pagination_url($pageNum)
 {
     $query = $_GET;
-    unset($query['page']);
+    unset($query['page'], $query['view']);
     $pageNum = (int) $pageNum;
     if ($pageNum > 1) {
         $query['page'] = $pageNum;
     }
     $qs = http_build_query($query);
-    return '/news/' . ($qs !== '' ? '?' . $qs : '');
+    return '/news' . ($qs !== '' ? '?' . $qs : '');
 }
 }
 
@@ -407,6 +448,7 @@ function lireate_blog_list_prepare_paginated_bundle()
     $page = lireate_blog_list_page_from_request();
     $totalItems = count($raw);
     $totalPages = max(1, (int) ceil($totalItems / $per));
+    lireate_blog_list_mark_invalid_page_noindex($totalPages);
     if ($page > $totalPages) {
         $page = $totalPages;
     }
@@ -435,4 +477,9 @@ function lireate_blog_list_prepare_paginated_bundle()
     }
     return $bundle;
 }
+}
+
+// Invalid ?page= on /news (non-digits, 0) — set before paginate when totalPages unknown.
+if (isset($_GET['page'])) {
+    lireate_blog_list_mark_invalid_page_noindex(2147483647);
 }

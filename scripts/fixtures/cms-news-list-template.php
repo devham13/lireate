@@ -1,6 +1,10 @@
 <?php
 /**
  * Fixture: production CMS news list fragment (section#blog on /news/).
+ *
+ * Pagination SEO tests (scripts/test_lireate_blog_list_pagination.py) assert
+ * list links like /news?page=2 without view= and without /news/ trailing slash.
+ * Query filters num/category mirror the tags block below.
  */
 $news = isset($news) ? $news : array(
     array(
