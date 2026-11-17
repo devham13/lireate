@@ -88,6 +88,68 @@
     };
   }
 
+  function changesLines(marks, count216, count217, paper217, certHasInfo) {
+    marks = parseInt(marks, 10);
+    count216 = parseInt(count216, 10) || 0;
+    count217 = parseInt(count217, 10) || 0;
+    if (isNaN(marks) || marks < 1) {
+      return { ok: false, error: 'marks' };
+    }
+    if (count216 < 0 || count217 < 0) {
+      return { ok: false, error: 'negative' };
+    }
+    var lines = [];
+    var total = 0;
+    if (count216 > 0) {
+      var a216 = 3000 * count216 * marks;
+      lines.push({
+        id: '2.16',
+        label: 'Внесение изменений в ГР и/или свидетельство (за каждое изменение, за знак)',
+        amount: a216,
+      });
+      total += a216;
+    }
+    if (count217 > 0) {
+      if (certHasInfo === false) {
+        lines.push({
+          id: '2.17',
+          label: 'Требуется уточнение — сверьте состав свидетельства',
+          amount: null,
+          needsClarification: true,
+          formsUrl: 'https://rospatent.gov.ru/ru/docs/form/forms',
+        });
+      }
+      var a217 = 2000 * count217 * marks;
+      lines.push({
+        id: '2.17',
+        label: 'Исправление ошибок в свидетельстве (за каждое изменение, за знак)',
+        amount: a217,
+      });
+      total += a217;
+      if (paper217) {
+        var p217 = 3000 * marks;
+        lines.push({
+          id: '2.17',
+          label: 'Бумажный дубликат свидетельства (по ходатайству)',
+          amount: p217,
+        });
+        total += p217;
+      }
+    }
+    if (!lines.length) {
+      return { ok: false, error: 'empty' };
+    }
+    return {
+      ok: true,
+      marks: marks,
+      lines: lines,
+      total: total,
+      rulesetId: RULESET_ID,
+      rulesetChecked: RULESET_CHECKED,
+      sourceUrl: SOURCE_URL,
+    };
+  }
+
   function formatRub(n) {
     if (n == null || isNaN(n)) {
       return '—';
@@ -98,6 +160,7 @@
   return {
     registrationLines: registrationLines,
     renewalLines: renewalLines,
+    changesLines: changesLines,
     formatRub: formatRub,
     RULESET_ID: RULESET_ID,
     RULESET_CHECKED: RULESET_CHECKED,

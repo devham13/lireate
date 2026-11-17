@@ -27,6 +27,11 @@ link_sub() {
 link_sub patentnye-zadachi-poshliny-registraciya poshliny-registraciya
 link_sub patentnye-zadachi-poshliny-prodlenie poshliny-prodlenie
 link_sub patentnye-zadachi-redaktor-mktu redaktor-mktu
+link_sub patentnye-zadachi-adres-zayavitelya adres-zayavitelya
+link_sub patentnye-zadachi-fail-slovesnogo-znaka fail-slovesnogo-znaka
+link_sub patentnye-zadachi-poshliny-izmeneniya poshliny-izmeneniya
+link_sub patentnye-zadachi-sokrashchenie-mktu sokrashchenie-mktu
+link_sub patentnye-zadachi-kontakty-fips kontakty-fips
 
 export LIREATE_PREVIEW_DOCROOT="$DOCROOT"
 echo "Patent preview:"

@@ -5,7 +5,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Патентные задачи — инструменты LIREATE';
-$seo_description = 'Каталог инструментов для товарных знаков: калькуляторы пошлин регистрации и продления, редактор МКТУ. Расчёт по официальной таблице Роспатента.';
+$seo_description = 'Каталог инструментов для товарных знаков: пошлины, МКТУ, адрес, файл знака, контакты ФИПС. Расчёт по официальной таблице Роспатента в браузере.';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
@@ -63,6 +63,8 @@ $schema_graph = array(
     <div class="lx-cat-cards">
       <a class="lx-cat-card" href="/patentnye-zadachi/poshliny-registraciya/"><strong>Пошлины регистрации</strong><span>Два режима: по числу классов и по перечню МКТУ</span><span class="lx-cat-card-cta">Открыть →</span></a>
       <a class="lx-cat-card" href="/patentnye-zadachi/redaktor-mktu/"><strong>Редактор МКТУ</strong><span>Нормализация перечня и передача в калькулятор</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/adres-zayavitelya/"><strong>Адрес заявителя</strong><span>Форматирование адреса заявителя и для переписки</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/fail-slovesnogo-znaka/"><strong>Файл словесного знака</strong><span>Предпросмотр и TIFF 944×944, 300 dpi</span><span class="lx-cat-card-cta">Открыть →</span></a>
     </div>
   </section>
 
@@ -70,6 +72,15 @@ $schema_graph = array(
     <h2>Свидетельство и реестр</h2>
     <div class="lx-cat-cards">
       <a class="lx-cat-card" href="/patentnye-zadachi/poshliny-prodlenie/"><strong>Пошлины продления</strong><span>Классы, позиции, дополнительный срок п. 2.25</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/poshliny-izmeneniya/"><strong>Пошлины за изменения</strong><span>п. 2.16 и 2.17 по числу знаков и изменений</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/sokrashchenie-mktu/"><strong>Сокращение МКТУ</strong><span>Сравнение продления до и после сокращения</span><span class="lx-cat-card-cta">Открыть →</span></a>
+    </div>
+  </section>
+
+  <section class="lx-section lx-cat-group lx-reveal">
+    <h2>Помощь с ФИПС</h2>
+    <div class="lx-cat-cards">
+      <a class="lx-cat-card" href="/patentnye-zadachi/kontakty-fips/"><strong>Контакты ФИПС</strong><span>Телефоны и e-mail Роспатента и ФИПС</span><span class="lx-cat-card-cta">Открыть →</span></a>
     </div>
   </section>
 
