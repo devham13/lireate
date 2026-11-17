@@ -5,7 +5,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Патентные задачи — инструменты LIREATE';
-$seo_description = 'Каталог инструментов для товарных знаков: пошлины, МКТУ, адрес, файл знака, контакты ФИПС. Расчёт по официальной таблице Роспатента в браузере.';
+$seo_description = 'Инструменты для товарных знаков: пошлины, МКТУ, адрес, TIFF, контакты, оплата. Расчёт в браузере по таблице Роспатента. Данные не уходят с устройства.';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
@@ -78,9 +78,19 @@ $schema_graph = array(
   </section>
 
   <section class="lx-section lx-cat-group lx-reveal">
+    <h2>Платежи</h2>
+    <div class="lx-cat-cards">
+      <a class="lx-cat-card" href="/patentnye-zadachi/oplata-patentnyh-poshlin/"><strong>Оплата патентных пошлин</strong><span>Черновик реквизитов и QR (ST00012) в браузере</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/oplata-uslug-fips/"><strong>Оплата услуг ФИПС</strong><span>Отдельный профиль; при неподтверждённых данных — официальные ссылки</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/poisk-platezha-evm/"><strong>Поиск платежа ПрЭВМ</strong><span>Справочные поля; сверка в контуре ФИПС</span><span class="lx-cat-card-cta">Открыть →</span></a>
+    </div>
+  </section>
+
+  <section class="lx-section lx-cat-group lx-reveal">
     <h2>Помощь с ФИПС</h2>
     <div class="lx-cat-cards">
       <a class="lx-cat-card" href="/patentnye-zadachi/kontakty-fips/"><strong>Контакты ФИПС</strong><span>Телефоны и e-mail Роспатента и ФИПС</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/starye-zayavki/"><strong>Старые заявки</strong><span>Переход в АРМ «Регистратор» под вашей учётной записью</span><span class="lx-cat-card-cta">Открыть →</span></a>
     </div>
   </section>
 
