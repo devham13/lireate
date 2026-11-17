@@ -362,6 +362,7 @@ $schema_graph = [
   <p>Если зарубежный рынок входит в ваши планы, помните: право на товарный знак территориально. Регистрация в России не создаёт охраны в Китае или других странах; для КНР см. <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрацию товарного знака в Китае</a>.</p>
 </section>
 
+<?php include __DIR__ . '/blocks/lireate-vk-cases.inc.php'; ?>
 <?php include __DIR__ . '/blocks/lireate-reviews.inc.php'; ?>
 
 <section class="lx-section lx-reveal" id="faq">

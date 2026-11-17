@@ -7,7 +7,6 @@
     return;
   }
 
-  /** Идентификаторы целей в Метрике (JS-события). */
   var GOALS = {
     telegram: 'perehod_v_telegramm',
     whatsapp: 'perehod_v_messendzher',
@@ -24,7 +23,6 @@
     try {
       window.ym(COUNTER_ID, 'reachGoal', goalId);
     } catch (e) {
-      /* ignore */
     }
   }
 
@@ -35,13 +33,67 @@
     var custom = el.getAttribute('data-lx-ym-goal');
     var goalId = custom || GOALS[goalKey] || goalKey;
     el.setAttribute('data-lx-ym-bound', '1');
-    el.addEventListener(
-      'click',
-      function () {
-        reach(goalId);
-      },
-      { passive: true }
-    );
+    el.addEventListener('click', function () {
+      reach(goalId);
+    }, false);
+  }
+
+  function goalFromHref(href) {
+    if (!href) {
+      return '';
+    }
+    var h = String(href).toLowerCase();
+    if (h.indexOf('tel:') === 0) {
+      return GOALS.phone;
+    }
+    if (h.indexOf('t.me/') !== -1) {
+      return GOALS.telegram;
+    }
+    if (h.indexOf('wa.me/') !== -1 || h.indexOf('api.whatsapp.com/') !== -1) {
+      return GOALS.messenger;
+    }
+    if (h.indexOf('max.ru/') !== -1) {
+      return GOALS.messenger;
+    }
+    return '';
+  }
+
+  function isYmHandledAnchor(el) {
+    if (!el || el.nodeName !== 'A') {
+      return false;
+    }
+    if (el.getAttribute('data-lx-ym-bound') === '1') {
+      return true;
+    }
+    if (el.hasAttribute('data-lx-ym-goal')) {
+      return true;
+    }
+    return false;
+  }
+
+  function initDelegatedHrefGoals() {
+    document.addEventListener('click', function (ev) {
+      var node = ev.target;
+      var anchor = null;
+      while (node && node !== document) {
+        if (node.nodeName === 'A') {
+          anchor = node;
+          break;
+        }
+        node = node.parentNode;
+      }
+      if (!anchor || isYmHandledAnchor(anchor)) {
+        return;
+      }
+      var href = anchor.getAttribute('href');
+      if (!href) {
+        href = anchor.href;
+      }
+      var goal = goalFromHref(href);
+      if (goal) {
+        reach(goal);
+      }
+    }, false);
   }
 
   function init() {
@@ -54,34 +106,42 @@
       '.lx-site-footer-social-btn--tg'
     ];
     tgSelectors.forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (el) {
-        bindGoal(el, 'telegram');
-      });
-    });
-
-    ['#link-whatsapp', '.lx-mobile-bar-btn[data-lx-icon="whatsapp"]', '.lx-site-footer-social-btn--wa'].forEach(
-      function (sel) {
-        document.querySelectorAll(sel).forEach(function (el) {
-          bindGoal(el, 'whatsapp');
-        });
+      var list = document.querySelectorAll(sel);
+      var i;
+      for (i = 0; i < list.length; i += 1) {
+        bindGoal(list[i], 'telegram');
       }
-    );
-
-    ['#link-max', '#hero-max', '#dock-max', '#form-alt-max', '.lx-dock-max'].forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (el) {
-        bindGoal(el, 'max');
-      });
     });
 
-    document.querySelectorAll('a[href^="tel:"]').forEach(function (el) {
-      bindGoal(el, 'phone');
+    ['#link-whatsapp', '#form-alt-whatsapp', '.lx-mobile-bar-btn[data-lx-icon="whatsapp"]', '.lx-site-footer-social-btn--wa'].forEach(function (sel) {
+      var list = document.querySelectorAll(sel);
+      var i;
+      for (i = 0; i < list.length; i += 1) {
+        bindGoal(list[i], 'whatsapp');
+      }
     });
 
-    document.querySelectorAll('[data-lx-ym-goal]').forEach(function (el) {
-      bindGoal(el, el.getAttribute('data-lx-ym-goal'));
+    ['#link-max', '#hero-max', '#dock-max', '#form-alt-max', '.lx-dock-max', '.lx-mobile-bar-btn--max', '.lx-mobile-bar-btn[data-lx-icon="max-white"]'].forEach(function (sel) {
+      var list = document.querySelectorAll(sel);
+      var i;
+      for (i = 0; i < list.length; i += 1) {
+        bindGoal(list[i], 'max');
+      }
     });
 
-    /* Цель zayavka — после успешного /mail.php в lireate-contact.js */
+    var telLinks = document.querySelectorAll('a[href^="tel:"]');
+    var t;
+    for (t = 0; t < telLinks.length; t += 1) {
+      bindGoal(telLinks[t], 'phone');
+    }
+
+    var customGoals = document.querySelectorAll('[data-lx-ym-goal]');
+    var c;
+    for (c = 0; c < customGoals.length; c += 1) {
+      bindGoal(customGoals[c], customGoals[c].getAttribute('data-lx-ym-goal'));
+    }
+
+    initDelegatedHrefGoals();
   }
 
   if (document.readyState === 'loading') {
