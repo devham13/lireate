@@ -91,6 +91,76 @@ def renewal_lines(
     return result
 
 
+def changes_lines(
+    marks: int,
+    count_216: int = 0,
+    count_217: int = 0,
+    paper_217: bool = False,
+    cert_has_info: bool | None = True,
+) -> dict[str, Any]:
+    """п. 2.16 и 2.17: по каждому изменению на каждый знак (marks — число регистраций)."""
+    if marks < 1:
+        return {"ok": False, "error": "marks"}
+    if count_216 < 0 or count_217 < 0:
+        return {"ok": False, "error": "negative"}
+    lines: list[dict[str, Any]] = []
+    total = 0
+    if count_216:
+        amt = 3000 * count_216 * marks
+        lines.append(
+            {
+                "id": "2.16",
+                "label": "Внесение изменений в ГР и/или свидетельство (за каждое изменение, за знак)",
+                "amount": amt,
+                "per_change": 3000,
+                "changes": count_216,
+                "marks": marks,
+            }
+        )
+        total += amt
+    if count_217:
+        if cert_has_info is False:
+            lines.append(
+                {
+                    "id": "2.17",
+                    "label": "Требуется уточнение — сверьте состав свидетельства",
+                    "amount": None,
+                    "needs_clarification": True,
+                    "forms_url": "https://rospatent.gov.ru/ru/docs/form/forms",
+                }
+            )
+        amt217 = 2000 * count_217 * marks
+        lines.append(
+            {
+                "id": "2.17",
+                "label": "Исправление ошибок в свидетельстве (за каждое изменение, за знак)",
+                "amount": amt217,
+                "per_change": 2000,
+                "changes": count_217,
+                "marks": marks,
+            }
+        )
+        total += amt217
+        if paper_217:
+            paper_amt = 3000 * marks
+            lines.append(
+                {
+                    "id": "2.17",
+                    "label": "Бумажный дубликат свидетельства (по ходатайству)",
+                    "amount": paper_amt,
+                }
+            )
+            total += paper_amt
+    if not lines:
+        return {"ok": False, "error": "empty"}
+    return {
+        "ok": True,
+        "marks": marks,
+        "lines": lines,
+        "total": total,
+    }
+
+
 CLASS_LINE_RE = re.compile(
     r"^\s*(?:класс\s*)?(\d{1,2})\s*[.:\-–—]?\s*(.*)$",
     re.IGNORECASE,

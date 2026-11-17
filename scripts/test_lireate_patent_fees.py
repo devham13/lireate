@@ -4,6 +4,7 @@
 import unittest
 
 from lireate_patent_fees_lib import (
+    changes_lines,
     normalize_class_num,
     parse_mktu_text,
     registration_lines,
@@ -92,6 +93,26 @@ class PatentFeeTableTests(unittest.TestCase):
     def test_boundary_10_11_pos(self):
         self.assertEqual(registration_lines(counts((1, 10)))["total"], 35000)
         self.assertEqual(registration_lines(counts((1, 11)))["total"], 35500)
+
+
+class PatentChangesFeeTests(unittest.TestCase):
+    def test_216_one_mark_one_change(self):
+        r = changes_lines(marks=1, count_216=1)
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["total"], 3000)
+
+    def test_216_two_marks_three_changes(self):
+        r = changes_lines(marks=2, count_216=3)
+        self.assertEqual(r["total"], 3000 * 3 * 2)
+
+    def test_217_with_paper(self):
+        r = changes_lines(marks=2, count_217=1, paper_217=True, cert_has_info=True)
+        self.assertEqual(r["total"], 2000 * 1 * 2 + 3000 * 2)
+
+    def test_217_needs_clarification(self):
+        r = changes_lines(marks=1, count_217=1, cert_has_info=False)
+        self.assertTrue(any(l.get("needs_clarification") for l in r["lines"]))
+        self.assertEqual(r["total"], 2000)
 
 
 class PatentMktuParseTests(unittest.TestCase):
