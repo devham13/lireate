@@ -77,6 +77,10 @@
   padding: 0.35rem 0;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
   font-size: 0.92rem;
+  color: #cbd5e1;
+}
+.lx-patent-tool .lx-sum-total {
+  color: #f8fafc;
 }
 .lx-patent-tool .lx-actions {
   display: flex;
@@ -116,6 +120,100 @@
 .lx-patent-catalog .lx-cat-card strong {
   display: block;
   margin-bottom: 0.35rem;
+  color: #f8fafc;
+}
+.lx-patent-catalog .lx-cat-card span {
+  display: block;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 0.65rem;
+}
+.lx-patent-catalog .lx-cat-card-cta {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #7dd3fc;
+}
+.lx-patent-catalog .lx-cat-card:hover .lx-cat-card-cta {
+  text-decoration: underline;
+}
+.lx-patent-catalog .lx-hero--stack,
+.lx-patent-tool .lx-hero--stack {
+  grid-template-columns: 1fr;
+  padding-top: 48px;
+}
+.lx-patent-tool .lx-section--tool {
+  padding-top: 8px;
+}
+.lx-patent-tool .lx-hero--stack h1,
+.lx-patent-catalog .lx-hero--stack h1 {
+  color: #f8fafc;
+  margin: 0 0 18px;
+  font-size: clamp(1.85rem, 3.5vw, 2.65rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.lx-patent-tool .lx-hero-lead a,
+.lx-patent-catalog .lx-hero-lead a,
+.lx-patent-tool .lx-section a,
+.lx-patent-catalog .lx-section a,
+.lx-patent-tool .lx-hint a,
+.lx-patent-footer-inner a {
+  color: #7dd3fc;
+  text-decoration: none;
+}
+.lx-patent-tool .lx-hero-lead a:hover,
+.lx-patent-catalog .lx-section a:hover,
+.lx-patent-footer-inner a:hover {
+  text-decoration: underline;
+}
+.lx-breadcrumbs--patent a {
+  color: #7dd3fc;
+}
+.lx-patent-footer-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px 72px;
+  box-sizing: border-box;
+}
+.lx-patent-footer-bar {
+  margin-top: 8px;
+  padding: 32px 0 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.lx-patent-footer-inner {
+  box-sizing: border-box;
+}
+.lx-patent-footer-note {
+  color: #94a3b8;
+}
+.lx-patent-footer-bar a,
+.lireate-svc-page .lx-patent-footer-bar a {
+  color: #7dd3fc;
+  text-decoration: none;
+}
+.lx-patent-footer-bar a:hover {
+  text-decoration: underline;
+}
+.lx-patent-footer-note {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #94a3b8;
+  max-width: 42em;
+}
+.lx-patent-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.lx-patent-catalog .lx-section ul {
+  color: #94a3b8;
+  line-height: 1.75;
 }
 .lx-patent-tool .lx-class-grid {
   display: grid;

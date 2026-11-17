@@ -310,7 +310,7 @@ def _lint_patent_page(slug, raw, html, service_dir, manifest_kind):
         errors.append("JSON-LD must include WebPage/WebApplication and BreadcrumbList")
     if "lireate-svc-page" not in html:
         errors.append("main must use class lireate-svc-page")
-    if "lx-nav-pill" not in html:
+    if "lx-nav-pill" not in html and "lireate-patent-header.inc.php" not in raw:
         errors.append("missing lx-nav-pill")
     if manifest_kind == "patent_catalog":
         if "lx-patent-catalog" not in html:

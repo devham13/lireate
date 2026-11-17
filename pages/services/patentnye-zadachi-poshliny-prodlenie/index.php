@@ -15,13 +15,16 @@ $lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID');
 if ($lireate_metrika_id === false || $lireate_metrika_id === '') {
     $lireate_metrika_id = '526' . '22734';
 }
-$schema_graph = [
+$lx_breadcrumb_current = 'Пошлины продления';
+$lx_patent_cta_href = $lireate_telegram;
+$lx_patent_cta_external = true;
+$schema_graph = array(
   '@context' => 'https://schema.org',
-  '@graph' => [
-    ['@type' => 'WebApplication', 'name' => 'Калькулятор продления', 'url' => $canonical],
-    ['@type' => 'BreadcrumbList', 'itemListElement' => lireate_patent_breadcrumb_schema_items($site_root, 'Пошлины продления', $canonical)],
-  ],
-];
+  '@graph' => array(
+    array('@type' => 'WebApplication', 'name' => 'Калькулятор продления', 'url' => $canonical),
+    array('@type' => 'BreadcrumbList', 'itemListElement' => lireate_patent_breadcrumb_schema_items($site_root, 'Пошлины продления', $canonical)),
+  ),
+);
 ?><!DOCTYPE html>
 <html lang="ru" data-lireate-metrika-id="<?php echo htmlspecialchars(preg_replace('/\D/', '', (string) $lireate_metrika_id), ENT_QUOTES, 'UTF-8'); ?>">
 <head>
@@ -32,14 +35,23 @@ $schema_graph = [
   <link rel="canonical" href="<?php echo htmlspecialchars($canonical, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-dark.css', $lx_service_asset_dir); ?>">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-tools.css', $lx_service_asset_dir); ?>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
 <body class="lireate-svc-body lx-patent-tool">
-<div class="lx-nav-shell"><header class="lx-nav-pill"><a class="lx-logo" href="/patentnye-zadachi/">Патентные задачи</a></header></div>
-<main id="primary" class="lireate-svc-page lx-reveal" tabindex="-1" data-lx-patent-renew>
-  <section class="lx-section">
-    <h1>Пошлины продления товарного знака</h1>
-    <p class="lx-hint">Сверьте перечень с <a href="https://new.fips.ru/registers-web/action?acName=clickRegister&amp;regName=RUPTO" target="_blank" rel="noopener noreferrer">реестром ФИПС</a> или карточкой свидетельства. Источник ставок: <a href="https://rospatent.gov.ru/ru/activities/dues/table" target="_blank" rel="noopener noreferrer">таблица Роспатента</a>.</p>
+<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-header.inc.php'; ?>
+<main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-renew>
+<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
+  <section class="lx-hero lx-hero--stack">
+    <div>
+      <p class="lx-eyebrow">Патентные задачи · продление</p>
+      <h1>Пошлины продления товарного знака</h1>
+      <p class="lx-hero-lead">Сверьте перечень с <a href="https://new.fips.ru/registers-web/action?acName=clickRegister&amp;regName=RUPTO" target="_blank" rel="noopener noreferrer">реестром ФИПС</a>. Источник ставок: <a href="https://rospatent.gov.ru/ru/activities/dues/table" target="_blank" rel="noopener noreferrer">таблица Роспатента</a>.</p>
+    </div>
+  </section>
+  <section class="lx-section lx-section--tool" id="tool">
     <div class="lx-tool-grid">
       <div>
         <div class="lx-field">

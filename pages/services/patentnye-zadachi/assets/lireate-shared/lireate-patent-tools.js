@@ -194,6 +194,10 @@
         }
         return { counts: counts };
       }
+      var manualFirst = countsFromManualTable(root);
+      if (Object.keys(manualFirst).length) {
+        return { counts: manualFirst };
+      }
       if (!listArea || !listArea.value.trim()) {
         return { error: 'Вставьте перечень МКТУ или укажите классы.' };
       }
@@ -348,7 +352,10 @@
 
     function calculate() {
       var counts = {};
-      if (listArea && listArea.value.trim()) {
+      var manual = countsFromManualTable(root);
+      if (Object.keys(manual).length) {
+        counts = manual;
+      } else if (listArea && listArea.value.trim()) {
         var parsed = Mktu.parseMktuText(listArea.value, lineMode && lineMode.checked);
         counts = parsed.counts;
         if (!Object.keys(counts).length) {
@@ -384,10 +391,6 @@
               classTable.appendChild(row);
             });
         }
-      }
-      var manual = countsFromManualTable(root);
-      if (Object.keys(manual).length) {
-        counts = manual;
       }
       if (!Object.keys(counts).length) {
         if (errEl) {
@@ -497,7 +500,10 @@
       });
     }
     if (toCalc) {
-      toCalc.addEventListener('click', function () {
+      toCalc.addEventListener('click', function (ev) {
+        if (ev && ev.preventDefault) {
+          ev.preventDefault();
+        }
         if (!source) {
           return;
         }
@@ -506,7 +512,8 @@
           return;
         }
         storeCounts(parsed.counts);
-        window.location.href = toCalc.getAttribute('href') || '/patentnye-zadachi/poshliny-registraciya/';
+        var href = toCalc.getAttribute('href') || '/patentnye-zadachi/poshliny-registraciya/';
+        window.location.href = href;
       });
     }
   }

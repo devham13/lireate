@@ -16,13 +16,21 @@ $lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID');
 if ($lireate_metrika_id === false || $lireate_metrika_id === '') {
     $lireate_metrika_id = '526' . '22734';
 }
-$schema_graph = [
+$lx_breadcrumb_current = 'Патентные задачи';
+$lx_patent_breadcrumb_is_catalog = true;
+$lx_patent_nav_links = array(
+    array('href' => '#tools', 'label' => 'Инструменты'),
+    array('href' => '#help', 'label' => 'Справка'),
+);
+$lx_patent_cta_href = $lireate_telegram;
+$lx_patent_cta_external = true;
+$schema_graph = array(
   '@context' => 'https://schema.org',
-  '@graph' => [
-    ['@type' => 'WebPage', 'name' => 'Патентные задачи', 'url' => $canonical],
-    ['@type' => 'BreadcrumbList', 'itemListElement' => lireate_patent_breadcrumb_schema_items($site_root, 'Каталог', $canonical)],
-  ],
-];
+  '@graph' => array(
+    array('@type' => 'WebPage', 'name' => 'Патентные задачи', 'url' => $canonical),
+    array('@type' => 'BreadcrumbList', 'itemListElement' => lireate_patent_breadcrumb_schema_items($site_root, 'Каталог', $canonical)),
+  ),
+);
 ?><!DOCTYPE html>
 <html lang="ru" data-lireate-metrika-id="<?php echo htmlspecialchars(preg_replace('/\D/', '', (string) $lireate_metrika_id), ENT_QUOTES, 'UTF-8'); ?>">
 <head>
@@ -33,39 +41,35 @@ $schema_graph = [
   <link rel="canonical" href="<?php echo htmlspecialchars($canonical, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-dark.css', $lx_service_asset_dir); ?>">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-tools.css', $lx_service_asset_dir); ?>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
 <body class="lireate-svc-body lx-patent-catalog">
-<div class="lx-bg-glow" aria-hidden="true"></div>
-<div class="lx-nav-shell">
-  <header class="lx-nav-pill" role="banner">
-    <a class="lx-logo" href="/">LIREATE</a>
-    <nav class="lx-nav-links" aria-label="Раздел">
-      <a href="#tools">Инструменты</a>
-      <a href="#help">Справка</a>
-    </nav>
-    <a class="lx-btn lx-btn-primary" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Консультация</a>
-  </header>
-</div>
-<main id="primary" class="lireate-svc-page lx-reveal" tabindex="-1">
-  <section class="lx-hero" id="top">
-    <p class="lx-eyebrow">LIREATE · инструменты</p>
-    <h1>Патентные задачи</h1>
-    <p class="lx-hero-lead">Подготовка заявки, свидетельство и платежи — в одном каталоге. На первом этапе доступны калькуляторы пошлин и редактор МКТУ. Расчёт выполняется в браузере, данные полей не уходят на сервер.</p>
+<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-header.inc.php'; ?>
+<main id="primary" class="lireate-svc-page" role="main" tabindex="-1">
+<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
+  <section class="lx-hero lx-hero--stack lx-reveal" id="top">
+    <div>
+      <p class="lx-eyebrow">LIREATE · инструменты</p>
+      <h1>Патентные задачи</h1>
+      <p class="lx-hero-lead">Подготовка заявки, работа со свидетельством и расчёт пошлин — в одном каталоге. Расчёт выполняется в браузере, содержимое полей не отправляется на сервер.</p>
+    </div>
   </section>
 
   <section class="lx-section lx-cat-group lx-reveal" id="tools">
     <h2>Подготовка заявки</h2>
     <div class="lx-cat-cards">
-      <a class="lx-cat-card" href="/patentnye-zadachi/poshliny-registraciya/"><strong>Пошлины регистрации</strong><span>Два режима: по числу классов и по перечню МКТУ</span></a>
-      <a class="lx-cat-card" href="/patentnye-zadachi/redaktor-mktu/"><strong>Редактор МКТУ</strong><span>Нормализация перечня и передача в калькулятор</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/poshliny-registraciya/"><strong>Пошлины регистрации</strong><span>Два режима: по числу классов и по перечню МКТУ</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/redaktor-mktu/"><strong>Редактор МКТУ</strong><span>Нормализация перечня и передача в калькулятор</span><span class="lx-cat-card-cta">Открыть →</span></a>
     </div>
   </section>
 
   <section class="lx-section lx-cat-group lx-reveal">
     <h2>Свидетельство и реестр</h2>
     <div class="lx-cat-cards">
-      <a class="lx-cat-card" href="/patentnye-zadachi/poshliny-prodlenie/"><strong>Пошлины продления</strong><span>Классы, позиции, дополнительный срок п. 2.25</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/poshliny-prodlenie/"><strong>Пошлины продления</strong><span>Классы, позиции, дополнительный срок п. 2.25</span><span class="lx-cat-card-cta">Открыть →</span></a>
     </div>
   </section>
 
