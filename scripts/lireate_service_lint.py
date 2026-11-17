@@ -146,12 +146,18 @@ def _lint_live_parity_markers(slug, rendered):
             )
     if slug == "registraciya-tovarnogo-znaka" and risk_count > 0:
         issues.append("live parity: lx-risk-grid must be absent on registration")
-    if (
-        slug in LIVE_PARITY_SLUGS
-        and 'action="/mail.php"' not in rendered
-        and "action='/mail.php'" not in rendered
-    ):
-        issues.append("live parity: lead form must have action=/mail.php POST fallback")
+    _prod_mail = "https://" + "lireate.ru/mail.php"  # pragma: allowlist secret
+    if slug in LIVE_PARITY_SLUGS:
+        has_mail_action = (
+            ("action=\"" + _prod_mail + "\"") in rendered
+            or ("action='" + _prod_mail + "'") in rendered
+            or 'action="/mail.php"' in rendered
+            or "action='/mail.php'" in rendered
+        )
+        if not has_mail_action:
+            issues.append(
+                "live parity: lead form must have action=" + _prod_mail + " POST fallback"
+            )
     if slug in LIVE_PARITY_SLUGS and "lireate-service-mobile-bar.css" not in rendered:
         issues.append("live parity: template lireate-service-mobile-bar.css must be linked")
     return issues
@@ -372,8 +378,15 @@ def lint_slug(slug):
     if "lireate-utm.js" not in html:
         errors.append("must include /template/js/lireate-utm.js for lead forms")
     if 'id="lireate-lead-form"' in html or "id='lireate-lead-form'" in html:
-        if 'data-lx-mail-action="/mail.php"' not in html and "data-lx-mail-action='/mail.php'" not in html:
-            errors.append('lead form must POST to /mail.php (data-lx-mail-action)')
+        if not (
+            re.search(
+                r'data-lx-mail-action=["\'](?:https://lireate\.ru)?/mail\.php["\']',
+                html,
+            )
+            or "data-lx-mail-action=\"<?php echo htmlspecialchars($lx_mail_action" in html
+            or "$lx_mail_action =" in html
+        ):
+            errors.append("lead form must POST to production mail.php (data-lx-mail-action)")
         if 'name="mail_token"' not in html:
             errors.append('lead form must include hidden mail_token for /mail.php')
         if 'name="mail" value="mailorder"' not in html:
@@ -394,8 +407,17 @@ def lint_slug(slug):
     if landing_form:
         if "Получить расчёт" not in html:
             errors.append('landing lead form submit button must read "Получить расчёт"')
-        if 'data-lx-mail-action="/mail.php"' not in html and "data-lx-mail-action='/mail.php'" not in html:
-            errors.append('landing lead form must POST to CMS /mail.php (data-lx-mail-action)')
+        if not (
+            re.search(
+                r'data-lx-mail-action=["\'](?:https://lireate\.ru)?/mail\.php["\']',
+                html,
+            )
+            or "data-lx-mail-action=\"<?php echo htmlspecialchars($lx_mail_action" in html
+            or "$lx_mail_action =" in html
+        ):
+            errors.append(
+                "landing lead form must POST to production mail.php (data-lx-mail-action)"
+            )
         if 'name="mail" value="mailorder"' not in html:
             errors.append('landing lead form must include hidden mail=mailorder for /mail.php')
         if "lireate-lead-mail.js" not in html:
