@@ -42,18 +42,19 @@ class HrefIntegrityTests(unittest.TestCase):
         if bad:
             self.fail("\n".join(bad))
 
-    def test_service_kontaktyi_not_contacts(self):
+    def test_service_contacts_not_kontaktyi(self):
+        """Legacy /kontaktyi redirects 301 → /contacts/ on prod; services must link /contacts/."""
         paths = sorted(REPO.glob(SERVICE_GLOB))
         offenders = []
         for path in paths:
             slug_dir = path.parent.name
-            if slug_dir in ("_shared", "_template"):
+            if slug_dir in ("_shared", "_template") or "backup-old" in path.parts:
                 continue
             text = path.read_text(encoding="utf-8", errors="replace")
-            if 'href="/contacts/' in text or "href='/contacts/" in text:
+            if 'href="/kontaktyi' in text or "href='/kontaktyi" in text:
                 offenders.append(str(path.relative_to(REPO)))
         if offenders:
-            self.fail("still /contacts/ in: " + ", ".join(offenders))
+            self.fail("still /kontaktyi in: " + ", ".join(offenders))
 
 
 if __name__ == "__main__":
