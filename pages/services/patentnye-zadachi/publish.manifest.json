@@ -1,0 +1,9 @@
+{
+  "slug": "patentnye-zadachi",
+  "url_path": "patentnye-zadachi",
+  "title": "Патентные задачи",
+  "description": "Каталог инструментов LIREATE: пошлины регистрации и продления ТЗ, редактор МКТУ и подготовка заявки. Расчёт по таблице Роспатента без отправки данных в сеть.",
+  "menu_title": "Патентные задачи",
+  "menu_after": "МКТУ",
+  "page_kind": "patent_catalog"
+}

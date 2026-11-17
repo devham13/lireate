@@ -208,6 +208,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
   <span class="lx-section-label">LIREATE</span>
   <h2>Смежные услуги</h2>
   <div class="lx-related-grid">
+    <a class="lx-related-card" href="/patentnye-zadachi/poshliny-prodlenie/"><span class="lx-related-card-type">Инструмент</span><strong>Калькулятор продления</strong></a>
     <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация товарного знака</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>

@@ -1,0 +1,6 @@
+# LIREATE: каталог услуги — отдавать index.php (корневой rewrite CMS иначе даёт 404 на /slug/)
+DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^$ index.php [END]
+</IfModule>

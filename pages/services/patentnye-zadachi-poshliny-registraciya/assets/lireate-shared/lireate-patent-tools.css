@@ -1,0 +1,142 @@
+.lx-patent-tool .lx-tool-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .lx-patent-tool .lx-tool-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+.lx-patent-tool .lx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+.lx-patent-tool label,
+.lx-patent-tool .lx-field-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--lx-muted, #9fb0c8);
+}
+.lx-patent-tool input[type='number'],
+.lx-patent-tool input[type='text'],
+.lx-patent-tool textarea,
+.lx-patent-tool select {
+  font: inherit;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 16, 32, 0.65);
+  color: inherit;
+  min-height: 44px;
+}
+.lx-patent-tool textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.45;
+}
+.lx-patent-tool .lx-seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.lx-patent-tool .lx-seg button {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.lx-patent-tool .lx-seg button[aria-pressed='true'] {
+  background: rgba(90, 160, 255, 0.2);
+  border-color: rgba(120, 180, 255, 0.5);
+}
+.lx-patent-tool .lx-result-panel {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(12, 22, 42, 0.75);
+  padding: 1rem 1.15rem;
+}
+.lx-patent-tool .lx-result-panel[hidden] {
+  display: none !important;
+}
+.lx-patent-tool .lx-sum-total {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.lx-patent-tool .lx-line-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  font-size: 0.92rem;
+}
+.lx-patent-tool .lx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.lx-patent-tool .lx-hint {
+  font-size: 0.85rem;
+  color: var(--lx-muted, #9fb0c8);
+}
+.lx-patent-tool .lx-warn {
+  color: #ffb86b;
+  font-size: 0.9rem;
+}
+.lx-patent-catalog .lx-cat-group {
+  margin-bottom: 2rem;
+}
+.lx-patent-catalog .lx-cat-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.lx-patent-catalog .lx-cat-card {
+  display: block;
+  padding: 1.1rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 18, 36, 0.7);
+  text-decoration: none;
+  color: inherit;
+}
+.lx-patent-catalog .lx-cat-card:focus-visible {
+  outline: 2px solid rgba(120, 180, 255, 0.8);
+  outline-offset: 2px;
+}
+.lx-patent-catalog .lx-cat-card strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.lx-patent-tool .lx-class-grid {
+  display: grid;
+  gap: 0.5rem;
+  max-height: 240px;
+  overflow: auto;
+  padding: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+.lx-patent-tool .lx-class-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr 5.5rem;
+  gap: 0.5rem;
+  align-items: center;
+}
+@media print {
+  .lx-nav-shell,
+  .lx-dock,
+  .lx-patent-tool .lx-actions,
+  .lx-btn {
+    display: none !important;
+  }
+}
