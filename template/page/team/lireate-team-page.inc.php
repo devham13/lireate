@@ -50,7 +50,7 @@ if (document.body) { document.body.classList.add('lireate-team-body'); }
         <a class="lireate-team-pill lireate-team-pill--solid" href="<?php echo lireate_team_h(LIREATE_TEAM_MAX_CHAT_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">Max</a>
         <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_telegramm">Telegram</a>
         <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_WHATSAPP_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">WhatsApp</a>
-        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE_TEL); ?>" data-lx-ym-goal="perehod_v_telefon"><?php echo lireate_team_h(LIREATE_TEAM_PHONE_DISPLAY); ?></a>
+        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_team_h(LIREATE_TEAM_PHONE_DISPLAY); ?></a>
       </div>
     </div>
   </header>
