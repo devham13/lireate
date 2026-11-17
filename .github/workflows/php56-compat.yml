@@ -33,3 +33,15 @@ jobs:
         run: python3 -m unittest scripts.test_lireate_seo_p1_blog_hrefs -q
       - name: blog list pagination SEO
         run: python3 -m unittest scripts.test_lireate_blog_list_pagination -q
+      - name: patent tools fee tests
+        run: cd scripts && python3 -m unittest test_lireate_patent_fees -q
+      - name: patent section lint
+        run: |
+          python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi
+          python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi-poshliny-registraciya
+          python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi-poshliny-prodlenie
+          python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi-redaktor-mktu
+          python3 scripts/lireate_service_lint.py --slug patentnye-zadachi
+          python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-poshliny-registraciya
+          python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-poshliny-prodlenie
+          python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-redaktor-mktu

@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -18,6 +19,8 @@ LIVE_PARITY_SLUGS = frozenset(
         "proverka-tovarnogo-znaka",
     }
 )
+
+PATENT_PAGE_KINDS = frozenset({"patent_tool", "patent_catalog"})
 
 
 def _read(path):
@@ -267,6 +270,66 @@ def _merge_service_form_fragment(raw, service_dir):
     return html
 
 
+def _manifest_page_kind(service_dir):
+    manifest = service_dir / "publish.manifest.json"
+    if not manifest.is_file():
+        return ""
+    try:
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return ""
+    return (data.get("page_kind") or "").strip()
+
+
+def _lint_patent_page(slug, raw, html, service_dir, manifest_kind):
+    errors = []
+    warnings = []
+    if SHARED_MARK not in html:
+        errors.append("must link " + SHARED_MARK)
+    shared_css = service_dir / "assets" / "lireate-shared" / "lireate-service-dark.css"
+    if not shared_css.is_file():
+        errors.append("run scripts/lireate_service_sync_shared.py")
+    if manifest_kind == "patent_tool" and "lireate-patent-tools.js" not in html:
+        errors.append("patent tool must include lireate-patent-tools.js")
+    if "lireate-patent-tools.css" not in html:
+        errors.append("patent page must include lireate-patent-tools.css")
+    h1 = re.findall(r"<h1\b", html, re.I)
+    if len(h1) != 1:
+        errors.append("expected exactly one <h1>, found {0}".format(len(h1)))
+    title = _php_assign(raw, "seo_title") or _title_text(html)
+    if not title:
+        errors.append("missing seo_title")
+    desc = _php_assign(raw, "seo_description") or _meta_content(html, name="description")
+    if not desc:
+        errors.append("missing meta description")
+    elif len(desc) < 140 or len(desc) > 160:
+        errors.append("meta description length {0} (want 140–160)".format(len(desc)))
+    if not re.search(r'<link\s+rel=["\']canonical["\']', html, re.I):
+        errors.append("missing canonical link")
+    if "BreadcrumbList" not in raw and "WebPage" not in raw and "WebApplication" not in raw:
+        errors.append("JSON-LD must include WebPage/WebApplication and BreadcrumbList")
+    if "lireate-svc-page" not in html:
+        errors.append("main must use class lireate-svc-page")
+    if "lx-nav-pill" not in html and "lireate-patent-header.inc.php" not in raw:
+        errors.append("missing lx-nav-pill")
+    if manifest_kind == "patent_catalog":
+        if "lx-patent-catalog" not in html:
+            errors.append("catalog must use lx-patent-catalog body class")
+    if "lireate-metrika.inc.php" not in raw and "data-lireate-metrika-id" not in html:
+        warnings.append("patent page: ensure Metrika via data-lireate-metrika-id or include")
+    if shutil.which("php"):
+        proc = subprocess.run(
+            ["php", "-l", str(service_dir / "index.php")],
+            capture_output=True,
+            text=True,
+        )
+        if proc.returncode != 0:
+            errors.append("php -l failed: " + (proc.stderr or proc.stdout or "").strip())
+    else:
+        warnings.append("php CLI missing; skipped php -l")
+    return errors, warnings
+
+
 def lint_slug(slug):
     errors = []
     warnings = []
@@ -282,6 +345,11 @@ def lint_slug(slug):
     manifest = service_dir / "publish.manifest.json"
     if not manifest.is_file():
         errors.append("missing publish.manifest.json")
+
+    manifest_kind = _manifest_page_kind(service_dir)
+    if manifest_kind in PATENT_PAGE_KINDS:
+        patent_errors, patent_warnings = _lint_patent_page(slug, raw, html, service_dir, manifest_kind)
+        return patent_errors, patent_warnings + warnings
 
     if SHARED_MARK not in html:
         errors.append("must link " + SHARED_MARK)

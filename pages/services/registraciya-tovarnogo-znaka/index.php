@@ -410,6 +410,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
     <a class="lx-related-card" href="/zashchita_avtorskih_prav/"><span class="lx-related-card-type">Услуга</span><strong>Защита авторских прав</strong></a>
+    <a class="lx-related-card" href="/patentnye-zadachi/poshliny-registraciya/"><span class="lx-related-card-type">Инструмент</span><strong>Калькулятор пошлин</strong></a>
     <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
     <a class="lx-related-card" href="/kontaktyi"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>

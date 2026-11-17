@@ -1,0 +1,7 @@
+{
+  "slug": "patentnye-zadachi-redaktor-mktu",
+  "url_path": "patentnye-zadachi/redaktor-mktu",
+  "title": "Редактор перечня МКТУ",
+  "description": "Нормализация перечня МКТУ для заявки: классы 01–45, разделители, предупреждения о дубликатах и передача подтверждённых классов в калькулятор LIREATE.",
+  "page_kind": "patent_tool"
+}

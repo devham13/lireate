@@ -17,6 +17,7 @@ id_ed25519*
 scripts/.lireate-php56-docker-wrap.sh
 .dev-docroot/
 .dev-docroot-blog/
+.dev-docroot-patent/
 output/
 .cursor/nero-network-handoff.md
 .cursor/nero-network-fragments/
