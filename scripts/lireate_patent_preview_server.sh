@@ -32,6 +32,10 @@ link_sub patentnye-zadachi-fail-slovesnogo-znaka fail-slovesnogo-znaka
 link_sub patentnye-zadachi-poshliny-izmeneniya poshliny-izmeneniya
 link_sub patentnye-zadachi-sokrashchenie-mktu sokrashchenie-mktu
 link_sub patentnye-zadachi-kontakty-fips kontakty-fips
+link_sub patentnye-zadachi-oplata-patentnyh-poshlin oplata-patentnyh-poshlin
+link_sub patentnye-zadachi-oplata-uslug-fips oplata-uslug-fips
+link_sub patentnye-zadachi-poisk-platezha-evm poisk-platezha-evm
+link_sub patentnye-zadachi-starye-zayavki starye-zayavki
 
 export LIREATE_PREVIEW_DOCROOT="$DOCROOT"
 echo "Patent preview:"

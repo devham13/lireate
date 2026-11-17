@@ -6,4 +6,5 @@
     <file>template/page/news</file>
     <file>pages/services/_shared</file>
     <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*.min.js</exclude-pattern>
 </ruleset>
