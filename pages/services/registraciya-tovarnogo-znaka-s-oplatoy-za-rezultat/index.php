@@ -89,12 +89,6 @@ $schema_graph = [
 
 <?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
 
-<aside class="lx-glass lx-reveal" style="margin:24px 0;padding:20px 22px;border-radius:18px;" aria-label="Сравнение моделей оплаты">
-  <p class="lx-eyebrow" style="margin:0 0 8px;">Две схемы</p>
-  <p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#cbd5e1;"><strong>Базовая регистрация</strong> — вознаграждение LIREATE по этапам договора; госпошлины Роспатента (ориентир 35 000 ₽ за 1 класс) платятся отдельно. Подробности на странице <a href="/registraciya_tovarnogo_znaka/">регистрации товарного знака</a>.</p>
-  <p style="margin:0;font-size:15px;line-height:1.65;color:#cbd5e1;"><strong>Оплата за результат</strong> (эта страница) — часть вознаграждения бюро привязана к регистрации; пошлины всё равно оплачиваются в бюджет по этапам. Условия при отказе — в разделе <a href="#payment-model">«Модель оплаты»</a>.</p>
-</aside>
-
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="registration"></div>
   <div>
