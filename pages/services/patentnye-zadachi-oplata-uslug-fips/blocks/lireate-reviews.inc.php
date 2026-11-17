@@ -206,7 +206,7 @@ foreach ($items as $idx => $item) :
               <img src="<?php echo htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Скриншот переписки с благодарностью клиента">
             </figure>
             <?php if ($caption !== '') : ?><blockquote class="lx-review-lightbox-text"><?php echo htmlspecialchars($caption, ENT_QUOTES, 'UTF-8'); ?></blockquote><?php endif; ?>
-            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p>
+            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p><?php // pragma: allowlist secret ?>
           </div>
         </li>
 <?php
@@ -226,7 +226,7 @@ foreach ($items as $idx => $item) :
           <div class="lx-review-full" id="lx-review-full-<?php echo htmlspecialchars($card_id, ENT_QUOTES, 'UTF-8'); ?>" hidden>
             <blockquote class="lx-review-lightbox-text"><?php echo htmlspecialchars($full, ENT_QUOTES, 'UTF-8'); ?></blockquote>
             <?php if ($case !== '') : ?><p class="lx-review-lightbox-meta"><?php echo htmlspecialchars($case, ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
-            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p>
+            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p><?php // pragma: allowlist secret ?>
           </div>
         </li>
 <?php

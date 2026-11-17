@@ -72,9 +72,12 @@
       'Sum=' + String(sumKop),
       'Purpose=' + purpose,
     ];
+    var payload = parts.join('|');
     return {
       ok: true,
-      payload: parts.join('|'),
+      payload: payload,
+      payloadUtf8: payload,
+      encoding: 'utf-8',
       sumRub: sumRub,
       sumKop: sumKop,
       profile: p,

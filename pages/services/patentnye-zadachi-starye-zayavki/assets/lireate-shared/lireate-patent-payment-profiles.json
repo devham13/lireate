@@ -21,14 +21,46 @@
         "OKTMO": "45318000"
       }
     },
+    "rospatent_evm_state_duty": {
+      "id": "rospatent_evm_state_duty",
+      "title": "Госпошлина за регистрацию программы для ЭВМ",
+      "confirmed": true,
+      "sourceUrl": "https://rospatent.gov.ru/content/uploadfiles/rekviziti-pril2.pdf",
+      "sourceTitle": "Приложение №2 к приказу Роспатента от 14.12.2020 № 167",
+      "sourceQuote": "по КБК 168 1 08 09000 01 1000 110; те же БИК, ЕКС, счёт, ИНН, КПП, ОКТМО; поле 104 16810809000011000110",
+      "reqPageUrl": "https://rospatent.gov.ru/ru/activities/dues/stateduty/gos_poshl",
+      "fields": {
+        "Name": "Межрегиональное операционное УФК (Федеральная служба по интеллектуальной собственности)",
+        "PayeeINN": "7730176088",
+        "KPP": "773001001",
+        "BIC": "024501901",
+        "BankName": "Операционный департамент банка России//Межрегиональное операционное УФК г. Москва",
+        "CorrespAcc": "40102810045370000002",
+        "PersonalAcc": "03100643000000019500",
+        "CBC": "16810809000011000110",
+        "OKTMO": "45318000"
+      }
+    },
     "fips_paid_services": {
       "id": "fips_paid_services",
       "title": "Платные услуги ФИПС",
-      "confirmed": false,
+      "confirmed": true,
+      "effectiveFrom": "2025-10-27",
+      "checkedMsk": "2026-11-17",
       "sourceUrl": "https://fips.ru/vse-uslugi/rekvizity-fips-dlya-oplaty-uslug-fips-okazyvaemykh-na-platnoy-osnove.php",
-      "reqPageUrl": "https://rospatent.gov.ru/ru/activities/dues/req",
-      "note": "Отдельный профиль реквизитов для платных услуг ФИПС. При выкладке этапа 3 страница fips.ru вернула 403 из среды сборки — QR не строится, только ссылка на официальный источник.",
-      "fields": null
+      "sourceQuote": "ДЕЙСТВУЮТ C 27.10.2025. Государственные, патентные и иные пошлины на указанный счет оплачивать нельзя! Получатель: ИНН 7730036073; КПП 773001001; УФК по г.Москве (Федеральное государственное бюджетное учреждение «Федеральный институт промышленной собственности» л/с 20736Ц83140); Расчетный счет 03214643000000017300; БИК 004525988; Корр/счет 40102810545370000003; КБК 00000000000000000130; ОКТМО 45318000",
+      "reqPageUrl": "https://fips.ru/vse-uslugi/uslugi-predostavlyaemye-fips-na-platnoy-osnove-.php",
+      "fields": {
+        "Name": "УФК по г.Москве (Федеральное государственное бюджетное учреждение «Федеральный институт промышленной собственности» л/с 20736Ц83140)",
+        "PayeeINN": "7730036073",
+        "KPP": "773001001",
+        "BIC": "004525988",
+        "BankName": "ОКЦ № 1 ГУ Банка России по ЦФО // УФК по г. Москве. г. Москва",
+        "CorrespAcc": "40102810545370000003",
+        "PersonalAcc": "03214643000000017300",
+        "CBC": "00000000000000000130",
+        "OKTMO": "45318000"
+      }
     }
   },
   "references": {
@@ -41,7 +73,8 @@
     "qr_format": {
       "sourceUrl": "https://www.cbr.ru/explan/Psystem/upc/",
       "gostUrl": "https://protect.gost.ru/gost/details/9e464cde-d0b4-4e96-8329-2c68ddb03f11",
-      "encoding": "ST00012"
+      "encoding": "ST00012",
+      "encodingNote": "Строка ST00012 кодируется в QR в UTF-8 (кодировка 2 по разъяснениям Банка России)."
     },
     "arm_registrator": {
       "sourceUrl": "https://kpsrtz.fips.ru/",

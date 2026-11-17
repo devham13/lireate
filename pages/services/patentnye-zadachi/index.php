@@ -82,7 +82,7 @@ $schema_graph = array(
     <div class="lx-cat-cards">
       <a class="lx-cat-card" href="/patentnye-zadachi/oplata-patentnyh-poshlin/"><strong>Оплата патентных пошлин</strong><span>Черновик реквизитов и QR (ST00012) в браузере</span><span class="lx-cat-card-cta">Открыть →</span></a>
       <a class="lx-cat-card" href="/patentnye-zadachi/oplata-uslug-fips/"><strong>Оплата услуг ФИПС</strong><span>Отдельный профиль; при неподтверждённых данных — официальные ссылки</span><span class="lx-cat-card-cta">Открыть →</span></a>
-      <a class="lx-cat-card" href="/patentnye-zadachi/poisk-platezha-evm/"><strong>Поиск платежа ПрЭВМ</strong><span>Справочные поля; сверка в контуре ФИПС</span><span class="lx-cat-card-cta">Открыть →</span></a>
+      <a class="lx-cat-card" href="/patentnye-zadachi/poisk-platezha-evm/"><strong>Госпошлина ПрЭВМ</strong><span>QR по прил. №2 и инструкция проверки в ЛК ФИПС</span><span class="lx-cat-card-cta">Открыть →</span></a>
     </div>
   </section>
 

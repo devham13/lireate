@@ -4,8 +4,8 @@ $path = '/patentnye-zadachi/poisk-platezha-evm/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
-$seo_title = 'Поиск платежа по ПрЭВМ — LIREATE';
-$seo_description = 'Справочная страница: какие данные понадобятся для сверки платежа за регистрацию ПрЭВМ. Поиск выполняется в официальном контуре, не на LIREATE.';
+$seo_title = 'Оплата и проверка госпошлины ПрЭВМ — LIREATE';
+$seo_description = 'Инструкция по оплате госпошлины за регистрацию ПрЭВМ: реквизиты приложения №2, черновик QR ST00012 и ссылка на личный кабинет ФИПС. Данные не уходят с сайта.';
 $lireate_telegram = 'https://t.me/lireate_patent';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
@@ -15,15 +15,15 @@ $lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID');
 if ($lireate_metrika_id === false || $lireate_metrika_id === '') {
     $lireate_metrika_id = '526' . '22734';
 }
-$lx_breadcrumb_current = 'Поиск платежа ПрЭВМ';
+$lx_breadcrumb_current = 'Госпошлина ПрЭВМ';
 $lx_patent_cta_href = $lireate_telegram;
 $lx_patent_cta_external = true;
 $lx_pay_profiles_json = lireate_service_asset_href('assets/lireate-shared/lireate-patent-payment-profiles.json', $lx_service_asset_dir);
 $schema_graph = array(
   '@context' => 'https://schema.org',
   '@graph' => array(
-    array('@type' => 'WebApplication', 'name' => 'Поиск платежа ПрЭВМ', 'url' => $canonical),
-    array('@type' => 'BreadcrumbList', 'itemListElement' => lireate_patent_breadcrumb_schema_items($site_root, 'Поиск платежа ПрЭВМ', $canonical)),
+    array('@type' => 'WebApplication', 'name' => 'Госпошлина ПрЭВМ — оплата и проверка', 'url' => $canonical),
+    array('@type' => 'BreadcrumbList', 'itemListElement' => lireate_patent_breadcrumb_schema_items($site_root, 'Госпошлина ПрЭВМ', $canonical)),
   ),
 );
 ?><!DOCTYPE html>
@@ -48,13 +48,14 @@ $schema_graph = array(
   <section class="lx-hero lx-hero--stack">
     <div>
       <p class="lx-eyebrow">Патентные задачи · ПрЭВМ</p>
-      <h1>Поиск платежа по ПрЭВМ</h1>
-      <p class="lx-hero-lead">Интеграция с официальным поиском платежей не подключена в публичном контуре. Данные формы не передаются с сайта.</p>
+      <h1>Оплата и проверка госпошлины ПрЭВМ</h1>
+      <p class="lx-hero-lead">Черновик QR по <a href="https://rospatent.gov.ru/content/uploadfiles/rekviziti-pril2.pdf" target="_blank" rel="noopener noreferrer">приложению №2</a> и короткая инструкция, как убедиться в зачислении в <a href="https://new.fips.ru/office/" target="_blank" rel="noopener noreferrer">личном кабинете ФИПС</a>.</p>
     </div>
   </section>
   <section class="lx-section lx-section--tool" id="tool" data-lx-pay-tool></section>
 </main>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-payment-core.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-qrcode-npm.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-qrcode.min.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-tools.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-stage3.js', $lx_service_asset_dir); ?>"></script>

@@ -49,9 +49,18 @@ class PatentPaymentTests(unittest.TestCase):
     self.assertIn("|Sum=3500000|", payload)
     self.assertIn("Purpose=п.2.1 регистрация заявки", payload)
 
-  def test_fips_profile_not_confirmed(self):
+  def test_fips_profile_confirmed_accounts(self):
     fips = self.data["profiles"]["fips_paid_services"]
-    self.assertFalse(fips["confirmed"])
+    self.assertTrue(fips["confirmed"])
+    f = fips["fields"]
+    self.assertEqual(f["PayeeINN"], "7730036073")
+    self.assertEqual(f["PersonalAcc"], "03214643000000017300")
+    self.assertEqual(f["CBC"], "00000000000000000130")
+
+  def test_evm_profile_kbk(self):
+    evm = self.data["profiles"]["rospatent_evm_state_duty"]
+    self.assertTrue(evm["confirmed"])
+    self.assertEqual(evm["fields"]["CBC"], "16810809000011000110")
 
 
 if __name__ == "__main__":
