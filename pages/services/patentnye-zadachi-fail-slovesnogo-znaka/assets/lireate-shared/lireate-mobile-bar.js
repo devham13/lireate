@@ -50,6 +50,12 @@
     }
   }
 
+  bar.querySelectorAll('.lx-mobile-bar-btn--call[href^="tel:"]').forEach(function (el) {
+    if (!el.getAttribute('data-lx-ym-goal')) {
+      el.setAttribute('data-lx-ym-goal', 'klik_po_nomeru_telefona');
+    }
+  });
+
   bar.addEventListener('click', function (e) {
     var lead = e.target && e.target.closest ? e.target.closest('[data-lx-svc-lead="1"],[href="#contact"]') : null;
     if (!lead || lead.getAttribute('href') !== '#contact') {

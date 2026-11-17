@@ -34,6 +34,12 @@ if (!defined('LIREATE_TEAM_PHONE_DISPLAY')) {
 if (!defined('LIREATE_TEAM_PHONE_TEL')) {
     define('LIREATE_TEAM_PHONE_TEL', 'tel:+79600484957');
 }
+if (!defined('LIREATE_TEAM_PHONE2_DISPLAY')) {
+    define('LIREATE_TEAM_PHONE2_DISPLAY', '+7 (499) 938-45-95');
+}
+if (!defined('LIREATE_TEAM_PHONE2_TEL')) {
+    define('LIREATE_TEAM_PHONE2_TEL', 'tel:+74999384595');
+}
 
 if (!defined('LIREATE_TEAM_ASSETS_BASE')) {
     define('LIREATE_TEAM_ASSETS_BASE', '/template/page/team');

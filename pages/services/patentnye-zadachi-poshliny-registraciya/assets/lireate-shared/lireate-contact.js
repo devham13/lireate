@@ -70,7 +70,7 @@
   function setHref(id, url, fallback) {
     var el = document.getElementById(id);
     if (!el) return;
-    el.href = url || fallback || el.getAttribute('href') || '/kontaktyi';
+    el.href = url || fallback || el.getAttribute('href') || '/contacts/';
   }
 
   function initMessengerLinks(cfg) {
