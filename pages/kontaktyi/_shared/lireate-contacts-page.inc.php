@@ -22,10 +22,10 @@ if ($lc_photo_origin !== '') {
 $lc_domain = 'li' . 're' . 'ate.ru';
 $lc_email = 'info@' . $lc_domain;
 $lc_address = 'РТ, г. Зеленодольск ул. Королёва, 11Б этаж 2';
-$lc_phone1_display = '+7(499)938-45-95';
-$lc_phone1_tel = 'tel:+7(499)938-45-95';
-$lc_phone2_display = '+7(960)048-49-57';
-$lc_phone2_tel = 'tel:+7(960)048-49-57';
+$lc_phone1_display = '+7 (499) 938-45-95';
+$lc_phone1_tel = 'tel:+74999384595';
+$lc_phone2_display = '+7 (960) 048-49-57';
+$lc_phone2_tel = 'tel:+79600484957';
 $lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A529a47dbf50b8ccb0e900378c49ad0fc6f16257c2341fdcaf42afb0b432a7454&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true';
 $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
     ? LIREATE_CONTACTS_FOOTER_CSS_HREF
@@ -96,7 +96,7 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
       <h2 class="lireate-contacts-card-title" id="lc-info-title">Как связаться</h2>
       <dl class="lireate-contacts-dl">
         <div><dt>Адрес</dt><dd><?php echo lireate_contacts_h($lc_address); ?></dd></div>
-        <div><dt>Телефоны</dt><dd class="lireate-contacts-phones"><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep" aria-hidden="true">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
+        <div><dt>Телефоны</dt><dd class="lireate-contacts-phones"><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep" aria-hidden="true">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:<?php echo lireate_contacts_h($lc_email); ?>"><?php echo lireate_contacts_h($lc_email); ?></a></dd></div>
       </dl>
       <div class="lireate-contacts-map" aria-label="Карта офиса">

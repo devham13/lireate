@@ -21,7 +21,7 @@ $lx_footer_phone_display = isset($lireate_phone_display) ? $lireate_phone_displa
 $lx_footer_phone_tel = isset($lireate_phone_tel) ? $lireate_phone_tel : 'tel:+79600484957';
 $lx_footer_phone2_display = '+7 (499) 938-45-95';
 $lx_footer_phone2_tel = 'tel:+74999384595';
-$lx_footer_email = 'info@lireate.ru';
+$lx_footer_email = 'info@lireate.ru'; // pragma: allowlist secret
 $lx_footer_tg = isset($lireate_telegram) ? $lireate_telegram : 'https://t.me/lireate_patent';
 $lx_footer_wa = isset($lireate_whatsapp) ? $lireate_whatsapp : 'https://wa.me/79600484957';
 $lx_footer_max_channel = defined('LIREATE_MAX_CHANNEL_URL') ? LIREATE_MAX_CHANNEL_URL : 'https://max.ru/channel_lireate';
@@ -72,9 +72,9 @@ $lx_org_jsonld = [
     <p class="lx-site-footer-contact">
       <a href="mailto:<?php echo htmlspecialchars($lx_footer_email, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lx_footer_email, ENT_QUOTES, 'UTF-8'); ?></a>
       <span class="lx-site-footer-dot" aria-hidden="true">•</span>
-      <a href="<?php echo htmlspecialchars($lx_footer_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lx_footer_phone_display, ENT_QUOTES, 'UTF-8'); ?></a>
+      <a href="<?php echo htmlspecialchars($lx_footer_phone_tel, ENT_QUOTES, 'UTF-8'); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo htmlspecialchars($lx_footer_phone_display, ENT_QUOTES, 'UTF-8'); ?></a>
       <span class="lx-site-footer-dot" aria-hidden="true">•</span>
-      <a href="<?php echo htmlspecialchars($lx_footer_phone2_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lx_footer_phone2_display, ENT_QUOTES, 'UTF-8'); ?></a>
+      <a href="<?php echo htmlspecialchars($lx_footer_phone2_tel, ENT_QUOTES, 'UTF-8'); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo htmlspecialchars($lx_footer_phone2_display, ENT_QUOTES, 'UTF-8'); ?></a>
       <span class="lx-site-footer-dot" aria-hidden="true">•</span>
       <a href="<?php echo htmlspecialchars($lx_footer_tg, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Telegram</a>
     </p>
