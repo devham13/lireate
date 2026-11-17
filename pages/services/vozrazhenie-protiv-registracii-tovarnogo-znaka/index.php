@@ -482,6 +482,7 @@ $schema_graph = [
   </details>
 </section>
 
+<?php include __DIR__ . '/blocks/lireate-vk-cases.inc.php'; ?>
 <?php include __DIR__ . '/blocks/lireate-reviews.inc.php'; ?>
 
 <?php

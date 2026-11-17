@@ -41,8 +41,8 @@ if ($demo_only) {
         'author' => '',
         'service_tag' => 'Услуга',
         'text' => 'Здесь будет краткий фрагмент реального отзыва клиента. Текст остаётся в HTML для индексации, полная версия открывается по клику.',
-        'text_full' => 'Здесь будет полный текст отзыва клиента после согласования с автором. На боевых страницах подставляются только проверенные цитаты с lireate.ru или сообщества VK — без выдуманных имён и формулировок.',
-        'source_url' => '/reviews/',
+        'text_full' => 'Здесь будет полный текст отзыва клиента после согласования с автором. На боевых страницах подставляются только проверенные цитаты с сайта бюро или сообщества VK — без выдуманных имён и формулировок.',
+        'source_url' => '/reviews',
     ];
 } else {
     $reviews_path = dirname(__DIR__) . '/assets/lireate-shared/reviews.json';
@@ -87,6 +87,29 @@ if (!$items) {
 $lx_review_accents = ['mint', 'violet', 'sky', 'lime', 'fuchsia', 'cyan'];
 $video_ld = [];
 
+if (!function_exists('lx_review_upload_date_iso')) {
+    function lx_review_upload_date_iso($item)
+    {
+        $raw = '';
+        if (isset($item['upload_date']) && is_string($item['upload_date']) && $item['upload_date'] !== '') {
+            $raw = trim($item['upload_date']);
+        } elseif (isset($item['date']) && is_string($item['date']) && $item['date'] !== '') {
+            $raw = trim($item['date']);
+        }
+        if ($raw === '') {
+            return '';
+        }
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $raw)) {
+            return $raw . 'T00:00:00+03:00';
+        }
+        $ts = strtotime($raw);
+        if ($ts === false) {
+            return '';
+        }
+        return gmdate('c', $ts);
+    }
+}
+
 if (!function_exists('lx_review_excerpt')) {
     function lx_review_excerpt($text, $max = 160)
     {
@@ -120,7 +143,10 @@ foreach ($items as $idx => $item) :
     $type = isset($item['type']) ? $item['type'] : 'text';
     $author = isset($item['author']) ? $item['author'] : '';
     $tag = isset($item['service_tag']) ? $item['service_tag'] : 'Товарный знак';
-    $source = isset($item['source_url']) ? $item['source_url'] : '/reviews/';
+    $source = isset($item['source_url']) ? $item['source_url'] : '/reviews';
+    if ($source === '/reviews/') {
+        $source = '/reviews';
+    }
     $accent = $lx_review_accents[$idx % count($lx_review_accents)];
     $is_demo = ($type === 'demo');
     $card_id = isset($item['id']) ? $item['id'] : ('review-' . $idx);
@@ -156,7 +182,8 @@ foreach ($items as $idx => $item) :
         }
         $case = isset($item['case_line']) ? $item['case_line'] : 'Видеоотзыв клиента LIREATE';
         $preview = lx_review_excerpt($case, 120);
-        if ($embed && ($vid || strpos($embed, 'vk.') !== false || strpos($embed, 'video_ext') !== false)) {
+        $lx_upload_date = lx_review_upload_date_iso($item);
+        if ($embed && $lx_upload_date !== '' && ($vid || strpos($embed, 'vk.') !== false || strpos($embed, 'video_ext') !== false)) {
             $video_ld[] = [
                 '@type' => 'VideoObject',
                 'name' => 'Видеоотзыв — ' . $author,
@@ -164,6 +191,7 @@ foreach ($items as $idx => $item) :
                 'thumbnailUrl' => $poster ? [lx_review_resolve_url($poster, $lx_site_base)] : [],
                 'embedUrl' => $embed,
                 'contentUrl' => $watch,
+                'uploadDate' => $lx_upload_date,
                 'publisher' => ['@type' => 'Organization', 'name' => 'LIREATE', 'url' => $lx_site_base !== '' ? $lx_site_base . '/' : '/'],
             ];
         }
@@ -183,7 +211,7 @@ foreach ($items as $idx => $item) :
           </button>
           <div class="lx-review-full" id="lx-review-full-<?php echo htmlspecialchars($card_id, ENT_QUOTES, 'UTF-8'); ?>" hidden>
             <p class="lx-review-lightbox-text"><?php echo htmlspecialchars($case, ENT_QUOTES, 'UTF-8'); ?></p>
-            <p class="lx-review-lightbox-meta"><a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Страница отзывов на lireate.ru</a></p>
+            <p class="lx-review-lightbox-meta"><a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Страница отзывов на lireate.ru</a></p><?php // pragma: allowlist secret ?>
             <div class="lx-review-lightbox-video" data-lx-lightbox-video data-embed="<?php echo htmlspecialchars($embed, ENT_QUOTES, 'UTF-8'); ?>"></div>
           </div>
         </li>
@@ -206,7 +234,7 @@ foreach ($items as $idx => $item) :
               <img src="<?php echo htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Скриншот переписки с благодарностью клиента">
             </figure>
             <?php if ($caption !== '') : ?><blockquote class="lx-review-lightbox-text"><?php echo htmlspecialchars($caption, ENT_QUOTES, 'UTF-8'); ?></blockquote><?php endif; ?>
-            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p>
+            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p><?php // pragma: allowlist secret ?>
           </div>
         </li>
 <?php
@@ -226,7 +254,7 @@ foreach ($items as $idx => $item) :
           <div class="lx-review-full" id="lx-review-full-<?php echo htmlspecialchars($card_id, ENT_QUOTES, 'UTF-8'); ?>" hidden>
             <blockquote class="lx-review-lightbox-text"><?php echo htmlspecialchars($full, ENT_QUOTES, 'UTF-8'); ?></blockquote>
             <?php if ($case !== '') : ?><p class="lx-review-lightbox-meta"><?php echo htmlspecialchars($case, ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
-            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p>
+            <p class="lx-review-lightbox-meta"><strong><?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?></strong> · <a href="<?php echo htmlspecialchars($source, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">источник</a></p><?php // pragma: allowlist secret ?>
           </div>
         </li>
 <?php

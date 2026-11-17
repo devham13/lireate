@@ -267,6 +267,8 @@ $lx_breadcrumb_current = 'Защита авторских прав';
 <?php endforeach; ?>
 </section>
 
+<?php include __DIR__ . '/blocks/lireate-vk-cases.inc.php'; ?>
+
 <?php
 $lx_lead_topic = 'Заявка: защита авторских прав';
 $lx_lead_tomail = 'Защита авторских прав — заявка с сайта';
