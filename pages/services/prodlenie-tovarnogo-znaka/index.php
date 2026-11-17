@@ -5,7 +5,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Продление товарного знака — LIREATE';
-$seo_description = 'Продление товарного знака в Роспатенте: сроки по ст. 1491 ГК РФ, пошлины п. 2.22, онлайн-подача и риски пропуска дедлайна. Сопровождение LIREATE.';
+$seo_description = 'Продление товарного знака в Роспатенте: сроки по ст. 1491 ГК РФ, напоминание до дедлайна. Команда с 2015 года, 15 специалистов. Исход ведомства не гарантируем.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -127,6 +127,7 @@ $schema_graph = [
 <section class="lx-section lx-reveal" id="when">
   <span class="lx-section-label">Когда нужна</span>
   <h2>Продление товарного знака: сигналы к действию</h2>
+  <p>Зарегистрированный бренд даёт исключительное право, но его нужно поддерживать: охрана не бессрочна. Зачем инвестировать в продление — в материалах <a href="/7_prichin_zaregestrirovat_tovarnyiy_znak/">7 причин зарегистрировать товарный знак</a> и <a href="/preimuschestva_zaregistrirovannogo_brenda/">преимущества зарегистрированного бренда</a>.</p>
   <div class="lx-carousel" data-lx-carousel tabindex="0" aria-label="Когда продлевать знак">
     <button type="button" class="lx-carousel-prev" aria-label="Предыдущий слайд">‹</button>
     <div class="lx-carousel-viewport">
