@@ -16,6 +16,10 @@ $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 $lireate_max = 'https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI';
+$lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID');
+if ($lireate_metrika_id === false || $lireate_metrika_id === '') {
+    $lireate_metrika_id = '526' . '22734'; // pragma: allowlist secret
+}
 $faq_entities = [
   ['Можно ли платить только при получении свидетельства?', 'Часть вознаграждения LIREATE можно привязать к результату — например, к регистрации знака и получению свидетельства, но точная схема фиксируется в договоре. Госпошлины Роспатента платятся отдельно и по этапам независимо от того, чем закончится экспертиза: они идут в бюджет, а не исполнителю.'],
   ['Гарантируете ли вы регистрацию?', 'Нет. Решение принимает Роспатент по результатам экспертизы: регистрация или отказ по основаниям ст. 1483 ГК РФ. Мы снижаем риск за счёт проверки до подачи и подготовки ответов, но обещать результат, который зависит от государственного органа, нельзя.'],
@@ -42,7 +46,7 @@ $schema_graph = [
 ];
 ?>
 <!DOCTYPE html>
-<html lang="ru" data-lireate-telegram="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-whatsapp="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-max="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>">
+<html lang="ru" data-lireate-telegram="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-whatsapp="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-max="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-metrika-id="<?php echo htmlspecialchars(preg_replace('/\D/', '', (string) $lireate_metrika_id), ENT_QUOTES, 'UTF-8'); ?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -435,5 +439,8 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
+<?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
+  <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
 </body>
 </html>

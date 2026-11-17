@@ -17,6 +17,10 @@ require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
 $lx_service_asset_dir = __DIR__;
 $lireate_max = LIREATE_MAX_CHAT_URL;
+$lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID');
+if ($lireate_metrika_id === false || $lireate_metrika_id === '') {
+    $lireate_metrika_id = '526' . '22734'; // pragma: allowlist secret
+}
 $faq_entities = [
   ['Куда подать возражение против регистрации товарного знака?', 'Зависит от стадии. Если заявка опубликована, но решения о регистрации нет, подаётся письменное обращение по ст. 1493 ГК РФ в Роспатент (экспертиза заявки в ФИПС). Если знак уже зарегистрирован, подаётся возражение против предоставления правовой охраны в Роспатент по ст. 1512–1513 ГК РФ: на бумаге или в электронной форме через официальный сайт по правилам приказа № 644/261. Актуальные способы подачи сверяйте на сайте ФИПС.'],
   ['Какой срок подачи у обращения по ст. 1493 ГК РФ? Правда ли, что это 3 или 5 месяцев с публикации?', 'Нет. В ст. 1493 ГК РФ календарного срока нет. Обращение можно подать после публикации сведений о заявке и до принятия решения о государственной регистрации. Сроки в месяцах относятся к другим процедурам: например, четыре месяца по ст. 1500 — это возражение заявителя на решение по его собственной заявке.'],
@@ -41,7 +45,7 @@ $schema_graph = [
   ],
 ];
 ?><!DOCTYPE html>
-<html lang="ru" data-lireate-telegram="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-whatsapp="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-max="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>">
+<html lang="ru" data-lireate-telegram="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-whatsapp="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-max="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-metrika-id="<?php echo htmlspecialchars(preg_replace('/\D/', '', (string) $lireate_metrika_id), ENT_QUOTES, 'UTF-8'); ?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -520,5 +524,8 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
+<?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
+  <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
 </body>
 </html>
