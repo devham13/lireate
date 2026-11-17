@@ -4,8 +4,8 @@ $path = '/prodlenie_tovarnogo_znaka/';
 $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_SERVER['HTTP_HOST']) : '';
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
-$seo_title = 'Продление товарного знака — LIREATE';
-$seo_description = 'Продление товарного знака в Роспатенте: сроки по ст. 1491 ГК РФ, напоминание до дедлайна. Команда с 2015 года, 15 специалистов. Исход ведомства не гарантируем.';
+$seo_title = 'Продление товарного знака в Роспатенте — LIREATE';
+$seo_description = 'Продление товарного знака в Роспатенте: сроки по ст. 1491 ГК РФ, пошлины п. 2.22, онлайн-подача и риски пропуска дедлайна. Сопровождение LIREATE.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -85,7 +85,7 @@ $schema_graph = [
   <div class="lx-hero-mascot-slot" data-lx-mascot="renewal"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · продление</p>
-    <h1>Продление товарного знака</h1>
+    <h1>Продление товарного знака в Роспатенте</h1>
     <p class="lx-hero-lead">Сверяем дедлайн по реестру, считаем пошлины и сопровождаем подачу — без гарантий решения Роспатента.</p>
     <div class="lx-tags"><span>ст. 1491 ГК РФ</span><span>п. 2.22</span><span>ФИПС</span></div>
     <div class="lx-hero-cta">
@@ -127,7 +127,6 @@ $schema_graph = [
 <section class="lx-section lx-reveal" id="when">
   <span class="lx-section-label">Когда нужна</span>
   <h2>Продление товарного знака: сигналы к действию</h2>
-  <p>Зарегистрированный бренд даёт исключительное право, но его нужно поддерживать: охрана не бессрочна. Зачем инвестировать в продление — в материалах <a href="/7_prichin_zaregestrirovat_tovarnyiy_znak/">7 причин зарегистрировать товарный знак</a> и <a href="/preimuschestva_zaregistrirovannogo_brenda/">преимущества зарегистрированного бренда</a>.</p>
   <div class="lx-carousel" data-lx-carousel tabindex="0" aria-label="Когда продлевать знак">
     <button type="button" class="lx-carousel-prev" aria-label="Предыдущий слайд">‹</button>
     <div class="lx-carousel-viewport">
@@ -161,6 +160,7 @@ $schema_graph = [
 <section class="lx-section lx-reveal" id="pricing">
   <span class="lx-section-label">Стоимость</span>
   <h2>Пошлины Роспатента и услуги LIREATE</h2>
+  <p>Базовая строка в таблице Роспатента — п. 2.22; разбор сумм и доплат — в статье о <a href="/prodlenie_tovarnogo_znaka_gosposhlina/">госпошлине за продление товарного знака</a>.</p>
   <div class="lx-price-grid">
     <div class="lx-price-card"><strong data-lx-count-end="22000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">22 000 ₽</strong><span>п. 2.22 — базовая пошлина за продление (ПП РФ № 941, rospatent.gov.ru)</span></div>
     <div class="lx-price-card"><strong>по смете</strong><span>сопровождение LIREATE отдельно от госпошлин</span></div>
