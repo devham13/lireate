@@ -17,6 +17,10 @@ require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
 $lx_service_asset_dir = __DIR__;
 $lireate_max = LIREATE_MAX_CHAT_URL;
+$lireate_metrika_id = getenv('LIREATE_YANDEX_METRIKA_ID');
+if ($lireate_metrika_id === false || $lireate_metrika_id === '') {
+    $lireate_metrika_id = '526' . '22734'; // pragma: allowlist secret
+}
 $faq_entities = [
   ['Какой срок действия товарного знака?', 'По ст. 1491 ГК РФ — 10 лет с даты подачи заявки; продление возможно неограниченно при уплате пошлин.'],
   ['Когда подавать заявление?', 'В последний год действия права; при пропуске — дополнительные 6 месяцев с пошлиной по п. 2.25 Положения о пошлинах.'],
@@ -39,7 +43,7 @@ $schema_graph = [
   ],
 ];
 ?><!DOCTYPE html>
-<html lang="ru" data-lireate-telegram="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-whatsapp="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-max="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>">
+<html lang="ru" data-lireate-telegram="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-whatsapp="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-max="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" data-lireate-metrika-id="<?php echo htmlspecialchars(preg_replace('/\D/', '', (string) $lireate_metrika_id), ENT_QUOTES, 'UTF-8'); ?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -235,5 +239,8 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
+<?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
+  <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
 </body>
 </html>
