@@ -5,7 +5,7 @@
 }
 @media (min-width: 900px) {
   .lx-patent-tool .lx-tool-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(min(100%, 520px), 1fr);
     align-items: start;
   }
 }
@@ -65,6 +65,10 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(12, 22, 42, 0.75);
   padding: 1rem 1.15rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 .lx-patent-tool .lx-result-panel[hidden] {
   display: none !important;
@@ -338,18 +342,52 @@
   padding: 0.75rem;
   border-radius: 12px;
   background: #ffffff;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
-.lx-patent-tool .lx-qr-box canvas,
-.lx-patent-tool .lx-qr-box img,
-.lx-patent-tool .lx-qr-box table {
-  display: table;
-  width: 220px !important;
-  height: 220px !important;
+.lx-patent-tool .lx-qr-img-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.lx-patent-tool .lx-qr-img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
   max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+@media (max-width: 519px) {
+  .lx-patent-tool .lx-qr-img {
+    max-width: none;
+  }
+  .lx-patent-tool .lx-evm-aside,
+  .lx-patent-tool .lx-tool-grid > aside {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+.lx-patent-tool .lx-qr-box canvas,
+.lx-patent-tool .lx-qr-box table {
+  display: block;
+  margin: 0 auto;
+}
+.lx-patent-tool .lx-qr-box table {
   border-collapse: collapse;
+}
+.lx-patent-tool .lx-qr-download {
+  margin-top: 0.5rem;
+  align-self: center;
 }
 .lx-patent-tool .lx-qr-inner {
   line-height: 0;
@@ -380,7 +418,10 @@
     background: #fff;
     page-break-inside: avoid;
   }
-  .lx-patent-tool .lx-qr-box canvas {
-    display: block !important;
+  .lx-patent-tool .lx-qr-img {
+    width: 5cm !important;
+    height: 5cm !important;
+    max-width: none;
+    image-rendering: pixelated;
   }
 }

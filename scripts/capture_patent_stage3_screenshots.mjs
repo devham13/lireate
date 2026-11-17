@@ -50,7 +50,7 @@ async function assertNoOverflow(page, label) {
 }
 
 async function shot(page, url, file, w, h) {
-  await page.setViewport({ width: w, height: h });
+  await page.setViewport({ width: w, height: h, deviceScaleFactor: 1 });
   await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
   await scrollTop(page);
   await new Promise((r) => setTimeout(r, 700));
@@ -60,13 +60,23 @@ async function shot(page, url, file, w, h) {
   console.log('OK', file);
 }
 
+async function rebuildQrForViewport(page) {
+  await new Promise((r) => setTimeout(r, 200));
+  if (await page.$('[data-lx-pay-build]')) {
+    await page.click('[data-lx-pay-build]');
+  } else if (await page.$('[data-lx-evm-build]')) {
+    await page.click('[data-lx-evm-build]');
+  }
+  await waitQr(page);
+}
+
 async function waitQr(page) {
   await page.waitForFunction(
     () => {
       const box = document.querySelector('[data-lx-pay-qr], [data-lx-evm-qr]');
       if (!box) return false;
       const img = box.querySelector('img.lx-qr-img, img');
-      if (img && img.naturalWidth > 0) return true;
+      if (img && img.naturalWidth >= 260) return true;
       const c = box.querySelector('canvas');
       if (c && c.width > 0) {
         const ctx = c.getContext('2d');
@@ -117,7 +127,7 @@ for (const p of ALL_PATENT) {
 writeFileSync('/opt/cursor/artifacts/patent-mobile-overflow.json', JSON.stringify(overflowLog, null, 2));
 
 const pay = await browser.newPage();
-await pay.setViewport({ width: 1440, height: 900 });
+await pay.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
 await pay.goto(BASE + '/patentnye-zadachi/oplata-patentnyh-poshlin/', { waitUntil: 'networkidle2' });
 await pay.waitForSelector('[data-lx-pay-sum]', { timeout: 15000 });
 await pay.$eval('[data-lx-pay-sum]', (el) => {
@@ -132,13 +142,14 @@ const payPayload = await pay.$eval('[data-lx-pay-payload]', (el) => el.textConte
 writeFileSync('/opt/cursor/artifacts/patent-pay-dues-payload.txt', payPayload);
 await scrollTop(pay);
 await pay.screenshot({ path: `${OUT}/patent-pay-dues-result-desktop-1440-full.png`, fullPage: true });
-await pay.setViewport({ width: 390, height: 844 });
+await pay.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+await rebuildQrForViewport(pay);
 await assertNoOverflow(pay, 'patent-pay-dues-result-mobile');
 await scrollTop(pay);
 await pay.screenshot({ path: `${OUT}/patent-pay-dues-result-mobile-390-full.png`, fullPage: true });
 
 const fips = await browser.newPage();
-await fips.setViewport({ width: 1440, height: 900 });
+await fips.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
 await fips.goto(BASE + '/patentnye-zadachi/oplata-uslug-fips/', { waitUntil: 'networkidle2' });
 await fips.waitForSelector('[data-lx-pay-sum]', { timeout: 15000 });
 await fips.$eval('[data-lx-pay-sum]', (el) => {
@@ -153,12 +164,13 @@ const fipsPayload = await fips.$eval('[data-lx-pay-payload]', (el) => el.textCon
 writeFileSync('/opt/cursor/artifacts/patent-pay-fips-payload.txt', fipsPayload);
 await scrollTop(fips);
 await fips.screenshot({ path: `${OUT}/patent-pay-fips-result-desktop-1440-full.png`, fullPage: true });
-await fips.setViewport({ width: 390, height: 844 });
+await fips.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+await rebuildQrForViewport(fips);
 await assertNoOverflow(fips, 'patent-pay-fips-result-mobile');
 await fips.screenshot({ path: `${OUT}/patent-pay-fips-result-mobile-390-full.png`, fullPage: true });
 
 const evm = await browser.newPage();
-await evm.setViewport({ width: 1440, height: 900 });
+await evm.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
 await evm.goto(BASE + '/patentnye-zadachi/poisk-platezha-evm/', { waitUntil: 'networkidle2' });
 await evm.$eval('[data-lx-evm-sum]', (el) => {
   el.value = '4500';
@@ -170,19 +182,20 @@ await evm.click('[data-lx-evm-build]');
 await waitQr(evm);
 await scrollTop(evm);
 await evm.screenshot({ path: `${OUT}/patent-evm-search-result-desktop-1440-full.png`, fullPage: true });
-await evm.setViewport({ width: 390, height: 844 });
+await evm.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+await rebuildQrForViewport(evm);
 await assertNoOverflow(evm, 'patent-evm-result-mobile');
 await evm.screenshot({ path: `${OUT}/patent-evm-search-result-mobile-390-full.png`, fullPage: true });
 
 const old = await browser.newPage();
-await old.setViewport({ width: 1440, height: 900 });
+await old.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
 await old.goto(BASE + '/patentnye-zadachi/starye-zayavki/', { waitUntil: 'networkidle2' });
 await old.$eval('[data-lx-old-num]', (el) => {
   el.value = '2025712345';
 });
 await scrollTop(old);
 await old.screenshot({ path: `${OUT}/patent-old-apps-result-desktop-1440-full.png`, fullPage: true });
-await old.setViewport({ width: 390, height: 844 });
+await old.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
 await old.screenshot({ path: `${OUT}/patent-old-apps-result-mobile-390-full.png`, fullPage: true });
 
 await browser.close();

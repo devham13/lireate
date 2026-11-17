@@ -57,42 +57,216 @@
     return host;
   }
 
-  function placeQrImg(host, url, cb) {
+  var QR_MARGIN_MOD = 4;
+  var QR_PX_PER_MOD_DESKTOP = 8;
+  var QR_PX_PER_MOD_DESKTOP_MIN = 4;
+  var QR_PX_PER_MOD_MOBILE_MIN = 3;
+  var QR_HI_PX_PER_MOD = 10;
+
+  /** ST00012 с кириллицей: только BYTE-сегмент (UTF-8), иначе смешанная сегментация ломает ряд сканеров/OpenCV. */
+  function qrPayloadSegments(payload) {
+    if (typeof TextEncoder !== 'undefined') {
+      return [{ data: new TextEncoder().encode(payload), mode: 'byte' }];
+    }
+    return payload;
+  }
+
+  function qrRenderOpts() {
+    return { errorCorrectionLevel: 'M' };
+  }
+
+  function qrModuleCount(payload) {
+    if (typeof LireateQR !== 'undefined' && LireateQR.create) {
+      try {
+        return LireateQR.create(qrPayloadSegments(payload), qrRenderOpts()).modules.size;
+      } catch (e) {
+        /* ignore */
+      }
+    }
+    return 41;
+  }
+
+  function qrHostInnerWidth(host) {
+    var narrow = window.matchMedia('(max-width: 519px)').matches;
+    if (narrow) {
+      return Math.floor(window.innerWidth);
+    }
+    if (!host) {
+      return 0;
+    }
+    var w = host.getBoundingClientRect().width;
+    if (w < 20 && host.parentElement) {
+      w = host.parentElement.getBoundingClientRect().width;
+    }
+    return Math.floor(w);
+  }
+
+  function qrPxPerMod(host, moduleCount) {
+    var modulesTotal = moduleCount + QR_MARGIN_MOD * 2;
+    var narrow = window.matchMedia('(max-width: 519px)').matches;
+    var minPx = narrow ? QR_PX_PER_MOD_MOBILE_MIN : QR_PX_PER_MOD_DESKTOP_MIN;
+    var targetPx = narrow ? QR_PX_PER_MOD_MOBILE_MIN : QR_PX_PER_MOD_DESKTOP;
+    var inner = qrHostInnerWidth(host);
+    var pad = narrow ? 32 : 20;
+    var pxPerMod = targetPx;
+    if (inner > modulesTotal + pad) {
+      var fit = Math.floor((inner - pad) / modulesTotal);
+      pxPerMod = Math.min(targetPx, Math.max(minPx, fit));
+    }
+    return pxPerMod;
+  }
+
+  function qrCssWidth(host, moduleCount) {
+    var modulesTotal = moduleCount + QR_MARGIN_MOD * 2;
+    return modulesTotal * qrPxPerMod(host, moduleCount);
+  }
+
+  function ensureQrDownloadBtn(host) {
+    var panel = host.closest('.lx-result-panel') || host.parentElement;
+    var btn = panel ? qs('[data-lx-qr-download]', panel) : null;
+    if (!btn && panel) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'lx-btn lx-btn-ghost';
+      btn.setAttribute('data-lx-qr-download', '');
+      btn.textContent = 'Скачать QR (PNG)';
+      host.parentNode.insertBefore(btn, host.nextSibling);
+    }
+    return btn;
+  }
+
+  function placeQrImg(host, url, cssPx, hiUrl, cb) {
+    var wrap = document.createElement('div');
+    wrap.className = 'lx-qr-img-wrap';
     var img = document.createElement('img');
     img.src = url;
-    img.width = 220;
-    img.height = 220;
     img.className = 'lx-qr-img';
     img.alt = 'QR-код для оплаты';
-    host.appendChild(img);
+    img.width = cssPx;
+    img.height = cssPx;
+    img.style.width = cssPx + 'px';
+    img.style.height = 'auto';
+    img.style.aspectRatio = '1';
+    wrap.appendChild(img);
+    host.appendChild(wrap);
+    if (hiUrl) {
+      host.setAttribute('data-lx-qr-hi', hiUrl);
+      var btn = ensureQrDownloadBtn(host);
+      if (btn) {
+        btn.hidden = false;
+        btn.onclick = function () {
+          var a = document.createElement('a');
+          a.href = hiUrl;
+          a.download = 'lireate-qr-st00012.png';
+          a.rel = 'noopener';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      }
+    }
     if (cb) {
       cb(true);
     }
   }
 
+  function qrBitmapDataUrl(payload, pxPerMod) {
+    if (typeof LireateQR === 'undefined' || !LireateQR.create) {
+      return null;
+    }
+    var qr;
+    try {
+      qr = LireateQR.create(qrPayloadSegments(payload), qrRenderOpts());
+    } catch (e) {
+      return null;
+    }
+    var n = qr.modules.size;
+    var quiet = QR_MARGIN_MOD;
+    var grid = n + quiet * 2;
+    var px = grid * pxPerMod;
+    var canvas = document.createElement('canvas');
+    canvas.width = px;
+    canvas.height = px;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) {
+      return null;
+    }
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, px, px);
+    ctx.fillStyle = '#000000';
+    for (var row = 0; row < n; row++) {
+      for (var col = 0; col < n; col++) {
+        if (qr.modules.get(row, col)) {
+          ctx.fillRect((col + quiet) * pxPerMod, (row + quiet) * pxPerMod, pxPerMod, pxPerMod);
+        }
+      }
+    }
+    return { url: canvas.toDataURL('image/png'), cssPx: px, pxPerMod: pxPerMod };
+  }
+
   function renderQr(host, payload, cb) {
     host.innerHTML = '';
     host.setAttribute('data-lx-qr-payload', payload);
+    host.removeAttribute('data-lx-qr-hi');
+    var modCount = qrModuleCount(payload);
 
-    if (typeof LireateQR !== 'undefined' && LireateQR.toDataURL) {
-      LireateQR.toDataURL(
-        payload,
-        { width: 220, margin: 1, errorCorrectionLevel: 'M', type: 'image/png' },
-        function (err, url) {
-          if (!err && url) {
-            placeQrImg(host, url, cb);
-            return;
+    function paint() {
+      if (qrHostInnerWidth(host) < 48) {
+        requestAnimationFrame(paint);
+        return;
+      }
+      modCount = qrModuleCount(payload);
+      var pxPerMod = qrPxPerMod(host, modCount);
+      var pack = qrBitmapDataUrl(payload, pxPerMod);
+      if (pack && pack.url) {
+        var hi = qrBitmapDataUrl(payload, QR_HI_PX_PER_MOD);
+        placeQrImg(host, pack.url, pack.cssPx, hi ? hi.url : null, cb);
+        return;
+      }
+      if (typeof LireateQR !== 'undefined' && LireateQR.toDataURL) {
+        var cssW = qrCssWidth(host, modCount);
+        LireateQR.toDataURL(
+          qrPayloadSegments(payload),
+          {
+            errorCorrectionLevel: 'M',
+            type: 'image/png',
+            margin: QR_MARGIN_MOD,
+            scale: qrPxPerMod(host, modCount),
+          },
+          function (err, url) {
+            if (!err && url) {
+              placeQrImg(host, url, qrCssWidth(host, modCount), null, cb);
+              return;
+            }
+            renderQrLegacy(host, payload, modCount, cb);
           }
-          renderQrLegacy(host, payload, cb);
-        }
-      );
-      return;
+        );
+        return;
+      }
+      renderQrLegacy(host, payload, modCount, cb);
     }
-    renderQrLegacy(host, payload, cb);
+
+    function schedulePaint() {
+      if (host.getBoundingClientRect().width < 20 && !window.matchMedia('(max-width: 519px)').matches) {
+        requestAnimationFrame(schedulePaint);
+        return;
+      }
+      paint();
+    }
+    schedulePaint();
+    var resizeTimer;
+    window.addEventListener('resize', function onResize() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (host.isConnected && host.querySelector('img.lx-qr-img')) {
+          paint();
+        }
+      }, 120);
+    });
   }
 
   /** Fallback: qrcodejs (davidshimjs). */
-  function renderQrLegacy(host, payload, cb) {
+  function renderQrLegacy(host, payload, moduleCount, cb) {
     if (typeof QRCode === 'undefined') {
       host.textContent = 'QR недоступен — обновите страницу.';
       if (cb) {
@@ -100,14 +274,15 @@
       }
       return;
     }
+    var cssW = qrCssWidth(host, moduleCount || qrModuleCount(payload));
     var scratch = document.createElement('div');
     scratch.style.cssText = 'position:absolute;left:-9999px;top:0;';
     document.body.appendChild(scratch);
     /* global QRCode */
     new QRCode(scratch, {
       text: payload,
-      width: 220,
-      height: 220,
+      width: cssW,
+      height: cssW,
       correctLevel: QRCode.CorrectLevel.M,
     });
     setTimeout(function () {
@@ -115,7 +290,7 @@
       document.body.removeChild(scratch);
       if (canvas && canvas.width > 0) {
         try {
-          placeQrImg(host, canvas.toDataURL('image/png'), cb);
+          placeQrImg(host, canvas.toDataURL('image/png'), cssW, null, cb);
           return;
         } catch (e) {
           /* ignore */
@@ -267,6 +442,7 @@
         '<p class="lx-field-label">Универсальный платёжный код (UTF-8)</p>' +
         '<pre class="lx-pay-payload" data-lx-pay-payload></pre>' +
         '<div class="lx-qr-box" data-lx-pay-qr></div>' +
+        '<button type="button" class="lx-btn lx-btn-ghost" data-lx-qr-download hidden>Скачать QR (PNG)</button>' +
         '<p class="lx-hint" data-lx-pay-meta></p>' +
         '</aside></div>'
     );
@@ -389,7 +565,7 @@
         '<div class="lx-field"><label for="lx-evm-sum">Сумма, ₽</label><input id="lx-evm-sum" type="number" min="1" data-lx-evm-sum placeholder="По тарифу"></div>' +
         '<div class="lx-field"><label for="lx-evm-purpose">Назначение</label><textarea id="lx-evm-purpose" data-lx-evm-purpose rows="3" placeholder="Госпошлина за регистрацию ПрЭВМ, номер заявки…"></textarea></div>' +
         '<div class="lx-actions"><button type="button" class="lx-btn lx-btn-primary" data-lx-evm-build>QR для оплаты</button></div>' +
-        '<div class="lx-result-panel" data-lx-evm-result hidden><div data-lx-evm-req></div><pre class="lx-pay-payload" data-lx-evm-payload></pre><div class="lx-qr-box" data-lx-evm-qr></div></div>' +
+        '<div class="lx-result-panel" data-lx-evm-result hidden><div data-lx-evm-req></div><pre class="lx-pay-payload" data-lx-evm-payload></pre><div class="lx-qr-box" data-lx-evm-qr></div><button type="button" class="lx-btn lx-btn-ghost" data-lx-qr-download hidden>Скачать QR (PNG)</button></div>' +
         '</aside></div>'
     );
 
