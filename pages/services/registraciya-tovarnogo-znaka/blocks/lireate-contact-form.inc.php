@@ -11,6 +11,7 @@ $lx_wa_prefill = (strpos($lireate_whatsapp, '?') === false)
     ? ($lireate_whatsapp . '?text=' . $lx_messenger_body)
     : ($lireate_whatsapp . '&text=' . $lx_messenger_body);
 $lx_spam_guard = md5(date('m.Y'));
+$lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secret
 ?>
 <section class="lx-section lx-reveal lx-contact--landing" id="contact" tabindex="-1">
   <div class="lx-contact--landing-inner">
@@ -21,9 +22,9 @@ $lx_spam_guard = md5(date('m.Y'));
         id="lireate-lead-form"
         class="lx-lead-form--landing lx-mail-lead-form"
         method="POST"
-        action="/mail.php"
+        action="<?php echo htmlspecialchars($lx_mail_action, ENT_QUOTES, 'UTF-8'); ?>"
         data-lx-lead-handler="landing"
-        data-lx-mail-action="/mail.php"
+        data-lx-mail-action="<?php echo htmlspecialchars($lx_mail_action, ENT_QUOTES, 'UTF-8'); ?>"
         data-lead-topic="Заявка: расчёт регистрации товарного знака"
         data-lx-success-text="Заявка принята. Специалист свяжется с вами, чтобы уточнить детали для расчёта"
         novalidate

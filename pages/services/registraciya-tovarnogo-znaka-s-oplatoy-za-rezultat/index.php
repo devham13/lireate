@@ -8,7 +8,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Регистрация товарного знака с оплатой за результат — LIREATE';
-$seo_description = 'Регистрация товарного знака и логотипа в Роспатенте под ключ: проверка, подача, ответы экспертизе. Вознаграждение LIREATE — за результат, пошлины отдельно.';
+$seo_description = 'Вознаграждение бюро — после регистрации знака. Госпошлины Роспатента оплачиваются отдельно, за 1 класс — 35 000 ₽. Условия при отказе — на странице.';
 $og_type = 'website';
 $og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
@@ -84,6 +84,12 @@ $schema_graph = [
 <main id="primary" class="lireate-svc-page registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat-page" role="main" tabindex="-1">
 
 <?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
+
+<aside class="lx-glass lx-reveal" style="margin:24px 0;padding:20px 22px;border-radius:18px;" aria-label="Сравнение моделей оплаты">
+  <p class="lx-eyebrow" style="margin:0 0 8px;">Две схемы</p>
+  <p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#cbd5e1;"><strong>Базовая регистрация</strong> — вознаграждение LIREATE по этапам договора; госпошлины Роспатента (ориентир 35 000 ₽ за 1 класс) платятся отдельно. Подробности на странице <a href="/registraciya_tovarnogo_znaka/">регистрации товарного знака</a>.</p>
+  <p style="margin:0;font-size:15px;line-height:1.65;color:#cbd5e1;"><strong>Оплата за результат</strong> (эта страница) — часть вознаграждения бюро привязана к регистрации; пошлины всё равно оплачиваются в бюджет по этапам. Условия при отказе — в разделе <a href="#payment-model">«Модель оплаты»</a>.</p>
+</aside>
 
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="registration"></div>

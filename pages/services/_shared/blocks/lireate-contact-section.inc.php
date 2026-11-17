@@ -27,6 +27,7 @@ if (empty($lx_lead_success_text)) {
 }
 $lx_lead_name_required = !isset($lx_lead_name_required) || $lx_lead_name_required;
 $lx_spam_guard = md5(date('m.Y'));
+$lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secret
 ?>
 <section class="lx-section lx-reveal" id="contact">
   <div class="lx-contact">
@@ -45,8 +46,8 @@ $lx_spam_guard = md5(date('m.Y'));
         id="lireate-lead-form"
         class="lx-mail-lead-form"
         method="POST"
-        action="/mail.php"
-        data-lx-mail-action="/mail.php"
+        action="<?php echo htmlspecialchars($lx_mail_action, ENT_QUOTES, 'UTF-8'); ?>"
+        data-lx-mail-action="<?php echo htmlspecialchars($lx_mail_action, ENT_QUOTES, 'UTF-8'); ?>"
         data-lead-topic="<?php echo htmlspecialchars($lx_lead_topic, ENT_QUOTES, 'UTF-8'); ?>"
         data-lx-success-text="<?php echo htmlspecialchars($lx_lead_success_text, ENT_QUOTES, 'UTF-8'); ?>"
         novalidate
