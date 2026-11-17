@@ -76,4 +76,9 @@ $schema_graph = array(
 </main>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-wordmark-core.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-tools.js', $lx_service_asset_dir); ?>"></script>
-<?php $lireate_max = LIREATE_MAX_CHAT_URL; include dirname(__DIR__) . '/_shared/blocks/lireate-patent-tool-footer.inc.php'; ?>
+<?php
+$lx_patent_footer_mode = 'reference';
+$lx_patent_footer_ref_url = 'https://rospatent.gov.ru/ru/faq/27-kakie-trebovaniya-predyavlyayutsya-k-fajlu-izobrazheniya-zayavlyaemogo-oboznacheniya';
+$lireate_max = LIREATE_MAX_CHAT_URL;
+include dirname(__DIR__) . '/_shared/blocks/lireate-patent-tool-footer.inc.php';
+?>

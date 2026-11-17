@@ -1029,10 +1029,30 @@
       }
       list.innerHTML = rows
         .map(function (row) {
-          var val =
-            row.type === 'email' || row.type === 'phone'
-              ? '<a href="' + row.href + '">' + row.value + '</a>'
-              : row.value;
+          var val;
+          if (row.type === 'fips_consult') {
+            var phones = (row.phones || [])
+              .map(function (ph) {
+                return '<a href="' + ph.href + '">' + ph.value + '</a>';
+              })
+              .join('<span class="lx-contact-sep"> · </span>');
+            var mail =
+              row.email && row.email.href
+                ? '<a href="' + row.email.href + '">' + row.email.value + '</a>'
+                : '';
+            val =
+              '<p class="lx-contact-phones"><span class="lx-field-label">Телефон</span> ' +
+              phones +
+              '</p><p class="lx-contact-mail"><span class="lx-field-label">E-mail</span> ' +
+              mail +
+              '</p>';
+          } else {
+            val =
+              row.type === 'email' || row.type === 'phone'
+                ? '<a href="' + row.href + '">' + row.value + '</a>'
+                : row.value;
+            val = '<p>' + val + '</p>';
+          }
           return (
             '<article class="lx-contact-card"><p class="lx-field-label">' +
             row.org +
@@ -1040,9 +1060,9 @@
             row.department +
             '</p><p>' +
             row.topic +
-            '</p><p>' +
+            '</p>' +
             val +
-            '</p></article>'
+            '</article>'
           );
         })
         .join('');

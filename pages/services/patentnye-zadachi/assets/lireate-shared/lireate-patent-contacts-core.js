@@ -31,9 +31,16 @@
       return DATA.entries.slice();
     }
     return DATA.entries.filter(function (row) {
-      var hay = normalize(
-        [row.org, row.department, row.topic, row.type, row.value].join(' ')
-      );
+      var parts = [row.org, row.department, row.topic, row.type, row.value];
+      if (row.phones && row.phones.length) {
+        row.phones.forEach(function (ph) {
+          parts.push(ph.value);
+        });
+      }
+      if (row.email && row.email.value) {
+        parts.push(row.email.value);
+      }
+      var hay = normalize(parts.join(' '));
       return hay.indexOf(q) >= 0;
     });
   }

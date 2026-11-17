@@ -32,11 +32,30 @@ async function revealAll(page) {
   });
 }
 
+async function scrollTop(page) {
+  await page.evaluate(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+}
+
 async function shotFull(page, url, file, w, h) {
   await page.setViewport({ width: w, height: h });
   await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
   await revealAll(page);
+  await scrollTop(page);
   await new Promise((r) => setTimeout(r, 800));
+  await page.screenshot({ path: file, fullPage: true });
+  assertPng(file);
+  console.log('OK', file);
+}
+
+async function shotResult(page, file, w, h) {
+  await page.setViewport({ width: w, height: h });
+  await revealAll(page);
+  await scrollTop(page);
+  await new Promise((r) => setTimeout(r, 400));
   await page.screenshot({ path: file, fullPage: true });
   assertPng(file);
   console.log('OK', file);
@@ -66,9 +85,8 @@ await addr.$eval('[data-lx-adres-applicant-in]', (el) => {
 });
 await addr.click('[data-lx-adres-run]');
 await new Promise((r) => setTimeout(r, 500));
-await revealAll(addr);
-await addr.screenshot({ path: `${OUT}/patent-adres-result-desktop-1440-full.png`, fullPage: true });
-assertPng(`${OUT}/patent-adres-result-desktop-1440-full.png`);
+await shotResult(addr, `${OUT}/patent-adres-result-desktop-1440-full.png`, 1440, 900);
+await shotResult(addr, `${OUT}/patent-adres-result-mobile-390-full.png`, 390, 844);
 await addr.close();
 
 const wm = await browser.newPage();
@@ -79,9 +97,8 @@ await wm.$eval('[data-lx-wordmark-in]', (el) => {
 });
 await wm.click('[data-lx-wordmark-preview]');
 await new Promise((r) => setTimeout(r, 600));
-await revealAll(wm);
-await wm.screenshot({ path: `${OUT}/patent-wordmark-result-desktop-1440-full.png`, fullPage: true });
-assertPng(`${OUT}/patent-wordmark-result-desktop-1440-full.png`);
+await shotResult(wm, `${OUT}/patent-wordmark-result-desktop-1440-full.png`, 1440, 900);
+await shotResult(wm, `${OUT}/patent-wordmark-result-mobile-390-full.png`, 390, 844);
 await wm.close();
 
 const ch = await browser.newPage();
@@ -101,9 +118,8 @@ await ch.waitForFunction(
   },
   { timeout: 10000 }
 );
-await revealAll(ch);
-await ch.screenshot({ path: `${OUT}/patent-changes-result-desktop-1440-full.png`, fullPage: true });
-assertPng(`${OUT}/patent-changes-result-desktop-1440-full.png`);
+await shotResult(ch, `${OUT}/patent-changes-result-desktop-1440-full.png`, 1440, 900);
+await shotResult(ch, `${OUT}/patent-changes-result-mobile-390-full.png`, 390, 844);
 await ch.close();
 
 const shrink = await browser.newPage();
@@ -128,9 +144,8 @@ await shrink.evaluate(() => {
 });
 await shrink.click('[data-lx-shrink-calc]');
 await shrink.waitForSelector('[data-lx-patent-result]:not([hidden])', { timeout: 10000 });
-await revealAll(shrink);
-await shrink.screenshot({ path: `${OUT}/patent-shrink-result-desktop-1440-full.png`, fullPage: true });
-assertPng(`${OUT}/patent-shrink-result-desktop-1440-full.png`);
+await shotResult(shrink, `${OUT}/patent-shrink-result-desktop-1440-full.png`, 1440, 900);
+await shotResult(shrink, `${OUT}/patent-shrink-result-mobile-390-full.png`, 390, 844);
 await shrink.close();
 
 const contacts = await browser.newPage();
@@ -145,9 +160,8 @@ await contacts.evaluate(() => {
   document.querySelector('[data-lx-contacts-search]').dispatchEvent(ev);
 });
 await new Promise((r) => setTimeout(r, 400));
-await revealAll(contacts);
-await contacts.screenshot({ path: `${OUT}/patent-contacts-filter-desktop-1440-full.png`, fullPage: true });
-assertPng(`${OUT}/patent-contacts-filter-desktop-1440-full.png`);
+await shotResult(contacts, `${OUT}/patent-contacts-filter-desktop-1440-full.png`, 1440, 900);
+await shotResult(contacts, `${OUT}/patent-contacts-filter-mobile-390-full.png`, 390, 844);
 await contacts.close();
 
 await browser.close();
