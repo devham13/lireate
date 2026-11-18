@@ -800,3 +800,10 @@ section#blog .lireate-blog-list-page small {
     align-items: flex-start;
   }
 }
+
+/* audit08: lead moved out of <h1> (H1 = title only); keep the old 12px gap */
+.lireate-blog-list-h1 + .lireate-blog-list-h1-sub {
+  display: block;
+  margin: -6px 0 18px;
+  max-width: 52rem;
+}
