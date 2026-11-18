@@ -384,10 +384,36 @@ function lireate_blog_related_articles($current_url, $limit = 3)
 }
 }
 
+
+if (!function_exists('lireate_blog_ux_lazy_images')) {
+function lireate_blog_ux_lazy_images($html)
+{
+    $html = (string) $html;
+    if ($html === '' || stripos($html, '<img') === false) {
+        return $html;
+    }
+    return preg_replace_callback(
+        '/<img\b([^>]*?)>/i',
+        function ($m) {
+            $tag = $m[0];
+            if (stripos($tag, 'loading=') !== false) {
+                return $tag;
+            }
+            if (stripos($tag, 'lx-article-cover') !== false || stripos($tag, 'loading="eager"') !== false) {
+                return $tag;
+            }
+            return '<img' . $m[1] . ' loading="lazy" decoding="async">';
+        },
+        $html
+    );
+}
+}
+
 if (!function_exists('lireate_blog_prepare_body_html')) {
 function lireate_blog_prepare_body_html($html)
 {
-    return lireate_blog_ensure_h2_ids($html);
+    $html = lireate_blog_ensure_h2_ids($html);
+    return lireate_blog_ux_lazy_images($html);
 }
 }
 

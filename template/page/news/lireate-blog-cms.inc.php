@@ -1,10 +1,6 @@
 <?php
 /**
- * Точка входа для CMS LIREATE (страница одной новости).
- *
- * Подключите вместо блока h1 + #articleInfo + #textBox:
- *   $lireate_news_row — name, full_story, date (d.m.Y), category_name, category_url, seo_url
- *   $lireate_news_author, $lireate_news_canonical, $lireate_news_description — опционально
+ * CMS entry — loads central SEO schema before layout.
  */
 $repo_blog_shared = dirname(dirname(dirname(__DIR__))) . '/pages/blog/_shared';
 if (!is_file($repo_blog_shared . '/lireate-blog-layout.inc.php')) {
@@ -12,6 +8,11 @@ if (!is_file($repo_blog_shared . '/lireate-blog-layout.inc.php')) {
 }
 if (!is_file($repo_blog_shared . '/lireate-blog-layout.inc.php') && is_file(__DIR__ . '/lireate-blog-layout.inc.php')) {
     $repo_blog_shared = __DIR__;
+}
+
+$_lireate_schema = (isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/') : '') . '/data/lireate-seo-schema.inc.php';
+if (is_file($_lireate_schema)) {
+    require_once $_lireate_schema;
 }
 
 $row = isset($lireate_news_row) && is_array($lireate_news_row) ? $lireate_news_row : array();
@@ -47,6 +48,15 @@ $lireate_blog_current_url = $seo !== '' ? '/' . trim($seo, '/') . '/' : (isset($
 $lireate_blog_author = isset($lireate_news_author) ? $lireate_news_author : (isset($lireate_blog_author) ? $lireate_blog_author : '');
 $lireate_blog_canonical = isset($lireate_news_canonical) ? $lireate_news_canonical : (isset($lireate_blog_canonical) ? $lireate_blog_canonical : '');
 $lireate_blog_description = isset($lireate_news_description) ? $lireate_news_description : (isset($lireate_blog_description) ? $lireate_blog_description : '');
+if ($lireate_blog_canonical === '' && isset($GLOBALS['lireate_canonical_url'])) {
+    $lireate_blog_canonical = $GLOBALS['lireate_canonical_url'];
+}
+if ($lireate_blog_description === '' && isset($GLOBALS['lireate_seo_article']['description'])) {
+    $lireate_blog_description = $GLOBALS['lireate_seo_article']['description'];
+}
+if (!empty($GLOBALS['lireate_seo_article']['date_iso'])) {
+    $lireate_blog_date_iso = $GLOBALS['lireate_seo_article']['date_iso'];
+}
 
 include $repo_blog_shared . '/lireate-blog-layout.inc.php';
 

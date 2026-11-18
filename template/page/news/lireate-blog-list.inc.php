@@ -12,6 +12,10 @@ if (!function_exists('lireate_blog_h')) {
     lireate_blog_require_lib();
 }
 
+if (function_exists('lireate_blog_list_mark_invalid_page_noindex') && isset($GLOBALS['lireate_blog_list_total_pages'])) {
+    lireate_blog_list_mark_invalid_page_noindex($GLOBALS['lireate_blog_list_total_pages']);
+}
+
 $lb_items = isset($lireate_blog_list_items) && is_array($lireate_blog_list_items)
     ? $lireate_blog_list_items
     : lireate_blog_list_items_from_index();
@@ -25,8 +29,17 @@ $lb_pagination = isset($lireate_blog_list_pagination)
     ? $lireate_blog_list_pagination
     : lireate_blog_list_pagination_from_cms();
 
+$lb_page_num = lireate_blog_list_page_from_request();
+if (isset($GLOBALS['lireate_blog_list_pagination']) && is_array($GLOBALS['lireate_blog_list_pagination'])
+    && isset($GLOBALS['lireate_blog_list_pagination']['current'])) {
+    $lb_page_num = max(1, (int) $GLOBALS['lireate_blog_list_pagination']['current']);
+}
 $lb_title = defined('LIREATE_BLOG_LIST_TITLE') ? LIREATE_BLOG_LIST_TITLE : 'Блог LIREATE';
 $lb_lead = defined('LIREATE_BLOG_LIST_LEAD') ? LIREATE_BLOG_LIST_LEAD : '';
+if ($lb_page_num > 1) {
+    $lb_title = 'Блог Лирейта — страница ' . $lb_page_num;
+    $lb_lead = '';
+}
 $lb_assets = LIREATE_BLOG_ASSETS_BASE;
 $lb_v = LIREATE_BLOG_TEMPLATE_VERSION;
 $lb_max = LIREATE_BLOG_MAX_CHANNEL_URL;

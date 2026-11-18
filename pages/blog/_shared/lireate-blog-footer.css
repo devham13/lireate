@@ -5,9 +5,9 @@
 .lx-site-footer {
   position: relative;
   z-index: 1;
-  margin: 48px calc(50% - 50vw) 0;
-  width: 100vw;
-  max-width: 100vw;
+  margin: 48px 0 0;
+  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
   padding: 28px max(20px, calc((100vw - min(100vw, 1120px)) / 2 + 20px)) 32px;
   background: #0b0b1f;
@@ -163,3 +163,5 @@
 .lireate-blog-subscribe-card p.lireate-blog-subscribe-label{font-size:12px;line-height:1.3;font-weight:800;color:#c4b5fd;max-width:none;margin:0 0 6px}
 .lireate-blog-subscribe-card p.lireate-blog-subscribe-text{font-size:15px;line-height:1.55;color:#d4dce8;max-width:none;margin:0 0 14px}
 .lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#64748b;margin:16px 0 0}
+.lireate-blog-page { overflow-x: clip; max-width: 100%; }
+.lx-site-footer { overflow-x: clip; }
