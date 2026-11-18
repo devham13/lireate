@@ -511,9 +511,9 @@ def lint_slug(slug):
     elif "lx-form-alt" not in html:
         errors.append("missing lx-form-alt block under lead form")
 
-    if 'href="/private_data"' not in html and "href='/private_data'" not in html:
+    if not re.search(r'href=["\']/private_data/?["\']', html):
         errors.append("lead form consent must link to /private_data")
-    if 'href="/politika_konfidencialnosti"' not in html and "href='/politika_konfidencialnosti'" not in html:
+    if not re.search(r'href=["\']/politika_konfidencialnosti/?["\']', html):
         errors.append("lead form consent must link to /politika_konfidencialnosti")
     for bad in ("/privacy", "/privacy/", "/policy", "/policy/"):
         if bad in html:

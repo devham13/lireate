@@ -101,7 +101,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
       <?php endif; ?>
       <div class="lireate-blog-list-hero-actions">
         <a class="lireate-blog-list-pill lireate-blog-list-pill--solid" href="<?php echo lireate_blog_h($lb_max); ?>" target="_blank" rel="noopener noreferrer">Канал в Max</a>
-        <a class="lireate-blog-list-pill lireate-blog-list-pill--outline" href="/news/">Все материалы</a>
+        <a class="lireate-blog-list-pill lireate-blog-list-pill--outline" href="/news">Все материалы</a>
       </div>
     </div>
   </header>

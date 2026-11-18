@@ -499,7 +499,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация товарного знака с оплатой за результат</strong></a>
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
     <a class="lx-related-card" href="/findtz/"><span class="lx-related-card-type">Услуга</span><strong>Проверка товарного знака</strong></a>
-    <a class="lx-related-card" href="/news/"><span class="lx-related-card-type">Блог</span><strong>Новости LIREATE</strong></a>
+    <a class="lx-related-card" href="/news"><span class="lx-related-card-type">Блог</span><strong>Новости LIREATE</strong></a>
     <a class="lx-related-card" href="/contacts/"><span class="lx-related-card-type">Контакты</span><strong>Телефон и офис</strong></a>
   </div>
 </section>

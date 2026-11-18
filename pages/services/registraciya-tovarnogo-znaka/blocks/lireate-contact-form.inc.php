@@ -39,7 +39,7 @@ $lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secre
         <input id="lf-phone" name="tel" type="tel" required autocomplete="tel" placeholder="+7 …" inputmode="tel">
         <label for="lf-name">Имя <span class="lx-opt">(необязательно)</span></label>
         <input id="lf-name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться">
-        <label class="lx-consent" for="lf-consent"><input type="checkbox" id="lf-consent" required> <span class="lx-consent-text">Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</span></label>
+        <label class="lx-consent" for="lf-consent"><input type="checkbox" id="lf-consent" required> <span class="lx-consent-text">Согласен на <a href="/private_data/" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti/" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</span></label>
         <button type="submit" class="lx-btn lx-btn-primary lx-form-submit" style="width:100%;margin-top:12px;">Получить расчёт</button>
         <p class="lx-form-success" id="lf-success" role="status" aria-live="polite"></p>
         <p class="lx-form-error" id="lf-error" role="alert" hidden></p>
