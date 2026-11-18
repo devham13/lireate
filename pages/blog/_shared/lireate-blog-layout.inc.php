@@ -69,7 +69,7 @@ $lb_schema_meta = array(
     <article class="lireate-blog-main">
       <header class="lireate-blog-header<?php echo $lb_collage_mode ? ' lireate-blog-header--collage-v1' : ''; ?>">
         <div class="lireate-blog-header-top<?php echo $lb_collage_mode ? ' lireate-blog-header-top--collage' : ''; ?>">
-          <a class="lireate-blog-pill lireate-blog-pill--back" href="/news/">‹ Все статьи блога</a>
+          <a class="lireate-blog-pill lireate-blog-pill--back" href="/news">‹ Все статьи блога</a>
           <?php if (!$lb_collage_mode) : ?>
           <div class="lireate-blog-header-top-right">
             <?php if ($lb_tag !== '') : ?>
@@ -180,7 +180,7 @@ $lb_schema_meta = array(
   <section class="lireate-blog-related" aria-labelledby="lireate-blog-related-heading">
     <div class="lireate-blog-related-head">
       <h2 id="lireate-blog-related-heading" class="lireate-blog-related-title">Читайте также</h2>
-      <a class="lireate-blog-related-all" href="/news/">Все статьи блога →</a>
+      <a class="lireate-blog-related-all" href="/news">Все статьи блога →</a>
     </div>
     <div class="lireate-blog-related-grid">
       <?php foreach ($lb_related as $card) :
