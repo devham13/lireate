@@ -95,10 +95,10 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
       <p class="lireate-blog-list-kicker">Блог LIREATE</p>
       <h1 class="lireate-blog-list-h1">
         <span class="lireate-blog-list-h1-main"><?php echo lireate_blog_h($lb_title); ?></span>
-        <?php if ($lb_lead !== '') : ?>
-        <span class="lireate-blog-list-h1-sub"><?php echo lireate_blog_h($lb_lead); ?></span>
-        <?php endif; ?>
       </h1>
+      <?php if ($lb_lead !== '') : ?>
+      <p class="lireate-blog-list-h1-sub"><?php echo lireate_blog_h($lb_lead); ?></p>
+      <?php endif; ?>
       <div class="lireate-blog-list-hero-actions">
         <a class="lireate-blog-list-pill lireate-blog-list-pill--solid" href="<?php echo lireate_blog_h($lb_max); ?>" target="_blank" rel="noopener noreferrer">Канал в Max</a>
         <a class="lireate-blog-list-pill lireate-blog-list-pill--outline" href="/news/">Все материалы</a>
