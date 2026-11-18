@@ -6,7 +6,7 @@ function lireate_docs_documents()
 {
     return array(
         array(
-            'title' => 'Свидетельство о поставновке на учёт в налоговом органе',
+            'title' => 'Свидетельство о постановке на учёт в налоговом органе',
             'href' => '/template/page/docs/documents/Инн.pdf',
             'size' => '224 KB',
         ),
