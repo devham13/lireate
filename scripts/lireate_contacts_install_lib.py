@@ -136,6 +136,9 @@ def copy_plan(office_repo):
     metrika = repo / "pages" / "services" / "_shared" / "lireate-metrika-goals.js"
     if metrika.is_file():
         pairs.append((metrika, TEMPLATE_REL / "lireate-metrika-goals.js"))
+    contacts_index = repo / "template" / "page" / "contacts" / "index.php"
+    if contacts_index.is_file():
+        pairs.append((contacts_index, Path("template/page/contacts/index.php")))
     return pairs
 
 
@@ -264,6 +267,14 @@ def plan_contacts_template_content(text):
     return text
 
 
+def plan_contacts_full(text):
+    """Legacy contacts hook + /contacts/ body class + dark/static CSS lists."""
+    text = plan_contacts_template_content(text)
+    text, _ = cms_body.patch_contacts_page_body_conditional(text)
+    text, _ = cms_body.patch_cms_dark_and_static_page_slugs(text, ["contacts"])
+    return text
+
+
 def validate_planned_php(php_bin, original, planned, label):
     if planned == original:
         return None
@@ -296,7 +307,7 @@ def validate_contacts_patch_planned(docroot, template_path, php_bin=None):
     if template_path is None:
         return
     original = template_path.read_text(encoding="utf-8", errors="replace")
-    planned = plan_contacts_template_content(original)
+    planned = plan_contacts_full(original)
     if planned == original:
         return
     lint_err = validate_planned_php(
@@ -311,7 +322,7 @@ def apply_contacts_patch(docroot, template_path, php_bin=None, skip_lint=False):
     if "data" in rel.parts and template_path.name == "db.php":
         raise SystemExit("BLOCKER: refusing to patch data/db.php")
     original = template_path.read_text(encoding="utf-8", errors="replace")
-    planned = plan_contacts_template_content(original)
+    planned = plan_contacts_full(original)
     status = contacts_template_patch_status(original, planned)
     if planned == original:
         return False, ["contacts: {0}".format(status)], []
@@ -332,6 +343,8 @@ def apply_contacts_patch(docroot, template_path, php_bin=None, skip_lint=False):
         notes.append("contacts: saved legacy snapshot ({0})".format(LEGACY_REL))
     if BODY_CLASS_COND not in original and BODY_CLASS_COND in planned:
         notes.append("body class conditional for kontaktyi")
+    if cms_body.CONTACTS_PAGE_BODY_COND not in original and cms_body.CONTACTS_PAGE_BODY_COND in planned:
+        notes.append("body class conditional for contacts")
     return True, notes, created_legacy
 
 

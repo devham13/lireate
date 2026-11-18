@@ -157,6 +157,11 @@ PHP56_DEPLOY_REL_DIRS = (
     Path("pages/blog/_shared"),
     Path("pages/services/_shared"),
     Path("template/page/news"),
+    Path("pages/o_kompanii/_shared"),
+    Path("pages/kontaktyi/_shared"),
+    Path("template/page/o_kompanii"),
+    Path("template/page/kontaktyi"),
+    Path("template/page/contacts"),
 )
 
 

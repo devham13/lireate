@@ -1,6 +1,6 @@
 <?php
 /**
- * Разметка страницы «Контакты» (/kontaktyi/) — тёмный стиль как /news.
+ * Разметка страницы «Контакты» (/contacts/) — тёмный стиль как /team.
  */
 require_once __DIR__ . '/lireate-contacts-lib.php';
 
@@ -21,12 +21,12 @@ if ($lc_photo_origin !== '') {
 }
 $lc_domain = 'li' . 're' . 'ate.ru';
 $lc_email = 'info@' . $lc_domain;
-$lc_address = 'РТ, г. Зеленодольск ул. Королёва, 11Б этаж 2';
-$lc_phone1_display = '+7(499)938-45-95';
-$lc_phone1_tel = 'tel:+7(499)938-45-95';
-$lc_phone2_display = '+7(960)048-49-57';
-$lc_phone2_tel = 'tel:+7(960)048-49-57';
-$lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A529a47dbf50b8ccb0e900378c49ad0fc6f16257c2341fdcaf42afb0b432a7454&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true';
+$lc_address = 'РТ, г. Зеленодольск ул. Карла Маркса д.24. оф.1.';
+$lc_phone1_display = '+7 (499) 938-45-95';
+$lc_phone1_tel = 'tel:+74999384595';
+$lc_phone2_display = '+7 (960) 048-49-57';
+$lc_phone2_tel = 'tel:+79600484957';
+$lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ad7e7b32ceb16a5f6568e233bb36f3fafc873135d2f7269ff6cc1168c9892c75c&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=false';
 $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
     ? LIREATE_CONTACTS_FOOTER_CSS_HREF
     : '/template/page/news/lireate-blog-footer.css';
@@ -47,11 +47,12 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
       <p class="lireate-contacts-kicker">LIREATE</p>
       <h1 class="lireate-contacts-h1">Контакты Лирейт</h1>
       <p class="lireate-contacts-lead">Мы перезвоним Вам в ближайшее время.</p>
-      <div class="lireate-contacts-hero-actions" aria-label="Мессенджеры">
+      <div class="lireate-contacts-hero-actions" aria-label="Связаться с LIREATE">
         <a class="lireate-contacts-pill lireate-contacts-pill--solid" id="lc-hero-max" href="<?php echo lireate_contacts_h(LIREATE_CONTACTS_MAX_CHAT_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">Max</a>
         <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-telegram" href="<?php echo lireate_contacts_h(LIREATE_CONTACTS_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_telegramm">Telegram</a>
         <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-whatsapp" href="<?php echo lireate_contacts_h(LIREATE_CONTACTS_WHATSAPP_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">WhatsApp</a>
-        <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-max-channel" href="<?php echo lireate_contacts_h(LIREATE_CONTACTS_MAX_CHANNEL_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">Канал в Max</a>
+        <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-phone" href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone2_display); ?></a>
+        <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-phone2" href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone1_display); ?></a>
       </div>
     </div>
   </header>
@@ -59,44 +60,49 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
   <div class="lireate-contacts-wrap lireate-contacts-grid">
     <section class="lireate-contacts-card lireate-contacts-form-card" aria-labelledby="lc-form-title">
       <span class="lireate-contacts-badge">Заявка</span>
-      <h2 class="lireate-contacts-card-title" id="lc-form-title">Написать Директору Лирейт</h2>
-      <?php if (!$lc_preview) : ?>
-      <script src="https://www.google.com/recaptcha/api.js?hl=ru"></script>
-      <?php endif; ?>
-      <form class="form-unit pb30 ajax_form lireate-contacts-form" method="POST" action="mail.php">
-        <div class="mail_to">
-          <input type="hidden" name="mail_token" value="410eefd63c084df22d849b9d7ae549e7">
-          <input type="hidden" name="fuck_spamers" value="55c30f8059c1b725e4f2f2a9f387dd6f">
-          <input class="js-ap-tomail" type="hidden" name="tomail" value="">
-          <input type="hidden" name="mail" value="mailorder">
-          <div class="pb30">
-            <div data-frm="tel" class="form-group form-unit-group vError frm-input">
-              <input name="tel" type="text" class="form-control form-unit-control ap-label-js lireate-contacts-input" placeholder="Введите телефон">
-            </div>
-            <div data-frm="otziv" class="form-group form-unit-group otzivError vError frm-input">
-              <textarea class="form-control lireate-contacts-textarea" name="otziv" style="resize: none;"></textarea>
-            </div>
-            <?php if ($lc_preview) : ?>
-            <div class="lireate-contacts-recaptcha-stub" aria-hidden="true">reCAPTCHA</div>
-            <?php else : ?>
-            <div class="g-recaptcha vError" data-frm="g-recaptcha" data-sitekey="<?php echo lireate_contacts_h(LIREATE_CONTACTS_RECAPTCHA_SITEKEY); ?>" style="text-indent: 0px;margin-bottom: 10px;"></div>
-            <?php endif; ?>
-          </div>
-          <button type="submit" class="lireate-contacts-submit btn btn-gradient btn-primary content-button red btn-popup js-ap-btn">Отправить</button>
-          <p class="lireate-contacts-consent">Нажимая на кнопку, вы даете <a href="/private_data">согласие на обработку персональных данных</a> и соглашаетесь c <a href="/politika_konfidencialnosti">политикой конфиденциальности</a></p>
-        </div>
-        <div class="s_mail_to modal_success lireate-contacts-success">
-          <p class="m_success">Мы перезвоним Вам в ближайшее время.</p>
-        </div>
+      <h2 class="lireate-contacts-card-title" id="lc-form-title">Оставить заявку</h2>
+      <?php
+      $lc_spam_guard = md5(date('m.Y'));
+      $lc_mail_action = 'https://' . 'lireate.ru/mail.php';
+      ?>
+      <form
+        id="lireate-lead-form"
+        class="lx-mail-lead-form lireate-contacts-form"
+        method="POST"
+        action="<?php echo lireate_contacts_h($lc_mail_action); ?>"
+        data-lx-mail-action="<?php echo lireate_contacts_h($lc_mail_action); ?>"
+        data-lead-topic="Заявка со страницы Контакты"
+        data-lx-success-text="Заявка принята. Мы свяжемся с вами в ближайшее время."
+        novalidate
+      >
+        <input type="hidden" name="mail_token" value="503066424d5f7b5ad2097703ef3404d2">
+        <input type="hidden" name="fuck_spamers" value="<?php echo lireate_contacts_h($lc_spam_guard); ?>">
+        <input type="hidden" name="mail" value="mailorder">
+        <input type="hidden" name="form-type" value="order">
+        <input type="hidden" name="tomail" value="Заявка со страницы Контакты">
+        <input type="hidden" name="consent_form" value="contacts-page">
+        <label for="lf-name">Имя</label>
+        <input id="lf-name" name="name" type="text" required autocomplete="name" class="lireate-contacts-input" placeholder="Как к вам обращаться">
+        <label for="lf-phone">Телефон</label>
+        <input id="lf-phone" name="tel" type="tel" required autocomplete="tel" class="lireate-contacts-input" placeholder="+7 …" inputmode="tel">
+        <label class="lx-consent lireate-contacts-consent" for="lf-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
+        <button type="submit" class="lireate-contacts-submit lx-btn lx-btn-primary lx-form-submit">Отправить</button>
+        <p class="lx-form-success" id="lf-success" role="status" aria-live="polite"></p>
+        <p class="lx-form-error" id="lf-error" role="alert" hidden></p>
       </form>
+      <?php if (!$lc_preview) : ?>
+      <script>window.lireateMailSpamGuard=<?php echo json_encode($lc_spam_guard); ?>;</script>
+      <script src="/template/js/lireate-utm.js?v=20261117b1"></script>
+      <script src="/registraciya_tovarnogo_znaka/assets/lireate-shared/lireate-lead-mail.js"></script>
+      <?php endif; ?>
     </section>
 
     <section class="lireate-contacts-card lireate-contacts-info-card" aria-labelledby="lc-info-title">
       <span class="lireate-contacts-badge lireate-contacts-badge--green">Офис</span>
       <h2 class="lireate-contacts-card-title" id="lc-info-title">Как связаться</h2>
       <dl class="lireate-contacts-dl">
-        <div><dt>Адрес</dt><dd><?php echo lireate_contacts_h($lc_address); ?></dd></div>
-        <div><dt>Телефоны</dt><dd class="lireate-contacts-phones"><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep" aria-hidden="true">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
+        <div><dt>Адрес</dt><dd><?php echo lireate_contacts_h($lc_address); ?><br>Также Вы можете обраться к нашим <a href="/partners" target="_blank" rel="noopener noreferrer">партнёрам</a>.</dd></div>
+        <div><dt>Телефоны</dt><dd class="lireate-contacts-phones"><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep" aria-hidden="true">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:<?php echo lireate_contacts_h($lc_email); ?>"><?php echo lireate_contacts_h($lc_email); ?></a></dd></div>
       </dl>
       <div class="lireate-contacts-map" aria-label="Карта офиса">
@@ -109,6 +115,7 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
     <div class="lireate-contacts-team-head">
       <span class="lireate-contacts-badge">Команда</span>
       <h2 class="lireate-contacts-card-title" id="lc-team-title">Сотрудники LIREATE</h2>
+      <p class="lireate-contacts-social-label">Подробнее о команде — на странице <a href="/team">Команда Лирейт</a>.</p>
     </div>
     <div class="lireate-contacts-team-grid">
       <?php foreach ($lc_team as $idx => $member) :
@@ -126,16 +133,20 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
     </div>
   </section>
 
-  <section class="lireate-contacts-wrap lireate-contacts-social">
+  <section class="lireate-contacts-wrap lireate-contacts-social" aria-labelledby="lc-social-title">
     <div class="lireate-contacts-card lireate-contacts-social-card">
-      <p class="lireate-contacts-social-label">Расскажите о нас друзьям</p>
-      <div id="vk_groups" class="lireate-contacts-vk"></div>
-      <script type="text/javascript">VK.Widgets.Group("vk_groups", {width: "auto", mode: 3, no_cover: 1}, 134889129);</script>
-      <div class="lireate-contacts-share-row">
-        <p>Рассказать о Лирейт:</p>
-        <script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
-        <script src="//yastatic.net/share2/share.js"></script>
-        <div class="ya-share2" data-services="vkontakte,twitter,gplus,odnoklassniki"></div>
+      <span class="lireate-contacts-badge">Соцсети</span>
+      <h2 class="lireate-contacts-card-title" id="lc-social-title">Социальные сети</h2>
+      <p class="lireate-contacts-social-label">Много интересной и важной информации Вы сможете найти в наших социальных сетях</p>
+      <div class="lireate-contacts-social-grid">
+        <a class="lireate-contacts-social-item" href="https://www.youtube.com/channel/UCpg1LWotCQWwzviPDb_9Rew" target="_blank" rel="noopener noreferrer">
+          <span class="lireate-contacts-social-name">YouTube</span>
+          <span class="lireate-contacts-social-desc">На нашем канале Вы можете ознакомится с отзывами наших клиентов и получить другую полезную информацию</span>
+        </a>
+        <a class="lireate-contacts-social-item" href="https://vk.com/lireate" target="_blank" rel="noopener noreferrer">
+          <span class="lireate-contacts-social-name">Вконтакте</span>
+          <span class="lireate-contacts-social-desc">В группе VK мы регулярно публикуем интересные статьи о юридической защите предпринимательской деятельности</span>
+        </a>
       </div>
     </div>
   </section>

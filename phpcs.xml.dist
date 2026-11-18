@@ -4,6 +4,11 @@
     <rule ref="PHPCompatibility"/>
     <file>pages/blog/_shared</file>
     <file>template/page/news</file>
+    <file>template/page/contacts</file>
+    <file>template/page/kontaktyi</file>
+    <file>template/page/o_kompanii</file>
+    <file>pages/kontaktyi/_shared</file>
+    <file>pages/o_kompanii/_shared</file>
     <file>pages/services/_shared</file>
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*.min.js</exclude-pattern>
