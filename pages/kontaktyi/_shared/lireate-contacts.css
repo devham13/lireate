@@ -513,7 +513,17 @@ body.lireate-contacts-body:has(.lireate-contacts-page) #personsSlide {
   display: none !important;
 }
 
-body.lireate-contacts-body .page_container {
+body.lireate-contacts-body:has(.lireate-contacts-page) .page_container {
+  background: transparent !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: none !important;
+}
+
+body.lireate-contacts-body .page_container:not(:has(.lireate-contacts-page)) {
   background: transparent !important;
   min-height: 0 !important;
   height: 0 !important;
@@ -606,4 +616,58 @@ section#lireate-contacts .lireate-contacts-page button {
 
 .lireate-contacts-team-name {
   font-family: var(--lc-font-ui) !important;
+}
+
+.lireate-contacts-form label {
+  display: block;
+  margin: 0 0 6px;
+  color: rgba(241, 245, 249, 0.88);
+  font-size: 14px;
+}
+.lireate-contacts-form .lireate-contacts-input {
+  width: 100%;
+  margin-bottom: 12px;
+}
+.lireate-contacts-form .lx-consent,
+.lireate-contacts-consent {
+  display: block;
+  margin: 8px 0 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(241, 245, 249, 0.8);
+}
+.lireate-contacts-social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.lireate-contacts-social-item {
+  display: block;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.08);
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.lireate-contacts-social-name {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #fff !important;
+}
+.lireate-contacts-social-desc {
+  display: block;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(241, 245, 249, 0.78) !important;
+}
+@media (max-width: 760px) {
+  .lireate-contacts-social-grid { grid-template-columns: 1fr; }
+}
+body.lireate-contacts-body:has(.lireate-contacts-page) .title-ap,
+body.lireate-contacts-body:has(.lireate-contacts-page) .breadcrumb_wrap,
+body.lireate-contacts-body:has(.lireate-contacts-page) #personsSlide {
+  display: none !important;
 }

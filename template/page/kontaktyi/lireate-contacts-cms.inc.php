@@ -20,8 +20,6 @@ try {
     $lireate_contacts_render_ok = true;
 } catch (Exception $e) {
     error_log('lireate-contacts: ' . $e->getMessage());
-} catch (Error $e) {
-    error_log('lireate-contacts: ' . $e->getMessage());
 }
 
 if (!$lireate_contacts_render_ok) {
