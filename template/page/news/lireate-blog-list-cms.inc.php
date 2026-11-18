@@ -47,8 +47,6 @@ try {
     $lireate_blog_list_render_ok = true;
 } catch (Exception $e) {
     error_log('lireate-blog-list: ' . $e->getMessage());
-} catch (Error $e) {
-    error_log('lireate-blog-list: ' . $e->getMessage());
 }
 
 if (!$lireate_blog_list_render_ok) {
