@@ -395,7 +395,6 @@
 .lx-patent-tool .lx-main-shell,
 .lx-patent-catalog .lireate-svc-page {
   overflow-x: hidden;
-  max-width: 100%;
 }
 .lx-patent-tool .lx-wordmark-preview {
   min-height: 120px;
