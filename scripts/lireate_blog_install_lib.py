@@ -1546,19 +1546,18 @@ def stage_service_diag_tree(sandbox, office_repo):
         target = svc_dst / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(path), str(target))
-    messenger_names = DOCROOT_MESSENGER_BUNDLE_NAMES
     if shared_src.is_dir():
         docroot_shared.mkdir(parents=True, exist_ok=True)
-        for name in messenger_names:
-            src = shared_src / name
-            if src.is_file():
-                shutil.copy2(str(src), str(docroot_shared / name))
-        pages_shared = sandbox / "pages/services/_shared"
+        pages_shared = sandbox / "pages" / "services" / "_shared"
         pages_shared.mkdir(parents=True, exist_ok=True)
-        for name in messenger_names:
-            src = shared_src / name
-            if src.is_file():
-                shutil.copy2(str(src), str(pages_shared / name))
+        for path in shared_src.rglob("*"):
+            if not path.is_file():
+                continue
+            rel = path.relative_to(shared_src)
+            for dest_root in (docroot_shared, pages_shared):
+                target = dest_root / rel
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(path), str(target))
 
 
 def resolve_service_diag_index(sandbox, office_repo):

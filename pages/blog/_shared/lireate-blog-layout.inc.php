@@ -1,18 +1,6 @@
 <?php
 /**
- * Разметка статьи блога (двухколоночный layout).
- *
- * Ожидаемые переменные:
- * $lireate_blog_title (h1)
- * $lireate_blog_body_html (full_story / article fragment)
- * $lireate_blog_date_display — «19.10.2026»
- * $lireate_blog_date_iso — опционально
- * $lireate_blog_author — опционально
- * $lireate_blog_tag, $lireate_blog_tag_url — опционально
- * $lireate_blog_current_url — путь /slug/ для related
- * $lireate_blog_description — для JSON-LD
- * $lireate_blog_canonical — полный URL
- * $lireate_blog_cover_html — опционально, обложка (первое img из /template/images/blog/)
+ * Разметка статьи блога (двухколоночный layout) — SEO schema via lireate-seo-schema.inc.php.
  */
 require_once __DIR__ . '/lireate-blog-load.php';
 lireate_blog_require_lib();
@@ -43,22 +31,18 @@ $lb_assets = LIREATE_BLOG_ASSETS_BASE;
 $lb_v = LIREATE_BLOG_TEMPLATE_VERSION;
 $lb_max = LIREATE_BLOG_MAX_CHANNEL_URL;
 
-$lb_jsonld = lireate_blog_article_jsonld(
-    array(
-        'title' => $lb_title,
-        'description' => $lb_desc,
-        'author' => $lb_author,
-        'author_role' => $lb_author_role,
-        'date_display' => $lb_date_display,
-        'date_iso' => $lb_date_iso,
-        'canonical' => $lb_canonical,
-    )
-);
-$lb_jsonld = array_filter(
-    $lb_jsonld,
-    function ($v) {
-        return $v !== null && $v !== '';
-    }
+$lb_schema_meta = array(
+    'title' => $lb_title,
+    'description' => $lb_desc,
+    'author' => $lb_author,
+    'author_role' => $lb_author_role,
+    'author_url' => (function_exists('lireate_seo_schema_public_base') ? lireate_seo_schema_public_base() : '') . '/avtor/',
+    'date_display' => $lb_date_display,
+    'date_iso' => $lb_date_iso,
+    'date_modified_iso' => $lb_date_iso,
+    'canonical' => $lb_canonical,
+    'body_html' => $lb_body,
+    'cover_html' => $lb_cover_html,
 );
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -136,7 +120,7 @@ $lb_jsonld = array_filter(
             </picture>
             <?php endif; ?>
             <div class="lireate-blog-author-text">
-              <p class="lireate-blog-author-name"><?php echo lireate_blog_h($lb_author); ?></p>
+              <p class="lireate-blog-author-name"><a class="lireate-blog-author-link" href="/avtor/"><?php echo lireate_blog_h($lb_author); ?></a></p>
               <?php if ($lb_author_role !== '') : ?>
               <p class="lireate-blog-author-role"><?php echo lireate_blog_h($lb_author_role); ?></p>
               <?php endif; ?>
@@ -208,10 +192,30 @@ $lb_jsonld = array_filter(
           $ccover = lireate_blog_resolve_cover_url($ccover_raw);
           $cexcerpt = isset($card['excerpt']) ? $card['excerpt'] : '';
           $cover_fallback = ($ccover === '');
-          $cover_style = $cover_fallback ? '' : 'background-image:url(\'' . lireate_blog_h($ccover) . '\')';
+          $cover_webp = '';
+          if ($ccover !== '') {
+              $pathOnly = parse_url($ccover, PHP_URL_PATH);
+              if ($pathOnly === null || $pathOnly === false) {
+                  $pathOnly = $ccover;
+              }
+              if (preg_match('#^/template/images/blog/#', $pathOnly)) {
+                  $abs = (isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/') : '') . $pathOnly;
+                  if ($abs !== '' && is_file($abs)) {
+                      $stem = preg_replace('/\.[a-z0-9]+$/i', '', $abs);
+                      if (is_file($stem . '-preview480.webp')) {
+                          $cover_webp = str_replace(basename($pathOnly), basename($stem) . '-preview480.webp', $pathOnly);
+                      }
+                  }
+              }
+          }
           ?>
       <article class="lireate-blog-card">
-        <a class="lireate-blog-card-cover<?php echo $cover_fallback ? ' lireate-blog-card-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($curl); ?>"<?php echo $cover_style !== '' ? ' style="' . $cover_style . '"' : ''; ?>>
+        <a class="lireate-blog-card-cover<?php echo $cover_fallback ? ' lireate-blog-card-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($curl); ?>">
+          <?php if (!$cover_fallback && $cover_webp !== '') : ?>
+          <img src="<?php echo lireate_blog_h($cover_webp); ?>" alt="" loading="lazy" decoding="async" width="480" height="270" class="lireate-blog-card-cover-img" />
+          <?php elseif (!$cover_fallback) : ?>
+          <img src="<?php echo lireate_blog_h($ccover); ?>" alt="" loading="lazy" decoding="async" width="480" height="270" class="lireate-blog-card-cover-img" />
+          <?php endif; ?>
           <?php if ($cover_fallback) : ?><span class="lireate-blog-card-cover-brand" aria-hidden="true">LIREATE</span><?php endif; ?>
           <?php if ($ctag !== '') : ?><span class="lireate-blog-card-tag"><?php echo lireate_blog_h($ctag); ?></span><?php endif; ?>
         </a>
@@ -228,4 +232,7 @@ $lb_jsonld = array_filter(
   <?php endif; ?>
 </div>
 <script src="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-article.js?v=<?php echo lireate_blog_h($lb_v); ?>" defer></script>
-<script type="application/ld+json"><?php echo json_encode($lb_jsonld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
+<?php
+if (function_exists('lireate_seo_render_article_schema_scripts')) {
+    lireate_seo_render_article_schema_scripts($lb_schema_meta);
+}
