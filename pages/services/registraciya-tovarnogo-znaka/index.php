@@ -89,13 +89,16 @@ $schema_graph = [
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
     <a class="lx-logo" href="/">LIREATE</a>
-    <nav class="lx-nav-links" aria-label="Разделы страницы">
+    <nav class="lx-nav-links lx-nav-links--pilot" aria-label="Разделы страницы">
       <a href="#journey">Путь</a>
       <a href="#included">Что входит</a>
       <a href="#program">Этапы</a>
       <a href="#terms">Сроки</a>
-      <a href="#faq">FAQ</a>
       <a href="#pricing">Стоимость</a>
+      <a href="#cases">Кейсы</a>
+      <a href="#refusal-1493">Отказ и возражения</a>
+      <a href="#team">Команда</a>
+      <a href="#faq">FAQ</a>
       <a href="#contact">Заявка</a>
     </nav>
     <a class="lx-btn lx-btn-primary" href="#contact">Консультация</a>
@@ -109,21 +112,20 @@ $schema_graph = [
 <section class="lx-hero lx-hero--landing lx-hero--landing-v2" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="registration" aria-hidden="true"></div>
   <div>
-    <p class="lx-hero-offer-badge">Роспатент · под ключ</p>
-    <p class="lx-eyebrow">LIREATE · товарные знаки</p>
+    <p class="lx-eyebrow">LIREATE · товарные знаки · под ключ</p>
     <h1>Регистрация товарного знака под ключ в Роспатенте</h1>
     <p class="lx-hero-lead">Проверим название или логотип, подберём классы МКТУ и доведём заявку до решения Роспатента — с прозрачной сметой пошлин и сопровождения.</p>
-    <div class="lx-tags" aria-label="Темы услуги"><span>ст. 1477 ГК РФ</span><span>п. 2.1 · 2.4 · 2.11</span><span>Роспатент</span><span>логотип и название</span></div>
+    <p class="lx-hero-trust-line">Проверка по реестру до подачи · Смета: пошлины и сопровождение отдельно · Решение принимает Роспатент</p>
     <div class="lx-hero-cta-row">
       <a class="lx-btn lx-btn-primary" href="#contact" data-lx-tz-form-open="hero_primary">Получить расчёт стоимости</a>
     </div>
-    <div class="lx-hero-secondary" aria-label="Связаться с LIREATE">
+    <div class="lx-hero-secondary lx-hero-secondary--desk" aria-label="Связаться с LIREATE">
       <a class="lx-pilot-contact-chip" id="hero-telegram" href="<?php echo htmlspecialchars($lx_hero_tg_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" data-lx-tz-messenger="telegram" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_telegramm"><span>Telegram</span></a>
       <a class="lx-pilot-contact-chip" id="hero-whatsapp" href="<?php echo htmlspecialchars($lx_hero_wa_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-tz-messenger="whatsapp" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher"><span>WhatsApp</span></a>
       <a class="lx-pilot-contact-chip lx-pilot-contact-chip--phone" href="<?php echo htmlspecialchars($lireate_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lireate_phone_display, ENT_QUOTES, 'UTF-8'); ?></a>
       <a class="lx-pilot-contact-chip" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max" data-lx-tz-messenger="max" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher"><span>MAX</span></a>
     </div>
-    <p class="lx-hero-caption">Чтобы начать, пришлите название бренда и кратко опишите ваши товары или услуги. В смете отдельно покажем госпошлины и стоимость сопровождения.</p>
+    <p class="lx-hero-caption">Пришлите название бренда и кратко опишите товары или услуги — в смете отдельно покажем пошлины и сопровождение.</p>
     <div class="lx-hero-mini">
       <div class="lx-mini-stat"><strong class="lx-stat-value" data-lx-count-end="35000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">35 000 ₽</strong><span>пошлины за базовый цикл, 1 класс</span></div>
       <div class="lx-mini-stat"><strong class="lx-stat-value">18 мес. 2 нед.</strong><span>максимум по регламенту</span></div>
