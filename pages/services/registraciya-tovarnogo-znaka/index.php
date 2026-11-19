@@ -77,22 +77,25 @@ $schema_graph = [
   <meta name="twitter:description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-dark.css', $lx_service_asset_dir); ?>">
   <link rel="stylesheet" href="assets/registraciya-landing.css">
+  <link rel="stylesheet" href="assets/registraciya-pilot-v2.css">
   <link rel="stylesheet" href="/template/css/lireate-service-mobile-bar.css?v=20261111svc1" /><!-- lireate_design_service_mobile_bar_css_v1 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
-<body class="lireate-svc-body registraciya-landing-body">
+<body class="lireate-svc-body registraciya-landing-body registraciya-pilot-v2">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
     <a class="lx-logo" href="/">LIREATE</a>
-    <nav class="lx-nav-links" aria-label="Разделы страницы">
-      <a href="#when">Когда нужна</a>
+    <nav class="lx-nav-links lx-nav-links--pilot" aria-label="Разделы страницы">
+      <a href="#journey">Путь</a>
+      <a href="#included">Что входит</a>
       <a href="#program">Этапы</a>
-      <a href="#pricing">Стоимость</a>
       <a href="#terms">Сроки</a>
+      <a href="#pricing">Стоимость</a>
+      <a href="#cases">Кейсы</a>
       <a href="#refusal-1493">Отказ и возражения</a>
       <a href="#team">Команда</a>
       <a href="#faq">FAQ</a>
@@ -106,25 +109,23 @@ $schema_graph = [
 
 <?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
 
-<section class="lx-hero lx-hero--landing" id="top">
-  <div class="lx-hero-mascot-slot" data-lx-mascot="registration"></div>
+<section class="lx-hero lx-hero--landing lx-hero--landing-v2" id="top">
+  <div class="lx-hero-mascot-slot" data-lx-mascot="registration" aria-hidden="true"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · под ключ</p>
     <h1>Регистрация товарного знака под ключ в Роспатенте</h1>
-    <p class="lx-hero-lead">Проверим название или логотип, подберём классы под ваши товары и услуги и сопроводим заявку до решения Роспатента.</p>
-    <div class="lx-tags" aria-label="Темы услуги"><span>ст. 1477 ГК РФ</span><span>п. 2.1 · 2.4 · 2.11</span><span>Роспатент</span><span>логотип и название</span></div>
-    <div class="lx-hero-cta">
+    <p class="lx-hero-lead">Проверим название или логотип, подберём классы МКТУ и доведём заявку до решения Роспатента — с прозрачной сметой пошлин и сопровождения.</p>
+    <p class="lx-hero-trust-line">Проверка по реестру до подачи · Смета: пошлины и сопровождение отдельно · Решение принимает Роспатент</p>
+    <div class="lx-hero-cta-row">
       <a class="lx-btn lx-btn-primary" href="#contact" data-lx-tz-form-open="hero_primary">Получить расчёт стоимости</a>
-      <div class="lx-hero-channel-pick">
-        <button type="button" class="lx-btn lx-btn-ghost lx-hero-channel-toggle" id="hero-messenger-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="hero-messenger-menu">Написать в мессенджер</button>
-        <ul class="lx-hero-channel-menu" id="hero-messenger-menu" role="menu" aria-labelledby="hero-messenger-toggle" hidden>
-          <li role="none"><a role="menuitem" id="hero-telegram" class="lx-hero-channel-link" href="<?php echo htmlspecialchars($lx_hero_tg_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" data-lx-tz-messenger="telegram" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_telegramm">Telegram</a></li>
-          <li role="none"><a role="menuitem" id="hero-whatsapp" class="lx-hero-channel-link" href="<?php echo htmlspecialchars($lx_hero_wa_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-tz-messenger="whatsapp" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher">WhatsApp</a></li>
-          <li role="none"><a role="menuitem" id="hero-max" class="lx-hero-channel-link lx-hero-channel-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max" data-lx-tz-messenger="max" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher">MAX</a></li>
-        </ul>
-      </div>
     </div>
-    <p class="lx-hero-caption">Чтобы начать, пришлите название бренда и кратко опишите ваши товары или услуги. В смете отдельно покажем госпошлины и стоимость сопровождения.</p>
+    <div class="lx-hero-secondary lx-hero-secondary--desk" aria-label="Связаться с LIREATE">
+      <a class="lx-pilot-contact-chip" id="hero-telegram" href="<?php echo htmlspecialchars($lx_hero_tg_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" data-lx-tz-messenger="telegram" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_telegramm"><span>Telegram</span></a>
+      <a class="lx-pilot-contact-chip" id="hero-whatsapp" href="<?php echo htmlspecialchars($lx_hero_wa_href, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-tz-messenger="whatsapp" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher"><span>WhatsApp</span></a>
+      <a class="lx-pilot-contact-chip lx-pilot-contact-chip--phone" href="<?php echo htmlspecialchars($lireate_phone_tel, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($lireate_phone_display, ENT_QUOTES, 'UTF-8'); ?></a>
+      <a class="lx-pilot-contact-chip" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max" data-lx-tz-messenger="max" data-lx-tz-placement="hero" data-lx-ym-goal="perehod_v_messendzher"><span>MAX</span></a>
+    </div>
+    <p class="lx-hero-caption">Пришлите название бренда и кратко опишите товары или услуги — в смете отдельно покажем пошлины и сопровождение.</p>
     <div class="lx-hero-mini">
       <div class="lx-mini-stat"><strong class="lx-stat-value" data-lx-count-end="35000" data-lx-count-sep="space" data-lx-count-suffix=" ₽">35 000 ₽</strong><span>пошлины за базовый цикл, 1 класс</span></div>
       <div class="lx-mini-stat"><strong class="lx-stat-value">18 мес. 2 нед.</strong><span>максимум по регламенту</span></div>
@@ -148,6 +149,70 @@ $schema_graph = [
         <li><span class="lx-route-node">ТЗ</span><span class="lx-route-label">свидетельство</span></li>
       </ol>
     </div>
+  </div>
+</section>
+
+<section class="lx-section lx-pilot-reveal lx-pilot-journey" id="journey">
+  <span class="lx-section-label">Путь клиента</span>
+  <h2>Как проходит регистрация товарного знака</h2>
+  <p>Четыре шага от брифа до свидетельства — вы принимаете ключевые решения, мы ведём документы и переписку с Роспатентом.</p>
+  <div class="lx-pilot-journey-track" role="list">
+    <article class="lx-pilot-step" role="listitem">
+      <span class="lx-pilot-step-num" aria-hidden="true">01</span>
+      <h3>Бриф и проверка</h3>
+      <p>Поиск по реестру, оценка рисков и подбор классов МКТУ до уплаты пошлин.</p>
+    </article>
+    <article class="lx-pilot-step" role="listitem">
+      <span class="lx-pilot-step-num" aria-hidden="true">02</span>
+      <h3>Подача заявки</h3>
+      <p>Подготовка документов, подача в Роспатент и контроль платежей по п.&nbsp;2.1 и 2.4.</p>
+    </article>
+    <article class="lx-pilot-step" role="listitem">
+      <span class="lx-pilot-step-num" aria-hidden="true">03</span>
+      <h3>Экспертиза</h3>
+      <p>Ответы на запросы экспертизы по существу — до решения о регистрации или отказе.</p>
+    </article>
+    <article class="lx-pilot-step" role="listitem">
+      <span class="lx-pilot-step-num" aria-hidden="true">04</span>
+      <h3>Свидетельство</h3>
+      <p>Оплата п.&nbsp;2.11, запись в реестре и электронное свидетельство на знак.</p>
+    </article>
+  </div>
+  <div class="lx-hero-cta" style="margin-top:22px;margin-bottom:0;">
+    <a class="lx-btn lx-btn-primary" href="#contact" data-lx-tz-form-open="journey">Запросить расчёт по моему знаку</a>
+    <a class="lx-btn lx-btn-ghost" href="#program">Подробнее об этапах</a>
+  </div>
+</section>
+
+<section class="lx-section lx-pilot-reveal" id="included">
+  <span class="lx-section-label">Что входит</span>
+  <h2>Сопровождение «под ключ» в LIREATE</h2>
+  <p>В договоре фиксируем состав работ; пошлины Роспатента и вознаграждение LIREATE — отдельными строками в смете.</p>
+  <div class="lx-pilot-included-grid">
+    <article class="lx-pilot-included-card">
+      <h3>До подачи</h3>
+      <ul>
+        <li>проверка обозначения и заключение о рисках;</li>
+        <li>подбор классов МКТУ и перечень товаров и услуг;</li>
+        <li>подготовка изображения знака по правилам подачи.</li>
+      </ul>
+    </article>
+    <article class="lx-pilot-included-card">
+      <h3>В процедуре</h3>
+      <ul>
+        <li>подача заявки и сопровождение формальной экспертизы;</li>
+        <li>контроль сроков и реквизитов пошлин;</li>
+        <li>переписка с экспертизой и проекты ответов.</li>
+      </ul>
+    </article>
+    <article class="lx-pilot-included-card">
+      <h3>После решения</h3>
+      <ul>
+        <li>сопровождение оплаты п.&nbsp;2.11 и получения свидетельства;</li>
+        <li>пояснение отказа и варианты, если Роспатент откажет;</li>
+        <li>напоминание о продлении — по договорённости.</li>
+      </ul>
+    </article>
   </div>
 </section>
 
@@ -317,6 +382,24 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 
   <h3>Ускоренная процедура</h3>
   <p>Ускорить саму экспертизу Роспатента платным способом нельзя в том смысле, который обычно подразумевают («заплатил — получил быстрее»). Допустим поиск ФИПС, о котором сказано выше: результаты поиска могут сократить срок первой корреспонденции экспертизы по существу, но это не замена экспертизе и не гарантия срока. Нам важно, чтобы вы не заказали «срочную регистрацию за 2 месяца» и не обнаружили, что такого срока в регламенте нет.</p>
+
+  <aside class="lx-mid-cta lx-glass lx-reveal" aria-label="Заявка после блока сроков" style="margin-top:28px;padding:22px 24px;">
+    <p class="lx-eyebrow" style="margin:0 0 8px;">Сроки по регламенту</p>
+    <h3 style="margin:0 0 10px;font-size:clamp(1.05rem,2.5vw,1.25rem);color:#f1f5f9;font-weight:800;">Нужен ориентир под ваш знак?</h3>
+    <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:#94a3b8;">После брифа назовём диапазон сроков без обещания фиксированной даты — решение принимает Роспатент.</p>
+    <div class="lx-hero-cta" style="margin-bottom:0;">
+      <a class="lx-btn lx-btn-primary" href="#contact" data-lx-tz-form-open="terms">Уточнить сроки и смету</a>
+      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-tz-messenger="whatsapp" data-lx-tz-placement="terms" data-lx-ym-goal="perehod_v_messendzher"><span>WhatsApp</span></a>
+    </div>
+  </aside>
+</section>
+
+<section class="lx-section lx-pilot-reveal" id="faq">
+  <span class="lx-section-label">FAQ</span>
+  <h2>Вопросы о регистрации товарного знака</h2>
+<?php foreach ($faq_entities as $faq_pair) : ?>
+  <details class="lx-faq lx-faq--pilot"><summary><?php echo htmlspecialchars($faq_pair[0], ENT_QUOTES, 'UTF-8'); ?></summary><p class="lx-faq-body"><?php echo htmlspecialchars($faq_pair[1], ENT_QUOTES, 'UTF-8'); ?></p></details>
+<?php endforeach; ?>
 </section>
 
 <section class="lx-section lx-reveal" id="risks">
@@ -373,14 +456,6 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 
   <h3>Возражение на заявку в порядке ст. 1493</h3>
   <p>Если речь о <strong>чужой</strong> заявке — это обращение по ст. 1493 ГК РФ, а не ответ на отказ по вашей. Срок — до решения о регистрации чужого знака. Мы оцениваем сходство и однородность и готовим документы; см. <a href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/">услугу возражения</a>.</p>
-</section>
-
-<section class="lx-section lx-reveal" id="faq">
-  <span class="lx-section-label">FAQ</span>
-  <h2>Вопросы о регистрации товарного знака</h2>
-<?php foreach ($faq_entities as $faq_pair) : ?>
-  <details class="lx-faq"><summary><?php echo htmlspecialchars($faq_pair[0], ENT_QUOTES, 'UTF-8'); ?></summary><p><?php echo htmlspecialchars($faq_pair[1], ENT_QUOTES, 'UTF-8'); ?></p></details>
-<?php endforeach; ?>
 </section>
 
 <aside class="lx-bottom-cta lx-glass lx-reveal" aria-label="Заявка на сопровождение регистрации" style="margin-top:40px;padding:28px 26px;border-radius:22px;">
@@ -440,6 +515,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 <script src="assets/registraciya-landing.js"></script>
+<script src="assets/registraciya-pilot-v2.js"></script>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
   <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
