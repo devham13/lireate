@@ -304,10 +304,8 @@ body.registraciya-landing-body .lx-reviews-rail {
   color: #f9a8d4;
 }
 
-/* Футер: без 100vw — иначе ~8px горизонтального overflow (полоса прокрутки) */
-body.registraciya-landing-body {
-  overflow-x: hidden;
-}
+/* Футер: без 100vw — иначе ~8px горизонтального overflow (полоса прокрутки).
+   Пилот v2: без overflow-x:hidden на body — см. registraciya-pilot-v2.css */
 
 /* Лента отзывов после цены — компактнее на лендинге */
 body.registraciya-landing-body #reviews.lx-section {
