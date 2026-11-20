@@ -30,6 +30,7 @@ jobs:
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
       PUPPETEER_SKIP_DOWNLOAD: 'true'
       SEO_CHROME_NO_SANDBOX: '1'
+      SEO_EXPECT_PATCH: seo-perf-20261120-v1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -47,6 +48,26 @@ jobs:
               assert '<h1' in html and 'патентное бюро' in html, 'Expected homepage was not served; stop before auditing a challenge or error page'
               assert '__rcpc' not in html, 'Hosting protection is blocking the runner'
           print('Public LIREATE homepage is available.')
+          PY
+      - name: Wait for the hosting CRON to publish the reviewed patch
+        run: |
+          python3 - <<'PY'
+          import os
+          import time
+          from urllib.request import urlopen
+          marker = 'content="' + os.environ['SEO_EXPECT_PATCH'] + '"'
+          for attempt in range(36):
+              with urlopen('https://lireate.ru/', timeout=30) as response:
+                  html = response.read().decode('utf-8', 'replace')
+              if marker in html:
+                  print('Reviewed performance patch is visible on the live homepage.')
+                  break
+              if '__rcpc' in html.lower() or '<h1' not in html.lower():
+                  raise SystemExit('Hosting protection or an unexpected page was served; no bypass attempted.')
+              if attempt == 35:
+                  raise SystemExit('Deployment marker is missing after 35 minutes; inspect the hosting CRON log.')
+              print('Waiting for the next hosting CRON cycle...', flush=True)
+              time.sleep(60)
           PY
       - name: Install pinned Unlighthouse dependencies
         working-directory: tools/seo/unlighthouse

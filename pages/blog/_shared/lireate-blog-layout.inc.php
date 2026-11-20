@@ -20,6 +20,8 @@ $lb_current = isset($lireate_blog_current_url) ? $lireate_blog_current_url : '';
 $lb_desc = isset($lireate_blog_description) ? $lireate_blog_description : '';
 $lb_canonical = isset($lireate_blog_canonical) ? $lireate_blog_canonical : '';
 $lb_cover_html = isset($lireate_blog_cover_html) ? $lireate_blog_cover_html : '';
+require_once __DIR__ . '/lireate-blog-performance.inc.php';
+$lb_cover_html = lireate_blog_performance_cover($lb_cover_html);
 $lb_collage_mode = !empty($lireate_blog_collage_mode);
 $lb_collage_hero = isset($lireate_blog_collage_hero_html) ? $lireate_blog_collage_hero_html : '';
 

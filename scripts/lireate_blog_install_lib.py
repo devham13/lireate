@@ -652,6 +652,7 @@ DOCROOT_MESSENGER_BUNDLE_NAMES = (
 )
 
 BLOG_SHARED_TO_TEMPLATE = (
+    "lireate-blog-performance.inc.php",
     "lireate-blog-config.php",
     "lireate-blog-load.php",
     "lireate-blog-lib.php",

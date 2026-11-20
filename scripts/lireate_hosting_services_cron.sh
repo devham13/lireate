@@ -126,6 +126,13 @@ PY
   exit 0
 fi
 
+if [[ "${LIREATE_ALLOW_PUBLISH:-}" == "yes" ]]; then
+  if ! "$PY" "$OFFICE_REPO/scripts/lireate_hosting_performance_patch.py" \
+      --docroot "$DOCROOT" --backup-root "$AUTOPUB_HOME/backups/performance" --apply; then
+    echo "STATUS: WARN — performance patch failed preflight; inspect the log, service publishing continues"
+  fi
+fi
+
 readarray -t CANDIDATES < <(
   "$PY" - <<'PY' "$OFFICE_REPO" "$DOCROOT" "$STATE_FILE"
 import sys
