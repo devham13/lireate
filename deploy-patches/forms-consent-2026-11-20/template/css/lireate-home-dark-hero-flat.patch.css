@@ -1,10 +1,16 @@
-/* Paste at end of lireate-home-dark.css if hero v4 still shows gradient substrate */
-body.lireate-home-dark .main-screen.lireate-hero-v4::after {
+/* Paste at end of lireate-home-dark.css (и при необходимости lireate-cms-page-dark.css): hero без «рамки» на общем фоне */
+body.lireate-home-dark .main-screen.lireate-hero-v4::after,
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4::after {
   display: none !important;
   content: none !important;
 }
-body.lireate-home-dark .main-screen.lireate-hero-v4 {
+body.lireate-home-dark .main-screen.lireate-hero-v4,
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4 {
   background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
   overflow: visible;
   contain: none;
 }
