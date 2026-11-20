@@ -36,6 +36,26 @@ def lint_php_files():
     return errors
 
 
+def _consent_patch_already_applied(js_text):
+    return (
+        "lireate-consent-marketing-combined" in js_text
+        and "function syncMarketingCombined" in js_text
+        and "function bindMarketingCombined" in js_text
+    )
+
+
+def _verify_main_js_syntax(main_path):
+    check = _run(["node", "--check", str(main_path)])
+    if check.returncode != 0:
+        return ["main.js: {0}".format(check.stderr.strip())]
+    text = main_path.read_text(encoding="utf-8")
+    if "// pragma: allowlist secret" in text:
+        return ["main.js: forbidden pragma comment inside call"]
+    if not _consent_patch_already_applied(text):
+        return ["main.js: missing combined-consent markers after patch"]
+    return []
+
+
 def patch_main_js_smoke():
     if not MAIN_PATCH.is_file():
         return []
@@ -49,18 +69,17 @@ def patch_main_js_smoke():
         main_path = Path(tmp) / "template" / "js" / "main.js"
         main_path.parent.mkdir(parents=True, exist_ok=True)
         main_path.write_text(baseline, encoding="utf-8")
+        if _consent_patch_already_applied(baseline):
+            return _verify_main_js_syntax(main_path)
         patch_proc = _run(["patch", "-p0", "--forward", "-i", str(MAIN_PATCH)], cwd=str(tmp))
+        out = (patch_proc.stderr or patch_proc.stdout or "").strip()
         if patch_proc.returncode != 0:
-            return [
-                "main.js.consent.patch apply failed: {0}".format(
-                    (patch_proc.stderr or patch_proc.stdout).strip()
-                )
-            ]
-        check = _run(["node", "--check", str(main_path)])
-        if check.returncode != 0:
-            return ["patched main.js: {0}".format(check.stderr.strip())]
-        if "// pragma: allowlist secret" in main_path.read_text(encoding="utf-8"):
-            return ["patched main.js: forbidden pragma comment inside call"]
+            if "Reversed (or previously applied)" in out and _consent_patch_already_applied(
+                main_path.read_text(encoding="utf-8")
+            ):
+                return _verify_main_js_syntax(main_path)
+            return ["main.js.consent.patch apply failed: {0}".format(out)]
+        return _verify_main_js_syntax(main_path)
     return []
 
 
