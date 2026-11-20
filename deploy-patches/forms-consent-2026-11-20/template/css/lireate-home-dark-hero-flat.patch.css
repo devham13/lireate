@@ -1,0 +1,10 @@
+/* Paste at end of lireate-home-dark.css if hero v4 still shows gradient substrate */
+body.lireate-home-dark .main-screen.lireate-hero-v4::after {
+  display: none !important;
+  content: none !important;
+}
+body.lireate-home-dark .main-screen.lireate-hero-v4 {
+  background: transparent !important;
+  overflow: visible;
+  contain: none;
+}
