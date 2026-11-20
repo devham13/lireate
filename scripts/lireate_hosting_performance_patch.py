@@ -245,8 +245,9 @@ def apply_plan(docroot, plan, backup_root):
         (backup / 'manifest.json').write_text(json.dumps({'version': VERSION, 'files': records}, indent=2))
         applied = []
         try:
-            # Assets are published before templates start referring to them.
-            for rel in sorted(plan, key=lambda p: (p.suffix == '.php', str(p))):
+            # Publish assets and PHP helpers before templates refer to them.
+            templates = {'main.php', 'index.php', 'lireate-blog-layout.inc.php'}
+            for rel in sorted(plan, key=lambda p: (p.name in templates, str(p))):
                 os.replace(str(staged[rel]), str(safe_path(docroot, rel)))
                 applied.append(rel)
         except Exception:

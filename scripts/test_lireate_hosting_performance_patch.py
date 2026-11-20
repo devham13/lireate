@@ -4,6 +4,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lireate_hosting_performance_patch as patch
@@ -111,6 +112,20 @@ class PerformancePatchTests(unittest.TestCase):
             patch.apply_plan(self.root, plan, self.backups)
         self.assertEqual(self.main.read_text(), CMS)
         self.assertFalse((self.root / 'template/css/lireate-performance.css').exists())
+
+    @unittest.skipUnless(shutil.which('php'), 'PHP CLI available in CI/hosting')
+    def test_helper_is_published_before_layout_can_require_it(self):
+        folder = Path('pages/blog/_shared')
+        helper = folder / 'lireate-blog-performance.inc.php'
+        layout = folder / 'lireate-blog-layout.inc.php'
+        plan = {layout: b'<?php require __DIR__ . "/lireate-blog-performance.inc.php";', helper: b'<?php /* helper */'}
+        replace = patch.os.replace
+        def publish(source, destination):
+            if Path(destination).name == layout.name:
+                self.assertTrue((self.root / helper).is_file(), 'Helper must be live before its caller')
+            return replace(source, destination)
+        with mock.patch.object(patch.os, 'replace', side_effect=publish):
+            patch.apply_plan(self.root, plan, self.backups)
 
 
 if __name__ == '__main__':
