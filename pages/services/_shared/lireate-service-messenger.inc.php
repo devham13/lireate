@@ -89,13 +89,3 @@ if (!function_exists('lireate_service_bootstrap_messenger')) {
 }
 
 lireate_service_bootstrap_messenger();
-
-if (!function_exists('lireate_service_max_channel_url')) {
-    function lireate_service_max_channel_url()
-    {
-        if (defined('LIREATE_MAX_CHANNEL_URL')) {
-            return LIREATE_MAX_CHANNEL_URL;
-        }
-        return 'https://max.ru/channel_lireate';
-    }
-}

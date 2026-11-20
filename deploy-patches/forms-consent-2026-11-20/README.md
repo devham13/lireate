@@ -111,4 +111,4 @@ node --check template/js/main.js
 
 ## Страницы услуг (git → CRON)
 
-См. PR: `pages/services/<slug>/`, hero-max → `lireate_service_max_channel_url()`.
+См. PR: `pages/services/<slug>/`, hero-max → `defined('LIREATE_MAX_CHANNEL_URL') ? … : 'https://max.ru/channel_lireate'`.

@@ -313,9 +313,13 @@ body.lireate-cms-page-dark .main-screen.lireate-hero-v4::after {
 }
 body.lireate-home-dark .main-screen.lireate-hero-v4,
 body.lireate-cms-page-dark .main-screen.lireate-hero-v4 {
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
   overflow: visible;
   contain: none;
-  box-shadow: none;
 }
 
 body.lireate-cms-page-dark .lireate-hero-v4__btn--max,
