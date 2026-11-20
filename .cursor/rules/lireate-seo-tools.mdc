@@ -1,0 +1,13 @@
+---
+description: "SEO-аудит и доработка страниц Lireate: подключённые Marketing Skills, SEOnaut и Unlighthouse"
+alwaysApply: false
+---
+
+Для SEO-задач используй установленные навыки из `.cursor/skills/`: `seo-audit`,
+`site-architecture`, `schema`, `ai-seo`, `copy-editing`, `product-marketing`.
+Соблюдай `AGENTS.md`, роли офиса LIREATE и `shared/lireate-content-rules.md`.
+
+Настройка инструментов и команды: `tools/seo/README.ru.md`.
+SEOnaut проверяет технические факты, Unlighthouse — лабораторные показатели загрузки.
+Позиции, показы и спрос подтверждай данными поисковых кабинетов; не заменяй их баллами аудитора.
+Публичный HTML и сканирование сайта не дают разрешения менять продакшен.

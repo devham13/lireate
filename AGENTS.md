@@ -103,3 +103,15 @@
 Runtime handoff/fragments **не коммитить**.
 
 В коммит: `pages/services/<slug>/`, `pages/services/queue.md`, правила, `shared/published-pages.md` при изменении.
+
+## Установленные SEO-инструменты
+
+Marketing Skills находятся в `.cursor/skills/`: `seo-audit`, `site-architecture`,
+`schema`, `ai-seo`, `copy-editing`, `product-marketing`.
+Это дополнительные инструкции для SEO-ролей; основной пайплайн страниц услуг сохраняется.
+Исходная версия, контрольные суммы и лицензия: `tools/seo/marketing-skills.lock.json`
+и `tools/seo/MARKETING-SKILLS-LICENSE`.
+
+SEOnaut и Unlighthouse запускаются отдельно на Linux VPS, а не внутри PHP-хостинга REG.RU.
+Установка и проверка: `tools/seo/README.ru.md`.
+Отчёты, `.env`, база и `node_modules` — локальные данные, в Git не добавлять.

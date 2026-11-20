@@ -40,3 +40,8 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+
+# SEO toolkit runtime
+tools/seo/unlighthouse/reports/
+tools/seo/unlighthouse/.unlighthouse/
+tools/seo/*.log
