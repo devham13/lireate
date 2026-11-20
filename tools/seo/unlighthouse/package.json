@@ -1,0 +1,13 @@
+{
+  "name": "lireate-unlighthouse",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": { "node": ">=22.18.0" },
+  "scripts": {
+    "audit": "unlighthouse-ci --config-file ./unlighthouse.config.mjs --build-static",
+    "audit:smoke": "unlighthouse-ci --config-file ./unlighthouse.smoke.config.mjs --build-static",
+    "check": "node --check unlighthouse.config.mjs && node --check unlighthouse.smoke.config.mjs"
+  },
+  "dependencies": { "@unlighthouse/cli": "0.20.0" }
+}

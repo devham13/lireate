@@ -1,0 +1,61 @@
+name: lireate-seo-tools
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: seonaut
+      MYSQL_USER: seonaut
+      MYSQL_PASSWORD: ${SEONAUT_DATABASE_PASSWORD:?Run init-env.py first}
+      MYSQL_ROOT_PASSWORD: ${SEONAUT_ROOT_PASSWORD:?Run init-env.py first}
+    volumes:
+      - seonaut-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  seonaut:
+    image: ghcr.io/stjudewashere/seonaut@sha256:d18721b6c07f333694ebe241d06442827ad56e343d34103051a3e5028f1697d9
+    platform: linux/amd64
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${SEONAUT_PORT:-19000}:9000"
+    command: ["sh", "-c", "/bin/wait && /app/seonaut"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9000/signin"]
+      start_period: 15s
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    environment:
+      WAIT_HOSTS: db:3306
+      WAIT_TIMEOUT: 300
+      SEONAUT_SERVER_HOST: 0.0.0.0
+      SEONAUT_SERVER_PORT: 9000
+      SEONAUT_SERVER_URL: ${SEONAUT_SERVER_URL:-http://localhost:19000}
+      SEONAUT_DATABASE_SERVER: db
+      SEONAUT_DATABASE_PORT: 3306
+      SEONAUT_DATABASE_USER: seonaut
+      SEONAUT_DATABASE_DATABASE: seonaut
+      SEONAUT_DATABASE_PASSWORD: ${SEONAUT_DATABASE_PASSWORD:?Run init-env.py first}
+
+  unlighthouse:
+    profiles: [audit]
+    build:
+      context: ./unlighthouse
+    init: true
+    shm_size: 1gb
+    environment:
+      SEO_SITE_URL: ${SEO_SITE_URL:-https://lireate.ru}
+      SEO_REPORT_DIR: /reports/site
+    volumes:
+      - ./unlighthouse/reports:/reports
+
+volumes:
+  seonaut-db:

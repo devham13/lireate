@@ -1,0 +1,75 @@
+name: SEO toolkit checks
+
+on:
+  pull_request:
+    paths:
+      - '.cursor/skills/**'
+      - '.cursor/rules/lireate-seo-tools.mdc'
+      - 'tools/seo/**'
+      - '.github/workflows/seo-toolkit-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.cursor/skills/**'
+      - 'tools/seo/**'
+      - '.github/workflows/seo-toolkit-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  toolkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: tools/seo/unlighthouse/package-lock.json
+      - name: Install pinned Unlighthouse dependencies
+        run: npm ci --no-fund --no-audit
+        working-directory: tools/seo/unlighthouse
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Verify skills, settings and scripts
+        run: |
+          python3 tools/seo/verify-install.py
+          npm --prefix tools/seo/unlighthouse run check
+          python3 tools/seo/init-env.py
+          docker compose -f tools/seo/compose.yaml --env-file tools/seo/.env config --quiet
+      - name: Start SEOnaut and verify its interface
+        run: |
+          bash tools/seo/start.sh
+          curl --fail --silent --show-error --retry 10 --retry-delay 2 --retry-connrefused --retry-all-errors http://127.0.0.1:19000/signin -o "$RUNNER_TEMP/seonaut-login.html"
+          python3 -c 'import os;from pathlib import Path;t=(Path(os.environ["RUNNER_TEMP"])/"seonaut-login.html").read_text();assert "<form" in t.lower(), "Expected the SEOnaut login form"'
+      - name: Prepare local browser fixture
+        run: |
+          mkdir -p "$RUNNER_TEMP/seo-fixture"
+          python3 -c 'import os;from pathlib import Path;p=Path(os.environ["RUNNER_TEMP"])/"seo-fixture"/"index.html";p.write_text("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>SEO toolkit browser smoke check</title><meta name=\"description\" content=\"A local page for checking the Unlighthouse runtime.\"></head><body><main><h1>SEO toolkit browser smoke check</h1><p>This fixture checks report generation without crawling the production website.</p></main></body></html>")'
+          python3 -m http.server 19002 --bind 127.0.0.1 --directory "$RUNNER_TEMP/seo-fixture" > "$RUNNER_TEMP/seo-fixture.log" 2>&1 &
+          curl --fail --silent --retry 10 --retry-delay 1 --retry-connrefused http://127.0.0.1:19002/ -o /dev/null
+      - name: Run Unlighthouse browser smoke check
+        working-directory: tools/seo/unlighthouse
+        env:
+          SEO_SITE_URL: http://127.0.0.1:19002
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+          SEO_CHROME_NO_SANDBOX: '1'
+        run: |
+          npm run audit:smoke
+          test -f reports/smoke/index.html
+      - name: Validate Unlighthouse container build
+        run: docker compose -f tools/seo/compose.yaml --env-file tools/seo/.env build unlighthouse
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: unlighthouse-runtime-smoke
+          path: tools/seo/unlighthouse/reports/smoke/
+          retention-days: 7
+      - name: Stop test containers
+        if: always()
+        run: |
+          if test -f tools/seo/.env; then
+            docker compose -f tools/seo/compose.yaml --env-file tools/seo/.env down
+          fi
