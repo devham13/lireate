@@ -15,6 +15,7 @@ MESSENGER_SRC = REPO / "pages" / "services" / "_shared" / "lireate-messenger-url
 DATA_INDEX = REPO / "data" / "blog-articles-index.json"
 
 COPY_FILES = (
+    "lireate-blog-performance.inc.php",
     "lireate-blog-config.php",
     "lireate-blog-load.php",
     "lireate-blog-lib.php",

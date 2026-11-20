@@ -1,0 +1,70 @@
+name: Performance patch checks
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/*performance*'
+      - 'scripts/lireate_hosting_services_cron.sh'
+      - 'pages/blog/_shared/**'
+      - 'template/css/lireate-performance.css'
+      - 'template/js/lireate-performance.js'
+      - 'template/images/blog/*.webp'
+      - '.github/workflows/performance-fixes-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/*performance*'
+      - 'scripts/lireate_hosting_services_cron.sh'
+      - '.github/workflows/performance-fixes-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '5.6'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: tools/seo/unlighthouse/package-lock.json
+      - name: Check deployment safety and idempotence
+        run: |
+          python3 -m unittest scripts.test_lireate_hosting_performance_patch -v
+          node --check template/js/lireate-performance.js
+          bash -n scripts/lireate_hosting_services_cron.sh
+          php -l pages/blog/_shared/lireate-blog-performance.inc.php
+          php -l pages/blog/_shared/lireate-blog-layout.inc.php
+      - name: Install pinned browser test dependencies
+        run: npm ci --no-fund --no-audit
+        working-directory: tools/seo/unlighthouse
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Prepare and publish a local CMS fixture
+        run: |
+          python3 - <<'PY'
+          import os
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from test_lireate_hosting_performance_patch import CMS
+          from lireate_hosting_performance_patch import build_plan, apply_plan
+          root = Path(os.environ['RUNNER_TEMP']) / 'performance-fixture'
+          (root / 'template').mkdir(parents=True)
+          (root / 'template/main.php').write_text(CMS)
+          plan, _ = build_plan(root)
+          apply_plan(root, plan, root.parent / 'performance-backups')
+          assert not build_plan(root)[0], 'Second apply must not change the fixture'
+          PY
+          php -S 127.0.0.1:19003 -t "$RUNNER_TEMP/performance-fixture" > "$RUNNER_TEMP/performance-php.log" 2>&1 &
+          curl --fail --silent --retry 10 --retry-delay 1 --retry-connrefused http://127.0.0.1:19003/template/main.php -o /dev/null
+      - name: Verify SDK ordering, names, contrast and form submission in Chrome
+        run: node scripts/test_lireate_performance_browser.mjs
+        env:
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
