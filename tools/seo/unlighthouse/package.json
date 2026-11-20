@@ -7,7 +7,8 @@
   "scripts": {
     "audit": "unlighthouse-ci --config-file ./unlighthouse.config.mjs --build-static",
     "audit:smoke": "unlighthouse-ci --config-file ./unlighthouse.smoke.config.mjs --build-static",
-    "check": "node --check unlighthouse.config.mjs && node --check unlighthouse.smoke.config.mjs"
+    "audit:ci": "unlighthouse-ci --config-file ./unlighthouse.ci.config.mjs --build-static",
+    "check": "node --check unlighthouse.config.mjs && node --check unlighthouse.smoke.config.mjs && node --check unlighthouse.ci.config.mjs"
   },
   "dependencies": { "@unlighthouse/cli": "0.20.0" }
 }

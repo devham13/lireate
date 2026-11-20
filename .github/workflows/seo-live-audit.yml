@@ -1,0 +1,105 @@
+name: LIREATE live SEO audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'homepage: 1 URL; priorities: 8 URLs; sample: up to 25 URLs'
+        type: choice
+        default: priorities
+        options: [homepage, priorities, sample]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/seo-live-audit.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lireate-live-seo-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SEO_SITE_URL: https://lireate.ru
+      SEO_AUDIT_SCOPE: ${{ inputs.scope || 'priorities' }}
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+      SEO_CHROME_NO_SANDBOX: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: tools/seo/unlighthouse/package-lock.json
+      - name: Check public site availability without bypassing protection
+        run: |
+          python3 - <<'PY'
+          from urllib.request import urlopen
+          with urlopen('https://lireate.ru/', timeout=30) as response:
+              html = response.read().decode('utf-8', 'replace').lower()
+              assert response.status == 200, 'Site is not returning HTTP 200'
+              assert '<h1' in html and 'патентное бюро' in html, 'Expected homepage was not served; stop before auditing a challenge or error page'
+              assert '__rcpc' not in html, 'Hosting protection is blocking the runner'
+          print('Public LIREATE homepage is available.')
+          PY
+      - name: Install pinned Unlighthouse dependencies
+        working-directory: tools/seo/unlighthouse
+        run: npm ci --no-fund --no-audit
+      - name: Run mobile Lighthouse audit
+        working-directory: tools/seo/unlighthouse
+        run: npm run audit:ci
+      - name: Summarize verified reports
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path('tools/seo/unlighthouse/reports/ci')
+          result = root / 'ci-result.json'
+          if not result.exists():
+              raise SystemExit('No completed audit report. Check availability and audit logs.')
+          data = json.loads(result.read_text())
+          routes = data.get('routes', [])
+          expected = {'homepage': 1, 'priorities': 8}.get(os.environ['SEO_AUDIT_SCOPE'], 1)
+          assert len(routes) >= expected, f'Incomplete report: {len(routes)} of at least {expected} URLs'
+          reports = list(root.rglob('lighthouse.json'))
+          assert len(reports) >= len(routes), 'Raw Lighthouse reports are missing'
+          errors = []
+          for path in reports:
+              report = json.loads(path.read_text())
+              if report.get('runtimeError'):
+                  errors.append(str(report['runtimeError']))
+              status = report.get('audits', {}).get('http-status-code', {})
+              if status.get('score') == 0:
+                  errors.append(f'{report.get("finalDisplayedUrl", report.get("finalUrl"))}: failed HTTP status audit')
+          assert not errors, '\n'.join(errors)
+          lines = ['# Мобильный аудит LIREATE', '',
+                   'Лабораторный Lighthouse: один замер на URL. Это не позиции, трафик или полевые Core Web Vitals.', '',
+                   '| URL | Performance | Accessibility | Best practices | SEO | LCP | CLS |',
+                   '| --- | ---: | ---: | ---: | ---: | ---: | ---: |']
+          for route in routes:
+              scores = [str(round(route['categories'][key]['score'] * 100)) for key in ['performance', 'accessibility', 'best-practices', 'seo']]
+              metrics = route.get('metrics', {})
+              lcp = metrics.get('largest-contentful-paint', {}).get('displayValue', '—')
+              cls = metrics.get('cumulative-layout-shift', {}).get('displayValue', '—')
+              lines.append('| https://lireate.ru' + route['path'] + ' | ' + ' | '.join(scores + [lcp, cls]) + ' |')
+          text = '\n'.join(lines) + '\n'
+          (root / 'summary.md').write_text(text)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
+              stream.write(text)
+          print(text)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lireate-mobile-seo-${{ github.run_id }}
+          path: tools/seo/unlighthouse/reports/ci/
+          if-no-files-found: warn
+          retention-days: 30
