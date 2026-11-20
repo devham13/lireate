@@ -16,6 +16,7 @@ import subprocess
 import tempfile
 from urllib.parse import urljoin, urlsplit
 from datetime import datetime, timezone
+from lireate_blog_install_lib import resolve_site_php_bin
 
 REPO = Path(__file__).resolve().parents[1]
 VERSION = 'seo-perf-20261120-v1'
@@ -213,7 +214,7 @@ def stage_file(path, data, mode=0o644):
 
 
 def apply_plan(docroot, plan, backup_root):
-    php = shutil.which('php')
+    php = shutil.which(resolve_site_php_bin())
     if not php:
         raise ValueError('PHP CLI is required to lint the staged PHP before applying')
     staged = {}
