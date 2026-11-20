@@ -37,6 +37,8 @@ jobs:
         run: cd scripts && python3 -m unittest test_lireate_patent_fees -q
       - name: consent marketing combined smoke
         run: node scripts/test_lireate_consent_marketing_combined.mjs
+      - name: deploy-patches forms-consent lint
+        run: python3 scripts/test_deploy_patches_forms_consent.py
       - name: patent section lint
         run: |
           python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi

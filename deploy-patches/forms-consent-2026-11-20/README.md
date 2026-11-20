@@ -2,54 +2,113 @@
 
 Дата: 2026-11-20. PHP 5.6, боевой корень: `~/www/public_html/`.
 
-Файлы в этом каталоге **не в git CMS-репозитории** (кроме `pages/services/`). Заливка по SSH с бэкапом оригинала.
+В git **нет** исходников части CMS-файлов (на проде отдаётся уже отрендеренный HTML). Ниже — **целиком готовые CSS** и **точечные правки** для PHP/JS. Перед заменой — бэкап оригинала на сервере.
 
-## Замена на сервере
+## Версии в `template/main.php` (после выкладки)
+
+Поднять query-string, чтобы сбросить кэш браузера/CDN:
+
+| Было | Стало (пример) |
+|------|----------------|
+| `main.js?v=20261117a07` | `main.js?v=20261120fc1` |
+| `lireate-home-hero.css?v=20261111hero2` | `lireate-home-hero.css?v=20261120fc1` |
+| `lireate-home-modal-lu.css?v=20261111mod2` | `lireate-home-modal-lu.css?v=20261120fc1` |
+| `lireate-home-dark.css?v=20261111design6b` | `lireate-home-dark.css?v=20261120fc1` |
+
+## Замена целыми файлами (из этого каталога)
 
 | Файл в патче | Путь на REG.RU |
 |---|---|
-| `template/js/main.js` | `~/www/public_html/template/js/main.js` |
-| `everest/pages/main/appearForm.php` | `~/www/public_html/everest/pages/main/appearForm.php` |
-| `template/page/home/lireate-home-hero.inc.php` | `~/www/public_html/template/page/home/lireate-home-hero.inc.php` |
-| `template/page/cms/lireate-cms-hero-facts.inc.php` | `~/www/public_html/template/page/cms/lireate-cms-hero-facts.inc.php` |
 | `template/css/lireate-home-hero.css` | `~/www/public_html/template/css/lireate-home-hero.css` |
 | `template/css/lireate-home-modal-lu.css` | `~/www/public_html/template/css/lireate-home-modal-lu.css` |
-| `template/css/lireate-home-dark-hero-flat.patch.css` | **добавить** в конец `template/css/lireate-home-dark.css` **или** подключить отдельным `<link>` после `lireate-home-dark.css` |
+| `template/css/lireate-home-dark-hero-flat.patch.css` | в **конец** `template/css/lireate-home-dark.css` **или** отдельный `<link>` после dark.css |
 
-Не трогать: `mail.php`, `consent-gate.php`, `inc/lireate-amo-lead.php`, корневой `index.php`, `.htaccess`.
+## `template/js/main.js` — только diff
 
-После выкладки CSS — сбросьте query-string в шаблоне (`?v=20261120consent`) для `lireate-home-hero.css` и `lireate-home-modal-lu.css`, если CDN/браузер держит кэш.
+```bash
+cd ~/www/public_html
+cp template/js/main.js template/js/main.js.bak-2026-11-20
+patch -p0 < /path/to/repo/deploy-patches/forms-consent-2026-11-20/template/js/main.js.consent.patch
+node --check template/js/main.js
+```
 
-## Что изменено
+Патч: `template/js/main.js.consent.patch` (две галочки, `syncMarketingCombined` / `bindMarketingCombined`, ветка `#double-form`). **Не** вставлять `// pragma` внутрь вызовов `window.ym(...)`.
 
-1. **Две галочки** вместо трёх: обязательный `consent_request`; необязательная объединённая — при отметке в POST уходят `consent_marketing_data=1` и `consent_ads=1` (для `double-form` — hidden в скрытой форме).
-2. **Модалка** `.modal-mail`: заголовок, плейсхолдеры, иконки, текст согласий — контраст WCAG AA.
-3. **Hero v4**: убран блок `.lireate-hero-v4__bg` (орбы/сетка), фон секции прозрачный — контент на общем фоне страницы; кнопка «Написать в Max» → `https://max.ru/channel_lireate`.
-4. **CMS hero facts**: то же (подложка + Max).
+## `template/page/home/lireate-home-hero.inc.php` (исходник на сервере)
 
-## Страницы услуг (git → хостинг CRON)
+1. **Удалить** целиком блок:
 
-Слаги с кнопкой Max в hero (репозиторий `pages/services/<slug>/`):
+```html
+<div class="lireate-hero-v4__bg" aria-hidden="true">
+  <span class="lireate-hero-v4__orb lireate-hero-v4__orb--a"></span>
+  ...
+  <span class="lireate-hero-v4__grid"></span>
+</div>
+```
 
-- `registraciya-tovarnogo-znaka` (pilot-v2: chip MAX уже был, hero Max → канал)
-- `registraciya-tovarnogo-znaka-v-kitae`
-- `prodlenie-tovarnogo-znaka`
-- `zashchita-avtorskih-prav`
-- `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`
-- `vozrazhenie-protiv-registracii-tovarnogo-znaka`
-- `proverka-tovarnogo-znaka` (CMS findtz)
-- `spory-po-ispolzovaniju-tovarnogo-znaka`
+2. **После** ссылки «Написать в Telegram» (класс `lireate-hero-v4__btn--ghost`, `href` на Telegram — часто `<?php echo … ?>` или константа из `lireate-home-url.inc.php`) **вставить** такую же по классу кнопку:
 
-Старые CMS-услуги на сервере (`dogovory` и др.) используют общий CMS hero include — правка `lireate-cms-hero-facts.inc.php`.
+```html
+      <a class="lireate-hero-v4__btn lireate-hero-v4__btn--ghost" href="https://max.ru/channel_lireate" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">Написать в Max</a>
+```
 
-## Проверка согласий (без отправки в amo)
+Остальной PHP (`<?php`, `include`, `echo` заголовков, `data-tomail`, href услуг) **не трогать**.
 
-1. Открыть главную, вызвать модалку «Бесплатная консультация».
-2. DevTools → Network, включить «Preserve log».
-3. Отметить только обязательную галочку → Submit → в payload **нет** `consent_marketing_data` / `consent_ads`.
-4. Добавить вторую (объединённую) галочку → снова Submit (можно «Stop» до ответа) → в `Form Data` **оба** поля `=1`.
-5. Для страницы с `double-form`: то же в hidden-форме (поля появляются в serialize скрытого `#double-form`).
+## `template/page/cms/lireate-cms-hero-facts.inc.php`
 
-## Скриншоты
+Те же шаги: удалить `.lireate-hero-v4__bg`, после Telegram — кнопка Max (как выше). CMS-кнопка «Интересно? Обращайтесь!» и пустой `<h1></h1>` с PHP-заполнением — без изменений.
 
-В PR: `artifacts/` — главная, CMS «Патентование изобретений», услуга `registraciya-tovarnogo-znaka-v-kitae`, модалка до/после (демо с патч-CSS).
+## `everest/pages/main/appearForm.php`
+
+**Заменить** два блока `form-agreement` (marketing + ads) на один:
+
+```html
+<div class="form-agreement">
+  <input type="checkbox" id="popup-consent-marketing-ads" value="1">
+  <label for="popup-consent-marketing-ads">Я согласен(-на) на <a href="/marketing-data-consent.html" target="_blank" rel="noopener" class="agreement-link">обработку контактных данных для рекламы</a> и <a href="/advertising-consent.html" target="_blank" rel="noopener" class="agreement-link">получение рекламы ЛИРЕЙТ</a> по телефону и, если указан, email.</label>
+  <input type="hidden" name="consent_marketing_data" id="popup-hidden-marketing" value="" disabled="disabled">
+  <input type="hidden" name="consent_ads" id="popup-hidden-ads" value="" disabled="disabled">
+</div>
+```
+
+**Перед** закрывающим `</script>` внизу файла добавить:
+
+```javascript
+    var popupMarketingAds = document.getElementById('popup-consent-marketing-ads');
+    var popupHiddenMarketing = document.getElementById('popup-hidden-marketing');
+    var popupHiddenAds = document.getElementById('popup-hidden-ads');
+    function syncPopupMarketingCombined() {
+        if (!popupMarketingAds || !popupHiddenMarketing || !popupHiddenAds) return;
+        if (popupMarketingAds.checked) {
+            popupHiddenMarketing.disabled = false;
+            popupHiddenAds.disabled = false;
+            popupHiddenMarketing.value = '1';
+            popupHiddenAds.value = '1';
+        } else {
+            popupHiddenMarketing.disabled = true;
+            popupHiddenAds.disabled = true;
+            popupHiddenMarketing.value = '';
+            popupHiddenAds.value = '';
+        }
+    }
+    if (popupMarketingAds) {
+        popupMarketingAds.addEventListener('change', syncPopupMarketingCombined);
+    }
+```
+
+Блок `consent_request` и PHP-обвязку формы **не менять**.
+
+## Не трогать
+
+`mail.php`, `consent-gate.php`, `inc/lireate-amo-lead.php`, корневой `index.php`, `.htaccess`.
+
+## Проверка согласий (без amo)
+
+1. Модалка на главной → DevTools → Network.
+2. Только первая галочка → нет `consent_marketing_data` / `consent_ads`.
+3. Вторая включена → оба `=1`.
+4. `#double-form`: hidden в скрытой форме синхронизируются так же.
+
+## Страницы услуг (git → CRON)
+
+См. PR: `pages/services/<slug>/`, hero-max → `lireate_service_max_channel_url()`.

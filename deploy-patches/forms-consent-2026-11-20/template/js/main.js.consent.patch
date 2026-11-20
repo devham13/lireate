@@ -1,0 +1,48 @@
+--- template/js/main.js
++++ template/js/main.js
+@@ -17,17 +17,17 @@
+         }).remove();
+         var target = form.find('button[type="submit"], button[id="submit"]').first();
+         if (!target.length) return;
+-        var container = $('<div class="lireate-consents" style="margin:12px 0;font-size:13px;line-height:1.45;text-align:left;color:inherit"></div>');
++        var container = $('<div class="lireate-consents" style="margin:12px 0;font-size:14px;line-height:1.5;text-align:left;color:#e8ecf5"></div>');
+         container.append('<input type="hidden" name="consent_form" value="legacy-' + index + '">');
+         container.append('<label style="display:block;margin:8px 0;font-weight:normal"><input type="checkbox" name="consent_request" value="1" required style="margin-right:6px">Я даю <a href="/processing-consent.html" target="_blank" rel="noopener">согласие на обработку персональных данных для ответа на обращение</a>. <a href="/politika_konfidencialnosti" target="_blank" rel="noopener">Политика конфиденциальности</a>.</label>');
+-        container.append('<label style="display:block;margin:8px 0;font-weight:normal"><input type="checkbox" name="consent_marketing_data" value="1" style="margin-right:6px">Я даю <a href="/marketing-data-consent.html" target="_blank" rel="noopener">согласие на обработку контактных данных для рекламы</a>.</label>');
+-        container.append('<label style="display:block;margin:8px 0;font-weight:normal"><input type="checkbox" name="consent_ads" value="1" style="margin-right:6px">Я согласен(-на) <a href="/advertising-consent.html" target="_blank" rel="noopener">получать рекламу ЛИРЕЙТ</a> по телефону и, если указан, email.</label>');
++        container.append('<label style="display:block;margin:8px 0;font-weight:normal"><input type="checkbox" class="lireate-consent-marketing-combined" value="1" style="margin-right:6px">Я согласен(-на) на <a href="/marketing-data-consent.html" target="_blank" rel="noopener">обработку контактных данных для рекламы</a> и <a href="/advertising-consent.html" target="_blank" rel="noopener">получение рекламы ЛИРЕЙТ</a> по телефону и, если указан, email.</label>');
+         container.append('<div class="lireate-consent-error" role="alert" style="display:none;color:#b00020">Подтвердите согласие для ответа на обращение.</div>');
+         if (form.attr('id') === 'double-form' && form.closest('.hidden').length) {
+             var visibleButton = form.closest('.hidden').siblings().find('[id="_bbut2"]').first();
+             if (visibleButton.length) {
+                 container.insertAfter(visibleButton);
+-                container.find('input[type="checkbox"]').on('change', function() {
++                bindMarketingCombined(container, form);
++                container.find('input[type="checkbox"][name]').on('change', function() {
+                     var name = this.name;
+                     form.find('input[name="' + name + '"]').remove();
+                     if (this.checked) form.append($('<input type="hidden">').attr('name', name).val('1'));
+@@ -35,8 +35,23 @@
+                 return;
+             }
+         }
++        bindMarketingCombined(container, form);
+         container.insertBefore(target);
+     });
++
++    function syncMarketingCombined(form, checked) {
++        form.find('input[name="consent_marketing_data"], input[name="consent_ads"]').remove();
++        if (checked) {
++            form.append($('<input type="hidden">').attr('name', 'consent_marketing_data').val('1'));
++            form.append($('<input type="hidden">').attr('name', 'consent_ads').val('1'));
++        }
++    }
++    function bindMarketingCombined(container, form) {
++        container.find('.lireate-consent-marketing-combined').on('change', function() {
++            syncMarketingCombined(form, this.checked);
++        });
++    }
++
+     function consentReady(form) {
+         var box = $(form).find('input[name="consent_request"]');
+         if (!box.length || !(box.prop('checked') || (box.attr('type') === 'hidden' && box.val() === '1'))) {
