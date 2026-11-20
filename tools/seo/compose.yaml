@@ -27,6 +27,12 @@ services:
     ports:
       - "127.0.0.1:${SEONAUT_PORT:-19000}:9000"
     command: ["sh", "-c", "/bin/wait && /app/seonaut"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9000/signin"]
+      start_period: 15s
+      interval: 5s
+      timeout: 5s
+      retries: 30
     environment:
       WAIT_HOSTS: db:3306
       WAIT_TIMEOUT: 300

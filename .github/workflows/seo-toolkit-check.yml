@@ -42,7 +42,7 @@ jobs:
       - name: Start SEOnaut and verify its interface
         run: |
           bash tools/seo/start.sh
-          curl --fail --silent --show-error --retry 10 --retry-delay 2 --retry-connrefused http://127.0.0.1:19000/signin -o "$RUNNER_TEMP/seonaut-login.html"
+          curl --fail --silent --show-error --retry 10 --retry-delay 2 --retry-connrefused --retry-all-errors http://127.0.0.1:19000/signin -o "$RUNNER_TEMP/seonaut-login.html"
           python3 -c 'import os;from pathlib import Path;t=(Path(os.environ["RUNNER_TEMP"])/"seonaut-login.html").read_text();assert "<form" in t.lower(), "Expected the SEOnaut login form"'
       - name: Prepare local browser fixture
         run: |
