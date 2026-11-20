@@ -69,11 +69,17 @@ jobs:
           routes = data.get('routes', [])
           expected = {'homepage': 1, 'priorities': 8}.get(os.environ['SEO_AUDIT_SCOPE'], 1)
           assert len(routes) >= expected, f'Incomplete report: {len(routes)} of at least {expected} URLs'
-          reports = list(root.rglob('lighthouse.json'))
-          assert len(reports) >= len(routes), 'Raw Lighthouse reports are missing'
+          reports = list(root.rglob('lighthouse.html'))
+          assert len(reports) >= len(routes), 'Lighthouse HTML reports are missing'
           errors = []
           for path in reports:
-              report = json.loads(path.read_text())
+              # Unlighthouse removes lighthouse.json from static builds. Read the
+              # original JSON embedded by Lighthouse, without executing scripts.
+              html = path.read_text()
+              marker = 'window.__LIGHTHOUSE_JSON__ = '
+              assert marker in html, f'Embedded Lighthouse data missing: {path}'
+              report, _ = json.JSONDecoder().raw_decode(html.split(marker, 1)[1])
+              path.with_name('lighthouse-data.json').write_text(json.dumps(report))
               if report.get('runtimeError'):
                   errors.append(str(report['runtimeError']))
               status = report.get('audits', {}).get('http-status-code', {})
