@@ -112,6 +112,7 @@ Marketing Skills находятся в `.cursor/skills/`: `seo-audit`, `site-arc
 Исходная версия, контрольные суммы и лицензия: `tools/seo/marketing-skills.lock.json`
 и `tools/seo/MARKETING-SKILLS-LICENSE`.
 
-SEOnaut и Unlighthouse запускаются отдельно на Linux VPS, а не внутри PHP-хостинга REG.RU.
+SEOnaut запускается отдельно на Linux VPS, а не внутри PHP-хостинга REG.RU.
+Unlighthouse также можно запускать через GitHub Actions: `LIREATE live SEO audit`.
 Установка и проверка: `tools/seo/README.ru.md`.
 Отчёты, `.env`, база и `node_modules` — локальные данные, в Git не добавлять.

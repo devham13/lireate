@@ -7,12 +7,14 @@ on:
       - '.cursor/rules/lireate-seo-tools.mdc'
       - 'tools/seo/**'
       - '.github/workflows/seo-toolkit-check.yml'
+      - '.github/workflows/seo-live-audit.yml'
   push:
     branches: [main]
     paths:
       - '.cursor/skills/**'
       - 'tools/seo/**'
       - '.github/workflows/seo-toolkit-check.yml'
+      - '.github/workflows/seo-live-audit.yml'
 
 permissions:
   contents: read

@@ -11,6 +11,6 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium \
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
-COPY unlighthouse.config.mjs unlighthouse.smoke.config.mjs ./
+COPY unlighthouse.config.mjs unlighthouse.smoke.config.mjs unlighthouse.ci.config.mjs ./
 
 CMD ["npm", "run", "audit"]
