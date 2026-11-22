@@ -116,3 +116,11 @@ SEOnaut запускается отдельно на Linux VPS, а не внут
 Unlighthouse также можно запускать через GitHub Actions: `LIREATE live SEO audit`.
 Установка и проверка: `tools/seo/README.ru.md`.
 Отчёты, `.env`, база и `node_modules` — локальные данные, в Git не добавлять.
+
+## Навык доработки интерфейсов Unslop
+
+Unslop установлен в `.agents/skills/unslop/` — этот каталог доступен Cursor и Codex.
+Использовать для задач по доработке дизайна по запросу пользователя, с сохранением
+стандарта LIREATE из `docs/lireate-service-design.ru.md`, SEO и работающих форм.
+Он дополняет роли дизайна и основной пайплайн, не заменяет их.
+Запуск, авторство, лицензия и исходная версия: `tools/design/README.ru.md`.
