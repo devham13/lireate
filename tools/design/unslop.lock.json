@@ -7,7 +7,7 @@
   "installed_on": "2026-11-22",
   "path": ".agents/skills/unslop",
   "sha256": {
-    "LICENSE": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+    "LICENSE": "9e5f1b3c610b9c2da5c313bf81d577a7d1acec686bdb0384edefa6df0f90cd94",
     "SKILL.md": "54e74d73afedb70dd556495f03a13ab7a5724b948cad20c3c7452684f3cb65e9",
     "agents/openai.yaml": "170d0b33a418d9d82beb7d15f8a91e314adef2edf53a81c37155b6f40dd52f06",
     "references/effects.md": "ded4f679e22843a8f68860e6cda0396fa8b8fa27202400e08337143b485c86a4",
