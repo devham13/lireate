@@ -1,0 +1,26 @@
+name: LIREATE visibility inventory
+on:
+  push:
+    branches:
+      - audit/search-visibility-2026-11-22
+    paths:
+      - .github/workflows/visibility-inventory.yml
+      - tools/seo/visibility_inventory.py
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Crawl public pages
+        run: python3 tools/seo/visibility_inventory.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lireate-visibility-inventory-2026-11-22
+          path: visibility-output/
+          retention-days: 30
