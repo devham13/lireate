@@ -29,11 +29,11 @@ def normalize(u, base=ROOT):
             return None
         query = up.parse_qs(p.query)
         if query:
-            if path.rstrip("/") != "/news" or any(k not in ("num", "category") for k in query):
+            if path.rstrip("/") != "/news" or any(k not in ("num", "category", "view", "page") for k in query):
                 return None
-            if any(len(v)!=1 or not v[0].isdigit() for v in query.values()):
+            if any(len(v)!=1 or (k!="view" and not v[0].isdigit()) or (k=="view" and v[0]!="news") for k,v in query.items()):
                 return None
-            if int(query.get("num",["0"])[0]) > 50 or int(query.get("category",["0"])[0]) > 100:
+            if int(query.get("num",["0"])[0]) > 50 or int(query.get("page",["0"])[0]) > 50 or int(query.get("category",["0"])[0]) > 100:
                 return None
         return up.urlunsplit(("https", "lireate.ru", path, up.urlencode(sorted((k,v[0]) for k,v in query.items())), ""))
     except Exception:
@@ -131,10 +131,12 @@ def offer(u, source):
 seen=set()
 for u in sorted(sitemap_urls): offer(u,"sitemap")
 for u in SEEDS: offer(u,"known_public_url")
+for u in [ROOT+"news/?view=news&page=2",ROOT+"news/?view=news&page=3",ROOT+"news/?view=news&page=27"]: offer(u,"pagination_sample")
 offer(ROOT,"homepage")
 for n in range(1,46): offer(ROOT+str(n),"mktu_probe")
 disallowed=[]
 incoming=Counter()
+referrers={}
 with cf.ThreadPoolExecutor(max_workers=4) as ex:
     while pending and len(rows)<LIMIT and time.monotonic()<DEADLINE:
         batch=[]
@@ -154,7 +156,9 @@ with cf.ThreadPoolExecutor(max_workers=4) as ex:
             emit("INVENTORY",r)
             for linked in links:
                 incoming[linked]+=1
+                referrers.setdefault(linked,set()).add(u)
                 offer(linked,"internal_link")
+            if r.get("canonical"): offer(r["canonical"],"canonical_target")
         time.sleep(0.2)
 for r in rows: r["internal_link_sources"]=incoming[r["url"]]
 summary={
@@ -164,7 +168,7 @@ summary={
     "pending":len(pending),"robots_disallowed":len(disallowed),
     "complete_within_scope":not pending,"limit":LIMIT,"elapsed_seconds":round(time.monotonic()-START,1),
     "events":events,
-    "scope":"public HTML, same host, sitemap + known public URLs + internal links; news query parameters num<=50, category<=100; assets and private routes excluded"
+    "scope":"public HTML, same host, sitemap + known public URLs + internal links; news query parameters num/page<=50, category<=100, view=news; assets and private routes excluded"
 }
 (OUT/"inventory.json").write_text(json.dumps({"summary":summary,"pages":rows,"disallowed":disallowed,"pending":list(pending)},ensure_ascii=False,indent=2),encoding="utf-8")
 import csv
@@ -173,4 +177,8 @@ with (OUT/"inventory.csv").open("w",encoding="utf-8-sig",newline="") as f:
     w=csv.DictWriter(f,fieldnames=fields,extrasaction="ignore"); w.writeheader()
     for r in rows: w.writerow({**r,"h1":" | ".join(r.get("h1",[]))})
 emit("SUMMARY",summary)
+emit("DISALLOWED",disallowed)
+emit("SITEMAPURLS",sorted(sitemap_urls))
+for r in rows:
+    if r["status"]!=200: emit("BROKEN",{"url":r["url"],"status":r["status"],"referrers":sorted(referrers.get(r["url"],[]))})
 if pending: emit("PENDING",list(pending))
