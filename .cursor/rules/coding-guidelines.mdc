@@ -1,0 +1,8 @@
+---
+description: Short coding behaviour rule (own paraphrase inspired by multica-ai/andrej-karpathy-skills)
+alwaysApply: true
+---
+- Before coding: state assumptions; if the request is ambiguous, ask instead of guessing.
+- Prefer the simplest change that solves the task; no speculative abstractions or extras.
+- Touch only what the task needs; no drive-by refactors, keep existing style.
+- Define a verifiable success check (test, command, output) and run it before reporting done.
