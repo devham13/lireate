@@ -372,6 +372,25 @@ def write_created_manifest(backup_dir, created_rels):
     )
 
 
+def remove_created_files(docroot, backup_dir):
+    notes = []
+    created = Path(backup_dir) / "created.json"
+    if not created.is_file():
+        return notes
+    try:
+        payload = json.loads(created.read_text(encoding="utf-8"))
+        rels = payload.get("created", payload if isinstance(payload, list) else [])
+    except ValueError:
+        return notes
+    docroot = Path(docroot)
+    for rel in rels:
+        path = docroot / rel
+        if path.is_file():
+            path.unlink()
+            notes.append("removed created {0}".format(rel))
+    return notes
+
+
 def backup_files(backup_dir, docroot, rel_paths):
     backup_dir.mkdir(parents=True, exist_ok=True)
     manifest = []

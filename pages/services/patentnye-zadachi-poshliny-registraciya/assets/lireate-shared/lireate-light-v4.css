@@ -139,6 +139,12 @@ body.lireate-theme-light-v4 select,
 body.lireate-theme-light-v4 textarea{background:#fff!important;color:#1f212c!important;border-color:var(--l4-line)!important}
 body.lireate-theme-light-v4 label,
 body.lireate-theme-light-v4 .lx-field-label{color:#1f212c!important}
+body.lireate-theme-light-v4 .lx-hint a{color:#195acb!important;font-weight:700}
+body.lireate-theme-light-v4 .lx-route-label{color:#52637b!important}
+body.lireate-theme-light-v4 .lx-route-steps .lx-route-node{color:#1f212c!important}
+body.lireate-theme-light-v4 .lx-section-label{
+  display:inline-block;color:#9f1239!important;background:#fff1f2;border:1px solid #fecdd3;
+  padding:4px 12px;border-radius:999px;font-weight:700}
 body.lireate-theme-light-v4 .lx-fee-table td,
 body.lireate-theme-light-v4 .lx-fee-table th{color:#1f212c!important}
 body.lx-tm-white.registraciya-pilot-v2 .lx-mobile-bar{

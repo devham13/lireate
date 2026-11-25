@@ -16,8 +16,11 @@ SINGLE_FILES = (
     Path('template/css/lireate-home-preview-chrome.css'),
     Path('template/css/lireate-portfolio-light-v4.css'),
     Path('template/css/lireate-reviews-light-v4.css'),
+    Path('template/page/portfolio.php'),
+    Path('template/page/reviews.php'),
     Path('template/page/lireate-portfolio-cms.inc.php'),
     Path('template/page/lireate-reviews-cms.inc.php'),
+    Path('template/page/lireate-cms-db.inc.php'),
     Path('pages/_shared/lireate-cms-light-v4-head.inc.php'),
 )
 

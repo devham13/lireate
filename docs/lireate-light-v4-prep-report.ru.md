@@ -2,6 +2,12 @@
 
 Ветка: `cursor/lireate-light-v4-prep-b68f`. PR: **#118**. На REG.RU **не выкладывалось**.
 
+## Безопасность (коммит `6a94224`)
+
+- Из репозитория убраны захардкоженные креды MySQL в portfolio/reviews CMS; подключение только через `template/page/lireate-cms-db.inc.php` и **`data/db.php` на хостинге** (в Git не коммитится).
+- Удалены `packages/lireate-hosting-pf-20261125/portfolio.php` и `reviews.php` с дублем секретов.
+- **Смену пароля БД на хостинге** выполняет владелец (история Git остаётся).
+
 ## Скриншоты (`docs/light-v4-screenshots/`)
 
 | Файл | Страница | Ширина |
@@ -69,7 +75,13 @@ commit 313dc0e
 python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --apply
 ```
 
-Бэкап: `$DOCROOT/.lireate-backup-home/<UTCSTAMP>/` (`manifest.txt`, копии затронутых файлов).
+Бэкап по умолчанию: `~/lireate-autopub/backups/home-light-v4-install/<UTCSTAMP>/` (`manifest.txt`, `created.json`).
+
+Откат:
+
+```bash
+python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --rollback --backup-id <UTCSTAMP>
+```
 
 ### 2. `scripts/lireate_cms_light_v4_overlay_install.py`
 
@@ -96,16 +108,28 @@ python3 scripts/lireate_hosting_pf_install.py --docroot "$DOCROOT" --apply
 | `template/css/lireate-portfolio-light-v4.css` | `lireate_hosting_pf_install.py`, `lireate_cms_light_v4_overlay_install.py` | `template/css/lireate-portfolio-light-v4.css` |
 | `template/css/lireate-reviews-light-v4.css` | PF, overlay | `template/css/lireate-reviews-light-v4.css` |
 | `template/css/lireate-cms-pages-light-v4.css` | PF, overlay | `template/css/lireate-cms-pages-light-v4.css` |
-| `template/page/lireate-portfolio-cms.inc.php` | PF, overlay | `template/page/lireate-portfolio-cms.inc.php` (+ зеркало `portfolio.php` только PF) |
-| `template/page/lireate-reviews-cms.inc.php` | PF, overlay | `template/page/lireate-reviews-cms.inc.php` (+ `reviews.php` только PF) |
+| `template/page/portfolio.php`, `reviews.php`, `lireate-*-cms.inc.php`, `lireate-cms-db.inc.php` | PF, overlay | `template/page/…` (не корень сайта) |
 | `pages/_shared/lireate-cms-light-v4-head.inc.php` | PF, overlay | `pages/_shared/lireate-cms-light-v4-head.inc.php` |
 | `template/css/lireate-light-v4.css`, `template/js/lireate-light-v4.js` | overlay | `template/css/…`, `template/js/…` |
 | `template/css/lireate-home-light-v4.css`, `lireate-home-preview-chrome.css` | overlay | `template/css/…` |
 | `template/page/team/*`, `o_kompanii/*`, `partners/*`, `docs/*`, `kontaktyi/*` | overlay | те же пути под `template/page/<раздел>/` |
 | `pages/<раздел>/_shared/*` (team, about, …) | overlay | `template/page/<раздел>/` **и** `pages/<раздел>/_shared/` |
-| `packages/…/portfolio.php`, `reviews.php` | PF | `portfolio.php`, `reviews.php` (корень сайта) |
+| `packages/…/uslugi/*` (4 файла) | PF | `template/page/uslugi/` (только перезапись своих файлов, без `rmtree`) |
 
-Портфолио/отзывы на проде подключают Light V4 CSS через `lireate-cms-light-v4-head.inc.php` внутри CMS-вставок (не только `_preview`).
+PF: `--rollback --backup-id` → `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/manifest.txt`.
+
+### Услуги (~20 slug) — хостинг
+
+План/прогон (только REG.RU):
+
+```bash
+python3 scripts/lireate_light_v4_hosting_rollout.py --docroot "$DOCROOT"          # dry-run команд
+python3 scripts/lireate_light_v4_hosting_rollout.py --docroot "$DOCROOT" --apply    # publish + perf
+```
+
+Для каждого slug: `lireate_hosting_publish_service.py --slug <slug> --update --apply --skip-git-pull`, затем `lireate_hosting_performance_patch.py` (`seo-perf-20261120-v1`). **Исключение:** `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`.
+
+Заголовок «как защитить…» в превью блога: поднята первая буква только в `pages/blog/_preview/`; на live текст из CMS/MySQL не меняется.
 
 ## Cron lireate-news / guard-diff
 

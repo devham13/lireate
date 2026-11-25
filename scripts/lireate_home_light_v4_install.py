@@ -3,6 +3,7 @@
 
 import argparse
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -80,10 +81,35 @@ def cmd_apply(office_repo, docroot, backups_root):
     return 0
 
 
+def cmd_rollback(docroot, backups_root, backup_id):
+    backup_dir = backups_root / backup_id
+    manifest = backup_dir / "manifest.txt"
+    if not manifest.is_file():
+        raise SystemExit("BLOCKER: backup manifest not found: {0}".format(manifest))
+    docroot = Path(docroot).resolve()
+    for rel in manifest.read_text(encoding="utf-8").splitlines():
+        rel = rel.strip()
+        if not rel:
+            continue
+        src = backup_dir / rel
+        dst = docroot / rel
+        if src.is_file():
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(src), str(dst))
+            print("restored {0}".format(rel))
+    notes = lib.remove_created_files(docroot, backup_dir)
+    for line in notes:
+        print(line)
+    print("rollback restored backup {0}".format(backup_id))
+    return 0
+
+
 def main():
     parser = argparse.ArgumentParser(description="LIREATE home Light V4 CMS install")
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--rollback", action="store_true")
+    parser.add_argument("--backup-id", default="")
     parser.add_argument("--docroot", default=os.environ.get("LIREATE_DOCROOT", ""))
     parser.add_argument("--backups-root", default=os.environ.get("LIREATE_BACKUPS_ROOT", ""))
     args = parser.parse_args()
@@ -108,6 +134,10 @@ def main():
         return cmd_check(office_repo, docroot)
     if args.apply:
         return cmd_apply(office_repo, docroot, backups_root)
+    if args.rollback:
+        if not args.backup_id.strip():
+            raise SystemExit("BLOCKER: pass --backup-id")
+        return cmd_rollback(docroot, backups_root, args.backup_id.strip())
     return 2
 
 

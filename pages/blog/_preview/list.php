@@ -65,7 +65,14 @@ if (count($preview_rows) > 0) {
         $url = $row['url'];
         $merged = isset($by_url[$url]) ? $by_url[$url] : array();
         if ($row['title'] !== '') {
-            $merged['title'] = $row['title'];
+            $title = (string) $row['title'];
+            if (function_exists('mb_substr') && function_exists('mb_strtoupper')) {
+                $first = mb_substr($title, 0, 1, 'UTF-8');
+                $title = mb_strtoupper($first, 'UTF-8') . mb_substr($title, 1, null, 'UTF-8');
+            } elseif ($title !== '') {
+                $title = strtoupper($title[0]) . substr($title, 1);
+            }
+            $merged['title'] = $title;
         }
         if ($row['cover'] !== '') {
             $merged['cover'] = $row['cover'];

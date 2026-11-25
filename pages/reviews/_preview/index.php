@@ -45,7 +45,7 @@ if (is_file($live_frag)) {
     if (!defined('LIREATE_REVIEWS_PREVIEW')) {
         define('LIREATE_REVIEWS_PREVIEW', true);
     }
-    require $repo_root . '/template/page/lireate-reviews-cms.inc.php';
+    require $repo_root . '/template/page/reviews.php';
 }
 ?>
 </div></div></div>

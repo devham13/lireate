@@ -31,7 +31,9 @@ body.lx-tm-white.registraciya-pilot-v2 main .lx-section h2{
   font:800 clamp(30px,3.6vw,50px)/1.06 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   letter-spacing:-.05em;color:var(--tw-ink);max-width:860px;margin:10px 0 16px}
 body.lx-tm-white.registraciya-pilot-v2 main .lx-section h3{font-weight:800;letter-spacing:-.02em;color:var(--tw-ink)}
-body.lx-tm-white.registraciya-pilot-v2 main .lx-section-label,
+body.lx-tm-white.registraciya-pilot-v2 main .lx-section-label{
+  display:inline-block;color:#9f1239!important;background:#fff1f2;border:1px solid #fecdd3;
+  padding:4px 12px;border-radius:999px;font-weight:700}
 body.lx-tm-white.registraciya-pilot-v2 main .lx-eyebrow,
 body.lx-tm-white.registraciya-pilot-v2 main .lireate-vk-cases-kicker,
 body.lx-tm-white.registraciya-pilot-v2 main .lx-contact-side-label{
@@ -243,7 +245,8 @@ body.lx-tm-white.registraciya-pilot-v2 .lx-price-table th,body.lx-tm-white.regis
 body.lx-tm-white.registraciya-pilot-v2 .lx-price-table th{background:var(--tw-blue-softer);color:var(--tw-ink);border-color:var(--tw-line)}
 body.lx-tm-white.registraciya-pilot-v2 .lx-price-table td{color:#2d4764;border-color:var(--tw-line)}
 body.lx-tm-white.registraciya-pilot-v2 .lx-table-note{color:var(--tw-muted)}
-body.lx-tm-white.registraciya-pilot-v2 .lx-pricing-brief-total{color:var(--tw-muted)}
+body.lx-tm-white.registraciya-pilot-v2 .lx-pricing-brief-total{color:var(--tw-muted);margin-top:16px;max-width:100%}
+body.lx-tm-white.registraciya-pilot-v2 .lx-pricing-brief-total strong{display:inline-block;margin-top:2px}
 body.lx-tm-white.registraciya-pilot-v2 .lx-trust-list li{color:var(--tw-muted)}
 body.lx-tm-white.registraciya-pilot-v2 .lx-trust-list li::marker{color:var(--tw-red)}
 

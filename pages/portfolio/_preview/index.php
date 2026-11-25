@@ -42,7 +42,7 @@ if (is_file($live_frag)) {
     if (!defined('LIREATE_PORTFOLIO_PREVIEW')) {
         define('LIREATE_PORTFOLIO_PREVIEW', true);
     }
-    require $repo_root . '/template/page/lireate-portfolio-cms.inc.php';
+    require $repo_root . '/template/page/portfolio.php';
 }
 ?>
 </div></div></div>
