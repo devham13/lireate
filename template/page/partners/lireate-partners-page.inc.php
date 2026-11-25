@@ -34,10 +34,11 @@ $lp_footer_css = defined('LIREATE_PARTNERS_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_assets); ?>/lireate-partners.css?v=<?php echo lireate_partners_h($lp_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_footer_css); ?>?v=<?php echo lireate_partners_h($lp_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_partners_h($lp_v); ?>"><!-- lireate_cms_light_v4 -->
 <script>
 document.documentElement.classList.add('lireate-partners-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_partners_h(LIREATE_PARTNERS_METRIKA_ID); ?>');
-if (document.body) { document.body.classList.add('lireate-partners-body'); }
+if (document.body) { document.body.classList.add('lireate-partners-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
 <div class="lireate-partners-page" data-lireate-partners-version="<?php echo lireate_partners_h($lp_v); ?>">
   <header class="lireate-partners-hero">
@@ -156,4 +157,5 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
   ?></script>
   <script src="<?php echo lireate_partners_h($lp_assets); ?>/lireate-partners.js?v=<?php echo lireate_partners_h($lp_v); ?>"></script>
   <script src="<?php echo lireate_partners_h($lp_assets); ?>/lireate-metrika-goals.js?v=<?php echo lireate_partners_h($lp_v); ?>"></script>
+  <script src="/template/js/lireate-light-v4.js?v=<?php echo lireate_partners_h($lp_v); ?>" defer></script><!-- lireate_cms_light_v4 -->
 </div>

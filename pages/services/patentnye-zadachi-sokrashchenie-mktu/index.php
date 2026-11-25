@@ -39,8 +39,9 @@ $schema_graph = array(
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 </head>
-<body class="lireate-svc-body lx-patent-tool">
+<body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4">
 <?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-header.inc.php'; ?>
 <main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-shrink>
 <?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
@@ -83,4 +84,5 @@ $schema_graph = array(
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-fees-core.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-mktu-core.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-tools.js', $lx_service_asset_dir); ?>"></script>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
 <?php $lireate_max = LIREATE_MAX_CHAT_URL; include dirname(__DIR__) . '/_shared/blocks/lireate-patent-tool-footer.inc.php'; ?>

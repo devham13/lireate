@@ -54,7 +54,7 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-blog-html');
-if (document.body) { document.body.classList.add('lireate-blog-body'); }
+if (document.body) { document.body.classList.add('lireate-blog-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
 <div class="lireate-blog-list-page" data-lireate-blog-list-version="<?php echo lireate_blog_h($lb_v); ?>">
   <?php

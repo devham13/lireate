@@ -1,0 +1,46 @@
+<?php
+/**
+ * Локальное превью главной Light V4 в оболочке CMS (main.php + page_container).
+ * php -S 127.0.0.1:19080 -t /path/to/repo pages/home/_preview/router.php
+ */
+$repo_root = dirname(__DIR__, 3);
+if (!defined('LIREATE_HOME_PREVIEW')) {
+    define('LIREATE_HOME_PREVIEW', true);
+}
+$_SERVER['DOCUMENT_ROOT'] = $repo_root;
+$temp = array('page' => 'home');
+$seo_title = 'Лирейт — регистрация товарных знаков и патентов';
+$seo_description = 'Регистрация товарных знаков, патентов, программ для ЭВМ и защита прав. Бесплатная консультация, сопровождение заявок.';
+$metrika_id = '52622734'; // pragma: allowlist secret
+?><!DOCTYPE html>
+<html lang="ru" data-lireate-metrika-id="<?php echo htmlspecialchars($metrika_id, ENT_QUOTES, 'UTF-8'); ?>">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?php echo htmlspecialchars($seo_title, ENT_QUOTES, 'UTF-8'); ?></title>
+  <meta name="description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
+  <link rel="canonical" href="/">
+  <script type="text/javascript">
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+   ym(<?php echo (int) $metrika_id; ?>, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+  </script>
+  <script src="/template/js/lireate-utm.js?v=20261117b1"></script>
+</head>
+<body class="cms-default lireate-home-light-v4 lireate-theme-light-v4">
+<div class="wrapper">
+  <div class="container text-center content">
+    <div class="page_container">
+<?php
+require $repo_root . '/template/page/home/lireate-home-cms.inc.php';
+?>
+    </div>
+  </div>
+</div>
+</body>
+</html>
