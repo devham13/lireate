@@ -43,15 +43,24 @@ body.lireate-home-preview #leftSideBar {
   background: #2d3548;
   z-index: 1100;
   padding-bottom: 24px;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+}
+body.lireate-home-preview.lireate-cms-menu-open #leftSideBar {
+  transform: translateX(0);
 }
 body.lireate-home-preview .wrapper {
-  margin-left: 280px;
+  margin-left: 0;
 }
-@media (max-width: 900px) {
-  body.lireate-home-preview #leftSideBar {
-    transform: translateX(-100%);
-  }
-  body.lireate-home-preview .wrapper {
-    margin-left: 0;
-  }
+body.lireate-home-preview .hamburger {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1201;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #dce8f7;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(31, 46, 76, 0.12);
 }

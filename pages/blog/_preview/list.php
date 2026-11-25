@@ -2,7 +2,10 @@
 /**
  * Локальное превью списка /news (Light V4).
  */
-$repo = dirname(__DIR__, 3);
+$repo = dirname(dirname(dirname(__DIR__)));
+if (!defined('LIREATE_BLOG_LIGHT_V4_FOOTER')) {
+    define('LIREATE_BLOG_LIGHT_V4_FOOTER', true);
+}
 require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
 $_SERVER['DOCUMENT_ROOT'] = $repo;
 if (!defined('LIREATE_BLOG_ASSETS_BASE')) {
@@ -50,15 +53,14 @@ $lireate_blog_list_filters = lireate_blog_list_filters_from_cms();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Блог LIREATE — превью списка Light V4</title>
   <meta name="robots" content="noindex,nofollow">
-  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125c">
-  <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125c">
+  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125e">
+  <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125e">
 </head>
 <body class="lireate-blog-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
 require_once dirname(__DIR__) . '/_shared/lireate-blog-list.inc.php';
-$footer = dirname(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';
-if (is_file($footer)) {
-    include $footer;
+if (function_exists('lireate_blog_render_service_footer')) {
+    lireate_blog_render_service_footer();
 }
 ?>
 </body>

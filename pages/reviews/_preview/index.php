@@ -12,7 +12,8 @@ $live_frag = __DIR__ . '/live-reviews-fragment.html';
   <meta name="robots" content="noindex,nofollow">
   <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125d">
   <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125d">
-  <link rel="stylesheet" href="/template/css/lireate-reviews-light-v4.css?v=20261125d">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="/template/css/lireate-reviews-light-v4.css?v=20261125e">
 </head>
 <body class="lireate-theme-light-v4 lireate-screenshot-capture lireate-reviews-preview">
 <div class="wrapper"><div class="container content"><div class="page_container">

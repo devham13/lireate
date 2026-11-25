@@ -358,6 +358,10 @@ function lireate_blog_list_cover_from_row($row)
 if (!function_exists('lireate_blog_render_service_footer')) {
 function lireate_blog_render_service_footer()
 {
+    static $lireate_blog_service_footer_rendered = false;
+    if ($lireate_blog_service_footer_rendered) {
+        return true;
+    }
     $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
     $candidates = array();
     $candidates[] = __DIR__ . '/lireate-blog-site-footer.inc.php';
@@ -373,6 +377,7 @@ function lireate_blog_render_service_footer()
     foreach ($candidates as $footer_path) {
         if ($footer_path !== '' && is_file($footer_path)) {
             include $footer_path;
+            $lireate_blog_service_footer_rendered = true;
             return true;
         }
     }

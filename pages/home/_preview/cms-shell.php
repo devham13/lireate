@@ -54,6 +54,14 @@ if (is_file($footer)) {
     include $footer;
 }
 ?>
-<script src="/pages/services/_shared/lireate-lead-consent-marketing.js?v=20261125d"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var btn = document.querySelector('.lireate-cms-chrome .hamburger');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    document.body.classList.toggle('lireate-cms-menu-open');
+  });
+});
+</script>
 </body>
 </html>

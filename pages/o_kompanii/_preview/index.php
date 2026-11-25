@@ -13,11 +13,5 @@ $_SERVER['DOCUMENT_ROOT'] = $repo;
 </head>
 <body class="cms-default lireate-about-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php require $repo . '/template/page/o_kompanii/lireate-about-cms.inc.php'; ?>
-<?php
-$footer = $repo . '/pages/services/_shared/lireate-service-footer.inc.php';
-if (is_file($footer)) {
-    include $footer;
-}
-?>
 </body>
 </html>

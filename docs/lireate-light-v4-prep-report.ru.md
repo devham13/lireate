@@ -6,78 +6,60 @@
 
 | Файл | Страница | Ширина |
 | --- | --- | --- |
-| `after-home-cms-desktop.png` | Главная CMS + меню | 1440 |
-| `after-home-cms-mobile.png` | Главная | 390 |
-| `after-tm-desktop.png`, `after-tm-mobile.png` | Регистрация ТЗ | 1440 / 390 |
-| `after-service-desktop.png` | Продление ТЗ | 1440 |
-| `after-patent-desktop.png`, `after-patent-mobile.png` | Патентная задача (пример) | 1440 / 390 |
-| `after-blog-list-desktop.png`, `after-blog-list-mobile.png` | Блог | 1440 / 390 |
-| `after-about-desktop.png`, `after-about-mobile.png` | О компании | 1440 / 390 |
-| `after-team-desktop.png`, `after-team-mobile.png` | Команда | 1440 / 390 |
-| `after-portfolio-desktop.png`, `after-portfolio-mobile.png` | Портфолио (live HTML + Light V4) | 1440 / 390 |
-| `after-reviews-desktop.png` | Отзывы (live HTML + Light V4) | 1440 |
+| `after-home-cms-desktop.png` | Главная (CMS-меню + подменю) | 1440 |
+| `after-home-cms-mobile.png` | Главная, форма в карточке | **390** |
+| `after-tm-desktop.png`, `after-tm-mobile.png` | Регистрация ТЗ | 1440 / **390** |
+| `after-service-desktop.png`, `after-service-mobile.png` | Продление ТЗ | 1440 / **390** |
+| `after-patent-desktop.png`, `after-patent-mobile.png` | Патентная задача | 1440 / **390** |
+| `after-blog-list-desktop.png`, `after-blog-list-mobile.png` | Блог (обложки live) | 1440 / **390** |
+| `after-about-desktop.png`, `after-about-mobile.png` | О компании (светлая) | 1440 / **390** |
+| `after-team-desktop.png`, `after-team-mobile.png` | Команда | 1440 / **390** |
+| `after-portfolio-desktop.png`, `after-portfolio-mobile.png` | Портфолио Light V4 | 1440 / **390** |
+| `after-reviews-desktop.png` | Отзывы Light V4 | 1440 |
 
-Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`
+Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
+Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 node scripts/capture_light_v4_screenshots.mjs`
 
-## Изменения (финальный круг)
+## Блокер consent (главная)
 
-- **Главная:** тексты только с live; вторая галочка согласия (`consent_marketing_data` / `consent_ads`); CMS-меню в превью; форма — `text-align:left`, `box-sizing` на 390.
-- **Footer:** светлый оверрайд на CMS-превью (главная, блог, о компании, команда).
-- **Блог:** обложки из live (`live-news-covers.json`), контраст Max-баннера.
-- **Portfolio/reviews:** фрагменты live HTML в превью; на хостинге шаблоны с БД без изменения логики.
-- **PHP 5.6:** `lireate-home-data.php`, `catch (Error)` убран из home cms inc.
+- Разметка согласий: `lireate_home_consent_fields_inc_path()` + fallback `lireate_home_render_consent_fields()` — **без fatal**, если файла нет.
+- Установщик главной копирует: `pages/services/_shared/lireate-lead-consent-fields.inc.php`, `lireate-lead-consent-marketing.js`, дубль JS: `template/js/lireate-home-consent-marketing.js`.
+- Hidden `consent_form`, первая галочка `name="consent_request"`; marketing — `consent_marketing_data` / `consent_ads`.
 
-## CI
-
-См. checks на [PR #118](https://github.com/devham13/lireate/pull/118) после push.
-
-## Откат (все три установщика)
-
-Перед любым `--apply` делайте бэкап. Каждый установщик кладёт копии затронутых файлов **до** перезаписи.
+## Откат
 
 ### 1. `scripts/lireate_home_light_v4_install.py`
 
 ```bash
-python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT"          # dry-run
-python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --apply  # бэкап + install
+python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --apply
 ```
 
-- **Бэкап:** `$DOCROOT/.lireate-backup-home/<UTCSTAMP>/` — `manifest.txt`, `created.json`, копии `pages/home/_shared/*`, `template/page/home/*`, патч `template/main.php`.
-- **Откат:** восстановить файлы из каталога бэкапа поверх docroot; откатить `template/main.php` из того же бэкапа.
+Бэкап: `$DOCROOT/.lireate-backup-home/<UTCSTAMP>/` (`manifest.txt`, копии затронутых файлов).
 
 ### 2. `scripts/lireate_cms_light_v4_overlay_install.py`
 
 ```bash
-python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT"
-python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --apply
+python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT"          # dry-run
+python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --apply  # бэкап
+python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --rollback --backup-id <UTCSTAMP>
 ```
 
-- **Файлы:** `template/css/lireate-light-v4.css`, `template/js/lireate-light-v4.js`.
-- **Откат:** вернуть предыдущие версии из **своего** бэкапа docroot (скрипт overlay сам бэкап не пишет — сделайте копию пары файлов до `--apply`).
+Бэкап: `$DOCROOT/.lireate-backup-cms-overlay/<UTCSTAMP>/manifest.txt`
 
 ### 3. `scripts/lireate_hosting_pf_install.py`
 
 ```bash
-python3 scripts/lireate_hosting_pf_install.py --docroot "$DOCROOT"
 python3 scripts/lireate_hosting_pf_install.py --docroot "$DOCROOT" --apply
 ```
 
-- **Бэкап:** `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/` — перед перезаписью каждого пути.
-- **Пути:** `portfolio.php`, `reviews.php`, `portfolio/`, `template/page/uslugi/`.
-- **Откат:** скопировать из `.lireate-backup-pf/<UTCSTAMP>/` обратно в docroot.
+Бэкап: `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/`
 
 ## Cron lireate-news / guard-diff
 
-Guard-diff для защиты overlay уже есть в репозитории **lireate-news**; **применяем его в lireate-news сами до выкладки** office-ветки (чтобы cron не перетёр CMS/главную после merge).
+Guard-diff **не применён** в репозитории lireate-news: в git есть только описание/diff в `docs/`. **Применяем guard в lireate-news сами до выкладки** office-ветки.
 
-## План выкладки
+## CI
 
-1. Применить guard в **lireate-news**.  
-2. Бэкап docroot (+ БД portfolio/reviews).  
-3. `git pull` после merge.  
-4. `lireate_home_light_v4_install.py --apply`  
-5. `lireate_cms_light_v4_overlay_install.py --apply`  
-6. `lireate_hosting_pf_install.py --apply`  
-7. Smoke: формы (2 галочки), footer, `/news/`, меню CMS, mobile 390.
+См. checks на [PR #118](https://github.com/devham13/lireate/pull/118) после push.
 
 **Не трогали:** `pages/services/registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat/`.

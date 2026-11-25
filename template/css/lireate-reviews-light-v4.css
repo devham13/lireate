@@ -13,3 +13,30 @@ body.lireate-reviews-preview .lx-rv-case {
 body.lireate-reviews-preview .lx-rv-case a.lx-rv-case-link {
   color: #195acb !important;
 }
+body.lireate-reviews-preview,
+body.lireate-reviews-preview .page_container,
+body.lireate-reviews-preview .sectionPadding {
+  font-family: Manrope, "Open Sans", sans-serif !important;
+}
+body.lireate-reviews-preview #list .reviews_box,
+body.lireate-reviews-preview .video_review,
+body.lireate-reviews-preview .review_item {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+body.lireate-reviews-preview #list img,
+body.lireate-reviews-preview .video_review img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid #dce8f7;
+  background: #f7fbff;
+  object-fit: cover;
+}
+body.lireate-reviews-preview #list p,
+body.lireate-reviews-preview .default_text {
+  color: #52637b !important;
+  font-size: 15px;
+  line-height: 1.5;
+}

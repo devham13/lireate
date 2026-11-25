@@ -452,12 +452,73 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form input
   border-color: #9dbfe2;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form label.lx-consent {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  font: 500 13px/1.45 Manrope, Inter, sans-serif;
+  display: block;
+  font: 500 13px/1.55 Manrope, Inter, sans-serif;
   color: #52637b;
   text-align: left;
+  margin: 10px 0 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form label.lx-consent input[type="checkbox"] {
+  vertical-align: top;
+  margin: 2px 8px 0 0;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #e3edf7;
+  backdrop-filter: blur(10px);
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  flex-wrap: wrap;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-links a {
+  color: #1f212c;
+  text-decoration: none;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-phone {
+  font-weight: 700;
+  color: #195acb;
+  text-decoration: none;
+  white-space: nowrap;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-cta {
+  font-size: 13px;
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-links {
+    width: 100%;
+  }
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box {
+    padding: 16px;
+  }
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box > div {
+    min-width: 0;
+    max-width: 100%;
+  }
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box {
   box-sizing: border-box;

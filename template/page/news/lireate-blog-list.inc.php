@@ -51,7 +51,9 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-list.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>"><!-- lireate_blog_light_v4 -->
+<?php if (!defined('LIREATE_BLOG_LIGHT_V4_FOOTER') || !LIREATE_BLOG_LIGHT_V4_FOOTER) : ?>
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<?php endif; ?>
 <script>
 document.documentElement.classList.add('lireate-blog-html');
 if (document.body) { document.body.classList.add('lireate-blog-body'); document.body.classList.add('lireate-theme-light-v4'); }
@@ -123,7 +125,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); document.
   <?php endif; ?>
 
   <?php if (!empty($lb_featured)) :
-      $fcover = isset($lb_featured['cover']) ? $lb_featured['cover'] : '';
+      $fcover = isset($lb_featured['cover']) ? lireate_blog_media_url($lb_featured['cover']) : '';
       $fcover_style = $fcover !== '' ? 'background-image:url(\'' . lireate_blog_h($fcover) . '\')' : '';
       ?>
   <section class="lireate-blog-list-featured" aria-label="Свежая публикация">
@@ -167,7 +169,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); document.
             if (!empty($lb_featured) && $card['url'] === $lb_featured['url']) {
                 continue;
             }
-            $cover = isset($card['cover']) ? $card['cover'] : '';
+            $cover = isset($card['cover']) ? lireate_blog_media_url($card['cover']) : '';
             $cover_style = $cover !== '' ? 'background-image:url(\'' . lireate_blog_h($cover) . '\')' : '';
             ?>
         <article class="lireate-blog-list-card">

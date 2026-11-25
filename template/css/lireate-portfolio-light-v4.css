@@ -24,3 +24,30 @@ body.lireate-portfolio-preview li {
 body.lireate-portfolio-preview a {
   color: #195acb !important;
 }
+body.lireate-portfolio-preview,
+body.lireate-portfolio-preview .page_container,
+body.lireate-portfolio-preview .sectionPadding {
+  font-family: Manrope, "Open Sans", sans-serif !important;
+}
+body.lireate-portfolio-preview .region_list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 16px 0 28px;
+}
+body.lireate-portfolio-preview .trade_mark_box,
+body.lireate-portfolio-preview .trade_mark_link {
+  display: block;
+  border: 1px solid #dce8f7;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #f7fbff;
+  color: #1f212c !important;
+  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06);
+}
+body.lireate-portfolio-preview .region_title {
+  font-weight: 800;
+  font-size: 18px;
+  margin: 18px 0 8px;
+  color: #1f212c !important;
+}

@@ -19,6 +19,7 @@ const shots = [
   { name: 'after-tm-desktop', url: base + '/tm', w: 1440, h: 900, prep: true },
   { name: 'after-tm-mobile', url: base + '/tm', w: 390, h: 844, prep: true },
   { name: 'after-service-desktop', url: base + '/service', w: 1440, h: 900, prep: true },
+  { name: 'after-service-mobile', url: base + '/service', w: 390, h: 844, prep: true },
   { name: 'after-patent-desktop', url: base + '/patent', w: 1440, h: 900, prep: true },
   { name: 'after-patent-mobile', url: base + '/patent', w: 390, h: 844, prep: true },
   { name: 'before-news-desktop', url: live + '/news/', w: 1440, h: 900, optional: true },

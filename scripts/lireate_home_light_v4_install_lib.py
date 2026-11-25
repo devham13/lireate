@@ -116,6 +116,9 @@ def copy_plan(office_repo):
     for rel in (
         Path("template/css/lireate-home-light-v4.css"),
         Path("template/js/lireate-home-light-v4.js"),
+        Path("pages/services/_shared/lireate-lead-consent-fields.inc.php"),
+        Path("pages/services/_shared/lireate-lead-consent-marketing.js"),
+        Path("template/js/lireate-home-consent-marketing.js"),
     ):
         src = repo / rel
         if src.is_file():
