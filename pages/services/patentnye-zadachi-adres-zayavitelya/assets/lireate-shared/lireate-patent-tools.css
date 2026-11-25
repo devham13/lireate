@@ -5,7 +5,7 @@
 }
 @media (min-width: 900px) {
   .lx-patent-tool .lx-tool-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(min(100%, 520px), 1fr);
     align-items: start;
   }
 }
@@ -24,6 +24,7 @@
 .lx-patent-tool input[type='number'],
 .lx-patent-tool input[type='text'],
 .lx-patent-tool input[type='search'],
+.lx-patent-tool input[type='date'],
 .lx-patent-tool textarea,
 .lx-patent-tool select {
   font: inherit;
@@ -32,6 +33,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(8, 16, 32, 0.65);
   color: inherit;
+  color-scheme: dark;
   min-height: 44px;
 }
 .lx-patent-tool textarea {
@@ -63,6 +65,10 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(12, 22, 42, 0.75);
   padding: 1rem 1.15rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 .lx-patent-tool .lx-result-panel[hidden] {
   display: none !important;
@@ -73,18 +79,78 @@
 }
 .lx-patent-tool .lx-line-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.35rem 0;
+  align-items: flex-start;
+  gap: 0.35rem 0.75rem;
+  padding: 0.5rem 0;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
   font-size: 0.92rem;
   color: #cbd5e1;
 }
-.lx-patent-tool .lx-line-row > span:last-child,
-.lx-patent-tool .lx-line-row > strong:last-child,
+.lx-patent-tool .lx-line-lbl {
+  flex: 1 1 100%;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--lx-muted, #9fb0c8);
+}
+.lx-patent-tool .lx-line-val,
 .lx-patent-tool .lx-line-row .lx-line-amt {
-  white-space: nowrap;
-  flex-shrink: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+@media (min-width: 520px) {
+  .lx-patent-tool .lx-line-row {
+    flex-wrap: nowrap;
+  }
+  .lx-patent-tool .lx-line-lbl {
+    flex: 0 0 38%;
+  }
+  .lx-patent-tool .lx-line-val {
+    flex: 1 1 auto;
+    text-align: right;
+  }
+}
+.lx-patent-tool .lx-btn-copy {
+  flex: 0 0 auto;
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 16, 32, 0.45);
+  color: #cbd5e1;
+  cursor: pointer;
+  min-height: 32px;
+}
+.lx-patent-tool .lx-alert-danger {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  color: #fecaca;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.lx-patent-tool .lx-purpose-hint {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--lx-muted, #9fb0c8);
+  margin: 0 0 0.75rem;
+}
+.lx-patent-tool .lx-ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.25rem;
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+.lx-patent-tool .lx-evm-aside {
+  min-width: 0;
 }
 .lx-patent-tool .lx-sum-total {
   color: #f8fafc;
@@ -260,6 +326,76 @@
 .lx-patent-tool .lx-contact-sep {
   color: #64748b;
 }
+.lx-patent-tool .lx-pay-payload {
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: rgba(8, 16, 32, 0.55);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-height: 8rem;
+  overflow: auto;
+}
+.lx-patent-tool .lx-qr-box {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.lx-patent-tool .lx-qr-img-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.lx-patent-tool .lx-qr-img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+@media (max-width: 519px) {
+  .lx-patent-tool .lx-qr-img {
+    max-width: none;
+  }
+  .lx-patent-tool .lx-evm-aside,
+  .lx-patent-tool .lx-tool-grid > aside {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+.lx-patent-tool .lx-qr-box canvas,
+.lx-patent-tool .lx-qr-box table {
+  display: block;
+  margin: 0 auto;
+}
+.lx-patent-tool .lx-qr-box table {
+  border-collapse: collapse;
+}
+.lx-patent-tool .lx-qr-download {
+  margin-top: 0.5rem;
+  align-self: center;
+}
+.lx-patent-tool .lx-qr-inner {
+  line-height: 0;
+}
+.lx-patent-tool .lx-main-shell,
+.lx-patent-catalog .lireate-svc-page {
+  overflow-x: hidden;
+}
 .lx-patent-tool .lx-wordmark-preview {
   min-height: 120px;
   display: flex;
@@ -273,7 +409,18 @@
   .lx-nav-shell,
   .lx-dock,
   .lx-patent-tool .lx-actions,
-  .lx-btn {
+  .lx-btn,
+  .lx-btn-copy {
     display: none !important;
+  }
+  .lx-patent-tool .lx-qr-box {
+    background: #fff;
+    page-break-inside: avoid;
+  }
+  .lx-patent-tool .lx-qr-img {
+    width: 5cm !important;
+    height: 5cm !important;
+    max-width: none;
+    image-rendering: pixelated;
   }
 }

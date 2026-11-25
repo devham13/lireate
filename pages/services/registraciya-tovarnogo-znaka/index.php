@@ -79,7 +79,7 @@ $schema_graph = [
   <link rel="stylesheet" href="assets/registraciya-landing.css">
   <link rel="stylesheet" href="assets/registraciya-pilot-v2.css">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/registraciya-white-v3.css', $lx_service_asset_dir); ?>"><!-- lireate_tm_white_v3 -->
-<link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/registraciya-light-v4.css', $lx_service_asset_dir); ?>">
   <link rel="stylesheet" href="/template/css/lireate-service-mobile-bar.css?v=20261111svc1" /><!-- lireate_design_service_mobile_bar_css_v1 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

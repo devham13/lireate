@@ -5,6 +5,7 @@
 $lx_vk_cases = array();
 $lx_vk_json_path = '';
 $candidates = array(
+    dirname(__DIR__) . '/assets/lireate-shared/vk-cases.json',
     dirname(__DIR__) . '/../_shared/vk-cases.json',
     dirname(dirname(__DIR__)) . '/_shared/vk-cases.json',
 );
@@ -23,6 +24,16 @@ if ($lx_vk_json_path !== '') {
         }
     }
 }
+
+$lx_vk_cases_renderable = array();
+foreach ($lx_vk_cases as $lx_case_row) {
+    if (is_array($lx_case_row) && !empty($lx_case_row['title'])) {
+        $lx_vk_cases_renderable[] = $lx_case_row;
+    }
+}
+if (empty($lx_vk_cases_renderable)) {
+    return;
+}
 ?>
 <link rel="stylesheet" href="/_shared/lireate-vk-cases.css?v=2026-11-10-cases-v3">
 <section class="lx-section lx-reveal lireate-vk-cases" id="cases" aria-labelledby="lireate-vk-cases-title">
@@ -31,12 +42,8 @@ if ($lx_vk_json_path !== '') {
     <h2 id="lireate-vk-cases-title">Наши кейсы</h2>
     <p class="lireate-vk-cases-lead">Реальные ситуации из группы LIREATE ВКонтакте — без выдуманных цифр и имён.</p>
   </div>
-<?php if (!empty($lx_vk_cases)) : ?>
   <div class="lireate-vk-cases-grid">
-<?php foreach ($lx_vk_cases as $lx_case) :
-    if (empty($lx_case['title'])) {
-        continue;
-    }
+<?php foreach ($lx_vk_cases_renderable as $lx_case) :
     $lx_img = isset($lx_case['image']) ? $lx_case['image'] : '';
     $lx_dt = isset($lx_case['datetime']) ? $lx_case['datetime'] : '';
     $lx_date_label = isset($lx_case['date_label']) ? $lx_case['date_label'] : $lx_dt;
@@ -63,7 +70,6 @@ if ($lx_vk_json_path !== '') {
     </article>
 <?php endforeach; ?>
   </div>
-<?php endif; ?>
   <div class="lireate-vk-cases-footer">
     <a class="lireate-vk-cases-all lireate-vk-cases-all--lx" href="https://vk.com/lireate" target="_blank" rel="noopener noreferrer">Все кейсы</a>
   </div>

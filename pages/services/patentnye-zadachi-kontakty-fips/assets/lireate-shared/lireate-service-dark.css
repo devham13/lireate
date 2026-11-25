@@ -1610,3 +1610,8 @@ html.lx-no-motion .lx-timeline-mascot { transition: none; }
   .lx-route-node { max-width: none; font-size: 11px; min-height: 40px; }
   .lx-route-label { font-size: 11px; }
 }
+
+/* audit08 S5: 320px overflow — grid item min-content (contact block); live on /dogovory/ and /registraciya_programm_evm/ */
+@media (max-width: 960px) {
+  .lx-contact > * { min-width: 0; }
+}
