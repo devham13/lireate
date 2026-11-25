@@ -62,19 +62,15 @@ echo '<script>if(document.body){document.body.classList.add("lireate-portfolio-p
             if (defined('LIREATE_PORTFOLIO_PREVIEW') && LIREATE_PORTFOLIO_PREVIEW) {
                 $array = array();
             } else {
-            function connectDB (){
-                $connect = new mysqli('localhost', 'u3650956_user', '254262Qwe', 'u3650956_db') // pragma: allowlist secret
-                or die("Не удалось подключится к базе данных... " . mysqli_error($connect)); // Строка не работает
-                mysqli_set_charset ('UTF8', $connect);
-                return $connect;}
-        
-            $result = connectDB()->query("SELECT * FROM portfoliocase");
-            
-            //echo $result->num_rows;
-            
+            if (!function_exists('lireate_cms_connect_db')) {
+                require_once __DIR__ . '/lireate-cms-db.inc.php';
+            }
+            $connect = lireate_cms_connect_db();
             $array = array();
+            if ($connect) {
+            $result = $connect->query("SELECT * FROM portfoliocase");
 
-            while($row = $result->fetch_assoc()){ 
+            while ($result && ($row = $result->fetch_assoc())) { 
                 
                 //Если нет региона в массиве
                 if(!array_key_exists($row['region'], $array)){
@@ -126,6 +122,7 @@ echo '<script>if(document.body){document.body.classList.add("lireate-portfolio-p
                 }
                
                $n++;
+            }
             }
             }
 ?>

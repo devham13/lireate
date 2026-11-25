@@ -327,14 +327,13 @@ echo '<script>if(document.body){document.body.classList.add("lireate-reviews-pre
         if (defined('LIREATE_REVIEWS_PREVIEW') && LIREATE_REVIEWS_PREVIEW) {
             echo '<p class="lx-rv-preview-note">Превью Light V4: список отзывов заполняется с БД на хостинге после install.</p>';
         } else {
-        function connectDB (){
-            $connect = new mysqli('localhost', 'u3650956_user', '254262Qwe', 'u3650956_db') // pragma: allowlist secret
-            or die("Не удалось подключится к базе данных... " . mysqli_error($connect)); // Строка не работает
-            mysqli_set_charset ('UTF8', $connect);
-            return $connect;
+        if (!function_exists('lireate_cms_connect_db')) {
+            require_once __DIR__ . '/lireate-cms-db.inc.php';
         }
-        $result = connectDB()->query('Select * from reviews');
-        while($row =$result->fetch_assoc()){ ?>
+        $connect = lireate_cms_connect_db();
+        if ($connect) {
+        $result = $connect->query('Select * from reviews');
+        while ($result && ($row = $result->fetch_assoc())) { ?>
         
         <div class="review_box" data-link="<?php echo $row['videoUrl']; ?>">          
             
@@ -371,7 +370,9 @@ echo '<script>if(document.body){document.body.classList.add("lireate-reviews-pre
                 
             </div>
         </div>
-    <?php } } ?>    
+    <?php }
+        }
+        } ?>    
         
 
     </div>
