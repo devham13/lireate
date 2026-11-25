@@ -8,7 +8,7 @@
 
 | Check / job | Workflow | Коммит | Результат |
 | --- | --- | --- | --- |
-| **php56** | [PHP 5.6 compatibility](https://github.com/devham13/lireate/actions/workflows/php56-compat.yml) | `afbb6a0` | success ([run #11 PR](https://github.com/devham13/lireate/actions/runs/45635912140)) |
+| **php56** | [PHP 5.6 compatibility](https://github.com/devham13/lireate/actions/workflows/php56-compat.yml) | `afbb6a0` | success ([run](https://github.com/devham13/lireate/actions/runs/45635912188)) |
 | **patch** | [Performance patch checks](https://github.com/devham13/lireate/actions/workflows/performance-fixes-check.yml) | `afbb6a0` | success ([run #11](https://github.com/devham13/lireate/actions/runs/45635912146)) |
 | **php56** + **patch** | те же | `8d6567d` | **ожидание** (push 25.11; подписка на ветку) |
 
