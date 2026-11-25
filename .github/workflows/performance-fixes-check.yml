@@ -39,6 +39,8 @@ jobs:
           python3 -m unittest scripts.test_lireate_hosting_performance_patch -v
           node --check template/js/lireate-performance.js
           bash -n scripts/lireate_hosting_services_cron.sh
+          command -v shellcheck >/dev/null && shellcheck scripts/lireate_hosting_services_cron.sh || true
+          bash scripts/test_lireate_hosting_services_cron_dirty_worktree.sh
           php -l pages/blog/_shared/lireate-blog-performance.inc.php
           php -l pages/blog/_shared/lireate-blog-layout.inc.php
       - name: Install pinned browser test dependencies
