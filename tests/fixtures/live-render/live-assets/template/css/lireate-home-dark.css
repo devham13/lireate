@@ -1,0 +1,587 @@
+/* Главная CMS (home) — тёмный дизайн 2026-11-11 v3 layout. body.lireate-home-dark */
+html:has(body.lireate-home-dark),
+html.lireate-home-dark-html,
+body.lireate-home-dark,
+body.cms-default.lireate-home-dark {
+  background: #0b1020 !important;
+}
+body.lireate-home-dark {
+  color: #cbd5e1;
+  -webkit-font-smoothing: antialiased;
+}
+body.lireate-home-dark #wrapper-ap,
+body.lireate-home-dark #page-content-wrapper,
+body.lireate-home-dark .wrapper,
+body.lireate-home-dark .wrapper-ap,
+body.lireate-home-dark .content,
+body.lireate-home-dark .container.content,
+body.lireate-home-dark .page_container {
+  background: #0b1020 !important;
+  background-color: #0b1020 !important;
+  color: #cbd5e1 !important;
+}
+body.lireate-home-dark .page_container {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  border: 0 !important;
+}
+body.lireate-home-dark .container.content .row,
+body.lireate-home-dark .container.content [class*="col-"] {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+body.lireate-home-dark,
+body.lireate-home-dark .wrapper,
+body.lireate-home-dark .wrapper-ap,
+body.lireate-home-dark .page_container,
+body.lireate-home-dark .container.content,
+body.lireate-home-dark .container.content :is(h1, h2, h3, h4, p, li, span, a, strong, div, ol, ul, button),
+body.lireate-home-dark #modals,
+body.lireate-home-dark #modals :is(h3, p, li, a, span, div, ol),
+body.lireate-home-dark .product,
+body.lireate-home-dark .advant,
+body.lireate-home-dark .main-title,
+body.lireate-home-dark .lireate-home-blog,
+body.lireate-home-dark .lx-site-footer,
+body.lireate-home-dark .sub-title,
+body.lireate-home-dark h3.title {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+}
+body.lireate-home-dark #leftSideBar :is(a, div, span, p, li, nav) {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+}
+body.lireate-home-dark #leftSideBar :is(.fa, [class^="fa-"], [class*=" fa-"]) {
+  font-family: FontAwesome !important;
+}
+body.lireate-home-dark #wrapper-ap,
+body.lireate-home-dark #page-content-wrapper {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+body.lireate-home-dark #leftSideBar {
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100% !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  align-self: stretch;
+}
+body.lireate-home-dark::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 12% -8%, rgba(59, 130, 246, 0.18), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 88% 2%, rgba(139, 92, 246, 0.14), transparent 50%);
+}
+/* Внутренний gutter — в lireate-home-lu.css (.lu-wrap); здесь только сдвиг от меню */
+body.lireate-home-dark .container.content,
+body.lireate-home-dark .content.container {
+  position: relative;
+  z-index: 1;
+  max-width: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+  float: none !important;
+  text-align: left !important;
+}
+body.lireate-home-dark .container.content > .row.col-xs-12,
+body.lireate-home-dark .container.content > .col-xs-12.col-lg-10,
+body.lireate-home-dark .container.content > .col-xs-12.col-lg-10.col-lg-offset-1,
+body.lireate-home-dark .container.content > .col-xs-10,
+body.lireate-home-dark .container.content > #modals,
+body.lireate-home-dark .container.content > .product,
+body.lireate-home-dark .container.content > .main-screen {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  float: none !important;
+  clear: both;
+  box-sizing: border-box;
+}
+body.lireate-home-dark .container.content > .row.col-xs-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+body.lireate-home-dark .container.content h3.title,
+body.lireate-home-dark .container.content h2.sub-title,
+body.lireate-home-dark .container.content h3.sub-title {
+  text-align: left !important;
+  width: 100%;
+  max-width: 100%;
+}
+body.lireate-home-dark h3.title,
+body.lireate-home-dark h2.sub-title,
+body.lireate-home-dark h3.sub-title {
+  color: #f1f5f9 !important;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+body.lireate-home-dark .container.content p,
+body.lireate-home-dark .container.content li {
+  color: #cbd5e1 !important;
+}
+body.lireate-home-dark .main-screen {
+  position: relative;
+  margin: 0 !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0b1020 !important;
+  background-size: cover !important;
+  background-position: center !important;
+  min-height: 520px;
+  padding: 88px 16px 32px;
+  contain: layout style;
+}
+body.lireate-home-dark .main-screen > br {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  line-height: 0 !important;
+}
+body.lireate-home-dark .main-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(11, 16, 32, 0.92) 0%,
+    rgba(11, 16, 32, 0.72) 45%,
+    rgba(11, 16, 32, 0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+body.lireate-home-dark .main-screen > *:not(br) {
+  position: relative;
+  z-index: 1;
+}
+body.lireate-home-dark .main-title {
+  float: none !important;
+  margin: 0;
+  padding: 24px 22px 20px;
+  max-width: min(520px, 100%);
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  background: rgba(15, 23, 42, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 4px solid #6366f1 !important;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  color: #f8fafc !important;
+}
+body.lireate-home-dark .main-title .main-button.btn {
+  float: none !important;
+  order: 2;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+body.lireate-home-dark .main-title h3 {
+  order: 3;
+  width: 100%;
+}
+body.lireate-home-dark .main-title h1 {
+  font: 800 clamp(22px, 4vw, 36px) / 1.2 "Inter", sans-serif !important;
+  color: #f8fafc !important;
+  margin: 0 0 10px;
+}
+body.lireate-home-dark .main-title h2 {
+  font: 600 clamp(16px, 2.5vw, 26px) / 1.35 "Inter", sans-serif !important;
+  color: #e2e8f0 !important;
+  margin: 0 0 16px;
+}
+body.lireate-home-dark .main-title h3 {
+  font: 500 14px/1.45 "Inter", sans-serif !important;
+  color: #94a3b8 !important;
+  margin: 12px 0 0 !important;
+  text-align: left !important;
+  position: static !important;
+  clear: both;
+}
+body.lireate-home-dark .main-button.btn,
+body.lireate-home-dark .content-button.btn.red {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 16px/1.2 "Inter", sans-serif !important;
+  padding: 14px 22px !important;
+  margin-top: 8px;
+  width: auto !important;
+  max-width: 100%;
+  white-space: normal;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 55%, #6366f1 100%) !important;
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.45) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+body.lireate-home-dark .content-button.btn:not(.red) {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  color: #f1f5f9 !important;
+}
+body.lireate-home-dark .main-button.btn:hover,
+body.lireate-home-dark .content-button.btn.red:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.55) !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 55%, #6366f1 100%) !important;
+  color: #fff !important;
+}
+body.lireate-home-dark #modals {
+  padding: 8px 20px 24px !important;
+}
+body.lireate-home-dark .advant {
+  background: rgba(15, 23, 42, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  color: #e2e8f0 !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  float: none !important;
+}
+body.lireate-home-dark .advant h3,
+body.lireate-home-dark .advant h3 > span {
+  color: #f8fafc !important;
+}
+body.lireate-home-dark .advant h3 > span {
+  color: #93c5fd !important;
+}
+body.lireate-home-dark .product span,
+body.lireate-home-dark .product h2 span {
+  color: #93c5fd !important;
+}
+body.lireate-home-dark .advant p,
+body.lireate-home-dark .product p {
+  color: #cbd5e1 !important;
+  text-align: left;
+}
+body.lireate-home-dark .advant ol li {
+  font: 400 16px/1.65 "Inter", sans-serif !important;
+  color: #e2e8f0 !important;
+}
+body.lireate-home-dark .product {
+  background: rgba(15, 23, 42, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  color: #e2e8f0 !important;
+  float: none !important;
+  clear: both;
+  width: 100% !important;
+  margin: 24px 0 32px !important;
+  padding: 24px 28px 28px !important;
+  overflow: visible;
+  box-sizing: border-box;
+}
+body.lireate-home-dark .product > [class*="col-"] {
+  width: 100% !important;
+  max-width: 420px;
+  margin: 16px 0 0 !important;
+  padding: 0 !important;
+  float: none !important;
+}
+body.lireate-home-dark .product .content-button.btn {
+  margin-bottom: 0 !important;
+  width: auto !important;
+  max-width: 100%;
+}
+body.lireate-home-dark .product h3 {
+  font: 700 22px/1.3 "Inter", sans-serif !important;
+  color: #f8fafc !important;
+}
+body.lireate-home-dark .container.content a {
+  color: #60a5fa;
+}
+body.lireate-home-dark .container.content a:hover {
+  color: #93c5fd;
+}
+body.lireate-home-dark footer:not(.lx-site-footer) {
+  display: none !important;
+}
+/* footer offset: lireate-home-lu.css */
+body.lireate-home-dark body.lireate-home-dark,
+body.lireate-home-dark #page-content-wrapper,
+body.lireate-home-dark .wrapper-ap,
+body.lireate-home-dark html {
+  background: #0b1020 !important;
+}
+body.lireate-home-dark {
+  padding-bottom: 0 !important;
+  min-height: auto !important;
+}
+body.lireate-home-dark .page_container {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  min-height: 0 !important;
+}
+body.lireate-home-dark .wrapper,
+body.lireate-home-dark .wrapper-ap {
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+}
+/* Блог на главной */
+body.lireate-home-dark .lireate-home-blog {
+  display: grid;
+  gap: 24px;
+  width: 100%;
+  margin: 8px 0 24px;
+}
+body.lireate-home-dark .lireate-home-blog-intro p {
+  max-width: none !important;
+  text-align: left !important;
+}
+body.lireate-home-dark .lireate-home-blog-cards {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+body.lireate-home-dark .lireate-home-blog-card {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 100%;
+}
+body.lireate-home-dark .lireate-home-blog-card-date {
+  font: 500 12px/1.2 "Inter", sans-serif !important;
+  color: #64748b !important;
+  margin: 0;
+}
+body.lireate-home-dark .lireate-home-blog-card-title {
+  font: 700 17px/1.35 "Inter", sans-serif !important;
+  margin: 0;
+}
+body.lireate-home-dark .lireate-home-blog-card-title a {
+  color: #f1f5f9 !important;
+  text-decoration: none;
+}
+body.lireate-home-dark .lireate-home-blog-card-excerpt {
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+  color: #94a3b8 !important;
+}
+body.lireate-home-dark .lireate-home-blog-card-more {
+  font-weight: 600;
+  font-size: 14px;
+}
+body.lireate-home-dark .cert {
+  border-radius: 12px;
+  background-color: rgba(15, 23, 42, 0.6) !important;
+  min-height: 260px;
+  height: 100%;
+  width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+body.lireate-home-dark .container.content > .col-xs-12.col-lg-10.col-lg-offset-1 > .advant.block-margin {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+body.lireate-home-dark .lh-why-grid > .advant[style*="transparent"] {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0 !important;
+  min-height: 100%;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+body.lireate-home-dark .delimiter {
+  background: transparent !important;
+  box-shadow: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 20px 0 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+body.lireate-home-dark .delimiter br {
+  display: none !important;
+}
+body.lireate-home-dark .main-modal .modal-content {
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+body.lireate-home-dark .main-modal .modal-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+body.lireate-home-dark #modal-list a {
+  color: #93c5fd;
+}
+/* Плавающий виджет: только иконка, без плашки текста */
+body.lireate-home-dark #managerMessage,
+body.lireate-home-dark #floatingBlock.lx-widget-icons-only #managerMessage {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+body.lireate-home-dark #floatingBlock {
+  position: fixed !important;
+  right: max(14px, env(safe-area-inset-right, 0px)) !important;
+  bottom: max(18px, env(safe-area-inset-bottom, 0px)) !important;
+  left: auto !important;
+  width: 63px !important;
+  height: 63px !important;
+  z-index: 40;
+}
+body.lireate-home-dark #modals + .delimiter,
+body.lireate-home-dark .col-lg-10 + .product {
+  margin-top: 8px;
+}
+@media (min-width: 992px) {
+  body.lireate-home-dark #modals {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+    padding: 12px 0 28px !important;
+    max-width: 100%;
+  }
+  body.lireate-home-dark #modals > .advant {
+    margin: 0 !important;
+    width: 100% !important;
+  }
+  body.lireate-home-dark #modals > .row.col-xs-12,
+  body.lireate-home-dark #modals > .col-xs-12.col-lg-10,
+  body.lireate-home-dark #modals > .col-xs-12.col-lg-6 {
+    grid-column: 1 / -1;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  body.lireate-home-dark .container.content > .col-xs-12.col-lg-10.col-lg-offset-1 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-items: stretch;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    float: none;
+    padding: 0;
+  }
+  body.lireate-home-dark .lireate-home-blog {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: start;
+  }
+  body.lireate-home-dark .lireate-home-blog-cards {
+    grid-template-columns: 1fr;
+  }
+  body.lireate-home-dark .container.content > .col-xs-12.col-lg-10.col-lg-offset-1 > [class*="col-"] {
+    width: 100% !important;
+    padding: 0;
+    float: none !important;
+  }
+  body.lireate-home-dark .main-screen {
+    min-height: 560px;
+    padding-top: 72px;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+  body.lireate-home-dark .main-title {
+    float: none !important;
+    margin: 0;
+    text-align: left;
+    width: 100%;
+    max-width: min(520px, 100%);
+  }
+  body.lireate-home-dark .main-title h3 {
+    text-align: left !important;
+  }
+}
+@media (min-width: 1200px) {
+  body.lireate-home-dark .lireate-home-blog-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  body.lireate-home-dark .lireate-home-blog {
+    grid-template-columns: 1fr;
+  }
+  body.lireate-home-dark .lireate-home-blog-intro {
+    max-width: none;
+  }
+}
+@media (max-width: 991px) {
+  body.lireate-home-dark .product {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  body.lireate-home-dark .container.content > .col-xs-12.col-lg-10.col-lg-offset-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  body.lireate-home-dark .main-screen {
+    min-height: 440px;
+    padding-top: 96px;
+  }
+}
+@media (max-width: 700px) {
+  body.lireate-home-dark .main-screen.main_back {
+    aspect-ratio: unset !important;
+    min-height: 460px;
+  }
+}
+
+/* Paste at end of lireate-home-dark.css if hero v4 still shows gradient substrate */
+body.lireate-home-dark .main-screen.lireate-hero-v4::after {
+  display: none !important;
+  content: none !important;
+}
+body.lireate-home-dark .main-screen.lireate-hero-v4 {
+  background: transparent !important;
+  overflow: visible;
+  contain: none;
+}
+
+/* 2026-11-20 fc3: hero без рамки */
+/* Paste at end of lireate-home-dark.css (и при необходимости lireate-cms-page-dark.css): hero без «рамки» на общем фоне */
+body.lireate-home-dark .main-screen.lireate-hero-v4::after,
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4::after {
+  display: none !important;
+  content: none !important;
+}
+body.lireate-home-dark .main-screen.lireate-hero-v4,
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4 {
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  overflow: visible;
+  contain: none;
+}
+
+/* 2026-11-20 fc4: убрать фигуру за первым экраном главной (свечение .lu-glow просвечивало вокруг непрозрачного hero) */
+body.lireate-home-dark .lu-page > .lu-glow {
+  display: none !important;
+}

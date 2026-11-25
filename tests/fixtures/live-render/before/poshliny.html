@@ -1,0 +1,128 @@
+<!-- live-render fixture: BEFORE /patentnye-zadachi/poshliny-registraciya/ (rendered from PHP 5.6 stand; see README.md) -->
+<!DOCTYPE html>
+<html lang="ru" data-lireate-metrika-id="52622734">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Калькулятор пошлин регистрации ТЗ — LIREATE</title>
+  <meta name="description" content="Калькулятор пошлин Роспатента за регистрацию ТЗ: режим по числу классов или перечню МКТУ. Пункты 2.1, 2.4, 2.11 и бумажное свидетельство. LIREATE.">
+  <link rel="canonical" href="https://lireate.ru/patentnye-zadachi/poshliny-registraciya/">
+  <link rel="stylesheet" href="../live-assets-before/patentnye-zadachi/poshliny-registraciya/assets/lireate-shared/lireate-service-dark.css?v=1794923295">
+  <link rel="stylesheet" href="../live-assets-before/patentnye-zadachi/poshliny-registraciya/assets/lireate-shared/lireate-patent-tools.css?v=1794925514">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Калькулятор пошлин регистрации","url":"https://lireate.ru/patentnye-zadachi/poshliny-registraciya/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://lireate.ru/"},{"@type":"ListItem","position":2,"name":"Патентные задачи","item":"https://lireate.ru/patentnye-zadachi/"},{"@type":"ListItem","position":3,"name":"Пошлины регистрации","item":"https://lireate.ru/patentnye-zadachi/poshliny-registraciya/"}]}]}</script>
+
+<!-- seo-perf-20261120-v1 -->
+<meta name="lireate-performance-patch" content="seo-perf-20261120-v1">
+<link rel="stylesheet" href="../live-assets/template/css/lireate-performance.css?v=seo-perf-20261120-v1">
+<script defer src="../live-assets/template/js/lireate-performance.js?v=seo-perf-20261120-v1"></script>
+</head>
+<body class="lireate-svc-body lx-patent-tool">
+<div class="lx-bg-glow" aria-hidden="true"></div>
+<div class="lx-nav-shell">
+  <header class="lx-nav-pill" role="banner">
+    <a class="lx-logo" href="https://lireate.ru/">LIREATE</a>
+    <nav class="lx-nav-links" aria-label="Патентные задачи">
+            <a href="https://lireate.ru/patentnye-zadachi/">
+        Каталог      </a>
+            <a href="https://lireate.ru/patentnye-zadachi/poshliny-registraciya/">
+        Регистрация      </a>
+            <a href="https://lireate.ru/patentnye-zadachi/poshliny-prodlenie/">
+        Продление      </a>
+            <a href="https://lireate.ru/patentnye-zadachi/redaktor-mktu/">
+        МКТУ      </a>
+          </nav>
+    <a class="lx-btn lx-btn-primary" href="https://t.me/lireate_patent" target="_blank" rel="noopener noreferrer">Консультация</a>
+  </header>
+</div><main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-reg>
+<nav class="lx-breadcrumbs lx-breadcrumbs--in-page lx-breadcrumbs--patent" aria-label="Хлебные крошки">
+  <ol>
+    <li><a href="https://lireate.ru/">Главная</a></li>
+        <li><a href="https://lireate.ru/patentnye-zadachi/">Патентные задачи</a></li>
+    <li aria-current="page">Пошлины регистрации</li>
+      </ol>
+</nav>  <section class="lx-hero lx-hero--stack">
+    <div>
+      <p class="lx-eyebrow">Патентные задачи · регистрация</p>
+      <h1>Пошлины регистрации товарного знака</h1>
+      <p class="lx-hero-lead">Официальная таблица (публикация 03.10.2025): <a href="https://rospatent.gov.ru/ru/activities/dues/table" target="_blank" rel="noopener noreferrer">rospatent.gov.ru</a></p>
+    </div>
+  </section>
+  <section class="lx-section lx-section--tool" id="tool">
+    <div class="lx-seg" role="tablist" aria-label="Режим расчёта">
+      <button type="button" data-lx-patent-mode="classes" aria-pressed="true">По числу классов</button>
+      <button type="button" data-lx-patent-mode="list" aria-pressed="false">По перечню МКТУ</button>
+    </div>
+    <div class="lx-tool-grid">
+      <div>
+        <div data-lx-panel="classes">
+          <div class="lx-field">
+            <label for="lx-class-num">Число классов МКТУ (1–45)</label>
+            <input id="lx-class-num" type="number" min="1" max="45" step="1" data-lx-patent-class-num placeholder="Например, 1">
+            <p class="lx-hint">В быстром режиме в каждом классе до 10 наименований.</p>
+          </div>
+        </div>
+        <div data-lx-panel="list" hidden>
+          <div class="lx-field">
+            <label for="lx-mktu-in">Перечень МКТУ</label>
+            <textarea id="lx-mktu-in" data-lx-patent-mktu-in placeholder="01&#10;кофе; чай"></textarea>
+          </div>
+          <p><label><input type="checkbox" data-lx-patent-line-mode> Позиция с новой строки</label></p>
+          <div class="lx-field">
+            <span class="lx-field-label">Подтвердите число позиций по классам</span>
+            <div class="lx-class-grid" data-lx-patent-class-table></div>
+          </div>
+        </div>
+        <p><label><input type="checkbox" data-lx-patent-paper> Бумажное свидетельство (п. 2.14)</label></p>
+        <div class="lx-actions">
+          <button type="button" class="lx-btn lx-btn-primary" data-lx-patent-calc>Рассчитать</button>
+          <button type="button" class="lx-btn lx-btn-ghost" data-lx-patent-clear>Очистить</button>
+          <button type="button" class="lx-btn lx-btn-ghost" data-lx-patent-copy>Копировать</button>
+          <button type="button" class="lx-btn lx-btn-ghost" data-lx-patent-print>Печать</button>
+        </div>
+        <p class="lx-warn" data-lx-patent-error hidden></p>
+      </div>
+      <aside class="lx-result-panel" data-lx-patent-result hidden>
+        <p class="lx-field-label">Пошлины Роспатента</p>
+        <p class="lx-sum-total" data-lx-patent-total>—</p>
+        <div data-lx-patent-result-body></div>
+        <p class="lx-hint">Нужно сопровождение — <a href="https://lireate.ru/registraciya_tovarnogo_znaka/">регистрация под ключ</a> или <a href="https://lireate.ru/patentnye-zadachi/redaktor-mktu/">редактор МКТУ</a>.</p>
+      </aside>
+    </div>
+  </section>
+</main>
+<script src="../live-assets/patentnye-zadachi/poshliny-registraciya/assets/lireate-shared/lireate-patent-fees-core.js?v=1794925514"></script>
+<script src="../live-assets/patentnye-zadachi/poshliny-registraciya/assets/lireate-shared/lireate-patent-mktu-core.js?v=1794923295"></script>
+<script src="../live-assets-before/patentnye-zadachi/poshliny-registraciya/assets/lireate-shared/lireate-patent-tools.js?v=1794925514"></script>
+<div class="lx-patent-footer-shell">
+<footer class="lx-patent-footer-bar" role="contentinfo" id="contact">
+  <div class="lx-patent-footer-inner">
+    <p class="lx-patent-footer-note">Расчёт ориентировочный; сверяйте с <a href="https://rospatent.gov.ru/ru/activities/dues/table" target="_blank" rel="noopener noreferrer">таблицей пошлин Роспатента</a>. Услуги бюро оплачиваются отдельно.</p>
+    <div class="lx-patent-footer-actions">
+      <a class="lx-btn lx-btn-ghost" href="https://lireate.ru/patentnye-zadachi/">К каталогу</a>
+      <a class="lx-btn lx-btn-primary" href="https://t.me/lireate_patent" target="_blank" rel="noopener noreferrer">Telegram</a>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script src="../live-assets/patentnye-zadachi/poshliny-registraciya/assets/lireate-shared/lireate-reveal.js?v=1794923295"></script>
+<!-- Yandex.Metrika counter -->
+<script>
+(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+ym(52622734, "init", {
+  clickmap: true,
+  trackLinks: true,
+  accurateTrackBounce: true,
+  webvisor: true
+});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/52622734" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script src="../live-assets/patentnye-zadachi/poshliny-registraciya/assets/lireate-shared/lireate-metrika-goals.js?v=1794931582"></script>
+</body>
+</html>

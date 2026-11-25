@@ -1,0 +1,482 @@
+
+/* /template/css/lireate-lu-viewport.css */
+/* Lu-shell: синхрон с темой (#leftSideBar left:-270 при max-width:1150px в main.php).
+   lireate_lu_column_center_v1 + lireate_wide_center_hotfix_v2 @1500px */
+/* ≤1150: меню скрыто — контент на всю ширину, gutter 24–32px */
+/* 1151–1250: сайдбар 240px | ≥1251: сайдбар 270px */
+
+body.lireate-home-dark .container.content,
+body.lireate-home-dark .content.container,
+body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content,
+body.lireate-cms-page-dark:not(.lireate-home-dark) .content.container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+body.lireate-home-dark #lireate-home .lh-wrap,
+body.lireate-home-dark #lireate-home.lu-page .lu-wrap {
+  max-width: none;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px 32px;
+  box-sizing: border-box;
+}
+
+body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content > .main-screen.lireate-hero-v4,
+body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content > .main-screen {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content > *:not(.main-screen):not(#leftSideBar) {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1150px) {
+  body.lireate-home-dark .lx-site-footer,
+  body.lireate-cms-page-dark footer:not(.lx-site-footer),
+  body.lireate-mktu-lu-body .lx-site-footer {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+  body.lireate-mktu-lu-body .mktu_head,
+  body.lireate-mktu-lu-body .mktu_body,
+  body.lireate-mktu-lu-body .container.content > .conteinerY {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+  body.cms-default:has(#articleBox .lireate-blog-page) .container.content,
+  body.lireate-legacy-article-lu .container.content {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+@media (min-width: 1151px) and (max-width: 1250px) {
+  body.lireate-home-dark .container.content,
+  body.lireate-home-dark .content.container,
+  body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content,
+  body.lireate-cms-page-dark:not(.lireate-home-dark) .content.container {
+    padding-left: 240px !important;
+    padding-right: 32px !important;
+  }
+  body.lireate-home-dark .main-screen.lireate-hero-v4,
+  body.lireate-cms-page-dark .container.content > .main-screen.lireate-hero-v4 {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+  body.lireate-home-dark #lireate-home .lh-wrap,
+  body.lireate-home-dark #lireate-home.lu-page .lu-wrap {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+  body.lireate-home-dark .lx-site-footer,
+  body.lireate-cms-page-dark footer:not(.lx-site-footer),
+  body.lireate-mktu-lu-body .lx-site-footer {
+    margin-left: 240px !important;
+    width: calc(100% - 240px) !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+  body.lireate-mktu-lu-body .mktu_head,
+  body.lireate-mktu-lu-body .mktu_body,
+  body.lireate-mktu-lu-body .container.content > .conteinerY {
+    margin-left: 240px !important;
+    width: calc(100% - 240px) !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+  body.cms-default:has(#articleBox .lireate-blog-page) .container.content,
+  body.lireate-legacy-article-lu .container.content {
+    padding-left: 240px !important;
+    padding-right: 32px !important;
+  }
+}
+
+@media (min-width: 1251px) {
+  body.lireate-home-dark .container.content,
+  body.lireate-home-dark .content.container,
+  body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content,
+  body.lireate-cms-page-dark:not(.lireate-home-dark) .content.container {
+    padding-left: 270px !important;
+    padding-right: 32px !important;
+  }
+  body.lireate-home-dark .main-screen.lireate-hero-v4,
+  body.lireate-cms-page-dark .container.content > .main-screen.lireate-hero-v4 {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+  body.lireate-home-dark #lireate-home .lh-wrap,
+  body.lireate-home-dark #lireate-home.lu-page .lu-wrap {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+  body.lireate-home-dark .lx-site-footer,
+  body.lireate-cms-page-dark footer:not(.lx-site-footer),
+  body.lireate-mktu-lu-body .lx-site-footer {
+    margin-left: 270px !important;
+    width: calc(100% - 270px) !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+  body.lireate-mktu-lu-body .mktu_head,
+  body.lireate-mktu-lu-body .mktu_body,
+  body.lireate-mktu-lu-body .container.content > .conteinerY {
+    margin-left: 270px !important;
+    width: calc(100% - 270px) !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+  body.cms-default:has(#articleBox .lireate-blog-page) .container.content,
+  body.lireate-legacy-article-lu .container.content {
+    padding-left: 270px !important;
+    padding-right: 32px !important;
+  }
+}
+
+@media (min-width: 1151px) and (max-width: 1399px) {
+  body.lireate-home-dark #lireate-home .lh-wrap,
+  body.lireate-home-dark #lireate-home.lu-page .lu-wrap {
+    max-width: none !important;
+    width: 100% !important;
+  }
+  body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content > *:not(.main-screen):not(#leftSideBar) {
+    max-width: none !important;
+    width: 100% !important;
+  }
+  body.lireate-cms-page-dark .container.content > .row.col-xs-12[style*="padding: 0px 30px"]:has(> .advant) {
+    max-width: none !important;
+    width: 100% !important;
+  }
+}
+
+/* lireate_wide_center_hotfix_v2 — широкая колонка 1120px по центру правой панели */
+@media (min-width: 1500px) {
+  body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content > *:not(.main-screen):not(#leftSideBar):not(#lx-none),
+  body.lireate-cms-page-dark:not(.lireate-home-dark) .container.content > .main-screen.lireate-hero-v4 {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  body.lireate-home-dark #lireate-home .lu-wrap.lh-wrap,
+  body.lireate-home-dark #lireate-home .lh-wrap,
+  body.lireate-home-dark #lireate-home.lu-page .lu-wrap {
+    max-width: 1120px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  body.lireate-mktu-lu-body .mktu_head,
+  body.lireate-mktu-lu-body .mktu_body,
+  body.lireate-mktu-lu-body .container.content > .conteinerY,
+  body.lireate-mktu-lu-body .lx-site-footer {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 1120px !important;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 1151px) and (max-width: 1199px) {
+  body.lireate-home-dark .container.content [class*="col-lg-"],
+  body.lireate-home-dark #lireate-home .lh-wrap [class*="col-lg-"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+  }
+}
+
+
+/* /template/css/lireate-static-pages-lu.css */
+/* reviews / portfolio / spasibo / uslugi — тёмный LU (2026-11-11 static3) */
+
+body.lireate-cms-page-dark.lireate-static-lu .page_container,
+body.lireate-cms-page-dark.lireate-uslugi-body .page_container,
+body.lireate-cms-page-dark.lireate-reviews-body .page_container,
+body.lireate-cms-page-dark.lireate-portfolio-body .page_container,
+body.lireate-cms-page-dark.lireate-spasibo-body .page_container {
+  background: transparent !important;
+  color: #cbd5e1 !important;
+  max-width: 1120px !important;
+  margin: 0 auto !important;
+  padding: 24px !important;
+  box-sizing: border-box;
+}
+
+/* CMS inline color:#000 / rgb(0,0,0) — spasibo и пр. */
+body.lireate-static-lu [style*="color: rgb(0, 0, 0)"],
+body.lireate-static-lu [style*="color:rgb(0,0,0)"],
+body.lireate-static-lu [style*="color:#000"],
+body.lireate-static-lu [style*="color: #000"],
+body.lireate-spasibo-body p,
+body.lireate-spasibo-body span,
+body.lireate-spasibo-body .page_container,
+body.lireate-spasibo-body .page_container *:not(a):not(.btn) {
+  color: #e8ecf5 !important;
+}
+
+body.lireate-spasibo-body .page_container {
+  text-align: center !important;
+  max-width: 520px !important;
+  margin: 40px auto 64px !important;
+  padding: 32px 28px 36px !important;
+  background: rgba(15, 23, 42, 0.94) !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35) !important;
+}
+
+body.lireate-spasibo-body .page_container a {
+  color: #93c5fd !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+  font-weight: 600 !important;
+}
+
+body.lireate-spasibo-body .txt-content > p > a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 20px !important;
+  padding: 14px 22px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 55%, #6366f1 100%) !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+body.lireate-spasibo-body .page_container .lx-thanks-contacts {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: 12px 20px !important;
+  margin-top: 16px !important;
+  background: none !important;
+  padding: 0 !important;
+  font-weight: 500 !important;
+}
+
+body.lireate-spasibo-body .page_container .lx-thanks-contacts a {
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  border-radius: 0 !important;
+  color: #cbd5e1 !important;
+  font-weight: 500 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+/* Legacy main-screen hero (если есть) */
+body.lireate-cms-page-dark.lireate-static-lu .main-screen.main_back:not(.lireate-hero-v4),
+body.lireate-cms-page-dark.lireate-reviews-body .main-screen.main_back:not(.lireate-hero-v4),
+body.lireate-cms-page-dark.lireate-portfolio-body .main-screen.main_back:not(.lireate-hero-v4),
+body.lireate-cms-page-dark.lireate-spasibo-body .main-screen.main_back:not(.lireate-hero-v4) {
+  display: none !important;
+}
+
+/* #face heroes (reviews / portfolio) — без иллюстраций, как /uslugi/ */
+body.lireate-reviews-body #face,
+body.lireate-portfolio-body #face {
+  position: relative !important;
+  min-height: 0 !important;
+  padding: 48px 24px 36px !important;
+  margin: 0 -24px 0 !important;
+  width: calc(100% + 48px) !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  background: linear-gradient(165deg, #0b1020 0%, #121a2e 55%, #0f172a 100%) !important;
+  background-image: none !important;
+  overflow: hidden !important;
+}
+
+body.lireate-reviews-body #face .bg,
+body.lireate-reviews-body #face .bg_main,
+body.lireate-portfolio-body #face .bg,
+body.lireate-portfolio-body #face .bg_main {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body.lireate-reviews-body .face_line,
+body.lireate-portfolio-body .face_line {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+body.lireate-reviews-body #face .contentBox,
+body.lireate-portfolio-body #face .contentBox {
+  position: relative !important;
+  z-index: 2 !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+body.lireate-reviews-body #face .h1,
+body.lireate-portfolio-body #face .h1 {
+  font: 800 clamp(22px, 4.2vw, 38px) / 1.15 "Inter", system-ui, sans-serif !important;
+  color: #f8fafc !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  margin: 0 0 16px !important;
+}
+
+body.lireate-reviews-body #face .titleDesc,
+body.lireate-portfolio-body #face .titleDesc {
+  font: 500 16px/1.55 "Inter", system-ui, sans-serif !important;
+  color: #e2e8f0 !important;
+  margin: 0 0 8px !important;
+}
+
+body.lireate-reviews-body #face .titleDesc span,
+body.lireate-portfolio-body #face .titleDesc span {
+  color: #c4b5fd !important;
+  font-weight: 700 !important;
+}
+
+body.lireate-cms-page-dark.lireate-static-lu h1,
+body.lireate-cms-page-dark.lireate-reviews-body h1,
+body.lireate-cms-page-dark.lireate-portfolio-body h1 {
+  font-family: "Inter", system-ui, sans-serif !important;
+  font-weight: 800 !important;
+  color: #f8fafc !important;
+  text-align: left !important;
+}
+
+/* Отзывы — карточки видео */
+body.lireate-reviews-body #list .contentBox > div {
+  background: rgba(30, 41, 59, 0.88) !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25) !important;
+  color: #e2e8f0 !important;
+}
+
+body.lireate-reviews-body #list .contentBox > div:hover {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35) !important;
+}
+
+body.lireate-reviews-body .page_container .review-item,
+body.lireate-reviews-body .page_container .reviews-item,
+body.lireate-reviews-body .page_container .item {
+  background: rgba(30, 41, 59, 0.75) !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  border-radius: 14px !important;
+  margin-bottom: 16px !important;
+  padding: 16px !important;
+}
+
+body.lireate-reviews-body .page_container iframe,
+body.lireate-portfolio-body .page_container img {
+  border-radius: 12px !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+body.lireate-portfolio-body .page_container .portfolio-item,
+body.lireate-portfolio-body .page_container .item,
+body.lireate-portfolio-body .region_title {
+  color: #f1f5f9 !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+
+body.lireate-portfolio-body .page_container .portfolio-item,
+body.lireate-portfolio-body .page_container .item {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+
+body.lireate-portfolio-body .page_container a {
+  color: #93c5fd !important;
+}
+
+@media (max-width: 768px) {
+  body.lireate-reviews-body #face,
+  body.lireate-portfolio-body #face,
+  body.lireate-portfolio-body section#face.sectionPadding {
+    margin: 0 -16px !important;
+    width: calc(100% + 32px) !important;
+    padding: 28px 16px 14px !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  body.lireate-portfolio-body #face .contentBox,
+  body.lireate-reviews-body #face .contentBox {
+    padding-bottom: 0 !important;
+  }
+
+  body.lireate-portfolio-body #face .titleDesc:last-child,
+  body.lireate-reviews-body #face .titleDesc:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  body.lireate-static-lu #face,
+  body.lireate-static-lu #face .contentBox {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body.lireate-reviews-body .page_container,
+  body.lireate-portfolio-body .page_container,
+  body.lireate-spasibo-body .page_container {
+    padding: 16px max(16px, env(safe-area-inset-right, 0px)) 24px
+      max(16px, env(safe-area-inset-left, 0px)) !important;
+  }
+  body.lireate-spasibo-body .page_container {
+    margin-top: 24px !important;
+    padding: 24px 20px !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1280px) {
+  body.lireate-cms-page-dark.lireate-static-lu .page_container {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+  body.lireate-reviews-body #face,
+  body.lireate-portfolio-body #face {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+body.lireate-cms-page-dark.lireate-uslugi-body #modals .advant,
+body.lireate-cms-page-dark.lireate-uslugi-body #modals .col {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  border-radius: 14px !important;
+  color: #f1f5f9 !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+body.lireate-cms-page-dark.lireate-uslugi-body #modals .content-button.btn.red,
+body.lireate-cms-page-dark .page_container .content-button.btn.red {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 55%, #6366f1 100%) !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+}

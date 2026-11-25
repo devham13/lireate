@@ -1,0 +1,22 @@
+@import "https://lireate.ru/template/css/css/other/fonts.css";
+@import "https://lireate.ru/template/css/css/other/icon.css";
+@import "https://lireate.ru/template/css/css/other/section_position.css";
+@import "https://lireate.ru/template/css/css/other/flex.css";
+
+/* Переменные */
+:root { 
+    --color-first: #262c40;
+    --color-easy: #e1e4ef;
+    
+    --shadow-box:0 0px 15px -12px rgb(38 44 64);
+   }
+
+/* Это стили нужны чтобы убрать старую стилистику */
+
+.content {
+    background-color:white;}
+    
+.page_container {
+    min-height:calc(100vh - 100px);
+    padding: 0!important;
+    background-color: #f7f8fa;;}

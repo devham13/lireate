@@ -1,0 +1,11 @@
+/* lireate-modal-contrast v1 (2026-11-23): readable consent text and fields in LIGHT (white) request modals.
+   Deliberately low specificity: dark modals (lireate-home-modal-lu.css, body.lireate-home-dark / body.lireate-cms-page-dark ...) override it with their own !important rules. */
+.modal .lireate-consents,
+.modal .lireate-consents label{color:#1f2937 !important}
+.modal.modal-mail .input-group input,
+.modal.mbg .input-group input,
+#main-modal .input-group input{color:#111827 !important}
+.modal.modal-mail .input-group input::-webkit-input-placeholder,
+.modal.mbg .input-group input::-webkit-input-placeholder{color:#4b5563 !important;opacity:1 !important}
+.modal.modal-mail .input-group input::placeholder,
+.modal.mbg .input-group input::placeholder{color:#4b5563 !important;opacity:1 !important}

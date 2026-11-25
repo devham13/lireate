@@ -1,0 +1,159 @@
+body {
+	font-family: 'Roboto', sans-serif;
+	color: #363636;
+}
+.reletive-ap{
+	position: relative;
+}
+.inline-ap{
+	display: inline-block;
+}
+p{
+	margin-bottom: 0;
+}
+/*Убираем border при фокусе*/
+input[type="text"]:focus, button, span {
+	outline: none; 
+}
+/*Содержание*/
+.page_container{
+	/*padding-top: 32px;*/
+}
+.page_content{
+	padding-top: 18px;
+	/*padding-bottom: 60px;*/
+}
+.page_content p{
+	margin-bottom: 15px;
+}
+/*Заголовки*/
+.title_block{
+	font-size: 24px;
+	color: #293550;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin: 0;
+}
+.title_page_wrap{
+	text-align: left;
+}
+.title_page{
+	padding-bottom: 5px;
+	font-size: 28px;
+	color: #3e3e3e;
+}
+/*Хлебные крошки*/
+.breadcrumb_wrap{
+	text-align: left;
+}
+.breadcrumb-ap{
+	padding: 8px 15px 8px 0;
+	margin: 0;
+	list-style: none;
+}
+.breadcrumb-ap a{
+	color: #3e3e3e;
+}
+.breadcrumb-ap>li{
+	display: inline-block;
+	font-size: 13px;
+}
+.breadcrumb-ap>li+li:before {
+	padding: 0 5px;
+	color: #000;
+	content: "/\00a0";
+}
+.breadcrumb-ap li.active a{
+	text-decoration: underline;
+}
+/*Кнопки*/
+.btn_not_bg {
+	background: none;
+}
+.btn_frame{
+	display: inline-block;
+	border: 3px solid #fff;
+	font-size: 18px;
+	color: #fff;
+	padding: 8px 60px;
+}
+.btn_navigation {
+	padding: 0px;
+	text-transform: uppercase;
+	font-size: 11px;
+}
+.btn_navigation_item {
+	display: block;
+	width: 100%;
+	height: 3px;
+	border-radius: 1px;
+	margin-bottom: 3px;
+	background: #3a3838;
+}
+.btn_red{
+	background-color: #d92a3e;
+	box-shadow: 0px 2px 2px rgba(0,0,0,0.3);
+	-webkit-transition: background-color 0.1s linear;
+     -moz-transition: background-color 0.1s linear;
+     -o-transition: background-color 0.1s linear;
+     transition: background-color 0.1s linear;
+	/*background-image: -moz-linear-gradient(top, #eb0000 0%, #bc0000 100%);
+	background-image: -webkit-linear-gradient(top, #eb0000 0%, #bc0000 100%);
+	background-image: -o-linear-gradient(top, #eb0000 0%, #bc0000 100%);
+	background-image: -ms-linear-gradient(top, #eb0000 0% ,#bc0000 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eb0000', endColorstr='#bc0000',GradientType=0 );
+	background-image: linear-gradient(top, #eb0000 0% ,#bc0000 100%);*/
+	color: #fff;
+}
+
+.btn_red:hover {
+    background-color: #ff4459;
+}
+
+/*Форма заказа*/
+.order_form_content{
+	padding: 38px 30px 0px 30px;
+	width: 100%;
+	border: 2px solid #0e4b8e;
+	text-align: center;
+}
+.order_form{
+	padding: 33px 0;
+	background: #446a73;
+}
+.order_form_list{
+	text-align: center;
+}
+.order_form-group{
+	display: inline-block;
+	padding-top: 12px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.order_form-group input{
+	border-color: #0e4b8e;
+}
+.title_order_form{
+	font-size: 24px;
+	color: #3e3e3e;
+	font-weight: bold;
+}
+.order_form_control{
+	border-radius: 0;
+}
+.order_form_btn{
+	font-size: 15px;
+	width: 100%;
+	border-radius: 5px;
+	text-transform: uppercase;
+}
+
+.main-menu-tx-link{
+	color: #fff;
+	text-decoration: underline;
+}
+
+.txt-content{
+	text-indent: 20px;
+	font-size: 15px;
+}
