@@ -29,22 +29,6 @@ body.lireate-portfolio-preview .page_container,
 body.lireate-portfolio-preview .sectionPadding {
   font-family: Manrope, "Open Sans", sans-serif !important;
 }
-body.lireate-portfolio-preview .region_list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-  margin: 16px 0 28px;
-}
-body.lireate-portfolio-preview .trade_mark_box,
-body.lireate-portfolio-preview .trade_mark_link {
-  display: block;
-  border: 1px solid #dce8f7;
-  border-radius: 14px;
-  padding: 14px 16px;
-  background: #f7fbff;
-  color: #1f212c !important;
-  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06);
-}
 body.lireate-portfolio-preview .lx-pf-light-head {
   max-width: 1056px;
   margin: 24px auto 8px;
@@ -60,9 +44,51 @@ body.lireate-portfolio-preview .lx-pf-light-head p {
   margin: 0;
   color: #52637b !important;
 }
+body.lireate-portfolio-preview .region_list {
+  max-width: 1056px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
 body.lireate-portfolio-preview .region_title {
   font-weight: 800;
   font-size: 18px;
-  margin: 18px 0 8px;
+  margin: 24px 0 10px;
   color: #1f212c !important;
+}
+body.lireate-portfolio-preview .city_button {
+  display: block !important;
+  font-weight: 700;
+  font-size: 15px;
+  margin: 14px 0 8px;
+  color: #1f212c !important;
+}
+body.lireate-portfolio-preview .trade_mark_box {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+body.lireate-portfolio-preview .trade_mark_box_close {
+  display: none !important;
+}
+body.lireate-portfolio-preview .trade_mark_link {
+  display: block;
+  border: 1px solid #dce8f7;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #f7fbff;
+  color: #1f212c !important;
+  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06);
+  font-weight: 600;
+  margin: 0 !important;
+}
+body.lireate-portfolio-preview .lx-pf-cert {
+  grid-column: 1 / -1;
+  margin: -4px 0 8px;
+  font-size: 13px;
+  color: #52637b !important;
 }

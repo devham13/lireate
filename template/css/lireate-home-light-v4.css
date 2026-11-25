@@ -474,6 +474,7 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav {
   background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid #e3edf7;
   backdrop-filter: blur(10px);
+  max-height: none;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-in {
   display: flex;
@@ -512,8 +513,38 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-cta {
   white-space: nowrap;
 }
 @media (max-width: 480px) {
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav {
+    max-height: 48px;
+    overflow: hidden;
+  }
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-in {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 6px 0;
+    max-height: 48px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-in::-webkit-scrollbar {
+    display: none;
+  }
   body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-links {
-    width: 100%;
+    flex-wrap: nowrap;
+    width: auto;
+    flex: 0 0 auto;
+    gap: 12px;
+    white-space: nowrap;
+  }
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-right {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-cta {
+    padding: 6px 10px;
+    font-size: 12px;
   }
   body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box {
     padding: 16px;

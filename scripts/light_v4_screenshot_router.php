@@ -1,6 +1,11 @@
 <?php
 $repo = dirname(__DIR__);
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$service_preview_roots = array(
+    '/tm' => '/pages/services/registraciya-tovarnogo-znaka/',
+    '/patent' => '/pages/services/patentnye-zadachi-poshliny-registraciya/',
+    '/service' => '/pages/services/prodlenie-tovarnogo-znaka/',
+);
 $routes = array(
     '/' => $repo . '/pages/home/_preview/cms-shell.php',
     '/home' => $repo . '/pages/home/_preview/cms-shell.php',
@@ -19,6 +24,9 @@ $routes = array(
 );
 if (isset($routes[$path])) {
     chdir($repo);
+    if (isset($service_preview_roots[$path])) {
+        define('LIREATE_PREVIEW_SERVICE_WEB_ROOT', $service_preview_roots[$path]);
+    }
     require $routes[$path];
     return true;
 }

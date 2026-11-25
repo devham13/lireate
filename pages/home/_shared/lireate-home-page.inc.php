@@ -29,17 +29,6 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
 
 <div id="lireate-home-light-v4" class="lh4-root">
 <div class="scroll-progress" aria-hidden="true"></div>
-  <div class="lh4-subnav" id="lh4Subnav" aria-label="Навигация по разделам главной">
-    <div class="wrap lh4-subnav-in">
-      <nav class="lh4-subnav-links">
-        <a href="#services">Услуги</a><a href="#team">Команда</a><a href="#cases">Кейсы</a><a href="#pricing">Стоимость</a><a href="#how">Этапы</a><a href="#faq">FAQ</a><a href="#blog">Блог</a>
-      </nav>
-      <div class="lh4-subnav-right">
-        <a class="lh4-subnav-phone" href="<?php echo lireate_home_h(LIREATE_HOME_PHONE_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_home_h(LIREATE_HOME_PHONE_DISPLAY); ?></a>
-        <a class="lh4-subnav-cta btn primary" href="#lh4-contact">Оставить заявку</a>
-      </div>
-    </div>
-  </div>
 
 <main id="lh4-top">
   <section class="hero">
@@ -90,6 +79,18 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
       </div>
     </div>
   </section>
+
+  <div class="lh4-subnav" id="lh4Subnav" aria-label="Навигация по разделам главной">
+    <div class="wrap lh4-subnav-in">
+      <nav class="lh4-subnav-links">
+        <a href="#services">Услуги</a><a href="#team">Команда</a><a href="#cases">Кейсы</a><a href="#pricing">Стоимость</a><a href="#how">Этапы</a><a href="#faq">FAQ</a><a href="#blog">Блог</a>
+      </nav>
+      <div class="lh4-subnav-right">
+        <a class="lh4-subnav-phone" href="<?php echo lireate_home_h(LIREATE_HOME_PHONE_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_home_h(LIREATE_HOME_PHONE_DISPLAY); ?></a>
+        <a class="lh4-subnav-cta btn primary" href="#lh4-contact">Оставить заявку</a>
+      </div>
+    </div>
+  </div>
 
   <div class="motion-strip" aria-label="Направления работы Лирейт"><div class="motion-strip-inner" aria-hidden="true"><span>ТОВАРНЫЕ ЗНАКИ</span><i>•</i><span>ПАТЕНТЫ</span><i>•</i><span>ДОГОВОРЫ</span><i>•</i><span>ПРОГРАММЫ ЭВМ</span><i>•</i><span>ЗАЩИТА ПРАВ</span><i>•</i><span>ТОВАРНЫЕ ЗНАКИ</span><i>•</i><span>ПАТЕНТЫ</span><i>•</i><span>ДОГОВОРЫ</span><i>•</i><span>ПРОГРАММЫ ЭВМ</span><i>•</i><span>ЗАЩИТА ПРАВ</span><i>•</i></div></div>
 

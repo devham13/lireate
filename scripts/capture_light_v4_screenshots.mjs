@@ -67,6 +67,15 @@ async function prepareForScreenshot(page) {
   await new Promise((r) => setTimeout(r, 500));
 }
 
+async function prepareViewportOnly(page) {
+  await page.evaluate(async () => {
+    document.body.classList.add('lireate-screenshot-capture');
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+    window.scrollTo(0, 0);
+  });
+  await new Promise((r) => setTimeout(r, 450));
+}
+
 fs.mkdirSync(OUT, { recursive: true });
 const browser = await puppeteer.launch({
   headless: true,
@@ -80,9 +89,26 @@ for (const s of shots) {
     const page = await browser.newPage();
     await page.setViewport({ width: s.w, height: s.h, deviceScaleFactor: 1 });
     await page.goto(s.url, { waitUntil: 'networkidle2', timeout: 180000 });
-    if (s.prep) {
-      await prepareForScreenshot(page);
+    if (s.name.includes('blog-list')) {
+      await page
+        .waitForFunction(
+          () =>
+            document.querySelectorAll(
+              '.lireate-blog-list-card-cover[style*="background-image"]'
+            ).length >= 10,
+          { timeout: 45000 }
+        )
+        .catch(() => {});
     }
+    if (s.prep) {
+      if (s.viewportOnly) {
+        await prepareViewportOnly(page);
+      } else {
+        await prepareForScreenshot(page);
+      }
+    }
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await new Promise((r) => setTimeout(r, 200));
     await page.screenshot({ path: out, fullPage: !s.viewportOnly, type: 'png' });
     await page.close();
     console.log('OK', s.name, fs.statSync(out).size);

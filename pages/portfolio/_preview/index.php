@@ -13,7 +13,7 @@ $live_frag = __DIR__ . '/live-portfolio-fragment.html';
   <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125d">
   <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125d">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
-  <link rel="stylesheet" href="/template/css/lireate-portfolio-light-v4.css?v=20261125e">
+  <link rel="stylesheet" href="/template/css/lireate-portfolio-light-v4.css?v=20261125f">
 </head>
 <body class="lireate-theme-light-v4 lireate-screenshot-capture lireate-portfolio-preview">
 <div class="wrapper"><div class="container content"><div class="page_container">

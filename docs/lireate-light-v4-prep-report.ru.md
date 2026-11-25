@@ -22,6 +22,8 @@
 Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
 Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 node scripts/capture_light_v4_screenshots.mjs`
 
+Размеры PNG (последний прогон `capture_light_v4_screenshots.mjs` + блог): см. вывод `identify` в коммите (раздел ниже).
+
 ## Блокер consent (главная)
 
 - Разметка согласий: `lireate_home_consent_fields_inc_path()` + fallback `lireate_home_render_consent_fields()` — **без fatal**, если файла нет.
@@ -71,7 +73,6 @@ Guard-diff **не применён** в репозитории lireate-news: в 
 | Текст (фрагмент) | Источник |
 | --- | --- |
 | Бесплатная консультация ↗ | дизайн PR #117 |
-| Через 15 минут вы получите ответ на свой вопрос. | дизайн PR #117 |
 | Специалист Лирейт · консультации, сопровождение заявок и защита интеллектуальной собственности | дизайн PR #117 |
 | Команда Лирейт ↗ | дизайн PR #117 |
 | О компании ↗ | дизайн PR #117 |
@@ -113,7 +114,5 @@ Guard-diff **не применён** в репозитории lireate-news: в 
 | честная оценка перспектив и понятный следующий шаг | дизайн PR #117 |
 | быстрый контакт через Telegram, Max и телефон | дизайн PR #117 |
 | Отправить заявку | только ветка / не live |
-| window.lireateHomeProcessStages= | только ветка / не live |
-| window.lireateMailSpamGuard= | только ветка / не live |
 
 _Разрешены только: (а) тексты prod-сайта, (б) design-proposals PR #117 home index._

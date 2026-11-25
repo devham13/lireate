@@ -42,7 +42,11 @@ def main():
     home_snips = snippets_from_file(HOME_PHP)
     rows = []
     for s in home_snips:
+        if s.startswith("window.lireate") or "window.lireate" in s:
+            continue
         if s in live_plain:
+            continue
+        if "Через 15 минут вы получите ответ" in s and "Через 15 минут" in live_plain:
             continue
         src = "дизайн PR #117" if design_plain and s in design_plain else "только ветка / не live"
         rows.append((s[:120], src))

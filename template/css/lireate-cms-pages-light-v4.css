@@ -208,3 +208,43 @@ body.lireate-theme-light-v4 .lx-site-footer-requisites {
 body.lireate-theme-light-v4 .lx-site-footer-requisites-panel {
   color: #52637b !important;
 }
+
+html.lireate-team-html body.lireate-team-body.lireate-theme-light-v4,
+body.lireate-team-body.lireate-theme-light-v4:has(.lireate-team-page) {
+  background: #fff !important;
+}
+body.lireate-team-body.lireate-theme-light-v4 .lireate-team-page,
+body.lireate-team-body.lireate-theme-light-v4 .lireate-team-wrap {
+  background: #fff !important;
+}
+
+body.lireate-theme-light-v4 .lireate-about-hero-actions .lireate-about-pill--solid {
+  background: #195acb !important;
+  color: #fff !important;
+  border-color: #195acb !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero-actions .lireate-about-pill--outline {
+  background: #fff !important;
+  color: #1f212c !important;
+  border: 1px solid #c5d7ef !important;
+}
+body.lireate-theme-light-v4 .lireate-about-partner-name {
+  color: #1f212c !important;
+  font-weight: 800 !important;
+}
+body.lireate-theme-light-v4 .lireate-about-partner-role,
+body.lireate-theme-light-v4 .lireate-about-spec-label {
+  color: #3d4d66 !important;
+}
+body.lireate-theme-light-v4 .lireate-about-spec li {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-about-accent,
+body.lireate-theme-light-v4 .lireate-about-accent p {
+  color: #1f212c !important;
+  background: #f0f6ff !important;
+  border-left: 3px solid #195acb !important;
+}
+body.lireate-theme-light-v4 .lireate-about-text--muted {
+  color: #52637b !important;
+}
