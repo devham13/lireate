@@ -29,10 +29,9 @@ def main():
     try:
         docroot = build_fixture_docroot(tmp / "docroot", office_repo=REPO, mysql=True)
         list_tpl = REPO / "scripts" / "fixtures" / "cms-news-list-template.php"
-        if list_tpl.is_file():
-            dest = docroot / "template" / "page" / "news" / "lireate-blog-list-legacy.inc.php"
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(list_tpl, dest)
+        import lireate_blog_install_lib as blog_lib  # noqa: E402
+
+        blog_lib.apply_blog_install_to_docroot(REPO, docroot)
         autopub = tmp / "autopub"
         autopub.mkdir(parents=True, exist_ok=True)
         env_path = autopub / ".env"
@@ -44,7 +43,6 @@ def main():
         env["LIREATE_DOCROOT"] = str(docroot)
         env["LIREATE_AUTOPUB_HOME"] = str(autopub)
         env["LIREATE_OFFICE_REPO"] = str(REPO)
-        env["LIREATE_BLOG_SKIP_PREAPPLY_GATE"] = "1"
         subprocess.check_call(
             [sys.executable, str(SCRIPT_DIR / "lireate_blog_install.py"), "--apply"],
             env=env,

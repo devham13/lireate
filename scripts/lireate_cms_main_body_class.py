@@ -123,6 +123,54 @@ def patch_about_body_conditional(text):
     return _insert_after_pos(text, pos, ABOUT_BODY_COND)
 
 
+def patch_home_light_v4_suppress_dark_body(text):
+    """Ensure main.php does not emit cms dark shell on home when Light V4 is active."""
+    import re
+
+    marker = "lireate-home-light-v4-install:suppress-home-dark"
+    if marker in text:
+        return text, False
+    changed = False
+    planned = text
+    dark_echo = re.compile(
+        r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-cms-page-dark[^']*)'\s*;\s*\?>",
+        re.IGNORECASE,
+    )
+    home_dark = re.compile(
+        r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-home-dark[^']*)'\s*;\s*\?>",
+        re.IGNORECASE,
+    )
+
+    def _guard_echo(match):
+        cond = match.group(1).strip()
+        if "$temp['page']!='home'" in cond or '$temp["page"]!="home"' in cond:
+            return match.group(0)
+        return (
+            "<?php if(({0}) && $temp['page']!='home') echo '{1}'; /* {2} */ ?>".format(
+                cond, match.group(2).replace("'", "\\'"), marker
+            )
+        )
+
+    nxt = dark_echo.sub(_guard_echo, planned)
+    if nxt != planned:
+        changed = True
+        planned = nxt
+    nxt = home_dark.sub(_guard_echo, planned)
+    if nxt != planned:
+        changed = True
+        planned = nxt
+    nxt = re.sub(
+        r"array\s*\(\s*'home'\s*,",
+        "array(",
+        planned,
+    )
+    nxt = re.sub(r",\s*'home'\s*(?=[,\)])", "", nxt)
+    if nxt != planned:
+        changed = True
+        planned = nxt
+    return planned, changed
+
+
 def patch_home_light_v4_body_conditional(text):
     """Insert home Light V4 body classes after about snippet if present."""
     if HOME_LIGHT_V4_BODY_COND in text:

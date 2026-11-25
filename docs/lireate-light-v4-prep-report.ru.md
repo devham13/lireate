@@ -40,6 +40,30 @@
 
 Скриншоты на **fixture-данных** в отчёте владельцу как эталон live **не показываем** (другой объём портфолио/отзывов); в репозитории — для регрессии CI/агента.
 
+## Круг 14 — `tests/fixtures/live-render` (коммит `2eb3c13`+)
+
+**Источник правды для after (7 CMS-страниц):** замороженный HTML `tests/fixtures/live-render/after/*.html` (живой `index.php` + `main.php`) + CSS ветки через `asset-map.json`. Снимки и метрики:
+
+```bash
+LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides after --fail-on-contrast --out docs/light-v4-screenshots
+```
+
+Проверка **14 шотов** (home, article, reviews, team, portfolio, poshliny, prodlenie × 1440/390): `low_contrast_count=0` на всех; итог — `docs/light-v4-screenshots/metrics.json` (копия: `docs/live-render-after-metrics.json`).
+
+| Файл | Страница |
+| --- | --- |
+| `after-home-{1440,390}.png` (+ `*-full.png`) | Главная Light V4 (`#lireate-home` скрыт в CSS/JS) |
+| `after-article-*` | Статья блога (класс `lireate-legacy-article-lu`) |
+| `after-reviews-*` | Отзывы |
+| `after-team-*` | Команда |
+| `after-portfolio-*` | Портфолио |
+| `after-poshliny-*` | Пошлины (patent tools) |
+| `after-prodlenie-*` | Продление ТЗ |
+
+Прочие after в `docs/light-v4-screenshots/` (tm, service, blog-list…) — прежний захват `run_light_v4_fixture_screenshots.sh`, не live-render.
+
+**Код:** патч `main.php` (без `lireate-cms-page-dark` / `lireate-home-dark` на home), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
+
 ### `git show --stat f61597f -- docs/light-v4-screenshots`
 
 ```

@@ -79,6 +79,11 @@ scripts/run_live_render_fixture_screenshots.sh --sides after --pages home,articl
    ```
    Блокер 1 (главная) живёт в патче main.php, который делает `lireate_home_light_v4_install.py`:
    правьте этот установщик (и/или `template/css/lireate-home-light-v4.css`), а не main.php руками.
+   После коммита **круг 14**: установщик дополнительно оборачивает `echo ' lireate-cms-page-dark'`
+   / `lireate-home-dark` условием `$temp['page']!='home'` (маркер `lireate-home-light-v4-install:suppress-home-dark`)
+   и убирает `home` из PHP-массивов тёмных страниц. **AFTER `home.html` в репозитории не пересобран** —
+   для проверки главной используйте CSS/JS ветки на текущем AFTER; полный свежий AFTER home —
+   только после пересборки на стенде.
 3. Рендер: PHP 5.6 `php -S 127.0.0.1:19191 -t <копия> router.php` с SQLite-копией публичных таблиц.
 4. `python3 scripts/build_live_render_fixture.py --before-root <живой снимок> --after-root <копия> --sides after`
    (BEFORE не трогать). Скрипт сам заменяет токены форм на `FIXTURE` и обновляет `asset-map.json`.

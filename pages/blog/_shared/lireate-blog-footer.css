@@ -165,3 +165,35 @@
 .lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#64748b;margin:16px 0 0}
 .lireate-blog-page { overflow-x: clip; max-width: 100%; }
 .lx-site-footer { overflow-x: clip; }
+
+/* Light V4: подвал после тёмного lireate-blog-footer (в т.ч. главная — лист грузится в конце body) */
+body.lireate-theme-light-v4 .lx-site-footer {
+  background: #f7fbff !important;
+  border-top: 1px solid #dce8f7 !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-theme-light-v4 .lx-site-footer p,
+body.lireate-theme-light-v4 .lx-site-footer summary {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-title {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-lead,
+body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-meta {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer a,
+body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-contact a,
+body.lireate-theme-light-v4 .lx-site-footer-nav > a,
+body.lireate-theme-light-v4 .lx-site-footer-requisites summary {
+  color: #0f4db8 !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-requisites {
+  background: #fff !important;
+  border: 1px solid #dce8f7 !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
+body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p {
+  color: #52637b !important;
+}

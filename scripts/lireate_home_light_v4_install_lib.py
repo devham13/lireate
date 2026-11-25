@@ -337,6 +337,7 @@ def patch_body_class_conditional(text):
 def plan_home_main_content(text):
     text, _, _ = patch_home_main_content(text)
     text, _ = patch_body_class_conditional(text)
+    text, _ = cms_body.patch_home_light_v4_suppress_dark_body(text)
     text, _ = patch_head_assets(text)
     return text
 

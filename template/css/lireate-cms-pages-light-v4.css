@@ -56,6 +56,66 @@ body.lireate-theme-light-v4 .lireate-team-member-role {
 body.lireate-theme-light-v4 .lireate-team-badge {
   color: #e32020 !important;
 }
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .wrapper,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 #lireate-team,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-lead,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-text,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page li {
+  color: #2d4764 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page a {
+  color: #0f4db8 !important;
+  font-weight: 700 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-copy,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-meta {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-lead {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-badge,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-pill--solid {
+  color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #face p.titleDesc,
+body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .submitBox.js-modal-form,
+body.lireate-theme-light-v4 div.submitBox.js-modal-form,
+body.lireate-reviews-body div.submitBox.js-modal-form,
+body.lireate-team-body div.submitBox.js-modal-form,
+body.lireate-portfolio-body div.submitBox.js-modal-form {
+  color: #fff !important;
+}
+body.lireate-team-body a.lireate-team-pill--solid,
+body.lireate-team-body .lireate-team-pill.lireate-team-pill--solid,
+body.lireate-team-body .lireate-team-page a.lireate-team-pill--solid,
+body.lireate-cms-page-dark.lireate-team-body .lireate-team-page a.lireate-team-pill--solid {
+  color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-reviews-body #leftSideBar .submitBox.js-modal-form,
+body.lireate-team-body #leftSideBar .submitBox.js-modal-form,
+body.lireate-portfolio-body #leftSideBar .submitBox.js-modal-form {
+  color: #fff !important;
+}
 
 body.lireate-screenshot-capture .lh4-root .reveal,
 body.lireate-home-preview .lh4-root .reveal,
@@ -163,6 +223,32 @@ body.lireate-theme-light-v4 .lx-consent {
 body.lireate-theme-light-v4 .lx-consent input[type="checkbox"] {
   vertical-align: top;
   margin: 2px 8px 0 0;
+}
+
+/* Legacy CMS chrome (#leftSideBar, тёмное меню) поверх Light V4 */
+body.lireate-theme-light-v4 #leftSideBar,
+body.lireate-theme-light-v4 #leftSideBar .leftSideBar,
+body.lireate-theme-light-v4 #leftSideBar .sidebar {
+  background: #fff !important;
+  color: #1f212c !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-theme-light-v4 #leftSideBar a,
+body.lireate-theme-light-v4 #leftSideBar p,
+body.lireate-theme-light-v4 #leftSideBar div,
+body.lireate-theme-light-v4 #leftSideBar li,
+body.lireate-theme-light-v4 #leftSideBar span {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 #leftSideBar a {
+  color: #0f4db8 !important;
+  font-weight: 600 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #face,
+body.lireate-theme-light-v4.lireate-reviews-body #face .sectionPadding,
+body.lireate-theme-light-v4.lireate-reviews-body section#face h1 {
+  background: #fff !important;
+  color: #1f212c !important;
 }
 
 .lh4-seo-h1 {

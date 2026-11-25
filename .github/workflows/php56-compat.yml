@@ -85,5 +85,4 @@ jobs:
           LIREATE_MYSQL_USER: root
           LIREATE_MYSQL_PASSWORD: root
           LIREATE_MYSQL_DATABASE: lireate_ci
-          LIREATE_BLOG_SKIP_PREAPPLY_GATE: "1"
         run: python3 lireate_blog_ci_fixture_apply.py

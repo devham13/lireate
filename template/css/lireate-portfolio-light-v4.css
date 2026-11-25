@@ -97,3 +97,97 @@ body.lireate-theme-light-v4 .lx-pf-cases li a {
     flex: 0 0 100% !important;
   }
 }
+body.lireate-theme-light-v4 #face,
+body.lireate-theme-light-v4 #face .sectionPadding,
+body.lireate-theme-light-v4 #face .h1,
+body.lireate-theme-light-v4 #face h1,
+body.lireate-theme-light-v4 #face p,
+body.lireate-theme-light-v4 #face .titleDesc,
+body.lireate-theme-light-v4 #face .titleDesc span,
+body.lireate-theme-light-v4 #face .simple_text,
+body.lireate-theme-light-v4 #face .default_text {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 #face .titleDesc span {
+  color: #e32020 !important;
+}
+body.lireate-theme-light-v4 #face .bg {
+  opacity: 0.12 !important;
+}
+body.lireate-theme-light-v4.lireate-portfolio-body #face,
+body.lireate-theme-light-v4.lireate-portfolio-body #face .sectionPadding,
+body.lireate-theme-light-v4.lireate-portfolio-body #portfolio,
+body.lireate-theme-light-v4.lireate-portfolio-body #portfolio .sectionPadding {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 #face h1,
+body.lireate-theme-light-v4 #portfolio h2,
+body.lireate-theme-light-v4 .lx-pf-cases-title {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .region_list .city,
+body.lireate-theme-light-v4 .region_list a,
+body.lireate-theme-light-v4 .region_list p,
+body.lireate-theme-light-v4 .lx-pf-cases li,
+body.lireate-theme-light-v4 .lx-pf-cases li a {
+  color: #2d4764 !important;
+}
+body.lireate-theme-light-v4 .region_list a:hover,
+body.lireate-theme-light-v4 .lx-pf-cases li a {
+  color: #0f4db8 !important;
+}
+body.lireate-theme-light-v4 .region_list,
+body.lireate-theme-light-v4 .region_list h2,
+body.lireate-theme-light-v4 .region_list h3,
+body.lireate-theme-light-v4 .region_list .region,
+body.lireate-theme-light-v4 .region_list .city,
+body.lireate-theme-light-v4 .region_list p,
+body.lireate-theme-light-v4 .region_list a {
+  color: #2d4764 !important;
+}
+body.lireate-theme-light-v4 .region_list .region_title,
+body.lireate-theme-light-v4 .region_list h3 {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lx-pf-cases,
+body.lireate-theme-light-v4 .lx-pf-cases p,
+body.lireate-theme-light-v4 .lx-pf-cases-title,
+body.lireate-theme-light-v4 .lx-pf-cases .lx-pf-cases-title {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer,
+body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer p {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-theme-light-v4 .region_list span,
+body.lireate-theme-light-v4 #portfolio .region_list span {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4.lireate-portfolio-body footer:not(.lx-site-footer),
+body.lireate-theme-light-v4.lireate-portfolio-body footer:not(.lx-site-footer) .flex {
+  background: #f7fbff !important;
+}
+body.lireate-theme-light-v4.lireate-portfolio-body footer:not(.lx-site-footer) a {
+  color: #0f4db8 !important;
+  font-weight: 700 !important;
+}
+body.lireate-theme-light-v4 .lx-pf-cases p.lx-pf-cases-title,
+body.lireate-theme-light-v4 #portfolio .lx-pf-cases p.lx-pf-cases-title {
+  color: #1f212c !important;
+}
+body.lireate-portfolio-body #portfolio .region_list span,
+body.lireate-portfolio-body .region_list span,
+body.lireate-portfolio-body #portfolio .region_list a {
+  color: #52637b !important;
+}
+body.lireate-portfolio-body #portfolio .region_list a:hover {
+  color: #0f4db8 !important;
+}
+body.lireate-portfolio-body .lx-pf-cases li span,
+body.lireate-portfolio-body section.lx-pf-cases li span {
+  color: #52637b !important;
+}

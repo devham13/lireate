@@ -5,6 +5,14 @@
   if (!body || !body.classList.contains("lireate-home-light-v4")) {
     return;
   }
+  body.classList.remove("lireate-cms-page-dark", "lireate-home-dark");
+  body.style.backgroundColor = "#ffffff";
+  body.style.color = "#1f212c";
+  var legacyHome = document.getElementById("lireate-home");
+  if (legacyHome) {
+    legacyHome.style.display = "none";
+    legacyHome.setAttribute("aria-hidden", "true");
+  }
   var root = document.getElementById("lireate-home-light-v4");
   if (!root) {
     return;

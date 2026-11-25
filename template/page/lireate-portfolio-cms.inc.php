@@ -73,6 +73,7 @@ echo '<script>if(document.body){document.body.classList.add("lireate-portfolio-p
             $connect = lireate_cms_connect_db();
             $array = array();
             if ($connect) {
+            $n = 0;
             $result = $connect->query("SELECT * FROM portfoliocase");
 
             while ($result && ($row = $result->fetch_assoc())) { 

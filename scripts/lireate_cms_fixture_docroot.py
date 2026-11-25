@@ -79,6 +79,14 @@ def build_fixture_docroot(target: Path, office_repo: Path | None = None, mysql: 
     shutil.copy2(FIXTURE / "index.php", target / "index.php")
     (target / "template").mkdir(parents=True, exist_ok=True)
     shutil.copy2(FIXTURE / "template-main.php", target / "template" / "main.php")
+    news_dir = target / "template" / "page" / "news"
+    news_dir.mkdir(parents=True, exist_ok=True)
+    snippet = REPO / "scripts" / "fixtures" / "cms-newstyle-article-snippet.php"
+    if snippet.is_file():
+        shutil.copy2(snippet, news_dir / "newStyle.php")
+    list_tpl = REPO / "scripts" / "fixtures" / "cms-news-list-template.php"
+    if list_tpl.is_file():
+        shutil.copy2(list_tpl, news_dir / "lireate-blog-list-legacy.inc.php")
     if mysql:
         provision_mysql_schema()
     return target

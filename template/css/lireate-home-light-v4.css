@@ -31,7 +31,7 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root{--bg:#ffffff;
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root *{box-sizing:border-box}
 body.lireate-home-light-v4.lireate-theme-light-v4{scroll-behavior:smooth}
 body.lireate-home-light-v4.lireate-theme-light-v4{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a{color:inherit;text-decoration:none}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a{color:#0f4db8;text-decoration:none;font-weight:700}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root img{display:block;width:100%;height:100%;object-fit:cover}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root button{font:inherit;cursor:pointer}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .wrap{width:min(var(--max), calc(100% - 48px));margin:0 auto}
@@ -404,7 +404,45 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-c
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card:hover .link-arrow{transform:translateX(5px)}
 @media(prefers-reduced-motion:reduce){body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card, body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card::before, body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card::after, body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card .link-arrow{transition:none!important}}
 
-/* CMS shell: hide legacy hero inside #lireate-home, keep Light V4 section visible */
+/* CMS shell: hide entire legacy #lireate-home when Light V4 is active */
+body.lireate-home-light-v4.lireate-theme-light-v4 #lireate-home {
+  display: none !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4.lireate-cms-page-dark,
+body.lireate-home-light-v4.lireate-theme-light-v4.lireate-home-dark,
+body.lireate-home-light-v4.lireate-theme-light-v4 {
+  background: #ffffff !important;
+  color: #1f212c !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .wrapper,
+body.lireate-home-light-v4.lireate-theme-light-v4 .container.content,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root,
+body.lireate-home-light-v4.lireate-theme-light-v4 #lireate-home-light-v4-wrap {
+  background: #ffffff !important;
+  color: #1f212c !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root p,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root li,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root span,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root strong,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root h1,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root h2,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root h3,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a {
+  color: inherit;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .stat-card strong,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh-stat-num,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root [class*="stat"] strong {
+  color: #1f212c !important;
+}
 body.lireate-home-light-v4.lireate-theme-light-v4:has(.lh4-root) #lireate-home .main-screen.lireate-hero-v4 {
   display: none !important;
 }
@@ -631,4 +669,64 @@ body.lireate-theme-light-v4.lireate-home-light-v4 .hamburger .hamb-bottom { top:
   body.lireate-theme-light-v4.lireate-home-light-v4 .main-screen {
     padding-top: 52px;
   }
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-info .role {
+  color: #3d4f66 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root footer a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .footer a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .menu a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .mobile-menu a {
+  color: #0f4db8 !important;
+  font-weight: 700 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .topbar,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .topbar a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .eyebrow {
+  color: #52637b !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card span,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .service-card .sub-title,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-info .badge,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-info .links span {
+  color: #1f212c !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .stat-card span,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .stat-card small {
+  color: #52637b !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar,
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar a,
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar div {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar a {
+  color: #0f4db8 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a.link-arrow,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services a {
+  color: #0f4db8 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root {
+  --blue: #0f4db8;
+  --lh4-blue: #0f4db8;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .link-arrow,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .case-card .pill,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root span.pill {
+  color: #0f4db8 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .process-step strong,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root strong {
+  color: #2d4764 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a.btn.primary,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-cta.btn.primary,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a.btn.primary:hover {
+  color: #fff !important;
 }

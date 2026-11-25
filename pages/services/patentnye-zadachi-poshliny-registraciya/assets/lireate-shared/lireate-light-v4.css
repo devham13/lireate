@@ -119,6 +119,17 @@ body.lireate-theme-light-v4 .l4-service-illustration-card > *{position:relative;
  body.lireate-theme-light-v4 .lx-card-grid{grid-template-columns:1fr}
  body.lireate-theme-light-v4 .lireate-svc-page{padding-inline:16px}
 }
+@media(max-width:520px){
+ body.lireate-theme-light-v4 .lx-nav-shell .lx-nav-pill,
+ body.lireate-theme-light-v4 .lx-nav-pill{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;width:calc(100% - 8px)!important}
+ body.lireate-theme-light-v4 .lx-nav-pill .lx-logo{flex:0 1 auto!important;margin-right:auto!important;min-width:0!important}
+ body.lireate-theme-light-v4 .lx-nav-pill .lx-btn-primary,
+ body.lireate-theme-light-v4 .lx-nav-pill a.lx-btn-primary,
+ body.lireate-theme-light-v4 .lx-nav-pill .lx-btn{margin-left:auto!important;flex:0 0 auto!important}
+}
+body.lireate-theme-light-v4 .lx-hero-lead a,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead a{color:#0a3d91!important;font-weight:800!important;text-decoration:underline}
+body.lireate-theme-light-v4.lireate-svc-page .lx-site-footer{margin-top:28px}
 body.lireate-theme-light-v4 .lx-kpi b,
 body.lireate-theme-light-v4 .lx-mini-stat strong,
 body.lireate-theme-light-v4 .lx-stat-value{color:var(--l4-ink)!important}
@@ -140,6 +151,77 @@ body.lireate-theme-light-v4 textarea{background:#fff!important;color:#1f212c!imp
 body.lireate-theme-light-v4 label,
 body.lireate-theme-light-v4 .lx-field-label{color:#1f212c!important}
 body.lireate-theme-light-v4 .lx-hint a{color:#195acb!important;font-weight:700}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section li,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-card-text,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-note,
+body.lireate-theme-light-v4 .lireate-svc-page small,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-muted{color:#52637b!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-sum,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-fee-value,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-result,
+body.lireate-theme-light-v4 .lireate-svc-page b,
+body.lireate-theme-light-v4 .lireate-svc-page strong{color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page a[href*="rospatent"],
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead a,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section a{color:#0a3d91!important;font-weight:800!important;text-decoration:underline!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer p{color:#52637b!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer a{color:#0a3d91!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-panel,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-mini,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-cta,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-pricing,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-card,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-panel{
+  background:#f7fbff!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero h1,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-kpi b,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-card strong,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-out,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-out strong,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq summary,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq p{color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-kpi small,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-card span{color:#52637b!important}
+body.lireate-theme-light-v4 .lx-nav-pill .lx-logo,
+body.lireate-theme-light-v4 .lx-nav-pill .lx-nav-links a{color:#1f212c!important;font-weight:700!important}
+body.lireate-theme-light-v4 .lx-nav-pill .lx-btn-primary,
+body.lireate-theme-light-v4 .lx-nav-pill .lx-btn.lx-btn-primary{
+  color:#fff!important;background:#1f212c!important;border-color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-card,
+body.lireate-theme-light-v4 .lireate-svc-page #contact,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section--contact{
+  background:#f7fbff!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section label,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section .lx-hint,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section li{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-consent,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-consent label{color:#52637b!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-consent a{color:#0a3d91!important;font-weight:700!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-tag,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero .lx-tag span{color:#1f212c!important;background:#e8f2ff!important;border:1px solid #bdd5f8!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-card,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-step-card{
+  background:#fff!important;border-color:#dce8f7!important;color:#1f212c!important;
+  box-shadow:0 8px 24px rgba(31,46,76,.06)!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq summary,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel label,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel p{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel input,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel textarea{
+  background:#fff!important;color:#1f212c!important;border-color:#dce8f7!important}
 body.lireate-theme-light-v4 .lx-route-label{color:#52637b!important}
 body.lireate-theme-light-v4 .lx-route-steps .lx-route-node{color:#1f212c!important}
 body.lireate-theme-light-v4 .lx-section-label{
@@ -147,6 +229,21 @@ body.lireate-theme-light-v4 .lx-section-label{
   padding:4px 12px;border-radius:999px;font-weight:700}
 body.lireate-theme-light-v4 .lx-fee-table td,
 body.lireate-theme-light-v4 .lx-fee-table th{color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc{
+  background:#f7fbff!important;border:1px solid #dce8f7!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc label,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-out,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-note{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-risk-item,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-risk-grid .lx-risk-item{
+  background:#fff!important;border:1px solid #dce8f7!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-risk-item p{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-live{color:#047857!important;font-weight:800!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-related-card-type{color:#0a3d91!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-card-num{color:#5b21b6!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-eyebrow{color:#b91c1c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-panel-head,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-panel-head span{color:#1f212c!important}
 body.lx-tm-white.registraciya-pilot-v2 .lx-mobile-bar{
   position:fixed;left:0;right:0;bottom:0;z-index:1200;
   padding-bottom:env(safe-area-inset-bottom,0);

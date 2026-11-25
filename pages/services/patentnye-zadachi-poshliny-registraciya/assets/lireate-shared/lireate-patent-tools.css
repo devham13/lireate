@@ -424,3 +424,43 @@
     image-rendering: pixelated;
   }
 }
+/* Light V4 service shell (body.lireate-theme-light-v4.lx-patent-tool) */
+body.lireate-theme-light-v4.lx-patent-tool {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4.lx-patent-tool .lx-patent-tool,
+body.lireate-theme-light-v4.lx-patent-tool main,
+body.lireate-theme-light-v4.lx-patent-tool .lx-section {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4.lx-patent-tool p,
+body.lireate-theme-light-v4.lx-patent-tool li,
+body.lireate-theme-light-v4.lx-patent-tool label,
+body.lireate-theme-light-v4.lx-patent-tool .lx-field-label,
+body.lireate-theme-light-v4.lx-patent-tool .lx-hint,
+body.lireate-theme-light-v4.lx-patent-tool .lx-warn,
+body.lireate-theme-light-v4.lx-patent-tool .lx-line-note {
+  color: #2d4764 !important;
+}
+body.lireate-theme-light-v4.lx-patent-tool a,
+body.lireate-theme-light-v4.lx-patent-tool .lx-hint a,
+body.lireate-theme-light-v4.lx-patent-tool .lx-warn a,
+body.lireate-theme-light-v4.lx-patent-tool .lx-tool-footer a {
+  color: #0a3d91 !important;
+  font-weight: 800 !important;
+  text-decoration: underline !important;
+}
+body.lireate-theme-light-v4.lx-patent-tool .lx-sum-total,
+body.lireate-theme-light-v4.lx-patent-tool .lx-line-row strong,
+body.lireate-theme-light-v4.lx-patent-tool input,
+body.lireate-theme-light-v4.lx-patent-tool select {
+  color: #1f212c !important;
+  background: #fff !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-theme-light-v4.lx-patent-tool .lx-result-panel {
+  background: #f7fbff !important;
+  border-color: #dce8f7 !important;
+}

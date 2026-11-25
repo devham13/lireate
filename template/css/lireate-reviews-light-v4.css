@@ -29,10 +29,24 @@ body.lireate-theme-light-v4 #list .contentBox {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 20px !important;
+  width: 100% !important;
   max-width: 1056px !important;
   margin: 0 auto !important;
   padding: 16px !important;
   height: auto !important;
+  flex-wrap: unset !important;
+  justify-content: stretch !important;
+}
+body.lireate-reviews-preview #list .contentBox > div,
+body.lireate-reviews-preview #list .review_box,
+body.lireate-theme-light-v4 #list .contentBox > div,
+body.lireate-theme-light-v4 #list .review_box {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  flex: none !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
 }
 body.lireate-reviews-preview .review_box,
 body.lireate-theme-light-v4 .review_box {
@@ -89,6 +103,42 @@ body.lireate-theme-light-v4 .default_text {
   color: #52637b !important;
   font-size: 15px !important;
   line-height: 1.5 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #list h1,
+body.lireate-theme-light-v4.lireate-reviews-body #list h2,
+body.lireate-theme-light-v4.lireate-reviews-body #face .contentBox,
+body.lireate-theme-light-v4.lireate-reviews-body #face .contentBox h1,
+body.lireate-theme-light-v4.lireate-reviews-body #list h1,
+body.lireate-theme-light-v4.lireate-reviews-body #face h1,
+body.lireate-theme-light-v4 #list .default_text span,
+body.lireate-theme-light-v4 .lx-rv-case,
+body.lireate-theme-light-v4 .lx-rv-case a {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lx-rv-case a.lx-rv-case-link {
+  color: #0f4db8 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer,
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer p {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #face p.titleDesc,
+body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 #list .review_box,
+body.lireate-theme-light-v4 #list .text_box,
+body.lireate-theme-light-v4 #list .rewiev_head {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 #list .default_text,
+body.lireate-theme-light-v4 #list .default_text span {
+  color: #52637b !important;
+  font-weight: 600 !important;
 }
 @media (max-width: 480px) {
   body.lireate-reviews-preview #list .contentBox,
