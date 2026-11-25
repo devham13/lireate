@@ -22,7 +22,38 @@
 Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
 Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 node scripts/capture_light_v4_screenshots.mjs`
 
-Размеры PNG (последний прогон `capture_light_v4_screenshots.mjs` + блог): см. вывод `identify` в коммите (раздел ниже).
+### `git show --stat HEAD -- docs/light-v4-screenshots`
+
+```
+commit 6cc62ac (ветка cursor/lireate-light-v4-prep-b68f)
+27 PNG в docs/light-v4-screenshots/ обновлены (after-* + before-* в том же коммите)
+```
+
+Полный вывод: `git show --stat 6cc62ac -- docs/light-v4-screenshots`
+
+### Размеры after-* (ширина×высота, байты)
+
+| Файл | Размер | Байты |
+| --- | --- | ---: |
+| after-home-cms-viewport-desktop.png | 1440×900 | 492873 |
+| after-home-cms-viewport-mobile.png | 390×844 | 118293 |
+| after-home-cms-desktop.png | 1440×7764 | 1703319 |
+| after-home-cms-mobile.png | 390×12877 | 1211157 |
+| after-tm-desktop.png | 1440×21186 | 3474476 |
+| after-tm-mobile.png | 390×36235 | 3114160 |
+| after-service-desktop.png | 1440×5363 | 858689 |
+| after-service-mobile.png | 390×7967 | 584675 |
+| after-patent-desktop.png | 1440×1004 | 79295 |
+| after-patent-mobile.png | 390×1227 | 68644 |
+| after-blog-list-desktop.png | 1440×4058 | 863737 |
+| after-blog-list-mobile.png | 390×8736 | 875569 |
+| after-about-desktop.png | 1440×1963 | 380926 |
+| after-about-mobile.png | 390×3222 | 332331 |
+| after-team-desktop.png | 1440×2253 | 462022 |
+| after-team-mobile.png | 390×4243 | 441172 |
+| after-portfolio-desktop.png | 1440×34273 | 3178439 |
+| after-portfolio-mobile.png | 390×40943 | 2980109 |
+| after-reviews-desktop.png | 1440×3496 | 2327380 |
 
 ## Блокер consent (главная)
 
