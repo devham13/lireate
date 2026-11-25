@@ -9,7 +9,7 @@ if (!function_exists('lireate_service_nav_links')) {
         return [
             ['href' => '/findtz/', 'label' => 'Проверка товарного знака'],
             ['href' => '/registraciya_tovarnogo_znaka/', 'label' => 'Регистрация товарного знака'],
-            ['href' => '/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/', 'label' => 'Регистрация с оплатой за результат'],
+            ['href' => '/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/', 'label' => 'Регистрация товарного знака с финансовой гарантией'],
             ['href' => '/prodlenie_tovarnogo_znaka/', 'label' => 'Продление товарного знака'],
             ['href' => '/registraciya_tovarnogo_znaka_v_kitae/', 'label' => 'Регистрация товарного знака в Китае'],
             ['href' => '/vozrazhenie_protiv_registracii_tovarnogo_znaka/', 'label' => 'Возражение против регистрации ТЗ'],

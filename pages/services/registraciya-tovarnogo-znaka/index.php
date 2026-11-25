@@ -28,7 +28,7 @@ $faq_entities = [
   ['Регистрируете ли вы логотип?', 'Да, регистрируется словесное, изобразительное и комбинированное обозначение. Форму подачи выбираем на этапе проверки: иногда имеет смысл подавать отдельно название и отдельно логотип. Для проверки названия предварительно воспользуйтесь страницей /findtz/.'],
   ['Что такое обращение по ст. 1493 ГК РФ и при чём тут регистрация моего знака?', 'Ст. 1493 — это не «ответ на отказ по вашей заявке», а право любого лица подать обращение против чужой заявки после публикации сведений и до решения о регистрации. Если конкурент подал сходное обозначение, вы можете оспорить его заявку — подробнее на странице возражения против регистрации товарного знака.'],
   ['Нужен ли бренд на Wildberries или Ozon, если есть свидетельство?', 'Маркетплейсы часто просят подтвердить права на название и логотип. Свидетельство Роспатента — сильный аргумент, но площадка может запросить дополнительные документы. Регистрация в реестре не заменяет договор с площадкой: мы помогаем подготовить пакет под вашу ситуацию.'],
-  ['Чем базовое сопровождение отличается от оплаты за результат?', 'При базовой регистрации вознаграждение LIREATE и пошлины разделены по этапам договора без привязки к «оплате только при свидетельстве». Альтернативная модель — на странице регистрации с оплатой за результат.'],
+  ['Чем базовое сопровождение отличается от регистрации товарного знака с финансовой гарантией?', 'При базовой регистрации вознаграждение LIREATE и пошлины разделены по этапам договора. Регистрация товарного знака с финансовой гарантией — отдельная услуга LIREATE, её условия описаны на отдельной странице.'],
   ['Кто может подать заявку: ИП или ООО?', 'Заявку подаёт юридическое лицо или гражданин (ст. 1492 ГК РФ). Индивидуальные предприниматели и компании подают на общих основаниях; заявитель указывается в заявке и впоследствии фигурирует в свидетельстве как правообладатель. Выбор заявителя влияет на дальнейшие договоры и лицензии, поэтому лучше обсудить его до подачи.'],
   ['Что происходит после регистрации и нужно ли продлевать знак?', 'Охрана действует 10 лет с даты подачи заявки и может продлеваться на следующие 10 лет без ограничения числа продлений (ст. 1491 ГК РФ). Мы можем напомнить о дате и подготовить продление — подробнее на странице продления товарного знака.'],
 ];
@@ -78,13 +78,14 @@ $schema_graph = [
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-dark.css', $lx_service_asset_dir); ?>">
   <link rel="stylesheet" href="assets/registraciya-landing.css">
   <link rel="stylesheet" href="assets/registraciya-pilot-v2.css">
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/registraciya-white-v3.css', $lx_service_asset_dir); ?>"><!-- lireate_tm_white_v3 -->
   <link rel="stylesheet" href="/template/css/lireate-service-mobile-bar.css?v=20261111svc1" /><!-- lireate_design_service_mobile_bar_css_v1 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
-<body class="lireate-svc-body registraciya-landing-body registraciya-pilot-v2">
+<body class="lireate-svc-body registraciya-landing-body registraciya-pilot-v2 lx-tm-white">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
@@ -113,7 +114,7 @@ $schema_graph = [
   <div class="lx-hero-mascot-slot" data-lx-mascot="registration" aria-hidden="true"></div>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · под ключ</p>
-    <h1>Регистрация товарного знака под ключ в Роспатенте</h1>
+    <h1>Регистрация товарного знака <em>под ключ</em> в Роспатенте</h1>
     <p class="lx-hero-lead">Проверим название или логотип, подберём классы МКТУ и доведём заявку до решения Роспатента — с прозрачной сметой пошлин и сопровождения.</p>
     <p class="lx-hero-trust-line">Проверка по реестру до подачи · Смета: пошлины и сопровождение отдельно · Решение принимает Роспатент</p>
     <div class="lx-hero-cta-row">
@@ -151,6 +152,8 @@ $schema_graph = [
     </div>
   </div>
 </section>
+
+<div class="lx-tw-strip" aria-hidden="true"><div class="lx-tw-strip-inner"><span>Проверка по реестру</span><i>•</i><span>Классы МКТУ</span><i>•</i><span>Подача заявки</span><i>•</i><span>Экспертиза</span><i>•</i><span>Свидетельство</span><i>•</i><span>Продление</span><i>•</i><span>Проверка по реестру</span><i>•</i><span>Классы МКТУ</span><i>•</i><span>Подача заявки</span><i>•</i><span>Экспертиза</span><i>•</i><span>Свидетельство</span><i>•</i><span>Продление</span><i>•</i></div></div>
 
 <section class="lx-section lx-pilot-reveal lx-pilot-journey" id="journey">
   <span class="lx-section-label">Путь клиента</span>
@@ -255,8 +258,8 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 
 <aside class="lx-mid-cta lx-glass lx-reveal" aria-label="Заявка: смета регистрации" style="margin-top:28px;padding:22px 24px;">
   <p class="lx-eyebrow" style="margin:0 0 8px;">Смета после брифа</p>
-  <h3 style="margin:0 0 10px;font-size:clamp(1.05rem,2.5vw,1.25rem);color:#f1f5f9;font-weight:800;">Обсудим регистрацию под ключ</h3>
-  <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:#94a3b8;">Решение о регистрации принимает Роспатент — мы не обещаем свидетельство. После короткого брифа пришлём разбивку: госпошлины по этапам и вознаграждение LIREATE отдельными строками, без гарантий исхода экспертизы.</p>
+  <h3 style="margin:0 0 10px;font-size:clamp(1.05rem,2.5vw,1.25rem);font-weight:800;">Обсудим регистрацию под ключ</h3>
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.65;">Решение о регистрации принимает Роспатент — мы не обещаем свидетельство. После короткого брифа пришлём разбивку: госпошлины по этапам и вознаграждение LIREATE отдельными строками, без гарантий исхода экспертизы.</p>
   <div class="lx-hero-cta" style="margin-bottom:0;">
     <a class="lx-btn lx-btn-primary lx-cta-glow" href="#contact">Оставить заявку на смету</a>
     <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
@@ -338,8 +341,8 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 
 <aside class="lx-mid-cta lx-glass lx-reveal" aria-label="Заявка: смета пошлин и сопровождения" style="margin-top:28px;padding:22px 24px;">
   <p class="lx-eyebrow" style="margin:0 0 8px;">Пошлины и работа — отдельно</p>
-  <h3 style="margin:0 0 10px;font-size:clamp(1.05rem,2.5vw,1.25rem);color:#f1f5f9;font-weight:800;">Нужна смета под ваши классы МКТУ?</h3>
-  <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:#94a3b8;">Цифры выше — ориентир по таблице Роспатента, не оферта. Сопровождение «под ключ» считаем после проверки обозначения: без обязательства заказывать работу и без гарантии исхода экспертизы.</p>
+  <h3 style="margin:0 0 10px;font-size:clamp(1.05rem,2.5vw,1.25rem);font-weight:800;">Нужна смета под ваши классы МКТУ?</h3>
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.65;">Цифры выше — ориентир по таблице Роспатента, не оферта. Сопровождение «под ключ» считаем после проверки обозначения: без обязательства заказывать работу и без гарантии исхода экспертизы.</p>
   <div class="lx-hero-cta" style="margin-bottom:0;">
     <a class="lx-btn lx-btn-primary" href="#contact">Запросить расчёт и условия</a>
     <a class="lx-btn lx-btn-ghost" href="#program">Как проходит регистрация</a>
@@ -385,8 +388,8 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 
   <aside class="lx-mid-cta lx-glass lx-reveal" aria-label="Заявка после блока сроков" style="margin-top:28px;padding:22px 24px;">
     <p class="lx-eyebrow" style="margin:0 0 8px;">Сроки по регламенту</p>
-    <h3 style="margin:0 0 10px;font-size:clamp(1.05rem,2.5vw,1.25rem);color:#f1f5f9;font-weight:800;">Нужен ориентир под ваш знак?</h3>
-    <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:#94a3b8;">После брифа назовём диапазон сроков без обещания фиксированной даты — решение принимает Роспатент.</p>
+    <h3 style="margin:0 0 10px;font-size:clamp(1.05rem,2.5vw,1.25rem);font-weight:800;">Нужен ориентир под ваш знак?</h3>
+    <p style="margin:0 0 16px;font-size:15px;line-height:1.65;">После брифа назовём диапазон сроков без обещания фиксированной даты — решение принимает Роспатент.</p>
     <div class="lx-hero-cta" style="margin-bottom:0;">
       <a class="lx-btn lx-btn-primary" href="#contact" data-lx-tz-form-open="terms">Уточнить сроки и смету</a>
       <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-tz-messenger="whatsapp" data-lx-tz-placement="terms" data-lx-ym-goal="perehod_v_messendzher"><span>WhatsApp</span></a>
@@ -416,7 +419,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
   <p>Пошлины — часть процедуры, а не формальность. Мы фиксируем сроки платежей и напоминаем о них. Платите только по реквизитам и коду действия, которые мы подтвердили: бюджетные платежи не любят «примерно правильных» данных.</p>
 
   <h3>Самостоятельная подача без поиска</h3>
-  <p>Самостоятельная подача законна и иногда оправданна — если знак простой, а перечень узкий и вы готовы разбираться. Проблема возникает, когда подачу совмещают с экономией на проверке. Подготовку документов, способы подачи и расчёт пошлин разобрали в <a href="/kak-zaregistrirovat-tovarnyy-znak-samostoyatelno-2026/">пошаговой инструкции по самостоятельной регистрации товарного знака</a>. Предварительную проверку можно заказать на <a href="/findtz/">странице проверки товарного знака</a>; альтернативная схема оплаты сопровождения — <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">регистрация с оплатой за результат</a>.</p>
+  <p>Самостоятельная подача законна и иногда оправданна — если знак простой, а перечень узкий и вы готовы разбираться. Проблема возникает, когда подачу совмещают с экономией на проверке. Подготовку документов, способы подачи и расчёт пошлин разобрали в <a href="/kak-zaregistrirovat-tovarnyy-znak-samostoyatelno-2026/">пошаговой инструкции по самостоятельной регистрации товарного знака</a>. Предварительную проверку можно заказать на <a href="/findtz/">странице проверки товарного знака</a>; отдельная услуга — <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">регистрация товарного знака с финансовой гарантией</a>.</p>
   <p>Если зарубежный рынок входит в ваши планы, помните: право на товарный знак территориально. Регистрация в России не создаёт охраны в Китае или других странах; для КНР см. <a href="/registraciya_tovarnogo_znaka_v_kitae/">регистрацию товарного знака в Китае</a>.</p>
 </section>
 
@@ -460,8 +463,8 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 
 <aside class="lx-bottom-cta lx-glass lx-reveal" aria-label="Заявка на сопровождение регистрации" style="margin-top:40px;padding:28px 26px;border-radius:22px;">
   <span class="lx-section-label">Следующий шаг</span>
-  <h2 style="margin:8px 0 12px;font-size:clamp(1.35rem,3vw,1.75rem);color:#f8fafc;">Регистрация под ключ с прозрачной сметой</h2>
-  <p style="margin:0 0 18px;font-size:16px;line-height:1.7;color:#94a3b8;">Проверка знака, подача в Роспатент и ответы экспертизе. Вознаграждение LIREATE и госпошлины — отдельными строками в договоре. Итог процедуры зависит от экспертизы: отказ возможен, и мы не продаём «100% регистрацию».</p>
+  <h2 style="margin:8px 0 12px;font-size:clamp(1.35rem,3vw,1.75rem);">Регистрация под ключ с прозрачной сметой</h2>
+  <p style="margin:0 0 18px;font-size:16px;line-height:1.7;">Проверка знака, подача в Роспатент и ответы экспертизе. Вознаграждение LIREATE и госпошлины — отдельными строками в договоре. Итог процедуры зависит от экспертизы: отказ возможен, и мы не продаём «100% регистрацию».</p>
   <ul class="lx-checklist" style="margin-bottom:20px;">
     <li>смета и сроки-ориентир — после брифа;</li>
     <li>без обязательства начинать работу сразу после консультации;</li>
@@ -472,7 +475,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
     <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Telegram</span></a>
     <a class="lx-btn lx-btn-ghost lx-btn--with-icon" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>MAX</span></a>
   </div>
-  <p style="margin:0;font-size:13px;color:#64748b;">Форма расчёта — в начале страницы в блоке «Получить расчёт регистрации».</p>
+  <p style="margin:0;font-size:13px;">Форма расчёта — в начале страницы в блоке «Получить расчёт регистрации».</p>
 </aside>
 
 <section class="lx-section lx-reveal" id="related">
@@ -480,7 +483,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
   <h2>Смежные услуги LIREATE</h2>
   <p>Регистрация — начало, а не конец работы с товарным знаком. Вот что обычно нужно рядом.</p>
   <div class="lx-related-grid">
-    <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация с оплатой за результат</strong></a>
+    <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация товарного знака с финансовой гарантией</strong></a>
     <a class="lx-related-card" href="/vozrazhenie_protiv_registracii_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Возражение против регистрации</strong></a>
     <a class="lx-related-card" href="/prodlenie_tovarnogo_znaka/"><span class="lx-related-card-type">Услуга</span><strong>Продление товарного знака</strong></a>
     <a class="lx-related-card" href="/registraciya_tovarnogo_znaka_v_kitae/"><span class="lx-related-card-type">Услуга</span><strong>Регистрация в Китае</strong></a>
@@ -516,6 +519,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 <script src="assets/registraciya-landing.js"></script>
 <script src="assets/registraciya-pilot-v2.js"></script>
+<script src="<?php echo lireate_service_asset_href('assets/registraciya-white-v3.js', $lx_service_asset_dir); ?>"></script><!-- lireate_tm_white_v3 -->
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
   <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
