@@ -26,8 +26,11 @@
 
 ## Дизайн и артефакт страницы
 
-- **Все новые страницы услуг** — только стандарт LIREATE: `docs/lireate-service-design.ru.md`, общие ассеты `pages/services/_shared/`, шаблон `pages/services/_template/`, skill `skills/lireate-service-page/SKILL.md`. Эталон: `pages/services/registraciya-tovarnogo-znaka-v-kitae/`.
-- Визуал: тёмный navy, плавающая nav-pill, hero + стеклянная панель, карточки `lx-*` — **не** дизайн текущего шаблона CMS и **не** legacy WordPress-longread (другой стек, не для услуг).
+**ПРИОРИТЕТ ДИЗАЙНА:** `docs/lireate-design-system-v4.ru.md` и `.cursor/rules/lireate-light-v4.mdc` обязательны для новых страниц услуг, блога, патентных задач и редактируемых CMS-страниц. Белый фон, сохранить SEO, формы и аналитику. Старые страницы мигрируют после QA и PR.
+
+
+- **Все новые страницы услуг** — единый светлый стандарт LIREATE Light V4: `docs/lireate-service-design.ru.md`, общие ассеты `pages/services/_shared/`, шаблон `pages/services/_template/`, skill `skills/lireate-service-page/SKILL.md`. Эталон: `pages/services/registraciya-tovarnogo-znaka-v-kitae/`.
+- Визуал: **белая премиальная юридическая тема LIREATE Light V4** с красным #e32020, синим #3a86ff, тёмным #1f212c, голубыми подложками #f3f8ff; hero, интерактивные этапы и hover-анимации. Тёмные CSS — только техническая основа миграции.
 - Страница **самодостаточная**: `assets/lireate-shared/*` (копия из `_shared`) + локальные `assets/` при необходимости; не зависит от CSS CMS.
 - Канонический путь: `pages/services/<slug>/` (`index.php`, `publish.manifest.json`, `.htaccess` при необходимости). См. `pages/services/README.md`.
 - SEO: `shared/lireate-service-seo-checklist.md`; перед коммитом — `scripts/lireate_service_sync_shared.py` и `scripts/lireate_service_lint.py --slug …`.
