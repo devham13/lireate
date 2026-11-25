@@ -90,4 +90,9 @@ body.lireate-theme-light-v4 .lireate-blog-list-max-banner,
 body.lireate-theme-light-v4 .lireate-blog-list-max-banner *{color:#1f212c!important}
 body.lireate-theme-light-v4 .lireate-blog-list-max-banner p{color:#3d4f66!important;font-weight:600!important}
 body.lireate-theme-light-v4 .lireate-blog-list-max-banner a{color:#0f4db8!important;font-weight:800!important}
+body.lireate-theme-light-v4 .lireate-blog-list-subscribe-card{background:#f7fbff!important;border:1px solid #dce8f7!important}
+body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-label{color:#5b21b6!important}
+body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-text{color:#1f212c!important;font-weight:600!important}
+body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-btn{color:#fff!important;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 55%,#9333ea 100%)!important;border:1px solid #5b21b6!important}
+body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-btn:hover{filter:brightness(1.06)!important}
 body.lireate-theme-light-v4 .lireate-blog-list-card-cover{background-color:#eef5ff!important}

@@ -89,6 +89,31 @@ body.lireate-home-preview .page_container {
   font-style: normal;
   color: #3a86ff;
 }
+.lh4-hero-subtitle {
+  margin: 0 0 12px;
+  font: 700 clamp(20px, 2.4vw, 26px) / 1.25 Manrope, sans-serif;
+  color: #1f212c;
+  letter-spacing: -0.02em;
+}
+
+body.lireate-theme-light-v4 .lireate-team-page,
+body.lireate-theme-light-v4 .lireate-about-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+
+body.lireate-theme-light-v4 .lireate-team-page .lireate-team-roster::after,
+body.lireate-theme-light-v4 .lireate-team-page .lireate-team-section-divider,
+body.lireate-theme-light-v4 .lireate-team-page hr.lireate-team-dark-rule {
+  display: none !important;
+}
+
+body.lireate-theme-light-v4 .lireate-about-partner-photo {
+  background-color: #eef5ff !important;
+  background-size: cover !important;
+  background-position: center top !important;
+}
+
 .lh4-seo-h1 {
   margin: 0 0 12px;
   font: 700 clamp(22px, 2.2vw, 28px) / 1.2 Manrope, sans-serif;

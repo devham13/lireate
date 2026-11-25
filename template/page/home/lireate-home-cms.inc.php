@@ -20,8 +20,6 @@ try {
     $lireate_home_render_ok = true;
 } catch (Exception $e) {
     error_log('lireate-home-light-v4: ' . $e->getMessage());
-} catch (Error $e) {
-    error_log('lireate-home-light-v4: ' . $e->getMessage());
 }
 
 if (!$lireate_home_render_ok) {

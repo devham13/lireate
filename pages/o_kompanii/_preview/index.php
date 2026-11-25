@@ -1,11 +1,23 @@
 <?php
-$repo = dirname(__DIR__, 3);
+$repo = dirname(dirname(dirname(__DIR__)));
 require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
 $_SERVER['DOCUMENT_ROOT'] = $repo;
 ?><!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>О компании — Light V4 preview</title></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>О компании — Light V4 preview</title>
+  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125d">
+  <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125d">
+</head>
 <body class="cms-default lireate-about-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php require $repo . '/template/page/o_kompanii/lireate-about-cms.inc.php'; ?>
+<?php
+$footer = $repo . '/pages/services/_shared/lireate-service-footer.inc.php';
+if (is_file($footer)) {
+    include $footer;
+}
+?>
 </body>
 </html>

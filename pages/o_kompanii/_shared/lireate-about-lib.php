@@ -12,6 +12,20 @@ function lireate_about_h($value)
 }
 }
 
+if (!function_exists('lireate_about_asset_url')) {
+function lireate_about_asset_url($path)
+{
+    $path = (string) $path;
+    if ($path === '') {
+        return '';
+    }
+    if (function_exists('lireate_preview_live_url') && $path[0] === '/') {
+        return lireate_preview_live_url($path);
+    }
+    return $path;
+}
+}
+
 if (!function_exists('lireate_about_require_blog_footer')) {
 function lireate_about_require_blog_footer()
 {

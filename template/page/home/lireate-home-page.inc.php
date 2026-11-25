@@ -36,6 +36,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
         <div class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span> Интеллектуальная собственность · товарные знаки · патенты · авторское право</div>
         <h1 class="lh4-seo-h1">Патентное бюро «Лирейт»</h1>
         <p class="lh4-hero-slogan">Защита интеллектуальной собственности <em>начинается с Лирейт</em></p>
+        <p class="lh4-hero-subtitle">Регистрация и защита интеллектуальной собственности</p>
         <p class="lead">Регистрация товарных знаков, патентов, программ ЭВМ и договоры. Помогаем выбрать способ защиты, говорим о реальных возможностях и сроках и сопровождаем до результата.</p>
         <ul class="hero-bullets">
           <li><i>✓</i><span>бесплатная консультация</span></li>
@@ -85,7 +86,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
     <div class="wrap">
       <div class="section-head reveal">
         <h2>Выберите интересующую <span class="brand-highlight">услугу</span></h2>
-        <p>Крупные карточки услуг, чистый белый фон и понятные CTA — чтобы быстро разобраться в задаче.</p>
+        <p>«Удовлетворить предъявляемые Роспатентом требования — непросто. Подача заявки без помощи специалиста по интеллектуальной собственности может привести к отказу в регистрации»</p>
       </div>
       <div class="service-grid">
         <article class="service-card reveal"><div class="service-num">01 · Товарный знак</div><h3>Регистрация товарного знака</h3><p>Зарегистрируем ваш товарный знак на территории России и поможем выстроить стратегию защиты бренда.</p><a class="link-arrow" href="/registraciya_tovarnogo_znaka/">Подробнее ↗</a></article>
@@ -99,14 +100,13 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
   <section class="section" style="padding-top:0">
     <div class="wrap">
       <div class="section-head reveal">
-        <h2>Почему клиенты выбирают <span class="brand-highlight">Лирейт</span></h2>
-        <p>Прозрачная подача и тональность юридической компании — без навязчивых продаж.</p>
+        <h2>Почему нас <span class="brand-highlight">выбирают</span></h2>
       </div>
       <div class="why-grid">
-        <article class="why-card reveal"><div class="icon">₽</div><h3>Бесплатная консультация</h3><p>Оставьте заявку — специалисты свяжутся с вами и помогут выбрать следующий шаг.</p></article>
-        <article class="why-card reveal"><div class="icon">✓</div><h3>Оплата за результат</h3><p>Говорим только о реальных возможностях и сроках работы.</p></article>
-        <article class="why-card reveal"><div class="icon">⚖</div><h3>Экспертиза команды</h3><p>В компании есть специалисты, которые занимаются защитой интеллектуальной собственности более 20 лет.</p></article>
-        <article class="why-card reveal"><div class="icon">→</div><h3>Работа под ключ</h3><p>От первой консультации до регистрации и сопровождения — единый понятный процесс.</p></article>
+        <article class="why-card reveal"><div class="icon">⚖</div><h3>Опыт</h3><p>У нас есть специалисты, которые занимаются защитой интеллектуальной собственности более 20 лет.</p></article>
+        <article class="why-card reveal"><div class="icon">✓</div><h3>Честно</h3><p>Мы не обманываем. Обсуждая проект, мы говорим только о реальных возможностях и сроках. Никаких ложных обещаний.</p></article>
+        <article class="why-card reveal"><div class="icon">✓</div><h3>Финансовая гарантия</h3><p>Работаем с финансовой гарантией.</p></article>
+        <article class="why-card reveal"><div class="icon">₽</div><h3>Бесплатная консультация</h3><p>Нет времени искать ответ на страницах сайта? Оставьте заявку, и наши специалисты свяжутся с вами.</p></article>
       </div>
     </div>
   </section>
@@ -118,7 +118,6 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
           <div class="eyebrow">Команда LIREATE</div>
           <h2 class="wide-title">Люди, которые защищают ваши идеи</h2>
         </div>
-        <p>Карусель сотрудников с фильтрами по направлениям работы бюро.</p>
       </div>
       <div class="team-tools">
         <div class="filters">
@@ -151,12 +150,12 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
     <div class="wrap">
       <div class="section-head reveal">
         <h2>Кейсы и <span class="brand-highlight">экспертный опыт</span></h2>
-        <p>Ясные блоки, крупные заголовки и акцент на результате работы.</p>
+        <p>Мы ежедневно регистрируем товарные знаки, защищаем авторские права, получаем патенты и консультируем.</p>
       </div>
       <div class="case-grid">
-        <article class="case-card reveal"><span class="pill">Товарные знаки</span><h3>Регистрация и продление</h3><p>Сопровождаем товарные знаки, проверки, споры и работу с Роспатентом.</p><a class="link-arrow" href="/portfolio">Портфолио бюро ↗</a></article>
-        <article class="case-card reveal"><span class="pill">Патенты</span><h3>Изобретения и полезные модели</h3><p>Помогаем выбрать объект патентной защиты и подготовить заявку.</p><a class="link-arrow" href="/patent">Услуги по патентованию ↗</a></article>
-        <article class="case-card reveal"><span class="pill">Экспертный блог</span><h3>Полезные материалы</h3><p>Объяснения, инструкции и обзоры — без агрессивных продаж.</p><a class="link-arrow" href="/news/">Перейти в блог ↗</a></article>
+        <article class="case-card reveal"><span class="pill">Товарные знаки</span><h3>Работы бюро</h3><p>Примеры работ Лирейт по регистрации и защите интеллектуальной собственности.</p><a class="link-arrow" href="/portfolio">Портфолио ↗</a></article>
+        <article class="case-card reveal"><span class="pill">Патенты</span><h3>Отзывы клиентов</h3><p>Что говорят клиенты о работе с бюро.</p><a class="link-arrow" href="/reviews">Отзывы ↗</a></article>
+        <article class="case-card reveal"><span class="pill">Экспертный блог</span><h3>Разборы и инструкции</h3><p>Бесплатные решения: как зарегистрировать товарный знак, получить патент, провести проверку торговой марки.</p><a class="link-arrow" href="/news/">Перейти в блог ↗</a></article>
       </div>
     </div>
   </section>
@@ -165,7 +164,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
     <div class="wrap">
       <div class="section-head reveal">
         <h2>Понятный первый шаг и <span class="brand-highlight">стоимость</span></h2>
-        <p>Сначала бесплатный или понятный старт, затем основные услуги.</p>
+        <p>Нет времени искать ответ на страницах сайта? Оставьте заявку, и наши специалисты свяжутся с вами.</p>
       </div>
       <div class="pricing-grid">
         <article class="price-card reveal"><div class="service-num">Первый шаг</div><h3>Бесплатная консультация</h3><div class="price">0 ₽</div><p>Оставьте заявку — специалисты свяжутся с вами и подскажут, что делать дальше.</p><a class="link-arrow" href="<?php echo lireate_home_h(LIREATE_HOME_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer">Получить консультацию ↗</a></article>
@@ -178,7 +177,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
     <div class="wrap reveal">
       <div class="section-head">
         <h2 id="process-heading">Как мы <span class="brand-highlight">работаем</span></h2>
-        <p>Три понятных этапа — от первого обращения до сопровождения вашей заявки.</p>
+        <p>Вы оставляете заявку, а специалисты Лирейт уточняют ситуацию и предлагают маршрут: товарный знак, патент, договор или регистрация программы ЭВМ.</p>
       </div>
       <div class="process-flow" aria-hidden="true"><span id="processProgress"></span></div>
       <div class="process process-new" role="tablist" aria-label="Этапы работы">
@@ -286,7 +285,11 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
             <input id="lh4-name" name="name" type="text" required autocomplete="name" placeholder="Как к вам обращаться">
             <label for="lh4-phone">Телефон</label>
             <input id="lh4-phone" name="tel" type="tel" required autocomplete="tel" placeholder="+7 …" inputmode="tel">
-            <label class="lx-consent" for="lh4-consent"><input type="checkbox" id="lh4-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
+            <?php
+            $lx_consent_pd_id = 'lh4-consent';
+            $lx_consent_mkt_id = 'lh4-consent-mkt';
+            require dirname(dirname(dirname(__DIR__))) . '/pages/services/_shared/lireate-lead-consent-fields.inc.php';
+            ?>
             <button type="submit" class="btn primary lx-form-submit" style="width:100%;margin-top:12px">Отправить заявку</button>
             <p class="lx-form-success" id="lh4-success" role="status" aria-live="polite"></p>
             <p class="lx-form-error" id="lh4-error" role="alert" hidden></p>
@@ -302,6 +305,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
 </div>
 
 <script>window.lireateHomeProcessStages=<?php echo json_encode($lh_stages, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;</script>
+<script src="/pages/services/_shared/lireate-lead-consent-marketing.js?v=20261125d"></script>
 <?php if (!$lh_preview) : ?>
 <script>window.lireateMailSpamGuard=<?php echo json_encode($lh_spam_guard); ?>;</script>
 <script src="/template/js/lireate-utm.js?v=20261117b1"></script>

@@ -3,7 +3,7 @@
  * Локальное превью главной Light V4 (CMS page_container + полный шаблон).
  * php -S 127.0.0.1:19080 pages/home/_preview/router.php
  */
-$repo_root = dirname(__DIR__, 3);
+$repo_root = dirname(dirname(dirname(__DIR__)));
 require_once $repo_root . '/pages/_shared/lireate-preview-bootstrap.php';
 if (!defined('LIREATE_HOME_PREVIEW')) {
     define('LIREATE_HOME_PREVIEW', true);
@@ -21,7 +21,8 @@ $metrika_id = '52622734'; // pragma: allowlist secret
   <title><?php echo htmlspecialchars($seo_title, ENT_QUOTES, 'UTF-8'); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="canonical" href="/">
-  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125c">
+  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125d">
+  <link rel="stylesheet" href="/template/css/lireate-home-light-v4.css?v=20261125d">
   <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125c">
   <?php require $repo_root . '/template/page/home/lireate-home-schema-live.inc.php'; ?>
   <script type="text/javascript">
@@ -37,6 +38,7 @@ $metrika_id = '52622734'; // pragma: allowlist secret
   <script src="/template/js/lireate-utm.js?v=20261117b1"></script>
 </head>
 <body class="cms-default lireate-home-light-v4 lireate-theme-light-v4 lireate-home-preview">
+<?php require __DIR__ . '/lireate-cms-chrome.inc.php'; ?>
 <div class="wrapper">
   <div class="container text-center content">
     <div class="page_container">
@@ -52,5 +54,6 @@ if (is_file($footer)) {
     include $footer;
 }
 ?>
+<script src="/pages/services/_shared/lireate-lead-consent-marketing.js?v=20261125d"></script>
 </body>
 </html>

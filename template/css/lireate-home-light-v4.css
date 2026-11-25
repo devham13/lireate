@@ -457,6 +457,18 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form label
   align-items: flex-start;
   font: 500 13px/1.45 Manrope, Inter, sans-serif;
   color: #52637b;
+  text-align: left;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box input,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box select,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .cta-box textarea,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form {
+  box-sizing: border-box;
+  max-width: 100%;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form label.lx-consent a {
   color: #195acb;

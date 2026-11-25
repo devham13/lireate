@@ -2,7 +2,7 @@
 /**
  * Данные главной: команда (reuse contacts), этапы процесса.
  */
-$lh_contacts_data = dirname(__DIR__, 3) . '/template/page/kontaktyi/lireate-contacts-data.php';
+$lh_contacts_data = dirname(dirname(dirname(__DIR__))) . '/template/page/kontaktyi/lireate-contacts-data.php';
 if (is_file($lh_contacts_data)) {
     require_once $lh_contacts_data;
 }

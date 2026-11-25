@@ -62,7 +62,11 @@ $lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secre
         <input id="lf-name" name="name" type="text"<?php echo $lx_lead_name_required ? ' required' : ''; ?> autocomplete="name" placeholder="Как к вам обращаться">
         <label for="lf-phone">Телефон</label>
         <input id="lf-phone" name="tel" type="tel" required autocomplete="tel" placeholder="+7 …" inputmode="tel">
-        <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
+        <?php
+        $lx_consent_pd_id = 'lf-consent';
+        $lx_consent_mkt_id = 'lf-consent-mkt';
+        require dirname(__DIR__) . '/lireate-lead-consent-fields.inc.php';
+        ?>
         <button type="submit" class="lx-btn lx-btn-primary lx-form-submit" style="width:100%;margin-top:12px;"><?php echo htmlspecialchars($lx_lead_submit_label, ENT_QUOTES, 'UTF-8'); ?></button>
         <div class="lx-form-alt">
           <span class="lx-form-alt-label">или напишите нам</span>
