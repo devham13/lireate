@@ -171,6 +171,9 @@ body.lireate-theme-light-v4 .lx-consent input[type="checkbox"] {
   color: #1f212c;
   letter-spacing: -0.02em;
 }
+.lh4-seo-h1 .lh4-brand-red {
+  color: #e32020;
+}
 
 /* Light V4 — общий подвал lx-site-footer (разметка без изменений) */
 body.lireate-theme-light-v4 .lx-site-footer {

@@ -26,15 +26,18 @@
 | `after-reviews-desktop.png` | Отзывы Light V4 | 1440 |
 
 Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
-Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 node scripts/capture_light_v4_screenshots.mjs`
+Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 LIREATE_PUBLIC_SITE_URL=https://<prod-host> node scripts/capture_light_v4_screenshots.mjs`
 
-### `git show --stat 03632af -- docs/light-v4-screenshots`
+Портфолио/отзывы в превью: `template/page/portfolio.php` / `reviews.php` (не `live-*-fragment.html`). Портфолио: счётчики 32/68/1565 и блок «Кейсы с видеоотзывами» из шаблона + fixture.
+
+### `git show --stat f61597f -- docs/light-v4-screenshots`
 
 ```
-commit 03632af — блог/главная viewport, отзывы, патент, команда, after-service-viewport-mobile (новый)
+Круг 12: after-blog-article (боевые body-классы), after-portfolio/reviews из template/page,
+after-team-mobile, after-home viewport; портфолио ~116 KB desktop (fixture + шаблон).
 ```
 
-Полный вывод: `git show --stat 03632af`
+Полный вывод: `git show --stat f61597f -- docs/light-v4-screenshots`
 
 ### Размеры after-* (ширина×высота, байты)
 
@@ -79,18 +82,20 @@ python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --apply
 Откат:
 
 ```bash
-python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --rollback --backup-id <UTCSTAMP>
+python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --rollback <YYYYMMDD-HHMMSS>
 ```
+
+`created.json` на откате удаляет новые файлы (в т.ч. пустой `pages/home/_shared/`).
 
 ### 2. `scripts/lireate_cms_light_v4_overlay_install.py`
 
 ```bash
 python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT"          # dry-run
-python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --apply  # бэкап
-python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --rollback --backup-id <UTCSTAMP>
+python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --apply
+python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --rollback <YYYYMMDD-HHMMSS>
 ```
 
-Бэкап: `$DOCROOT/.lireate-backup-cms-overlay/<UTCSTAMP>/manifest.txt`
+Бэкап: `~/lireate-autopub/backups/cms-overlay/cms-overlay-<UTCSTAMP>/` (`manifest.txt`, `created.json`).
 
 ### 3. `scripts/lireate_hosting_pf_install.py`
 
@@ -98,7 +103,7 @@ python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$DOCROOT" --r
 python3 scripts/lireate_hosting_pf_install.py --docroot "$DOCROOT" --apply
 ```
 
-Бэкап: `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/`
+Бэкап: `~/lireate-autopub/backups/hosting-pf/pf-install-<UTCSTAMP>/`
 
 ## Доставка на хостинг (файл → установщик → путь)
 
@@ -115,13 +120,23 @@ python3 scripts/lireate_hosting_pf_install.py --docroot "$DOCROOT" --apply
 | `pages/<раздел>/_shared/*` (team, about, …) | overlay | `template/page/<раздел>/` **и** `pages/<раздел>/_shared/` |
 | `template/page/news/*` (блог) | `lireate_blog_install.py` | `template/page/news/` + патч шаблонов списка/статьи |
 
-PF: `--rollback --backup-id` → `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/manifest.txt`. **`template/page/uslugi/` PF не трогает** (живые файлы новее снимка).
+PF: `--rollback <YYYYMMDD-HHMMSS>` → `~/lireate-autopub/backups/hosting-pf/pf-install-<UTCSTAMP>/`. **`template/page/uslugi/` PF не трогает**; каталог `packages/.../uslugi/` удалён из пакета.
 
-### Блог + главная (порядок)
+### Порядок выкладки (overlay → PF → blog → home → rollout)
 
-1. `lireate_blog_install.py --check|--apply` — шаблоны `/news`, без `main.php`; откат: `--rollback --backup-id`.
-2. `lireate_home_light_v4_install.py --check|--apply` — `main.php` (дом); откат: `--rollback --backup-id`.
-3. overlay + PF.
+1. `lireate_cms_light_v4_overlay_install.py`
+2. `lireate_hosting_pf_install.py`
+3. `lireate_blog_install.py --check|--apply` — `/news`, без `main.php`; откат: `--rollback <YYYYMMDD-HHMMSS>` (`blog-install-…` в `~/lireate-autopub/backups/`).
+4. `lireate_home_light_v4_install.py` — `main.php`; откат: `--rollback <YYYYMMDD-HHMMSS>`.
+5. `lireate_light_v4_hosting_rollout.py` — опубликованные услуги (нужны `LIREATE_DOCROOT`, `LIREATE_PUBLIC_SITE_URL` для HTTP verify blog).
+
+**Десктоп-меню главной в превью:** как на live — верхнее меню шаблона + боковая колонка (`lireate-cms-chrome.inc.php`). PR #117 задаёт тексты/CTA в блоке Light V4, отдельного решения «убрать сайдбар» в #117 нет.
+
+### Круг 12 (PHP 5.6 gate блога)
+
+- Убран `static` в `lireate_blog_render_service_footer()` — batch render gate больше не теряет `lx-site-footer` на 2–5 статьях.
+- Статьи: `lireate-theme-light-v4` на `body` (как список), контраст MAX в боковой колонке.
+- CI: `blog --apply` CGI gate на PHP 5.6 (workflow `php56-compat.yml`).
 
 ### Услуги (~20 slug) — хостинг
 

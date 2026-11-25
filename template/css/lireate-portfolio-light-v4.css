@@ -92,3 +92,26 @@ body.lireate-portfolio-preview .lx-pf-cert {
   font-size: 13px;
   color: #52637b !important;
 }
+body.lireate-portfolio-preview #portfolio .contentBox {
+  height: auto !important;
+  min-height: 280px;
+}
+body.lireate-portfolio-preview #face .titleDesc span {
+  color: #e32020 !important;
+  font-weight: 700 !important;
+}
+body.lireate-portfolio-preview .lx-pf-cases {
+  background: #f7fbff !important;
+  border: 1px solid #dce8f7 !important;
+}
+body.lireate-portfolio-preview .lx-pf-cases-title {
+  color: #1f212c !important;
+}
+body.lireate-portfolio-preview .lx-pf-cases li {
+  background: #fff !important;
+  border-color: #dce8f7 !important;
+  color: #1f212c !important;
+}
+body.lireate-portfolio-preview .lx-pf-cases li a {
+  color: #195acb !important;
+}

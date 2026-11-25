@@ -108,8 +108,12 @@ def main():
     parser = argparse.ArgumentParser(description="LIREATE home Light V4 CMS install")
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--apply", action="store_true")
-    parser.add_argument("--rollback", action="store_true")
-    parser.add_argument("--backup-id", default="")
+    parser.add_argument(
+        "--rollback",
+        metavar="TIMESTAMP",
+        default="",
+        help="Restore backup home-light-v4-install-TIMESTAMP",
+    )
     parser.add_argument("--docroot", default=os.environ.get("LIREATE_DOCROOT", ""))
     parser.add_argument("--backups-root", default=os.environ.get("LIREATE_BACKUPS_ROOT", ""))
     args = parser.parse_args()
@@ -126,9 +130,9 @@ def main():
     backups_root = Path(backups_root).expanduser()
 
     if args.rollback:
-        if not args.backup_id.strip():
-            raise SystemExit("BLOCKER: pass --backup-id")
-        return cmd_rollback(docroot, backups_root, args.backup_id.strip())
+        if not args.rollback.strip():
+            raise SystemExit("BLOCKER: pass --rollback <YYYYMMDD-HHMMSS>")
+        return cmd_rollback(docroot, backups_root, args.rollback.strip())
 
     office_repo = resolve_office_repo()
     if not args.check and not args.apply:

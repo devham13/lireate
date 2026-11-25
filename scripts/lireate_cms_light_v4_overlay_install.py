@@ -6,6 +6,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import lireate_install_rollback_lib as rollback_lib
+
 ROOT = Path(__file__).resolve().parents[1]
 
 SINGLE_FILES = (
@@ -41,12 +43,8 @@ SHARED_PAGE_SECTIONS = (
 )
 
 
-def backup_root(docroot):
-    return docroot / '.lireate-backup-cms-overlay'
-
-
 def make_backup_id():
-    return datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    return datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')
 
 
 def iter_overlay_files(repo):
@@ -91,9 +89,10 @@ def cmd_apply(docroot, backups_root):
         print(err)
         return 2
     backup_id = make_backup_id()
-    backup_dir = backups_root / backup_id
+    backup_dir = backups_root / ('cms-overlay-' + backup_id)
     backup_dir.mkdir(parents=True, exist_ok=True)
     manifest = []
+    created = []
     for _src, dst in plan:
         if dst.is_file():
             rel = dst.relative_to(docroot)
@@ -103,19 +102,24 @@ def cmd_apply(docroot, backups_root):
             manifest.append(str(rel))
     (backup_dir / 'manifest.txt').write_text('\n'.join(manifest) + '\n', encoding='utf-8')
     for src, dst in plan:
+        existed = dst.is_file()
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
+        if not existed:
+            created.append(str(dst.relative_to(docroot)))
         print('{0} -> {1}'.format(src.relative_to(ROOT), dst))
+    rollback_lib.write_created_manifest(backup_dir, created)
     print('backup: {0}'.format(backup_dir))
+    print('rollback: python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot ... --rollback {0}'.format(backup_id))
     print('STATUS: CMS_OVERLAY_APPLIED')
     return 0
 
 
 def cmd_rollback(docroot, backups_root, backup_id):
     if not backup_id:
-        print('BLOCKER: pass --backup-id from backup directory name')
+        print('BLOCKER: pass --rollback <YYYYMMDD-HHMMSS>')
         return 2
-    backup_dir = backups_root / backup_id
+    backup_dir = backups_root / ('cms-overlay-' + backup_id)
     if not backup_dir.is_dir():
         print('BLOCKER: backup not found: {0}'.format(backup_dir))
         return 2
@@ -135,6 +139,8 @@ def cmd_rollback(docroot, backups_root, backup_id):
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
         print('restored {0}'.format(rel))
+    for note in rollback_lib.remove_created_from_backup(backup_dir, docroot):
+        print(note)
     print('STATUS: CMS_OVERLAY_ROLLBACK_OK')
     return 0
 
@@ -143,24 +149,23 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--docroot', type=Path, required=True)
     parser.add_argument('--apply', action='store_true')
-    parser.add_argument('--rollback', action='store_true')
-    parser.add_argument('--backup-id', default='')
+    parser.add_argument('--rollback', metavar='TIMESTAMP', default='')
     parser.add_argument(
         '--backups-root',
         type=Path,
         default=None,
-        help='default: DOCROOT/.lireate-backup-cms-overlay',
+        help='default: ~/lireate-autopub/backups/cms-overlay',
     )
     args = parser.parse_args()
     docroot = args.docroot.resolve()
     backups_root = args.backups_root
     if backups_root is None:
-        backups_root = backup_root(docroot)
+        backups_root = rollback_lib.autopub_backups_root('cms-overlay')
     else:
         backups_root = backups_root.resolve()
 
     if args.rollback:
-        return cmd_rollback(docroot, backups_root, args.backup_id.strip())
+        return cmd_rollback(docroot, backups_root, args.rollback.strip())
 
     plan, err = plan_install(docroot)
     if err:
@@ -170,8 +175,7 @@ def main():
         print('{0} -> {1}'.format(src.relative_to(ROOT), dst))
     if args.apply:
         return cmd_apply(docroot, backups_root)
-    print('backup dir on apply: {0}/<UTCSTAMP>/'.format(backups_root))
-    print('rollback: python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot ... --rollback --backup-id <UTCSTAMP>')
+    print('backup dir on apply: {0}/cms-overlay-<UTCSTAMP>/'.format(backups_root))
     print('STATUS: CMS_OVERLAY_DRY_RUN')
     return 0
 

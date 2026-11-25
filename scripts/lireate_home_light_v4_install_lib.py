@@ -383,11 +383,16 @@ def remove_created_files(docroot, backup_dir):
     except ValueError:
         return notes
     docroot = Path(docroot)
-    for rel in rels:
+    import shutil
+
+    for rel in sorted(rels, key=lambda r: len(str(r)), reverse=True):
         path = docroot / rel
         if path.is_file():
             path.unlink()
             notes.append("removed created {0}".format(rel))
+        elif path.is_dir():
+            shutil.rmtree(path, ignore_errors=True)
+            notes.append("removed created dir {0}".format(rel))
     return notes
 
 

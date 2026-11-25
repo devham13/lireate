@@ -119,6 +119,13 @@ body.lireate-theme-light-v4 .l4-service-illustration-card > *{position:relative;
  body.lireate-theme-light-v4 .lx-card-grid{grid-template-columns:1fr}
  body.lireate-theme-light-v4 .lireate-svc-page{padding-inline:16px}
 }
+@media(max-width:520px){
+ body.lireate-theme-light-v4 .lx-nav-pill{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
+ body.lireate-theme-light-v4 .lx-nav-pill .lx-btn-primary,
+ body.lireate-theme-light-v4 .lx-nav-pill a.lx-btn-primary{margin-left:auto}
+}
+body.lireate-theme-light-v4 .lx-hero-lead a{color:#0f4db8!important;font-weight:700!important;text-decoration:underline}
+body.lireate-theme-light-v4.lireate-svc-page .lx-site-footer{margin-top:28px}
 body.lireate-theme-light-v4 .lx-kpi b,
 body.lireate-theme-light-v4 .lx-mini-stat strong,
 body.lireate-theme-light-v4 .lx-stat-value{color:var(--l4-ink)!important}

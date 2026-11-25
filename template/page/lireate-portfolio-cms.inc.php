@@ -59,7 +59,12 @@ if (is_file($lx_cms_light_head)) {
 echo '<script>if(document.body){document.body.classList.add("lireate-portfolio-preview");}</script>' . "\n";
 ?>
 <?php
-            if (defined('LIREATE_PORTFOLIO_PREVIEW') && LIREATE_PORTFOLIO_PREVIEW) {
+            if (defined('LIREATE_PORTFOLIO_PREVIEW_FIXTURE') && is_string(LIREATE_PORTFOLIO_PREVIEW_FIXTURE) && is_file(LIREATE_PORTFOLIO_PREVIEW_FIXTURE)) {
+                $array = include LIREATE_PORTFOLIO_PREVIEW_FIXTURE;
+                if (!is_array($array)) {
+                    $array = array();
+                }
+            } elseif (defined('LIREATE_PORTFOLIO_PREVIEW') && LIREATE_PORTFOLIO_PREVIEW) {
                 $array = array();
             } else {
             if (!function_exists('lireate_cms_connect_db')) {

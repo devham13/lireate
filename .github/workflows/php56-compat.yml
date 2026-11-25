@@ -62,3 +62,14 @@ jobs:
           while IFS= read -r -d '' f; do
             php -l "$f"
           done < <(find pages template -name '*.php' -print0)
+      - name: blog --apply CGI gate (PHP 5.6 docroot slice)
+        working-directory: scripts
+        run: |
+          python3 -c "
+          import sys
+          from pathlib import Path
+          from lireate_blog_cgi_gate import run_php_cgi_live_gate_diag
+          repo = Path('..').resolve()
+          rc = run_php_cgi_live_gate_diag(repo, repo)
+          sys.exit(rc)
+          "

@@ -35,7 +35,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
     <div class="wrap hero-grid">
       <div class="reveal">
         <div class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span> Интеллектуальная собственность · товарные знаки · патенты · авторское право</div>
-        <h1 class="lh4-seo-h1">Патентное бюро «Лирейт»</h1>
+        <h1 class="lh4-seo-h1">Патентное бюро «<span class="lh4-brand-red">Лирейт</span>»</h1>
         <p class="lh4-hero-subtitle">Регистрация и защита интеллектуальной собственности</p>
         <p class="lead">Регистрация товарных знаков, патентов, программ ЭВМ и договоры. Помогаем выбрать способ защиты, говорим о реальных возможностях и сроках и сопровождаем до результата.</p>
         <ul class="hero-bullets">

@@ -90,6 +90,17 @@ body.lireate-theme-light-v4 .lireate-blog-list-max-banner,
 body.lireate-theme-light-v4 .lireate-blog-list-max-banner *{color:#1f212c!important}
 body.lireate-theme-light-v4 .lireate-blog-list-max-banner p{color:#3d4f66!important;font-weight:600!important}
 body.lireate-theme-light-v4 .lireate-blog-list-max-banner a{color:#0f4db8!important;font-weight:800!important}
+body.lireate-theme-light-v4 .lireate-blog-subscribe-card{background:#fff!important;border:1px solid #dce8f7!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-blog-subscribe-card .lireate-blog-subscribe-label{color:#9f1239!important;font-weight:800!important}
+body.lireate-theme-light-v4 .lireate-blog-subscribe-card .lireate-blog-subscribe-text{color:#2d4764!important;font-weight:600!important}
+body.lireate-theme-light-v4 .lireate-blog-subscribe-card .lireate-blog-subscribe-btn{color:#fff!important;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 55%,#9333ea 100%)!important;border:1px solid #5b21b6!important;font-weight:800!important}
+body.lireate-theme-light-v4 .lireate-blog-subscribe-card a{text-decoration:none!important}
+body.lireate-theme-light-v4 .lx-site-footer-social-btn{text-decoration:none!important}
+body.lireate-theme-light-v4 .lx-site-footer-social-svg{width:22px!important;height:22px!important}
+body.lireate-theme-light-v4 .lx-site-footer-social-svg--max{width:24px!important;height:24px!important}
+body.lireate-theme-light-v4 .lx-site-footer-contact{white-space:nowrap}
+body.lireate-theme-light-v4 .lx-site-footer-contact a{text-decoration:none!important}
+@media(max-width:520px){body.lireate-theme-light-v4 .lx-site-footer-contact{white-space:normal}}
 body.lireate-theme-light-v4 .lireate-blog-list-subscribe-card{background:#f7fbff!important;border:1px solid #dce8f7!important}
 body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-label{color:#5b21b6!important}
 body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-text{color:#1f212c!important;font-weight:600!important}
