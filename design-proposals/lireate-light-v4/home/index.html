@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>LIREATE — Белая главная · фирменные цвета + анимации</title>
+<meta name="description" content="Белая главная страница Лирейт в фирменных красно-синих цветах, с каруселью команды и анимациями по мотивам mayai.ru.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;
+  --ink:#1f212c;
+  --ink-2:#292d40;
+  --blue:#3a86ff;
+  --blue-soft:#eef5ff;
+  --blue-softer:#f7fbff;
+  --line:#e1e8f3;
+  --muted:#52637b;
+  --max:1280px;
+  --radius:24px;
+  --shadow:0 18px 60px rgba(31,33,44,.09);
+  --brand-red:#e32020;--brand-red-hover:#c71313;--blue-brand:#3a86ff;--ease:cubic-bezier(.21,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+button{font:inherit;cursor:pointer}
+.wrap{width:min(var(--max), calc(100% - 48px));margin:0 auto}
+.preview{background:#f7fbff;border-bottom:1px solid var(--line);color:#52637b;font-size:11px;font-weight:700;letter-spacing:.16em;padding:10px 24px;text-transform:uppercase}
+.topbar{border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.topbar .wrap{min-height:42px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.topbar-links{display:flex;gap:18px;flex-wrap:wrap}
+.site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:86px}
+.logo{display:flex;flex-direction:column;line-height:1}
+.logo strong{font:800 30px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.08em}
+.logo span{font-size:9px;font-weight:800;letter-spacing:.24em;margin-top:7px}
+.menu{display:flex;gap:24px;align-items:center}
+.menu a{font-size:13px;font-weight:700;color:#283750}
+.nav-right{display:flex;align-items:center;gap:16px}
+.phone{font-size:13px;font-weight:800;color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:14px 24px;border-radius:14px;border:1px solid var(--ink);font-size:13px;font-weight:800;transition:.25s ease;background:#fff}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.primary:hover{background:var(--blue);border-color:var(--blue)}
+.btn.soft{background:var(--blue-soft);border-color:var(--line);color:var(--ink)}
+.btn.linkish{padding:0;min-height:auto;border:0;border-radius:0;font-weight:800;color:var(--ink);background:none;border-bottom:1px solid #a0b6d8;padding-bottom:6px}
+.mobile-toggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:#fff;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.mobile-toggle span{display:block;width:18px;height:2px;background:var(--ink);transition:.2s}
+.mobile-menu{display:none;padding:0 0 16px}
+.mobile-menu a{display:block;padding:12px 0;border-bottom:1px solid var(--line);font-weight:700}
+.hero{padding:56px 0 36px}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:38px;align-items:center}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.16em;color:#4b6081;text-transform:uppercase}
+.hero h1{font:800 clamp(42px,5vw,76px)/1.02 Inter Tight,Manrope,sans-serif;letter-spacing:-.06em;margin:18px 0 18px;max-width:760px}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero p.lead{font-size:18px;line-height:1.8;color:var(--muted);max-width:650px;margin:0 0 26px}
+.hero-bullets{display:grid;gap:12px;margin:0 0 28px;padding:0;list-style:none}
+.hero-bullets li{display:flex;gap:12px;align-items:flex-start;color:#2d4764;font-weight:600}
+.hero-bullets i{width:22px;height:22px;border-radius:50%;background:var(--blue-soft);display:grid;place-items:center;font-style:normal;color:var(--blue);font-size:13px;flex:none;margin-top:1px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.hero-note{font-size:12px;color:#52637b;font-weight:600}
+.hero-right{position:relative}
+.expert-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.expert-photo{aspect-ratio:1.03/1; background:var(--blue-softer)}
+.expert-info{padding:22px 24px 24px}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:var(--blue-softer);border:1px solid var(--line);font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.expert-info h2{margin:14px 0 6px;font:800 32px/1.02 Inter Tight,Manrope,sans-serif;letter-spacing:-.05em}
+.expert-info .role{font-size:14px;color:var(--muted);margin-bottom:16px}
+.expert-info .links{display:flex;gap:18px;flex-wrap:wrap}
+.expert-mini{position:absolute;right:-20px;bottom:32px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:18px 18px;max-width:245px}
+.expert-mini strong{display:block;font-size:15px;margin-bottom:6px}
+.expert-mini p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.stats{padding:18px 0 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{padding:28px 22px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:none;padding-left:0}
+.stat strong{display:block;font:800 44px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.06em}
+.stat span{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
+.section{padding:100px 0}
+.section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:34px}
+.section-head h2,.wide-title{margin:0;font:800 clamp(34px,4vw,58px)/1.05 Inter Tight,Manrope,sans-serif;letter-spacing:-.06em;max-width:790px}
+.section-head p{max-width:340px;color:var(--muted);margin:0;font-size:14px}
+.service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.service-card,.why-card,.case-card,.blog-card,.price-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 12px 32px rgba(16,37,61,.04)}
+.service-card:hover,.why-card:hover,.case-card:hover,.blog-card:hover,.team-card:hover{transform:translateY(-2px)}
+.service-num{font-size:12px;font-weight:800;color:#5b718f;letter-spacing:.14em;text-transform:uppercase}
+.service-card h3,.why-card h3,.case-card h3,.price-card h3{font:800 28px/1.05 Inter Tight,Manrope,sans-serif;letter-spacing:-.04em;margin:14px 0 10px}
+.service-card p,.why-card p,.case-card p,.price-card p,.blog-card p{color:var(--muted);margin:0 0 18px}
+.link-arrow{font-weight:800;color:var(--blue)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.why-card .icon{width:42px;height:42px;border-radius:14px;background:var(--blue-soft);display:grid;place-items:center;color:var(--blue);font-weight:900;font-size:18px}
+.team-shell{border:1px solid var(--line);border-radius:28px;padding:28px 24px;background:#fff;box-shadow:0 16px 40px rgba(16,37,61,.05)}
+.team-top{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:22px}
+.team-top p{margin:0;max-width:360px;color:var(--muted)}
+.team-tools{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.filters{display:flex;gap:10px;flex-wrap:wrap}
+.filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:800;color:#364b65}
+.filter.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.arrow-group{display:flex;gap:10px}
+.arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);display:grid;place-items:center;font-size:18px}
+.arrow:hover{background:var(--blue-soft)}
+.team-carousel{overflow:hidden;position:relative}
+.team-track{display:flex;gap:18px;overflow:auto;scroll-snap-type:x mandatory;padding:8px 2px 8px 2px;scrollbar-width:none;scroll-behavior:smooth}
+.team-track::-webkit-scrollbar{display:none}
+.team-card{flex:0 0 212px;scroll-snap-align:start;text-align:center;padding:10px;border-radius:22px;border:1px solid transparent;transition:.25s ease;background:#fff}
+.team-card[hidden]{display:none!important}
+.avatar{width:180px;height:180px;border-radius:50%;overflow:hidden;margin:0 auto 18px;border:1px solid var(--line);background:var(--blue-softer);box-shadow:0 12px 32px rgba(16,37,61,.08)}
+.avatar img{transition:transform .4s ease;object-position:center 18%}
+.team-card:hover .avatar img{transform:scale(1.06)}
+.team-card h3{margin:0 0 6px;font-size:16px;line-height:1.3}
+.team-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.5;min-height:36px}
+.team-tag{display:inline-block;margin-top:10px;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:var(--blue-soft);padding:7px 10px;border-radius:999px}
+.process{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.process-card{border-top:2px solid var(--ink);padding-top:18px}
+.process-card strong{display:block;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#5b718e;margin-bottom:14px}
+.process-card h3{font:800 24px/1.1 Inter Tight,Manrope,sans-serif;margin:0 0 10px}
+.process-card p{margin:0;color:var(--muted)}
+.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.case-card .pill{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--blue-softer);border:1px solid var(--line);color:var(--blue);font-size:11px;font-weight:800;margin-bottom:16px}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.price-card .price{font:800 40px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.05em;margin:14px 0;color:var(--ink)}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.blog-card .num{font-size:11px;font-weight:800;color:#5b718e;letter-spacing:.16em;text-transform:uppercase}
+.blog-card h3{font:800 24px/1.12 Inter Tight,Manrope,sans-serif;margin:20px 0 12px}
+.cta{padding:100px 0}
+.cta-box{background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:38px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+.cta-box h2{margin:0 0 14px;font:800 clamp(34px,4vw,56px)/1.05 Inter Tight,Manrope,sans-serif;letter-spacing:-.05em}
+.cta-box p{margin:0;color:var(--muted);max-width:580px}
+.cta-list{display:grid;gap:10px;margin-top:18px}
+.cta-list div{display:flex;gap:10px;color:#364b65;font-weight:600}
+.footer{border-top:1px solid var(--line);padding:34px 0 22px;color:#52637b}
+.footer-top{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.footer-bottom{margin-top:18px;font-size:12px;color:#6c7f98}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+@media (max-width:1100px){
+  .hero-grid,.cta-box,.case-grid,.why-grid,.pricing-grid,.blog-grid,.service-grid{grid-template-columns:1fr 1fr}
+  .process{grid-template-columns:1fr}
+  .expert-mini{position:static;max-width:none;margin-top:16px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--line)}
+  .stat:nth-child(3){border-left:none;padding-left:0}
+}
+@media (max-width:860px){
+  .menu,.phone,.nav-right .btn{display:none}
+  .mobile-toggle{display:flex}
+  .mobile-menu.open{display:block}
+  .hero-grid,.cta-box,.case-grid,.why-grid,.pricing-grid,.blog-grid,.service-grid{grid-template-columns:1fr}
+  .team-card{flex-basis:184px}
+  .avatar{width:156px;height:156px}
+}
+@media (max-width:640px){
+  .wrap{width:min(var(--max), calc(100% - 28px))}
+  .hero{padding-top:34px}
+  .hero p.lead{font-size:15px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat{padding:18px 12px}
+  .stat strong{font-size:34px}
+  .topbar{display:none}
+  .nav{min-height:72px}
+  .section,.cta{padding:72px 0}
+  .section-head{display:block}
+  .section-head p{margin-top:16px}
+  .cta-box{padding:26px}
+  .team-shell{padding:22px 16px}
+  .team-top{display:block}.team-top p{margin-top:12px}
+  .team-tools{display:block}.arrow-group{margin-top:12px;justify-content:flex-end}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}.reveal{opacity:1;transform:none}}
+
+/* 2026-11-25: live LIREATE palette (visually sampled). White canvas retained. */
+:root{--bg:#fff;--ink:#1f212c;--ink-2:#2a3044;--blue:#3a86ff;--blue-soft:#edf4ff;--blue-softer:#f8fbff;--line:#e0e7f4;--muted:#50617c;--brand-red:#e32020;--brand-red-hover:#c41118;--motion-ease:cubic-bezier(.21,.78,.19,1)}
+html{scroll-padding-top:92px}
+body{background:white;color:var(--ink)}
+a{transition:color .24s ease}
+a:hover{color:var(--blue)}
+.preview{background:white;color:#58708b;border-color:var(--line)}
+.preview::before{content:'●';color:var(--brand-red);margin-right:10px;font-size:9px}
+.scroll-progress{position:fixed;top:0;left:0;width:100%;height:3px;z-index:110;background:linear-gradient(90deg,var(--brand-red),var(--blue));transform-origin:left center;transform:scaleX(0);pointer-events:none;will-change:transform}
+.logo strong{color:var(--ink);font-weight:800}.logo strong .brand-r{color:var(--brand-red)}
+.logo span{color:#61718a}
+.site-header{transition:box-shadow .35s ease,border-color .35s ease}
+.site-header.is-scrolled{box-shadow:0 10px 28px rgba(16,22,48,.08);border-color:transparent}
+.menu a{position:relative;transition:color .23s}.menu a::after{content:'';position:absolute;bottom:-12px;left:0;width:100%;height:2px;background:var(--brand-red);transform:scaleX(0);transform-origin:left;transition:transform .32s var(--motion-ease)}
+.menu a:hover::after{transform:scaleX(1)}
+.eyebrow-mark{display:inline-block;width:19px;height:19px;border:3px solid var(--brand-red);border-radius:50%;position:relative;vertical-align:middle;margin-right:4px}.eyebrow-mark::after{content:'';position:absolute;inset:4px;border-radius:50%;background:var(--blue)}
+.hero{isolation:isolate;position:relative}.hero::before{content:'';position:absolute;pointer-events:none;z-index:-1;width:380px;height:380px;right:1%;top:3%;background:radial-gradient(closest-side,rgba(58,134,255,.055),transparent);border-radius:50%}
+.hero h1 em{background:linear-gradient(110deg,var(--brand-red),#df262c 55%,#b71920);background-clip:text;-webkit-background-clip:text;color:transparent;font-style:normal}
+.hero h1{letter-spacing:-.058em}
+.hero .hero-right{will-change:transform;transform:translate3d(var(--hero-x,0px),var(--hero-y,0px),0);transition:transform .45s var(--motion-ease)}
+.hero-right .expert-card{overflow:hidden;border-radius:26px;box-shadow:0 22px 64px rgba(24,35,65,.12);position:relative;border-color:#e4e7f1}
+.expert-photo{position:relative;overflow:hidden;background:var(--blue-softer)}
+.expert-photo img{object-position:top center;transform:scale(1.025);transition:transform 1.2s var(--motion-ease)}
+.expert-card:hover .expert-photo img{transform:scale(1.085)}
+.photo-shine{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1s ease}
+.expert-card:hover .photo-shine{transform:translateX(140%)}
+.expert-mini{border-top:3px solid var(--brand-red)}
+.badge{color:var(--blue);border-color:#dae6f8;background:#f4f8ff}
+.btn{overflow:hidden;position:relative;isolation:isolate;transition:transform .32s var(--motion-ease), background .28s, color .28s, box-shadow .32s}
+.btn.primary{background:var(--brand-red);border-color:var(--brand-red);color:white}
+.btn.primary:hover{background:var(--brand-red-hover);border-color:var(--brand-red-hover);box-shadow:0 13px 30px rgba(227,32,32,.17);color:white}
+.btn.soft{background:#fff;border-color:#cddcfa;color:#2456a0}
+.btn.soft:hover{background:#edf4ff;color:#2456a0}
+.btn.primary::before{content:'';position:absolute;width:42px;height:160%;top:-25%;left:-95px;transform:skewX(-25deg);background:rgba(255,255,255,.19);transition:left .58s ease;z-index:-1}
+.btn.primary:hover::before{left:115%}
+.btn:not(.linkish):hover{transform:translateY(-3px)}
+.btn.linkish:hover{color:var(--brand-red)}
+.link-arrow{display:inline-flex;align-items:center;gap:12px;color:#2569c6;transition:gap .25s,color .25s}
+.link-arrow:hover{color:var(--brand-red);gap:20px}
+.hero-note{display:flex;align-items:center;gap:8px}
+.live-pulse{width:9px;height:9px;border-radius:100%;background:var(--brand-red);box-shadow:0 0 0 0 rgba(227,32,32,.28);animation:lireate-pulse 2.5s ease-in-out infinite}
+@keyframes lireate-pulse{50%{box-shadow:0 0 0 7px rgba(227,32,32,0)}}
+.stat{position:relative;overflow:hidden}.stat:after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--brand-red);transition:width .65s var(--motion-ease)}.stat:hover:after{width:100%}
+.stat strong{color:var(--ink)}.stat .checkmark{color:var(--brand-red)}
+.motion-strip{border-block:1px solid var(--line);overflow:hidden;background:#fff;white-space:nowrap;padding:14px 0}
+.motion-strip-inner{display:flex;gap:40px;width:max-content;align-items:center;animation:motion-strip 38s linear infinite;color:#425572;font-size:11px;font-weight:800;letter-spacing:.22em}
+.motion-strip-inner i{font-style:normal;color:var(--brand-red)}
+@keyframes motion-strip{to{transform:translateX(-50%)}}
+.brand-highlight{color:var(--brand-red)}
+.service-card,.why-card,.case-card,.blog-card,.price-card{position:relative;overflow:hidden;transition:transform .42s var(--motion-ease),box-shadow .42s var(--motion-ease),border-color .3s;border-radius:23px}
+.service-card:hover,.why-card:hover,.case-card:hover,.blog-card:hover,.price-card:hover{transform:translateY(-7px);box-shadow:0 22px 56px rgba(19,25,60,.1);border-color:#b8d0f8}
+.service-card:before,.why-card:before,.case-card:before,.blog-card:before,.price-card:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(58,134,255,.055),transparent 75%);opacity:0;transition:opacity .25s}
+.service-card:hover:before,.why-card:hover:before,.case-card:hover:before,.blog-card:hover:before,.price-card:hover:before{opacity:1}
+.service-num{color:var(--brand-red)}
+.why-card .icon{background:#fff2f2;color:var(--brand-red)}
+.team-shell{border-color:#dce5f5}
+.team-track{scroll-behavior:smooth;overscroll-behavior-inline:contain;touch-action:pan-y}
+.team-track.is-dragging{scroll-snap-type:none;cursor:grabbing}
+.team-card{transition:transform .4s var(--motion-ease),opacity .35s var(--motion-ease)}
+.team-card:hover{transform:translateY(-7px)}
+.team-card .avatar{background:#fff;border:2px solid #f0edf5;transition:border-color .35s,box-shadow .4s var(--motion-ease)}
+.team-card:hover .avatar{border-color:var(--brand-red);box-shadow:0 16px 37px rgba(31,33,44,.13)}
+.team-tag{background:#f9f3f3;color:#9f2525}
+.filter.active{background:var(--ink);border-color:var(--ink)}.filter:hover:not(.active){border-color:var(--blue);color:var(--blue)}
+.team-card.filter-enter{animation:team-filter-enter .54s var(--motion-ease) both}
+@keyframes team-filter-enter{from{opacity:0;transform:translateY(15px) scale(.97)}to{opacity:1;transform:none}}
+.arrow{transition:transform .25s,background .25s}.arrow:hover{background:var(--ink);color:white;transform:scale(1.06)}
+.process-card{cursor:pointer;text-align:left;display:block;width:100%;background:#fff;border:0;border-top:2px solid #dce5f2;border-radius:0;padding-left:0;color:var(--ink);transition:border-color .3s,color .3s,transform .3s}
+.process-card:hover{transform:translateY(-4px);border-top-color:var(--blue)}
+.process-card.active{border-top-color:var(--brand-red)}
+.process-live{display:flex;gap:16px;align-items:center;margin-top:24px;padding:20px 24px;border-radius:16px;background:#f8fbff;border:1px solid #e4ebf7;transition:opacity .25s,transform .25s}
+.process-live.is-transitioning{opacity:.25;transform:translateY(9px)}
+.process-indicator{font-weight:800;color:var(--brand-red)}.process-live-name{font-weight:800}.process-live-arrow{margin-left:auto;color:var(--blue);font-size:19px}
+.faq-list{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line);padding:6px 0}
+.faq-item summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:23px 0;font-size:18px;font-weight:800;letter-spacing:-.03em}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary span{font-size:28px;font-weight:500;color:var(--blue);transition:transform .33s var(--motion-ease)}
+.faq-item[open] summary span{transform:rotate(45deg);color:var(--brand-red)}
+.faq-item .faq-answer{color:var(--muted);max-width:840px;padding:0 0 24px;animation:faq-in .34s ease both}
+.faq-item .faq-answer a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+@keyframes faq-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.cta-box{border-top:4px solid var(--brand-red)}
+.cta-list div span:first-child{color:var(--brand-red);font-weight:900}
+/* Motion patterns adapted from mayai.ru: entrance, delayed cards, counter, hover, steps, and sticky header. */
+.reveal{opacity:1;transform:none;transition:opacity .72s var(--motion-ease),transform .72s var(--motion-ease)}
+html.motion-ready .reveal:not(.visible){opacity:0;transform:translateY(30px)}
+html.motion-ready .reveal.visible{opacity:1;transform:none}
+html.motion-ready .service-grid>.reveal:nth-child(2),html.motion-ready .why-grid>.reveal:nth-child(2),html.motion-ready .case-grid>.reveal:nth-child(2),html.motion-ready .blog-grid>.reveal:nth-child(2){transition-delay:.09s}
+html.motion-ready .service-grid>.reveal:nth-child(3),html.motion-ready .why-grid>.reveal:nth-child(3),html.motion-ready .case-grid>.reveal:nth-child(3),html.motion-ready .blog-grid>.reveal:nth-child(3){transition-delay:.16s}
+html.motion-ready .why-grid>.reveal:nth-child(4),html.motion-ready .service-grid>.reveal:nth-child(4){transition-delay:.23s}
+html.motion-ready .hero .reveal:first-child{animation:lireate-hero-enter .75s .08s both}
+html.motion-ready .hero .hero-right.reveal{animation:lireate-hero-enter .95s .25s both}
+@keyframes lireate-hero-enter{from{opacity:0;transform:translateY(22px);filter:blur(3px)}to{opacity:1;transform:none;filter:blur(0)}}
+@media(max-width:860px){.hero .hero-right{transform:none!important}.motion-strip-inner{animation-duration:48s}}
+@media(max-width:640px){.motion-strip{padding:10px 0}.motion-strip-inner{font-size:10px;gap:24px}.faq-item summary{font-size:16px}.process-live{padding:16px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,html.motion-ready .reveal:not(.visible){opacity:1!important;transform:none!important;animation:none!important;transition:none!important}.motion-strip-inner,.live-pulse{animation:none!important}.hero .hero-right{transform:none!important}.team-track{scroll-behavior:auto}}
+
+/* Graceful picture fallback for offline previews: real staff photos load online. */
+.avatar,.expert-photo{position:relative}.portrait-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#1f212c;background:radial-gradient(ellipse at 76% 12%,#edf4ff 0%,#fff 46%,#fff5f5 100%)}
+.avatar .portrait-fallback{font:700 44px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.07em;color:#c82328}
+.expert-photo .portrait-fallback{font:800 clamp(68px,9vw,108px)/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.09em;color:#d42329}
+.expert-photo .portrait-fallback:before{content:'LIREATE';position:absolute;top:32px;left:26px;font:800 12px/1 Manrope,sans-serif;letter-spacing:.23em;color:#7f95b5}
+.expert-photo .portrait-fallback:after{content:'Команда Лирейт';position:absolute;bottom:33px;left:26px;font:700 13px/1 Manrope,sans-serif;color:#6480a6}
+
+/* LIREATE / interactive process, white + whisper-blue, firm's red progress */
+.process-section{scroll-margin-top:110px;--process-blue:#f3f8ff;--process-border:#dce8f7;--process-ink:#1f212c;--process-red:#e32020}
+.process-section .section-head{margin-bottom:32px}
+.process-flow{height:3px;background:var(--process-border);border-radius:99px;overflow:hidden;margin:0; margin-bottom:24px}
+.process-flow span{display:block;width:33.333%;height:100%;transform-origin:left;background:var(--process-red);transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.process-new{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.process-new .process-card{background:#fff;border:1px solid var(--process-border);border-top:3px solid var(--process-border);padding:22px 22px 20px;text-align:left;border-radius:18px;min-height:245px;display:flex;flex-direction:column;align-items:flex-start;position:relative;isolation:isolate;transition:background .35s,border-color .35s,box-shadow .35s,transform .35s}
+.process-new .process-card::after{content:'';position:absolute;right:0;bottom:0;width:38%;height:38%;background:radial-gradient(circle at bottom right,rgba(58,134,255,.1),transparent 70%);pointer-events:none;opacity:0;transition:opacity .4s}
+.process-new .process-card:hover{background:#fbfdff;border-color:#adc9e8;box-shadow:0 15px 32px rgba(29,80,133,.07);transform:translateY(-5px)}
+.process-new .process-card:hover::after{opacity:1}
+.process-new .process-card.active{background:var(--process-blue);border-color:#b9d6f3;border-top-color:var(--process-red);box-shadow:0 15px 40px rgba(29,80,133,.09)}
+.process-new .process-card strong{display:flex;width:100%;justify-content:space-between;align-items:center;color:#617c99;font-weight:800;font-size:11px;letter-spacing:.15em;margin-bottom:19px}
+.process-new .process-card.active strong{color:var(--process-red)}
+.process-card-toggle{color:#9bb5d0;font-size:20px;letter-spacing:0;transition:transform .35s,color .35s}
+.process-new .process-card:hover .process-card-toggle,.process-new .process-card.active .process-card-toggle{color:var(--process-red);transform:rotate(45deg)}
+.process-new .process-card h3{font-size:23px;line-height:1.18;margin-bottom:12px}
+.process-new .process-card p{font-size:13px;line-height:1.7;color:#526882}
+.process-card-hint{font-size:11px;font-weight:800;color:#3973ac;margin-top:auto;padding-top:18px}
+.process-card-hint span{display:inline-block;transition:transform .25s}.process-new .process-card:hover .process-card-hint span{transform:translateX(5px)}
+.process-detail{margin-top:20px;border-radius:22px;border:1px solid var(--process-border);background:linear-gradient(120deg,#fff 0%,#fff 52%,#f5f9ff 100%);overflow:hidden;box-shadow:0 15px 42px rgba(29,80,133,.045)}
+.process-detail-top{padding:23px 30px 0;display:flex;justify-content:space-between;align-items:start}
+.process-detail-meta{display:flex;gap:18px;align-items:center}
+.process-detail-kicker{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#62809c}
+.process-indicator{color:var(--process-red);font-size:13px;font-weight:800}
+.process-detail-mark{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;border:1px solid #deebfb;color:#b3cce9;font:800 24px/1 'Inter Tight',Manrope,sans-serif}
+.process-detail-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:42px;padding:4px 30px 28px;transition:opacity .25s ease,transform .25s ease}
+.process-detail.is-switching .process-detail-grid{opacity:.15;transform:translateY(12px)}
+.process-detail-main h3{font:800 clamp(29px,3vw,40px)/1.09 'Inter Tight',Manrope,sans-serif;letter-spacing:-.04em;margin:0 0 14px}
+.process-detail-main>p{font-size:14px;line-height:1.7;max-width:600px;color:#566d86;margin:0 0 22px}
+.process-detail-list-title{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#23466c;margin-bottom:12px}
+.process-task-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.process-task-list li{position:relative;padding-left:26px;font-size:13px;line-height:1.65;color:#36526e}
+.process-task-list li:before{content:'✓';position:absolute;left:0;top:0;font-weight:800;color:var(--process-red)}
+.process-detail-aside{border-left:1px solid var(--process-border);padding:4px 0 5px 30px;display:flex;flex-direction:column;align-items:flex-start}
+.process-result-label{font-size:12px;font-weight:800;color:#406889;margin-bottom:16px}
+.process-result-label>span{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:7px;background:#e6f3ff;border-radius:50%;color:var(--process-red)}
+.process-detail-aside h4{font:800 24px/1.12 'Inter Tight',Manrope,sans-serif;letter-spacing:-.03em;margin:0 0 13px}
+.process-detail-aside p{font-size:13px;line-height:1.8;color:#58718a;margin:0 0 20px}
+.process-action{font-size:12px;font-weight:800;color:#2565a8;border-bottom:1px solid #9dbfe2;padding-bottom:7px;margin-top:auto}
+.process-action span{margin-left:8px}
+.process-detail-bottom{border-top:1px solid var(--process-border);padding:15px 30px 16px;display:flex;justify-content:space-between;gap:20px;align-items:center}
+.process-step-caption{font-size:11px;color:#6d88a3}
+.process-step-nav{display:flex;gap:8px;align-items:center}
+.process-step-nav button{border:1px solid var(--process-border);background:#fff;color:#203b59;border-radius:10px;min-height:40px;font-size:12px;font-weight:800;transition:background .25s,transform .25s,border-color .25s}
+.process-step-nav button:hover{background:#f0f7ff;transform:translateY(-2px);border-color:#aac9e8}
+.process-prev{width:42px}.process-next{padding:0 15px}.process-next span{margin-left:9px}
+.process-section button:focus-visible,.process-section a:focus-visible{outline:3px solid #3a86ff;outline-offset:3px}
+@media(max-width:960px){.process-new{gap:10px}.process-new .process-card{padding:18px 16px;min-height:260px}.process-detail-grid{gap:20px}}
+@media(max-width:700px){.process-new{grid-template-columns:1fr;gap:10px}.process-new .process-card{min-height:0;padding:18px}.process-new .process-card h3{font-size:21px;margin-bottom:6px}.process-new .process-card strong{margin-bottom:10px}.process-card-hint{padding-top:10px}.process-flow{margin-bottom:15px}.process-detail-top{padding:18px 20px 0}.process-detail-grid{grid-template-columns:1fr;padding:0 20px 22px;gap:24px}.process-detail-aside{padding:20px 0 0;border-left:0;border-top:1px solid var(--process-border)}.process-detail-bottom{padding:15px 20px}.process-step-caption{display:none}.process-step-nav{width:100%}.process-next{flex:1}.process-detail-mark{width:42px;height:42px;font-size:19px}}
+@media(prefers-reduced-motion:reduce){.process-flow span,.process-new .process-card,.process-detail-grid,.process-card-toggle{transition:none!important}.process-new .process-card:hover{transform:none}}
+
+
+/* Light V4 service backgrounds — visible original symbols, not raster images. */
+#services .service-card{position:relative;overflow:hidden;isolation:isolate;
+ background:radial-gradient(ellipse at 98% 8%,#f1f7ff 0%,#fff 58%);border-color:#dce8f7;
+ transition:transform .38s cubic-bezier(.21,.7,.2,1),border-color .38s,box-shadow .38s;
+}
+#services .service-card > *{position:relative;z-index:1}
+#services .service-card::before{position:absolute;right:12px;top:20px;font:800 116px/1 Georgia,serif;
+ color:#3a86ff;opacity:.115;pointer-events:none;transform:translateY(8px) rotate(-13deg);
+ transition:transform .55s cubic-bezier(.21,.7,.2,1),opacity .55s}
+#services .service-card:nth-child(1)::before{content:"®"}
+#services .service-card:nth-child(2)::before{content:"⚙"}
+#services .service-card:nth-child(3)::before{content:"§"}
+#services .service-card:nth-child(4)::before{content:"</>";font:800 64px/1.1 Manrope,Arial,sans-serif;top:44px}
+#services .service-card::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;
+ background:#e32020;transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+#services .service-card:hover,#services .service-card:focus-within{
+ transform:translateY(-5px);border-color:#b1d0ff;box-shadow:0 22px 50px rgba(31,33,44,.10)}
+#services .service-card:hover::before,#services .service-card:focus-within::before{
+ transform:translateY(-7px) rotate(0) scale(1.04);opacity:.21}
+#services .service-card:hover::after,#services .service-card:focus-within::after{transform:scaleX(1)}
+#services .service-card .link-arrow{display:inline-block;transition:transform .3s ease}
+#services .service-card:hover .link-arrow{transform:translateX(5px)}
+@media(prefers-reduced-motion:reduce){#services .service-card,#services .service-card::before,
+#services .service-card::after,#services .service-card .link-arrow{transition:none!important}}
+
+</style>
+</head>
+<body>
+<div class="preview">LIREATE · ДИЗАЙН-ПРЕВЬЮ · НЕ ОПУБЛИКОВАНО</div><div class="scroll-progress" aria-hidden="true"></div>
+<div class="topbar"><div class="wrap"><div>Патентное бюро «Лирейт» · Работаем по всей России · c 2015 года</div><div class="topbar-links"><a href="tel:+74999384595">+7 (499) 938-45-95</a><a href="https://t.me/lireate_patent" target="_blank" rel="noopener">Telegram ↗</a><a href="https://vk.com/lireate" target="_blank" rel="noopener">VK ↗</a></div></div></div>
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="logo" href="#top"><strong>LI<span class="brand-r">R</span>EATE</strong><span>ПАТЕНТНОЕ БЮРО</span></a>
+    <nav class="menu"><a href="#services">Услуги</a><a href="#team">Команда</a><a href="#cases">Кейсы</a><a href="#pricing">Стоимость</a><a href="#blog">Блог</a></nav>
+    <div class="nav-right"><a class="phone" href="tel:+79600484957">+7 (960) 048-49-57</a><a class="btn primary" href="https://t.me/lireate_patent" target="_blank" rel="noopener">Обсудить задачу ↗</a></div>
+    <button class="mobile-toggle" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+  <div class="wrap mobile-menu" id="mobileMenu"><a href="#services">Услуги</a><a href="#team">Команда</a><a href="#cases">Кейсы</a><a href="#pricing">Стоимость</a><a href="#blog">Блог</a><a href="https://t.me/lireate_patent" target="_blank" rel="noopener">Обсудить задачу ↗</a></div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <div class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span> Интеллектуальная собственность · товарные знаки · патенты · авторское право</div>
+        <h1>Защита интеллектуальной собственности <em>начинается с Лирейт</em></h1>
+        <p class="lead">Регистрация товарных знаков, патентов, программ ЭВМ и договоров. Помогаем выбрать правильный способ защиты, объясняем реальные перспективы и сопровождаем проект до результата.</p>
+        <ul class="hero-bullets">
+          <li><i>✓</i><span>бесплатная консультация и понятный первый шаг для клиента</span></li>
+          <li><i>✓</i><span>работаем честно: говорим только о реальных возможностях и сроках</span></li>
+          <li><i>✓</i><span>оплата за результат и сопровождение специалистами по интеллектуальной собственности</span></li>
+        </ul>
+        <div class="hero-actions">
+          <a class="btn primary" href="https://lireate.ru/findtz" target="_blank" rel="noopener">Проверить товарный знак ↗</a>
+          <a class="btn soft" href="https://t.me/lireate_patent" target="_blank" rel="noopener">Бесплатная консультация ↗</a>
+        </div>
+        <div class="hero-note"><span class="live-pulse" aria-hidden="true"></span> Через 15 минут вы получите ответ на свой вопрос.</div>
+      </div>
+      <div class="hero-right reveal">
+        <article class="expert-card">
+          <div class="expert-photo"><div class="photo-shine" aria-hidden="true"></div><img src="https://lireate.ru/template/images/team/person/1.webp" alt="Габдрахманова Эльвира Дамировна"></div>
+          <div class="expert-info">
+            <div class="badge">Руководитель отдела регистрации интеллектуальной собственности</div>
+            <h2>Габдрахманова Эльвира</h2>
+            <div class="role">Специалист Лирейт · консультации, сопровождение заявок и защита интеллектуальной собственности</div>
+            <div class="links">
+              <a class="btn linkish" href="https://lireate.ru/team" target="_blank" rel="noopener">Команда Лирейт ↗</a>
+              <a class="btn linkish" href="https://lireate.ru/o_kompanii" target="_blank" rel="noopener">О компании ↗</a>
+            </div>
+          </div>
+        </article>
+        <div class="expert-mini">
+          <strong>Понятный первый шаг</strong>
+          <p>Оставьте заявку — специалисты свяжутся с вами, уточнят задачу и подберут следующий шаг: проверка знака, консультация по патентованию или защите авторских прав.</p>
+        </div>
+      </div>
+    </div>
+    <div class="wrap stats">
+      <div class="stats-grid reveal">
+        <div class="stat"><strong class="count" data-from="2000" data-to="2015">2015</strong><span>работаем с этого года</span></div>
+        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>специалистов в команде</span></div>
+        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>минут до первого ответа</span></div>
+        <div class="stat"><strong class="checkmark">✓</strong><span>оплата за результат</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="motion-strip" aria-label="Направления работы Лирейт"><div class="motion-strip-inner" aria-hidden="true"><span>ТОВАРНЫЕ ЗНАКИ</span><i>•</i><span>ПАТЕНТЫ</span><i>•</i><span>ДОГОВОРЫ</span><i>•</i><span>ПРОГРАММЫ ЭВМ</span><i>•</i><span>ЗАЩИТА ПРАВ</span><i>•</i><span>ТОВАРНЫЕ ЗНАКИ</span><i>•</i><span>ПАТЕНТЫ</span><i>•</i><span>ДОГОВОРЫ</span><i>•</i><span>ПРОГРАММЫ ЭВМ</span><i>•</i><span>ЗАЩИТА ПРАВ</span><i>•</i></div></div>
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Выберите интересующую <span class="brand-highlight">услугу</span></h2>
+        <p>Структура секции вдохновлена понравившимся тебе сайтом: крупные карточки, чистый белый фон, быстрое понимание задачи и аккуратные CTA.</p>
+      </div>
+      <div class="service-grid">
+        <article class="service-card reveal"><div class="service-num">01 · Товарный знак</div><h3>Регистрация товарного знака</h3><p>Зарегистрируем ваш товарный знак на территории России и поможем выстроить стратегию защиты бренда.</p><a class="link-arrow" href="https://lireate.ru/registraciya_tovarnogo_znaka/" target="_blank" rel="noopener">Подробнее ↗</a></article>
+        <article class="service-card reveal"><div class="service-num">02 · Патенты</div><h3>Патентование решений</h3><p>Поможем получить патент на изобретение, промышленный образец или полезную модель, а также выбрать правильный объект защиты.</p><a class="link-arrow" href="https://lireate.ru/patent" target="_blank" rel="noopener">Подробнее ↗</a></article>
+        <article class="service-card reveal"><div class="service-num">03 · Договоры</div><h3>Договоры и передача прав</h3><p>Подготовим индивидуальный договор для охраны прав на результаты интеллектуальной деятельности и безопасной работы с партнёрами.</p><a class="link-arrow" href="https://lireate.ru/dogovory/" target="_blank" rel="noopener">Подробнее ↗</a></article>
+        <article class="service-card reveal"><div class="service-num">04 · Программы ЭВМ</div><h3>Защита программ и интерфейсов</h3><p>Защитим приложение: программный код, дизайн и интерфейс. Поможем с регистрацией и правовым оформлением.</p><a class="link-arrow" href="https://lireate.ru/registraciya_programm_evm/" target="_blank" rel="noopener">Подробнее ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Почему клиенты выбирают <span class="brand-highlight">Лирейт</span></h2>
+        <p>Здесь мы совместили тональность юридической компании и прозрачную подачу, как на понравившемся референсе.</p>
+      </div>
+      <div class="why-grid">
+        <article class="why-card reveal"><div class="icon">₽</div><h3>Бесплатная консультация</h3><p>Если у вас нет времени искать ответ на страницах сайта, оставьте заявку — специалисты свяжутся с вами и помогут выбрать следующий шаг.</p></article>
+        <article class="why-card reveal"><div class="icon">✓</div><h3>Оплата за результат</h3><p>Мы не обещаем невозможного. Обсуждая проект, говорим только о реальных возможностях и сроках работы.</p></article>
+        <article class="why-card reveal"><div class="icon">⚖</div><h3>Экспертиза команды</h3><p>В компании есть специалисты, которые занимаются защитой интеллектуальной собственности более 20 лет.</p></article>
+        <article class="why-card reveal"><div class="icon">→</div><h3>Работа под ключ</h3><p>От первой консультации и проверки до регистрации и сопровождения — клиент получает единый понятный процесс.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="team" style="padding-top:0">
+    <div class="wrap team-shell reveal">
+      <div class="team-top">
+        <div>
+          <div class="eyebrow">Карусель команды · Jiro Team 01 Pixa</div>
+          <h2 class="wide-title">Люди, которые защищают ваши идеи</h2>
+        </div>
+        <p>Круглые портреты и плавная карусель сохранены из выбранного направления. Визуальный язык адаптирован под юридическую компанию и белую структуру страницы.</p>
+      </div>
+      <div class="team-tools">
+        <div class="filters">
+          <button class="filter active" data-filter="all" aria-pressed="true">Все специалисты</button>
+          <button class="filter" data-filter="management" aria-pressed="false">Руководство</button>
+          <button class="filter" data-filter="registration" aria-pressed="false">Регистрация</button>
+          <button class="filter" data-filter="patent" aria-pressed="false">Патентный отдел</button>
+        </div>
+        <div class="arrow-group"><button class="arrow" id="prevTeam" aria-label="Предыдущие сотрудники">←</button><button class="arrow" id="nextTeam" aria-label="Следующие сотрудники">→</button></div>
+      </div>
+      <div class="team-carousel" aria-roledescription="карусель сотрудников">
+        <div class="team-track" id="teamTrack" tabindex="0" aria-label="Сотрудники Лирейт — прокрутка стрелками">
+          <article class="team-card" data-group="management"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/11.webp" alt="Горбачев Юрий Александрович"></div><h3>Горбачев Юрий Александрович</h3><p>Управляющий партнёр</p><span class="team-tag">руководство</span></article>
+          <article class="team-card" data-group="management"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/10.webp" alt="Бураков Андрей Геннадьевич"></div><h3>Бураков Андрей Геннадьевич</h3><p>Управляющий партнёр</p><span class="team-tag">руководство</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/1.webp" alt="Габдрахманова Эльвира Дамировна"></div><h3>Габдрахманова Эльвира Дамировна</h3><p>Руководитель отдела регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/5.webp" alt="Захарова Ирина Николаевна"></div><h3>Захарова Ирина Николаевна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/6.webp" alt="Прокопьева Алия Раифовна"></div><h3>Прокопьева Алия Раифовна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/9.webp" alt="Ульданова Алёна Анатольевна"></div><h3>Ульданова Алёна Анатольевна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="patent"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/12.webp" alt="Азизова Гузель Рустамовна"></div><h3>Азизова Гузель Рустамовна</h3><p>Специалист патентного отдела</p><span class="team-tag">патенты</span></article>
+          <article class="team-card" data-group="patent"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/13.webp" alt="Хайретдинов Рустем Афузалович"></div><h3>Хайретдинов Рустем Афузалович</h3><p>Специалист патентного отдела</p><span class="team-tag">патенты</span></article>
+          <article class="team-card" data-group="patent"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/16.webp" alt="Яковлева Вероника Владиславовна"></div><h3>Яковлева Вероника Владиславовна</h3><p>Специалист патентного отдела</p><span class="team-tag">патенты</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/17.webp" alt="Квасова Анна Андреевна"></div><h3>Квасова Анна Андреевна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="cases">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Кейсы и <span class="brand-highlight">экспертный опыт</span></h2>
+        <p>Визуально эта часть ближе к понравившемуся сайту: ясные блоки, крупные заголовки и акцент на результате работы.</p>
+      </div>
+      <div class="case-grid">
+        <article class="case-card reveal"><span class="pill">Товарные знаки</span><h3>Регистрация и продление</h3><p>Сопровождаем товарные знаки, проверки, споры и работу с Роспатентом. На сайте доступны тематические материалы и практические разборы.</p><a class="link-arrow" href="https://lireate.ru/portfolio" target="_blank" rel="noopener">Портфолио бюро ↗</a></article>
+        <article class="case-card reveal"><span class="pill">Патенты</span><h3>Изобретения и полезные модели</h3><p>Помогаем выбрать объект патентной защиты, подготовить заявку и пройти процесс получения патента на технические решения.</p><a class="link-arrow" href="https://lireate.ru/patent" target="_blank" rel="noopener">Услуги по патентованию ↗</a></article>
+        <article class="case-card reveal"><span class="pill">Экспертный блог</span><h3>Полезные материалы без агрессивных продаж</h3><p>В блоге Лирейт публикуются объяснения, инструкции и обзоры. Это помогает клиенту понять тему до обращения в бюро.</p><a class="link-arrow" href="https://lireate.ru/news/" target="_blank" rel="noopener">Перейти в блог ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Понятный первый шаг и <span class="brand-highlight">стоимость</span></h2>
+        <p>Здесь использован приём с понравившегося сайта: сначала показать бесплатный или понятный старт, а уже потом основные услуги.</p>
+      </div>
+      <div class="pricing-grid">
+        <article class="price-card reveal"><div class="service-num">Первый шаг</div><h3>Бесплатная консультация</h3><div class="price">0 ₽</div><p>Если нет времени искать ответы на сайте, оставьте заявку — наши специалисты свяжутся с вами и подскажут, что делать дальше.</p><a class="link-arrow" href="https://t.me/lireate_patent" target="_blank" rel="noopener">Получить консультацию ↗</a></article>
+        <article class="price-card reveal"><div class="service-num">Товарный знак</div><h3>Регистрация с оплатой за результат</h3><div class="price">от 30 000 ₽</div><p>Регистрация товарного знака с полным сопровождением. На сайте Лирейт этот ориентир указан как стартовый тариф по услуге.</p><a class="link-arrow" href="https://lireate.ru/registraciya_tovarnogo_znaka/" target="_blank" rel="noopener">Подробнее об услуге ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section process-section" id="how" style="padding-top:0" aria-labelledby="process-heading">
+    <div class="wrap reveal">
+      <div class="section-head">
+        <h2 id="process-heading">Как мы <span class="brand-highlight">работаем</span></h2>
+        <p>Три понятных этапа — от первого обращения до сопровождения вашей заявки. Нажмите на любой шаг, чтобы увидеть подробности.</p>
+      </div>
+      <div class="process-flow" aria-hidden="true"><span id="processProgress"></span></div>
+      <div class="process process-new" role="tablist" aria-label="Этапы работы">
+        <button id="step-tab-1" type="button" class="process-card active" role="tab" aria-controls="step-panel" aria-selected="true" tabindex="0" data-step="0">
+          <strong>Шаг 01 <span class="process-card-toggle" aria-hidden="true">↗</span></strong>
+          <h3>Постановка задачи</h3>
+          <p>Разбираемся в ситуации, уточняем объект защиты и предлагаем дальнейший план.</p>
+          <span class="process-card-hint">Подробнее об этапе <span aria-hidden="true">→</span></span>
+        </button>
+        <button id="step-tab-2" type="button" class="process-card" role="tab" aria-controls="step-panel" aria-selected="false" tabindex="-1" data-step="1">
+          <strong>Шаг 02 <span class="process-card-toggle" aria-hidden="true">↗</span></strong>
+          <h3>Подготовка документов</h3>
+          <p>Согласуем условия, готовим необходимые материалы и проверяем их перед подачей.</p>
+          <span class="process-card-hint">Подробнее об этапе <span aria-hidden="true">→</span></span>
+        </button>
+        <button id="step-tab-3" type="button" class="process-card" role="tab" aria-controls="step-panel" aria-selected="false" tabindex="-1" data-step="2">
+          <strong>Шаг 03 <span class="process-card-toggle" aria-hidden="true">↗</span></strong>
+          <h3>Сопровождение до результата</h3>
+          <p>Ведём дело, отслеживаем статус и помогаем пройти этапы рассмотрения.</p>
+          <span class="process-card-hint">Подробнее об этапе <span aria-hidden="true">→</span></span>
+        </button>
+      </div>
+      <div class="process-detail" id="step-panel" role="tabpanel" aria-labelledby="step-tab-1" tabindex="0" data-current="0">
+        <div class="process-detail-top">
+          <div class="process-detail-meta"><span class="process-indicator" id="detailCounter">01 / 03</span><span class="process-detail-kicker">Подробно об этапе</span></div>
+          <span class="process-detail-mark" aria-hidden="true"><span id="detailMark">01</span></span>
+        </div>
+        <div class="process-detail-grid" id="processDetailBody">
+          <div class="process-detail-main">
+            <h3 id="detailTitle">Постановка задачи</h3>
+            <p id="detailIntro">Начинаем с понимания вашей ситуации — чтобы выбрать подходящий способ защиты интеллектуальной собственности.</p>
+            <div class="process-detail-list-title">Что делает Лирейт</div>
+            <ul class="process-task-list" id="detailTasks">
+              <li>Выясняем, что именно нужно защитить: бренд, разработку, программу или права по договору.</li>
+              <li>Уточняем цели, сроки, текущие документы и вопросы клиента.</li>
+              <li>Объясняем возможные пути работы и следующий шаг.</li>
+            </ul>
+          </div>
+          <aside class="process-detail-aside">
+            <div class="process-result-label"><span aria-hidden="true">✓</span> Что вы получаете</div>
+            <h4 id="detailResult">Понятный план действий</h4>
+            <p id="detailResultText">Вы знаете, какие действия предстоят, какие данные понадобятся и как начать работу.</p>
+            <a class="process-action" id="detailAction" href="https://t.me/lireate_patent" target="_blank" rel="noopener"><span class="action-label">Обсудить задачу</span> <span aria-hidden="true">↗</span></a>
+          </aside>
+        </div>
+        <div class="process-detail-bottom">
+          <span class="process-step-caption">Выберите следующий этап или вернитесь к предыдущему</span>
+          <div class="process-step-nav">
+            <button type="button" class="process-prev" id="prevProcess" aria-label="Предыдущий этап">←</button>
+            <button type="button" class="process-next" id="nextProcess">Следующий шаг <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal"><h2>Частые <span class="brand-highlight">вопросы</span></h2><p>Короткие ответы и прямые переходы к соответствующим услугам. Раскрытие вопросов сделано с плавной анимацией.</p></div>
+    <div class="faq-list">
+      <details class="faq-item reveal"><summary>С чего начать регистрацию товарного знака? <span aria-hidden="true">+</span></summary><div class="faq-answer">Начните с <a href="https://lireate.ru/findtz" target="_blank" rel="noopener">проверки товарного знака</a> или консультации специалиста. Это поможет оценить возможные препятствия до подачи заявки.</div></details>
+      <details class="faq-item reveal"><summary>Можно ли защитить полезную модель или изобретение? <span aria-hidden="true">+</span></summary><div class="faq-answer">Да, Лирейт занимается патентованием технических решений. Возможный объект и состав работ определяются после изучения задачи. <a href="https://lireate.ru/patent" target="_blank" rel="noopener">Подробнее о патентах ↗</a></div></details>
+      <details class="faq-item reveal"><summary>Помогаете ли вы с программами ЭВМ? <span aria-hidden="true">+</span></summary><div class="faq-answer">Лирейт оказывает услуги по правовой защите программного кода, интерфейсов и регистрации программ ЭВМ. <a href="https://lireate.ru/registraciya_programm_evm/" target="_blank" rel="noopener">Посмотреть услугу ↗</a></div></details>
+      <details class="faq-item reveal"><summary>Как получить консультацию? <span aria-hidden="true">+</span></summary><div class="faq-answer">Свяжитесь с командой по телефону +7 (499) 938-45-95 или <a href="https://t.me/lireate_patent" target="_blank" rel="noopener">в Telegram</a>. На сайте указана бесплатная консультация.</div></details>
+    </div>
+  </div>
+</section>
+
+  <section class="section" id="blog" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Блог и <span class="brand-highlight">полезные материалы</span></h2>
+        <p>Тексты взяты по смыслу из действующей главной: Лирейт доказывает экспертность на деле, а не через навязчивые продажи.</p>
+      </div>
+      <div class="blog-grid">
+        <article class="blog-card reveal"><div class="num">Материал 01</div><h3>Иск о нарушении товарного знака: требования и доказательства</h3><p>Объяснение практических вопросов по защите товарного знака и подготовке доказательной базы.</p><a class="link-arrow" href="https://lireate.ru/isk_o_narushenii_tovarnogo_znaka_trebovaniya_i_dokazatelstva" target="_blank" rel="noopener">Открыть ↗</a></article>
+        <article class="blog-card reveal"><div class="num">Материал 02</div><h3>Компенсация за нарушение товарного знака: расчёт и доказательства</h3><p>Разбор вопросов, связанных с компенсацией и обоснованием правовой позиции.</p><a class="link-arrow" href="https://lireate.ru/kompensatsiya_za_narushenie_tovarnogo_znaka_raschet_i_dokazatelstva" target="_blank" rel="noopener">Открыть ↗</a></article>
+        <article class="blog-card reveal"><div class="num">Материал 03</div><h3>Как обжаловать решение Роспатента в Суде по интеллектуальным правам</h3><p>Понятный материал для тех, кто столкнулся с отказом и рассматривает дальнейшую защиту своих интересов.</p><a class="link-arrow" href="https://lireate.ru/kak_obzhalovat_reshenie_rospatenta_v_sude_po_intellektualnym_pravam" target="_blank" rel="noopener">Открыть ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-box reveal">
+        <div>
+          <div class="eyebrow">Консультация</div>
+          <h2>Нет времени искать ответ на страницах сайта?</h2>
+          <p>Оставьте заявку — специалисты Лирейт свяжутся с вами и помогут понять, какой способ защиты интеллектуальной собственности подойдёт именно в вашей ситуации.</p>
+          <div class="cta-list">
+            <div><span>✓</span><span>товарные знаки, патенты, программы ЭВМ, договоры</span></div>
+            <div><span>✓</span><span>честная оценка перспектив и понятный следующий шаг</span></div>
+            <div><span>✓</span><span>быстрый контакт через Telegram, Max и телефон</span></div>
+          </div>
+        </div>
+        <div>
+          <a class="btn primary" style="width:100%;margin-bottom:12px" href="https://t.me/lireate_patent" target="_blank" rel="noopener">Написать в Telegram ↗</a>
+          <a class="btn soft" style="width:100%;margin-bottom:12px" href="https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI" target="_blank" rel="noopener">Написать в Max ↗</a>
+          <a class="btn" style="width:100%" href="tel:+74999384595">Позвонить: +7 (499) 938-45-95</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div><strong style="display:block;color:var(--ink)">LIREATE</strong><span>Локальный HTML-макет главной страницы, без публикации</span></div>
+      <div class="footer-links"><a href="https://lireate.ru/contacts/" target="_blank" rel="noopener">Контакты ↗</a><a href="https://lireate.ru/team" target="_blank" rel="noopener">Команда ↗</a><a href="https://lireate.ru/news/" target="_blank" rel="noopener">Блог ↗</a><a href="https://lireate.ru/portfolio" target="_blank" rel="noopener">Портфолио ↗</a></div>
+    </div>
+    <div class="footer-bottom">Основа: тексты и URL фотографий lireate.ru; архитектура по мотивам tovarnyj-znak.ru; круглая команда Jiro Team 01 Pixa; анимации вдохновлены mayai.ru. Только локальный макет, без публикации. Цвета воссозданы по визуальному осмотру живого сайта, точные значения требуют сверки с его CSS.</div>
+  </div>
+</footer>
+
+<script>
+
+(() => {
+  // Keep offline previews legible even when live images cannot be fetched.
+  document.querySelectorAll('.expert-photo img,.avatar img').forEach(img => {
+    const fallback=()=>{
+      const parent=img.parentElement;
+      if(!parent || parent.querySelector('.portrait-fallback'))return;
+      const initials=(img.alt||'Лирейт').trim().split(/\s+/).slice(0,2).map(word=>word[0]||'').join('').toUpperCase();
+      img.hidden=true;
+      img.style.display='none';
+      const holder=document.createElement('div');
+      holder.className='portrait-fallback';
+      holder.textContent=initials||'Л';
+      holder.setAttribute('aria-hidden','true');
+      parent.append(holder);
+    };
+    img.addEventListener('error',fallback,{once:true});
+    if(img.complete && img.naturalWidth===0)fallback();
+  });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionOK = !reduceMotion.matches;
+  const html = document.documentElement;
+  const header = document.querySelector('.site-header');
+  const progress = document.querySelector('.scroll-progress');
+  const sections = [...document.querySelectorAll('.reveal')];
+  const track = document.getElementById('teamTrack');
+  const mobileToggle = document.querySelector('.mobile-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const filters = [...document.querySelectorAll('.filter')];
+
+  // No-JS and reduced-motion friendly entrance: never hide content if scripts fail.
+  if (motionOK && 'IntersectionObserver' in window) {
+    html.classList.add('motion-ready');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      });
+    }, {threshold: .08, rootMargin:'0px 0px -28px 0px'});
+    sections.forEach(el => observer.observe(el));
+  } else {
+    sections.forEach(el=>el.classList.add('visible'));
+  }
+
+  const syncScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const value = max > 0 ? Math.min(1,Math.max(0,scrollY / max)) : 0;
+    if (progress) progress.style.transform = `scaleX(${value})`;
+    header?.classList.toggle('is-scrolled',scrollY>36);
+  };
+  addEventListener('scroll',syncScroll,{passive:true});
+  addEventListener('resize',syncScroll,{passive:true});
+  syncScroll();
+
+  const closeMenu = () => {
+    mobileMenu?.classList.remove('open');
+    mobileToggle?.setAttribute('aria-expanded','false');
+  };
+  mobileToggle?.addEventListener('click',()=>{
+    const isOpen=mobileMenu?.classList.toggle('open');
+    mobileToggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+  mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+
+  // Scroll-triggered numbers. Original final text remains in HTML for SEO/accessibility.
+  const countNodes=[...document.querySelectorAll('.count')];
+  const animateCounter=(node)=>{
+    if(node.dataset.done==='1')return;
+    node.dataset.done='1';
+    const from=Number(node.dataset.from||0),to=Number(node.dataset.to||0);
+    if (!motionOK) return;
+    const duration=1250,start=performance.now();
+    const draw=now=>{
+      const u=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-u,3);
+      node.textContent=String(Math.round(from+(to-from)*eased));
+      if(u<1) requestAnimationFrame(draw);else node.textContent=String(to);
+    };
+    requestAnimationFrame(draw);
+  };
+  if ('IntersectionObserver' in window){
+    const ci=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){animateCounter(e.target);ci.unobserve(e.target)}}),{threshold:.5});
+    countNodes.forEach(node=>ci.observe(node));
+  } else countNodes.forEach(animateCounter);
+
+  // Gentle pointer parallax, never applied to reduced-motion or touch interfaces.
+  const heroRight=document.querySelector('.hero .hero-right');
+  const hero=document.querySelector('.hero');
+  if (hero && heroRight && motionOK && matchMedia('(pointer:fine)').matches){
+    hero.addEventListener('pointermove',ev=>{
+      const r=hero.getBoundingClientRect();
+      const x=(ev.clientX-r.left)/r.width-.5,y=(ev.clientY-r.top)/r.height-.5;
+      heroRight.style.setProperty('--hero-x',`${(x*9).toFixed(2)}px`);
+      heroRight.style.setProperty('--hero-y',`${(y*7).toFixed(2)}px`);
+    },{passive:true});
+    hero.addEventListener('pointerleave',()=>{heroRight.style.setProperty('--hero-x','0px');heroRight.style.setProperty('--hero-y','0px')});
+  }
+
+  // Mayai-like subtle spotlight on business cards.
+  if (motionOK && matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.service-card,.why-card,.case-card,.blog-card,.price-card').forEach(card=>{
+      card.addEventListener('pointermove',ev=>{
+        const r=card.getBoundingClientRect();
+        card.style.setProperty('--mx',`${ev.clientX-r.left}px`);
+        card.style.setProperty('--my',`${ev.clientY-r.top}px`);
+      },{passive:true});
+    });
+  }
+
+  // Team: arrows + user-controlled filtering and gently auto-advancing cards when in view.
+  const visibleCards=()=>[...track.querySelectorAll('.team-card')].filter(card=>!card.hidden);
+  const stepWidth=()=>{
+    const card=visibleCards()[0];
+    if(!card)return 224;
+    const style=getComputedStyle(track);
+    return card.getBoundingClientRect().width + (parseFloat(style.columnGap)||18);
+  };
+  const moveTeam=(direction)=>{
+    if(!track)return;
+    const step=stepWidth()*direction;
+    const end=track.scrollWidth-track.clientWidth;
+    if(direction>0 && track.scrollLeft >= end-10) track.scrollTo({left:0,behavior:motionOK?'smooth':'auto'});
+    else if(direction<0 && track.scrollLeft <= 2) track.scrollTo({left:end,behavior:motionOK?'smooth':'auto'});
+    else track.scrollBy({left:step,behavior:motionOK?'smooth':'auto'});
+  };
+  document.getElementById('prevTeam')?.addEventListener('click',()=>moveTeam(-1));
+  document.getElementById('nextTeam')?.addEventListener('click',()=>moveTeam(1));
+  track?.addEventListener('keydown',ev=>{
+    if(ev.key==='ArrowRight'){ev.preventDefault();moveTeam(1)}
+    if(ev.key==='ArrowLeft'){ev.preventDefault();moveTeam(-1)}
+  });
+  filters.forEach(btn=>btn.addEventListener('click',()=>{
+    filters.forEach(b=>{b.classList.toggle('active',b===btn);b.setAttribute('aria-pressed',String(b===btn))});
+    const group=btn.dataset.filter;
+    track.querySelectorAll('.team-card').forEach((card,i)=>{
+      const show=group==='all'||group===card.dataset.group;
+      card.hidden=!show;
+      card.classList.remove('filter-enter');
+      if(show && motionOK){void card.offsetWidth;card.style.animationDelay=`${Math.min(i,6)*35}ms`;card.classList.add('filter-enter')}
+    });
+    track.scrollTo({left:0,behavior:motionOK?'smooth':'auto'});
+  }));
+  // Only auto-scroll while visible. Pause on hover, keyboard focus, scroll drag, and tab hidden.
+  let carouselOnScreen=false,carouselPaused=false;
+  if(track && motionOK){
+    if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{carouselOnScreen=es.some(e=>e.isIntersecting)},{threshold:.35});io.observe(track)}
+    else carouselOnScreen=true;
+    track.addEventListener('mouseenter',()=>carouselPaused=true);
+    track.addEventListener('mouseleave',()=>carouselPaused=false);
+    track.addEventListener('focusin',()=>carouselPaused=true);
+    track.addEventListener('focusout',()=>carouselPaused=false);
+    track.addEventListener('pointerdown',()=>carouselPaused=true);
+    track.addEventListener('pointerup',()=>{carouselPaused=false});
+    document.querySelectorAll('#prevTeam,#nextTeam,.filter').forEach(x=>x.addEventListener('focus',()=>carouselPaused=true));
+    const auto=setInterval(()=>{
+      if(carouselOnScreen && !carouselPaused && !document.hidden && !reduceMotion.matches && track.scrollWidth>track.clientWidth+10) moveTeam(1)
+    },5800);
+    addEventListener('pagehide',()=>clearInterval(auto),{once:true});
+  }
+
+  // Interactive step selection with smooth content swap.
+  // Accessible three-step explainer with detailed animated panel and progress rail.
+  const stepButtons=[...document.querySelectorAll('.process-new .process-card[data-step]')];
+  const detail=document.getElementById('step-panel');
+  const stageData=[
+    {
+      title:'Постановка задачи', intro:'Начинаем с понимания вашей ситуации — чтобы выбрать подходящий способ защиты интеллектуальной собственности.',
+      tasks:['Выясняем, что именно нужно защитить: бренд, разработку, программу или права по договору.','Уточняем цели, сроки, текущие документы и вопросы клиента.','Объясняем возможные пути работы и следующий шаг.'],
+      result:'Понятный план действий', resultText:'Вы понимаете, какие действия предстоят, какие данные понадобятся и с чего начинается работа.',
+      action:'Обсудить задачу', url:'https://t.me/lireate_patent'
+    },
+    {
+      title:'Подготовка документов',intro:'После согласования условий специалисты подготавливают документы применительно к выбранному виду защиты.',
+      tasks:['Согласуем состав работ и исходные материалы, которые потребуются от клиента.','Проверяем информацию, готовим необходимые заявления, описания и иные документы.','Согласуем подготовленные материалы с вами перед подачей.'],
+      result:'Согласованный комплект материалов',resultText:'Вы видите, какие документы подготовлены, что согласовано и к какому этапу переходим дальше.',
+      action:'Услуги Лирейт',url:'https://lireate.ru/'
+    },
+    {
+      title:'Сопровождение до результата',intro:'Не оставляем клиента один на один с процедурой: сопровождаем работу после подачи документов.',
+      tasks:['Передаём документы в компетентное ведомство в рамках согласованной услуги.','Контролируем движение заявки и при необходимости готовим ответы на запросы экспертизы.','Сообщаем о ходе рассмотрения, итоговом решении и дальнейших действиях.'],
+      result:'Прозрачный статус и итоговые документы',resultText:'Вы получаете информацию о результате процедуры и материалы, предусмотренные согласованным объёмом работы.',
+      action:'Посмотреть портфолио',url:'https://lireate.ru/portfolio'
+    }
+  ];
+  let selectedStep=0, switchVersion=0;
+  const setStep=(i,focus=false)=>{
+    const n=(i+stageData.length)%stageData.length;
+    const data=stageData[n],version=++switchVersion;
+    selectedStep=n;
+    stepButtons.forEach((btn,k)=>{
+      const active=k===n;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-selected',String(active));
+      btn.tabIndex=active?0:-1;
+    });
+    document.getElementById('processProgress').style.width=`${(n+1)/stageData.length*100}%`;
+    detail.classList.toggle('is-switching',motionOK);
+    const redraw=()=>{
+      if(version!==switchVersion)return;
+      detail.querySelector('#detailCounter').textContent=`0${n+1} / 03`;
+      detail.querySelector('#detailMark').textContent=`0${n+1}`;
+      detail.querySelector('#detailTitle').textContent=data.title;
+      detail.querySelector('#detailIntro').textContent=data.intro;
+      detail.querySelector('#detailTasks').replaceChildren(...data.tasks.map(item=>{const li=document.createElement('li');li.textContent=item;return li;}));
+      detail.querySelector('#detailResult').textContent=data.result;
+      detail.querySelector('#detailResultText').textContent=data.resultText;
+      const a=detail.querySelector('#detailAction');a.href=data.url;a.querySelector('.action-label').textContent=data.action;
+      detail.setAttribute('aria-labelledby',stepButtons[n].id);
+      detail.dataset.current=String(n);
+      detail.classList.remove('is-switching');
+    };
+    if(motionOK) setTimeout(redraw,180); else redraw();
+    if(focus)stepButtons[n].focus({preventScroll:true});
+  };
+  stepButtons.forEach((btn,k)=>{
+    btn.addEventListener('click',()=>setStep(k));
+    btn.addEventListener('keydown',e=>{
+      let next;
+      if(e.key==='ArrowRight'||e.key==='ArrowDown')next=k+1;
+      else if(e.key==='ArrowLeft'||e.key==='ArrowUp')next=k-1;
+      else if(e.key==='Home')next=0;
+      else if(e.key==='End')next=2;
+      if(next!==undefined){e.preventDefault();setStep(next,true);}
+    });
+  });
+  document.getElementById('prevProcess')?.addEventListener('click',()=>setStep(selectedStep-1));
+  document.getElementById('nextProcess')?.addEventListener('click',()=>setStep(selectedStep+1));
+  setStep(0);
+  // FAQ maintains native keyboard-accessible <details> behavior; CSS adds motion.
+})();
+
+</script>
+</body>
+</html>
