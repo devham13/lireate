@@ -3,6 +3,14 @@
 if (!empty($_SERVER['DOCUMENT_ROOT']) && is_file($_SERVER['DOCUMENT_ROOT'] . '/data/lireate-cases-lib.php')) {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/data/lireate-cases-lib.php';
 }
+$lx_cms_light_head = dirname(dirname(__DIR__)) . '/pages/_shared/lireate-cms-light-v4-head.inc.php';
+if (is_file($lx_cms_light_head)) {
+    require_once $lx_cms_light_head;
+    if (function_exists('lireate_cms_light_v4_print_css')) {
+        lireate_cms_light_v4_print_css(array('/template/css/lireate-reviews-light-v4.css'));
+    }
+}
+echo '<script>if(document.body){document.body.classList.add("lireate-reviews-preview");}</script>' . "\n";
 ?>
 <style>
     /* audit07 D5 */

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Copy template/css|js lireate-light-v4.* to docroot — CMS overlay (dry-run default, backup + rollback)."""
+"""Copy Light V4 CMS overlay assets to docroot (dry-run default, backup + rollback)."""
 import argparse
 import shutil
 import sys
@@ -7,9 +7,34 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = (
+
+SINGLE_FILES = (
     Path('template/css/lireate-light-v4.css'),
     Path('template/js/lireate-light-v4.js'),
+    Path('template/css/lireate-cms-pages-light-v4.css'),
+    Path('template/css/lireate-home-light-v4.css'),
+    Path('template/css/lireate-home-preview-chrome.css'),
+    Path('template/css/lireate-portfolio-light-v4.css'),
+    Path('template/css/lireate-reviews-light-v4.css'),
+    Path('template/page/lireate-portfolio-cms.inc.php'),
+    Path('template/page/lireate-reviews-cms.inc.php'),
+    Path('pages/_shared/lireate-cms-light-v4-head.inc.php'),
+)
+
+DIR_TREES = (
+    Path('template/page/team'),
+    Path('template/page/o_kompanii'),
+    Path('template/page/partners'),
+    Path('template/page/docs'),
+    Path('template/page/kontaktyi'),
+)
+
+SHARED_PAGE_SECTIONS = (
+    'team',
+    'o_kompanii',
+    'partners',
+    'docs',
+    'kontaktyi',
 )
 
 
@@ -21,12 +46,38 @@ def make_backup_id():
     return datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 
 
+def iter_overlay_files(repo):
+    for rel in SINGLE_FILES:
+        src = repo / rel
+        if not src.is_file():
+            yield None, rel, 'BLOCKER: missing {0}'.format(rel)
+            return
+        yield src, rel, None
+    for rel_dir in DIR_TREES:
+        base = repo / rel_dir
+        if not base.is_dir():
+            yield None, rel_dir, 'BLOCKER: missing dir {0}'.format(rel_dir)
+            return
+        for path in sorted(base.rglob('*')):
+            if path.is_file():
+                yield path, path.relative_to(repo), None
+    for section in SHARED_PAGE_SECTIONS:
+        shared = repo / 'pages' / section / '_shared'
+        if not shared.is_dir():
+            continue
+        for path in sorted(shared.iterdir()):
+            if path.is_file() and path.suffix in ('.php', '.css', '.js'):
+                rel_tpl = Path('template/page') / section / path.name
+                rel_shared = Path('pages') / section / '_shared' / path.name
+                yield path, rel_tpl, None
+                yield path, rel_shared, None
+
+
 def plan_install(docroot):
     plan = []
-    for rel in ASSETS:
-        src = ROOT / rel
-        if not src.is_file():
-            return None, 'BLOCKER: missing {0}'.format(rel)
+    for src, rel, err in iter_overlay_files(ROOT):
+        if err:
+            return None, err
         plan.append((src, docroot / rel))
     return plan, None
 

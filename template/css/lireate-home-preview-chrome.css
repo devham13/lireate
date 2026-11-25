@@ -64,3 +64,26 @@ body.lireate-home-preview .hamburger {
   background: #fff;
   box-shadow: 0 6px 18px rgba(31, 46, 76, 0.12);
 }
+body.lireate-home-preview .hamburger .hamb-top,
+body.lireate-home-preview .hamburger .hamb-middle,
+body.lireate-home-preview .hamburger .hamb-bottom {
+  display: block;
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 2px;
+  background: #1f212c;
+  border-radius: 2px;
+  transition: transform 0.2s ease, top 0.2s ease, opacity 0.2s ease;
+}
+body.lireate-home-preview .hamburger .hamb-top { top: 14px; }
+body.lireate-home-preview .hamburger .hamb-middle { top: 21px; }
+body.lireate-home-preview .hamburger .hamb-bottom { top: 28px; }
+@media (max-width: 480px) {
+  body.lireate-home-preview .lh4-root .eyebrow-mark,
+  body.lireate-home-preview .lh4-hero .lh4-h1,
+  body.lireate-home-preview .lh4-hero h1 {
+    padding-left: 52px;
+    padding-right: 12px;
+  }
+}

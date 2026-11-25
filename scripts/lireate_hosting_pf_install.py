@@ -15,6 +15,10 @@ COPY_PLAN = (
     ('reviews.php', Path('reviews.php')),
     ('portfolio', Path('portfolio')),
     ('uslugi', Path('template/page/uslugi')),
+    ('lireate-portfolio-light-v4.css', Path('template/css/lireate-portfolio-light-v4.css')),
+    ('lireate-reviews-light-v4.css', Path('template/css/lireate-reviews-light-v4.css')),
+    ('lireate-cms-pages-light-v4.css', Path('template/css/lireate-cms-pages-light-v4.css')),
+    ('lireate-cms-light-v4-head.inc.php', Path('pages/_shared/lireate-cms-light-v4-head.inc.php')),
 )
 
 

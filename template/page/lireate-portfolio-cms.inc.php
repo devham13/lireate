@@ -49,6 +49,14 @@ if (!function_exists('lireate_pf_cert_line')) {
         return $out . '</div>';
     }
 }
+$lx_cms_light_head = dirname(dirname(__DIR__)) . '/pages/_shared/lireate-cms-light-v4-head.inc.php';
+if (is_file($lx_cms_light_head)) {
+    require_once $lx_cms_light_head;
+    if (function_exists('lireate_cms_light_v4_print_css')) {
+        lireate_cms_light_v4_print_css(array('/template/css/lireate-portfolio-light-v4.css'));
+    }
+}
+echo '<script>if(document.body){document.body.classList.add("lireate-portfolio-preview");}</script>' . "\n";
 ?>
 <?php
             if (defined('LIREATE_PORTFOLIO_PREVIEW') && LIREATE_PORTFOLIO_PREVIEW) {

@@ -119,6 +119,32 @@ body.lireate-theme-light-v4 .l4-service-illustration-card > *{position:relative;
  body.lireate-theme-light-v4 .lx-card-grid{grid-template-columns:1fr}
  body.lireate-theme-light-v4 .lireate-svc-page{padding-inline:16px}
 }
+body.lireate-theme-light-v4 .lx-kpi b,
+body.lireate-theme-light-v4 .lx-mini-stat strong,
+body.lireate-theme-light-v4 .lx-stat-value{color:var(--l4-ink)!important}
+body.lireate-theme-light-v4 .lx-kpi small,
+body.lireate-theme-light-v4 .lx-mini-stat span,
+body.lireate-theme-light-v4 .lx-stat-label{color:var(--l4-sub)!important}
+body.lireate-theme-light-v4 .lx-tags span,
+body.lireate-theme-light-v4 .lx-tag{color:#1f212c!important;background:#e8f2ff!important;border:1px solid #bdd5f8!important}
+body.lireate-theme-light-v4 .lx-breadcrumbs,
+body.lireate-theme-light-v4 .lx-breadcrumbs li{color:#52637b!important}
+body.lireate-theme-light-v4 .lx-breadcrumbs a{color:#195acb!important}
+body.lireate-theme-light-v4 .lx-breadcrumb-services-trigger{color:#1f212c!important;background:#fff!important;border:1px solid var(--l4-line)!important}
+body.lireate-theme-light-v4 main li,
+body.lireate-theme-light-v4 .lx-section li,
+body.lireate-theme-light-v4 .lx-feed li{color:#2d4764!important}
+body.lireate-theme-light-v4 input,
+body.lireate-theme-light-v4 select,
+body.lireate-theme-light-v4 textarea{background:#fff!important;color:#1f212c!important;border-color:var(--l4-line)!important}
+body.lireate-theme-light-v4 label,
+body.lireate-theme-light-v4 .lx-field-label{color:#1f212c!important}
+body.lireate-theme-light-v4 .lx-fee-table td,
+body.lireate-theme-light-v4 .lx-fee-table th{color:#1f212c!important}
+body.lx-tm-white.registraciya-pilot-v2 .lx-mobile-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:1200;
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
 @media(prefers-reduced-motion:reduce){
  body.lireate-theme-light-v4 *,body.lireate-theme-light-v4 *::before,body.lireate-theme-light-v4 *::after{
  transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important

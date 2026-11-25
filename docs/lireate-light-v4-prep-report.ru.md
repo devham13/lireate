@@ -10,7 +10,7 @@
 | `after-home-cms-mobile.png` | Главная (fullpage) | **390** |
 | `after-home-cms-viewport-desktop.png` | Главная **первый экран** (CMS hamburger + подменю) | 1440 |
 | `after-home-cms-viewport-mobile.png` | Главная **первый экран** | **390** |
-| `after-tm-desktop.png`, `after-tm-mobile.png` | Регистрация ТЗ | 1440 / **390** |
+| `after-tm-desktop.png`, `after-tm-mobile.png`, `after-tm-viewport-mobile.png` | Регистрация ТЗ (sticky bar — viewport) | 1440 / **390** |
 | `after-service-desktop.png`, `after-service-mobile.png` | Продление ТЗ | 1440 / **390** |
 | `after-patent-desktop.png`, `after-patent-mobile.png` | Патентная задача | 1440 / **390** |
 | `after-blog-list-desktop.png`, `after-blog-list-mobile.png` | Блог (обложки live) | 1440 / **390** |
@@ -88,6 +88,24 @@ python3 scripts/lireate_hosting_pf_install.py --docroot "$DOCROOT" --apply
 ```
 
 Бэкап: `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/`
+
+## Доставка на хостинг (файл → установщик → путь)
+
+| Файл (репозиторий) | Установщик | Путь на хостинге (DOCROOT) |
+| --- | --- | --- |
+| `template/css/lireate-portfolio-light-v4.css` | `lireate_hosting_pf_install.py`, `lireate_cms_light_v4_overlay_install.py` | `template/css/lireate-portfolio-light-v4.css` |
+| `template/css/lireate-reviews-light-v4.css` | PF, overlay | `template/css/lireate-reviews-light-v4.css` |
+| `template/css/lireate-cms-pages-light-v4.css` | PF, overlay | `template/css/lireate-cms-pages-light-v4.css` |
+| `template/page/lireate-portfolio-cms.inc.php` | PF, overlay | `template/page/lireate-portfolio-cms.inc.php` (+ зеркало `portfolio.php` только PF) |
+| `template/page/lireate-reviews-cms.inc.php` | PF, overlay | `template/page/lireate-reviews-cms.inc.php` (+ `reviews.php` только PF) |
+| `pages/_shared/lireate-cms-light-v4-head.inc.php` | PF, overlay | `pages/_shared/lireate-cms-light-v4-head.inc.php` |
+| `template/css/lireate-light-v4.css`, `template/js/lireate-light-v4.js` | overlay | `template/css/…`, `template/js/…` |
+| `template/css/lireate-home-light-v4.css`, `lireate-home-preview-chrome.css` | overlay | `template/css/…` |
+| `template/page/team/*`, `o_kompanii/*`, `partners/*`, `docs/*`, `kontaktyi/*` | overlay | те же пути под `template/page/<раздел>/` |
+| `pages/<раздел>/_shared/*` (team, about, …) | overlay | `template/page/<раздел>/` **и** `pages/<раздел>/_shared/` |
+| `packages/…/portfolio.php`, `reviews.php` | PF | `portfolio.php`, `reviews.php` (корень сайта) |
+
+Портфолио/отзывы на проде подключают Light V4 CSS через `lireate-cms-light-v4-head.inc.php` внутри CMS-вставок (не только `_preview`).
 
 ## Cron lireate-news / guard-diff
 

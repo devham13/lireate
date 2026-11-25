@@ -50,8 +50,10 @@ if (!function_exists('lireate_pf_cert_line')) {
     }
 }
 ?>
-<?php 
-            
+<?php
+            if (defined('LIREATE_PORTFOLIO_PREVIEW') && LIREATE_PORTFOLIO_PREVIEW) {
+                $array = array();
+            } else {
             function connectDB (){
                 $connect = new mysqli('localhost', 'u3650956_user', '254262Qwe', 'u3650956_db') // pragma: allowlist secret
                 or die("Не удалось подключится к базе данных... " . mysqli_error($connect)); // Строка не работает
@@ -116,9 +118,8 @@ if (!function_exists('lireate_pf_cert_line')) {
                 }
                
                $n++;
-            } 
-            
-            
+            }
+            }
 ?>
 
 

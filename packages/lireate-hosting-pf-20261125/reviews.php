@@ -315,8 +315,10 @@ if (!empty($_SERVER['DOCUMENT_ROOT']) && is_file($_SERVER['DOCUMENT_ROOT'] . '/d
 <section class="sectionPadding" id="list">
     <div class="contentBox">
   
-    <?php 
-                
+    <?php
+        if (defined('LIREATE_REVIEWS_PREVIEW') && LIREATE_REVIEWS_PREVIEW) {
+            echo '<p class="lx-rv-preview-note">Превью Light V4: список отзывов заполняется с БД на хостинге после install.</p>';
+        } else {
         function connectDB (){
             $connect = new mysqli('localhost', 'u3650956_user', '254262Qwe', 'u3650956_db') // pragma: allowlist secret
             or die("Не удалось подключится к базе данных... " . mysqli_error($connect)); // Строка не работает
@@ -361,7 +363,7 @@ if (!empty($_SERVER['DOCUMENT_ROOT']) && is_file($_SERVER['DOCUMENT_ROOT'] . '/d
                 
             </div>
         </div>
-    <?php } ?>    
+    <?php } } ?>    
         
 
     </div>

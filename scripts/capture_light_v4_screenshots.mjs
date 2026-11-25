@@ -20,6 +20,7 @@ const shots = [
   { name: 'before-tm-mobile', url: live + '/registraciya_tovarnogo_znaka/', w: 390, h: 844 },
   { name: 'after-tm-desktop', url: base + '/tm', w: 1440, h: 900, prep: true },
   { name: 'after-tm-mobile', url: base + '/tm', w: 390, h: 844, prep: true },
+  { name: 'after-tm-viewport-mobile', url: base + '/tm', w: 390, h: 844, prep: true, viewportOnly: true },
   { name: 'after-service-desktop', url: base + '/service', w: 1440, h: 900, prep: true },
   { name: 'after-service-mobile', url: base + '/service', w: 390, h: 844, prep: true },
   { name: 'after-patent-desktop', url: base + '/patent', w: 1440, h: 900, prep: true },
@@ -93,9 +94,10 @@ for (const s of shots) {
       await page
         .waitForFunction(
           () =>
+            document.querySelectorAll('.lireate-blog-list-cover-img').length >= 8 ||
             document.querySelectorAll(
               '.lireate-blog-list-card-cover[style*="background-image"]'
-            ).length >= 10,
+            ).length >= 8,
           { timeout: 45000 }
         )
         .catch(() => {});

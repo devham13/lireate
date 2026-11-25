@@ -77,10 +77,14 @@ body.lx-tm-white.registraciya-pilot-v2 .lx-cta-glow::after{display:none}
 body.lx-tm-white.registraciya-pilot-v2 .lx-btn-ghost,
 body.lx-tm-white.registraciya-pilot-v2 main .lx-btn-ghost{background:#fff;color:var(--tw-ink) !important;border:1px solid var(--tw-ink)}
 body.lx-tm-white.registraciya-pilot-v2 .lx-btn-ghost:hover{background:var(--tw-blue-soft);border-color:var(--tw-blue)}
+body.lx-tm-white.registraciya-pilot-v2 .lx-hero-secondary{
+  display:flex;flex-wrap:wrap;gap:8px;width:100%;align-items:center}
 body.lx-tm-white.registraciya-pilot-v2 .lx-pilot-contact-chip,
 body.lx-tm-white.registraciya-pilot-v2 .lx-msg-btn,
 body.lx-tm-white.registraciya-pilot-v2 .lx-msg-btn.lx-msg-btn--max{
-  background:#fff;color:var(--tw-ink) !important;border:1px solid var(--tw-line);box-shadow:none;border-radius:14px}
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:#fff;color:var(--tw-ink) !important;border:1px solid var(--tw-line);box-shadow:none;
+  border-radius:999px;text-decoration:none !important;padding:10px 14px;font-weight:600;font-size:13px}
 body.lx-tm-white.registraciya-pilot-v2 .lx-pilot-contact-chip:hover,
 body.lx-tm-white.registraciya-pilot-v2 .lx-msg-btn:hover{border-color:var(--tw-blue);background:var(--tw-blue-softer)}
 body.lx-tm-white.registraciya-pilot-v2 .lx-pilot-contact-chip span,
@@ -113,8 +117,11 @@ body.lx-tm-white.registraciya-pilot-v2 .lx-hero--landing-v2 .lx-hero-mini{
 body.lx-tm-white.registraciya-pilot-v2 .lx-hero--landing-v2 .lx-mini-stat{
   background:transparent;border:0;border-left:1px solid var(--tw-line);border-radius:0;padding:20px 18px;box-shadow:none}
 body.lx-tm-white.registraciya-pilot-v2 .lx-hero--landing-v2 .lx-mini-stat:first-child{border-left:0;padding-left:0}
+body.lx-tm-white.registraciya-pilot-v2 .lx-hero--landing-v2 .lx-mini-stat{
+  min-width:0;overflow:hidden}
 body.lx-tm-white.registraciya-pilot-v2 .lx-hero--landing-v2 .lx-mini-stat strong{
-  display:block;white-space:nowrap;color:var(--tw-ink);font:800 clamp(19px,1.7vw,26px)/1.05 "Inter",system-ui,sans-serif;letter-spacing:-.05em}
+  display:block;white-space:normal;overflow-wrap:anywhere;color:var(--tw-ink);
+  font:800 clamp(17px,4vw,26px)/1.05 "Inter",system-ui,sans-serif;letter-spacing:-.05em}
 body.lx-tm-white.registraciya-pilot-v2 .lx-hero--landing-v2 .lx-mini-stat span{color:var(--tw-muted);font-size:12px;margin-top:6px;display:block}
 body.lx-tm-white.registraciya-pilot-v2 .lx-hero--landing-v2 .lx-glass{
   background:#fff;border:1px solid var(--tw-line);border-top:4px solid var(--tw-red);border-radius:var(--tw-radius);box-shadow:var(--tw-shadow);color:var(--tw-ink)}

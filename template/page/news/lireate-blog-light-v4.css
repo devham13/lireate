@@ -97,10 +97,10 @@ body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-btn{
 body.lireate-theme-light-v4 .lireate-blog-list-page .lireate-blog-subscribe-btn:hover{filter:brightness(1.06)!important}
 body.lireate-theme-light-v4 .lireate-blog-list-card-cover{background-color:#eef5ff!important}
 body.lireate-theme-light-v4 .lireate-blog-list-cover-img{
-  display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border:0;
-  background:#eef5ff;
+  display:block;width:100%;max-height:220px;aspect-ratio:auto;object-fit:contain;object-position:center;border:0;background:#eef5ff;
 }
 body.lireate-theme-light-v4 .lireate-blog-list-card-cover:has(.lireate-blog-list-cover-img),
 body.lireate-theme-light-v4 .lireate-blog-list-featured-cover:has(.lireate-blog-list-cover-img){
+  min-height:120px;display:flex;align-items:center;justify-content:center;padding:8px;
   background-image:none!important;background-color:#eef5ff!important;
 }
