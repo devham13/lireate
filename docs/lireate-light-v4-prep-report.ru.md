@@ -28,13 +28,13 @@
 Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
 Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 node scripts/capture_light_v4_screenshots.mjs`
 
-### `git show --stat f4fdfba -- docs/light-v4-screenshots`
+### `git show --stat 03632af -- docs/light-v4-screenshots`
 
 ```
-commit f4fdfba — пересняты after-home, after-blog-list, after-tm, after-service, …
+commit 03632af — блог/главная viewport, отзывы, патент, команда, after-service-viewport-mobile (новый)
 ```
 
-Полный вывод: `git show --stat f4fdfba`
+Полный вывод: `git show --stat 03632af`
 
 ### Размеры after-* (ширина×высота, байты)
 
