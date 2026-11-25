@@ -73,12 +73,50 @@ if [[ ! -d "$OFFICE_REPO/.git" ]]; then
   exit 1
 fi
 
+# Back up and clear local changes before syncing. Untracked files that also
+# exist in the target commit used to block "git checkout" (since 2026-11-18).
+# Nothing is lost: every changed or untracked path is archived first, and
+# untracked files absent from the target commit stay in place.
+backup_dirty_worktree() {
+  local target="$1"
+  local dirty
+  dirty="$(git status --porcelain=v1 -uall)"
+  if [[ -z "$dirty" ]]; then
+    return 0
+  fi
+  local bdir
+  bdir="$AUTOPUB_HOME/backups/office-repo-dirty/$(date -u +%Y%m%dT%H%M%SZ)"
+  mkdir -p "$bdir"
+  git rev-parse HEAD > "$bdir/HEAD.txt"
+  printf '%s\n' "$dirty" > "$bdir/status.txt"
+  git diff --binary HEAD > "$bdir/tracked-vs-HEAD.diff"
+  { git diff --name-only -z HEAD; git ls-files -z --others --exclude-standard; } \
+    | "$PY" -c 'import os, sys
+paths = sorted(set(p for p in sys.stdin.buffer.read().split(b"\0") if p and os.path.lexists(p)))
+sys.stdout.buffer.write(b"\0".join(paths))' > "$bdir/paths.nul"
+  if [[ -s "$bdir/paths.nul" ]]; then
+    tar czf "$bdir/files.tgz" --null -T "$bdir/paths.nul"
+  fi
+  local moved=0 f
+  while IFS= read -r -d '' f; do
+    if git cat-file -e "$target:$f" 2>/dev/null; then
+      rm -f -- "$f"
+      moved=$((moved + 1))
+    fi
+  done < <(git ls-files -z --others --exclude-standard)
+  echo "git: dirty worktree backed up to $bdir (untracked removed after backup: $moved)"
+}
+
 cd "$OFFICE_REPO"
 if ! git fetch origin "$BRANCH" 2>&1; then
   echo "STATUS: BLOCKER — git fetch failed"
   exit 1
 fi
-if ! git checkout -B "$BRANCH" FETCH_HEAD 2>&1; then
+if ! backup_dirty_worktree FETCH_HEAD; then
+  echo "STATUS: BLOCKER — could not back up dirty worktree"
+  exit 1
+fi
+if ! git checkout -f -B "$BRANCH" FETCH_HEAD 2>&1; then
   echo "STATUS: BLOCKER — git checkout failed"
   exit 1
 fi
