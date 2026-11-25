@@ -1,0 +1,68 @@
+/* LIREATE blog LIGHT V4 — article and list overlay, loaded after dark base styles.
+   Keep CMS metadata, semantic article body, TOC, legal footer, pagination intact. */
+html.lireate-blog-html,body.lireate-blog-body{background:#fff!important;color:#1f212c!important}
+.lireate-blog-page,.lireate-blog-list-page{
+ --lb-bg:#fff;--lb-text:#1f212c;--lb-muted:#52637b;--lb-line:#dce8f7;
+ --lb-card:#fff;--lb-accent:#3a86ff;
+ --lbl-bg:#fff;--lbl-text:#1f212c;--lbl-muted:#52637b;--lbl-line:#dce8f7;--lbl-card:#fff;--lbl-accent:#3a86ff;
+ color:#1f212c!important;background:#fff!important;
+ font-family:Inter,Manrope,system-ui,-apple-system,"Segoe UI",sans-serif!important;
+}
+.lireate-blog-page h1,.lireate-blog-page h2,.lireate-blog-page h3,
+.lireate-blog-list-page h1,.lireate-blog-list-page h2,.lireate-blog-list-page h3,
+.lireate-blog-h1,.lireate-blog-list-h1-main{
+ color:#1f212c!important;letter-spacing:-.04em!important
+}
+.lireate-blog-page p,.lireate-blog-page li,.lireate-blog-list-page p,.lireate-blog-list-page li{
+ color:#52637b
+}
+.lireate-blog-list-hero{background:#fff!important;border-color:#dce8f7!important}
+.lireate-blog-list-kicker{color:#e32020!important}
+.lireate-blog-list-h1-sub{color:#52637b!important}
+.lireate-blog-list-pill--solid{background:#e32020!important;border:1px solid #e32020!important;color:#fff!important}
+.lireate-blog-list-pill--outline{background:#fff!important;border:1px solid #dce8f7!important;color:#1f212c!important}
+.lireate-blog-list-filters{border-color:#dce8f7!important}
+.lireate-blog-list-filters::before{background:linear-gradient(90deg,#fff,transparent)!important}
+.lireate-blog-list-filters::after{background:linear-gradient(270deg,#fff,transparent)!important}
+.lireate-blog-list-page [class*="-card"],
+.lireate-blog-page [class*="-card"]:not([class*="-card-head"]){
+ border-color:#dce8f7!important;background:#fff!important;color:#1f212c;
+ box-shadow:0 10px 32px rgba(31,33,44,.045)!important;
+}
+.lireate-blog-list-page [class*="-card"]:hover{
+ border-color:#bdd5f8!important;
+ box-shadow:0 17px 44px rgba(31,33,44,.095)!important;
+ transform:translateY(-3px);transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;
+}
+.lireate-blog-page .lireate-blog-header-rule{border-color:#dce8f7}
+.lireate-blog-page .lireate-blog-author-name{color:#1f212c!important}
+.lireate-blog-page .lireate-blog-author-role,.lireate-blog-page .lireate-blog-published{color:#52637b!important}
+.lireate-blog-page .lireate-blog-pill--back,
+.lireate-blog-page .lireate-blog-pill--topic{
+ color:#195acb!important;background:#f3f8ff!important;border:1px solid #dce8f7!important
+}
+.lireate-blog-page .lireate-blog-pill--read{color:#52637b!important;border-color:#dce8f7!important}
+.lireate-blog-page .lireate-blog-prose{color:#1f212c!important}
+.lireate-blog-page .lireate-blog-prose a,
+.lireate-blog-list-page a:not(.lireate-blog-list-pill){color:#195acb}
+.lireate-blog-page .lireate-blog-prose h2,
+.lireate-blog-page .lireate-blog-prose h3{color:#1f212c!important}
+.lireate-blog-page .lireate-blog-prose blockquote{background:#f3f8ff!important;border-left:4px solid #e32020!important;color:#1f212c!important}
+.lireate-blog-page .lireate-blog-toc-card{
+ border:1px solid #dce8f7!important;background:#fff!important;box-shadow:none!important
+}
+.lireate-blog-page .lireate-blog-toc-title{color:#1f212c!important}
+.lireate-blog-page .lireate-blog-toc-list a{color:#52637b!important}
+.lireate-blog-page .lireate-blog-toc-list a:hover{color:#e32020!important}
+.lireate-blog-page details,.lireate-blog-list-page details{border-color:#dce8f7}
+.lireate-blog-page a:focus-visible,.lireate-blog-list-page a:focus-visible,
+.lireate-blog-page button:focus-visible,.lireate-blog-list-page button:focus-visible{
+ outline:3px solid #3a86ff;outline-offset:3px
+}
+@media(max-width:700px){
+ .lireate-blog-page,.lireate-blog-list-page{padding-left:16px;padding-right:16px}
+ .lireate-blog-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+ .lireate-blog-page *, .lireate-blog-list-page *{transition:none!important;animation:none!important}
+}
