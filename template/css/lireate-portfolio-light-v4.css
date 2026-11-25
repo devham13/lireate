@@ -45,6 +45,21 @@ body.lireate-portfolio-preview .trade_mark_link {
   color: #1f212c !important;
   box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06);
 }
+body.lireate-portfolio-preview .lx-pf-light-head {
+  max-width: 1056px;
+  margin: 24px auto 8px;
+  padding: 0 16px;
+  font-family: Manrope, sans-serif;
+}
+body.lireate-portfolio-preview .lx-pf-light-head h1 {
+  margin: 0 0 8px;
+  font-size: clamp(28px, 3vw, 36px);
+  color: #1f212c !important;
+}
+body.lireate-portfolio-preview .lx-pf-light-head p {
+  margin: 0;
+  color: #52637b !important;
+}
 body.lireate-portfolio-preview .region_title {
   font-weight: 800;
   font-size: 18px;

@@ -129,6 +129,28 @@ body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer {
   border-top-color: #dce8f7 !important;
   color: #1f212c !important;
 }
+body.lireate-theme-light-v4 .lireate-about-hero,
+body.lireate-theme-light-v4 .lireate-about-card {
+  background: #fff !important;
+  color: #1f212c !important;
+  border-color: #e3edf7 !important;
+  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06) !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero {
+  background: linear-gradient(180deg, #f7fbff 0%, #fff 100%) !important;
+}
+body.lireate-theme-light-v4 .lireate-about-h1,
+body.lireate-theme-light-v4 .lireate-about-lead,
+body.lireate-theme-light-v4 .lireate-about-card-title,
+body.lireate-theme-light-v4 .lireate-about-text {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-page::before,
+body.lireate-theme-light-v4 .lireate-team-page::after,
+body.lireate-theme-light-v4 .lireate-team-wrap::after {
+  display: none !important;
+  background: transparent !important;
+}
 body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) footer:not(.lx-site-footer),
 body.lireate-team-body.lireate-theme-light-v4 footer:not(.lx-site-footer),
 body.lireate-blog-body.lireate-theme-light-v4 footer:not(.lx-site-footer) {

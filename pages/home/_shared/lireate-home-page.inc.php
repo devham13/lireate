@@ -250,7 +250,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
       <div class="section-head reveal"><h2>Частые <span class="brand-highlight">вопросы</span></h2></div>
       <div class="faq-list">
         <details class="faq-item reveal"><summary>С чего начать регистрацию товарного знака? <span aria-hidden="true">+</span></summary><div class="faq-answer">Начните с <a href="/findtz">проверки товарного знака</a> или консультации специалиста.</div></details>
-        <details class="faq-item reveal"><summary>Можно ли защитить полезную модель или изобретение? <span aria-hidden="true">+</span></summary><div class="faq-answer">Да, Лирейт занимается патентованием технических решений. <a href="/patent">Подробнее о патентах ↗</a></div></details>
+        <details class="faq-item reveal"><summary>Можно ли запатентовать изобретение или полезную модель? <span aria-hidden="true">+</span></summary><div class="faq-answer">Да, Лирейт занимается патентованием технических решений. <a href="/patent">Подробнее о патентах ↗</a></div></details>
         <details class="faq-item reveal"><summary>Помогаете ли вы с программами ЭВМ? <span aria-hidden="true">+</span></summary><div class="faq-answer">Лирейт оказывает услуги по правовой защите программного кода и интерфейсов. <a href="/registraciya_programm_evm/">Посмотреть услугу ↗</a></div></details>
         <details class="faq-item reveal"><summary>Как получить консультацию? <span aria-hidden="true">+</span></summary><div class="faq-answer">Свяжитесь с командой по телефону <?php echo lireate_home_h(LIREATE_HOME_PHONE_DISPLAY); ?> или <a href="<?php echo lireate_home_h(LIREATE_HOME_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer">в Telegram</a>.</div></details>
       </div>
@@ -265,7 +265,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
       </div>
       <div class="blog-grid">
         <article class="blog-card reveal"><div class="num">Материал 01</div><h3>Иск о нарушении товарного знака: требования и доказательства</h3><p>Практические вопросы по защите товарного знака.</p><a class="link-arrow" href="/isk_o_narushenii_tovarnogo_znaka_trebovaniya_i_dokazatelstva">Открыть ↗</a></article>
-        <article class="blog-card reveal"><div class="num">Материал 02</div><h3>Компенсация за товарный знак: расчет и доказательства</h3><p>Разбор вопросов, связанных с компенсацией.</p><a class="link-arrow" href="/kompensatsiya_za_narushenie_tovarnogo_znaka_raschet_i_dokazatelstva">Открыть ↗</a></article>
+        <article class="blog-card reveal"><div class="num">Материал 02</div><h3>Компенсация за товарный знак: расчет и доказательства</h3><p>Разбор вопросов, связанных с компенсацией.</p><a class="link-arrow" href="/kompensatsiya_za_narushenie_tovarnogo_znaka_raschet_i_dokazatelstva/">Открыть ↗</a></article>
         <article class="blog-card reveal"><div class="num">Материал 03</div><h3>Как обжаловать решение Роспатента в СИП</h3><p>Материал для тех, кто столкнулся с отказом.</p><a class="link-arrow" href="/kak_obzhalovat_reshenie_rospatenta_v_sude_po_intellektualnym_pravam">Открыть ↗</a></article>
       </div>
     </div>

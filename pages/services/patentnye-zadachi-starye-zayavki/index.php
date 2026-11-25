@@ -63,6 +63,6 @@ $schema_graph = array(
 $lx_patent_footer_mode = 'reference';
 $lx_patent_footer_ref_url = 'https://rospatent.gov.ru/ru/activities/dues/req';
 $lireate_max = LIREATE_MAX_CHAT_URL;
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
-include dirname(__DIR__) . '/_shared/blocks/lireate-patent-tool-footer.inc.php';
 ?>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
+<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-tool-footer.inc.php'; ?>

@@ -14,6 +14,8 @@ const shots = [
   { name: 'before-home-mobile', url: live + '/', w: 390, h: 844 },
   { name: 'after-home-cms-desktop', url: base + '/home', w: 1440, h: 900, prep: true },
   { name: 'after-home-cms-mobile', url: base + '/home', w: 390, h: 844, prep: true },
+  { name: 'after-home-cms-viewport-desktop', url: base + '/home', w: 1440, h: 900, prep: true, viewportOnly: true },
+  { name: 'after-home-cms-viewport-mobile', url: base + '/home', w: 390, h: 844, prep: true, viewportOnly: true },
   { name: 'before-tm-desktop', url: live + '/registraciya_tovarnogo_znaka/', w: 1440, h: 900 },
   { name: 'before-tm-mobile', url: live + '/registraciya_tovarnogo_znaka/', w: 390, h: 844 },
   { name: 'after-tm-desktop', url: base + '/tm', w: 1440, h: 900, prep: true },
@@ -81,7 +83,7 @@ for (const s of shots) {
     if (s.prep) {
       await prepareForScreenshot(page);
     }
-    await page.screenshot({ path: out, fullPage: true, type: 'png' });
+    await page.screenshot({ path: out, fullPage: !s.viewportOnly, type: 'png' });
     await page.close();
     console.log('OK', s.name, fs.statSync(out).size);
   } catch (e) {

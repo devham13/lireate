@@ -32,6 +32,37 @@ if (is_file($live_covers_json)) {
         }
     }
 }
+if (is_array($live_covers) && count($live_covers) > 0) {
+    $by_url = array();
+    foreach ($lireate_blog_list_items as $row) {
+        if (!is_array($row) || empty($row['url'])) {
+            continue;
+        }
+        $by_url[$row['url']] = $row;
+    }
+    $with_covers = array();
+    foreach ($live_covers as $url_key => $cover_path) {
+        if ($cover_path === '') {
+            continue;
+        }
+        if (isset($by_url[$url_key])) {
+            $row = $by_url[$url_key];
+            $row['cover'] = $cover_path;
+            $with_covers[] = $row;
+        } else {
+            $with_covers[] = array(
+                'url' => $url_key,
+                'title' => trim(str_replace(array('-', '_'), ' ', basename(rtrim($url_key, '/')))),
+                'cover' => $cover_path,
+                'date' => '',
+                'category' => '',
+            );
+        }
+    }
+    if (count($with_covers) > 0) {
+        $lireate_blog_list_items = array_slice($with_covers, 0, 12);
+    }
+}
 $lireate_blog_list_featured = lireate_blog_list_featured_from_cms($lireate_blog_list_items);
 if (is_array($lireate_blog_list_featured) && is_array($live_covers) && !empty($live_covers)) {
     foreach ($live_covers as $url_key => $cover_path) {

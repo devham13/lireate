@@ -17,6 +17,7 @@ $live_frag = __DIR__ . '/live-portfolio-fragment.html';
 </head>
 <body class="lireate-theme-light-v4 lireate-screenshot-capture lireate-portfolio-preview">
 <div class="wrapper"><div class="container content"><div class="page_container">
+<header class="lx-pf-light-head wrap"><h1>Портфолио работ LIREATE</h1><p>Примеры регистрации и защиты интеллектуальной собственности.</p></header>
 <?php
 if (is_file($live_frag)) {
     $portfolio_html = file_get_contents($live_frag);

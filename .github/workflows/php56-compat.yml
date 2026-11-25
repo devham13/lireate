@@ -51,3 +51,12 @@ jobs:
           python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-poshliny-registraciya
           python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-poshliny-prodlenie
           python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-redaktor-mktu
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "5.6"
+      - name: PHP syntax lint (pages + template, PHP 5.6)
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' f; do
+            php -l "$f"
+          done < <(find pages template -name '*.php' -print0)

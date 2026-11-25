@@ -28,6 +28,17 @@ if (is_file($live_frag)) {
             },
             $reviews_html
         );
+        $reviews_html = preg_replace_callback(
+            "#url\\(['\"]?(/?[^'\")]+)['\"]?\\)#",
+            function ($m) {
+                $path = $m[1];
+                if ($path[0] !== '/') {
+                    $path = '/' . $path;
+                }
+                return "url('" . lireate_preview_live_url($path) . "')";
+            },
+            $reviews_html
+        );
     }
     echo $reviews_html;
 } else {

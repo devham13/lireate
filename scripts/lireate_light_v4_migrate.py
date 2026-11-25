@@ -45,23 +45,29 @@ def stage(index):
     if shell == 'standard':
         updated = updated.replace('</body>', JS + '</body>', 1)
     else:
-        needle = "include dirname(__DIR__) . '/_shared/blocks/" + PATENT_FOOTER_INC
-        if needle not in updated:
-            needle = "include dirname(__DIR__) . '/_shared/blocks/" + PATENT_FOOTER_INC
         if PATENT_FOOTER_INC not in updated:
             return 'BLOCKER: patent footer hook missing', original
-        # Inject shared JS before patent tool footer include (closes </body> in block).
-        lines = updated.splitlines(keepends=True)
-        out = []
-        injected = False
-        for line in lines:
-            if not injected and PATENT_FOOTER_INC in line and 'include' in line:
-                out.append(JS)
-                injected = True
-            out.append(line)
-        if not injected:
-            return 'BLOCKER: patent footer hook missing', original
-        updated = ''.join(out)
+        footer_php = re.compile(
+            r"<\?php\s*\n(?:.*\n)*?\s*\$lireate_max\s*=\s*LIREATE_MAX_CHAT_URL;\s*\n",
+            re.M,
+        )
+        m = footer_php.search(updated)
+        if m:
+            # Insert HTML script after footer-vars PHP block, before include (never inside <?php).
+            insert_at = m.end()
+            updated = updated[:insert_at] + "?>\n" + JS + "<?php " + updated[insert_at:].lstrip()
+            updated = re.sub(
+                r"<\?php\s+include dirname\(__DIR__\) \. '/_shared/blocks/"
+                + re.escape(PATENT_FOOTER_INC),
+                "<?php include dirname(__DIR__) . '/_shared/blocks/" + PATENT_FOOTER_INC,
+                updated,
+                count=1,
+            )
+        else:
+            marker = "include dirname(__DIR__) . '/_shared/blocks/" + PATENT_FOOTER_INC
+            if marker not in updated:
+                return 'BLOCKER: patent footer hook missing', original
+            updated = updated.replace(marker, "?>\n" + JS + "<?php " + marker, 1)
     return 'pending', updated
 
 
