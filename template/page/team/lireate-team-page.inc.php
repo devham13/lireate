@@ -51,6 +51,7 @@ if (document.body) { document.body.classList.add('lireate-team-body'); }
         <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_telegramm">Telegram</a>
         <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_WHATSAPP_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher">WhatsApp</a>
         <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_team_h(LIREATE_TEAM_PHONE_DISPLAY); ?></a>
+        <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE2_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_team_h(LIREATE_TEAM_PHONE2_DISPLAY); ?></a>
       </div>
     </div>
   </header>
@@ -76,11 +77,11 @@ if (document.body) { document.body.classList.add('lireate-team-body'); }
         <span class="lireate-team-badge">Как работаем</span>
         <h2 class="lireate-team-card-title">С клиентом — коротко</h2>
         <ol class="lireate-team-steps">
-          <li>Свяжитесь через <a href="/kontaktyi/">контакты</a>, мессенджеры или телефон — мы перезвоним в ближайшее время.</li>
+          <li>Свяжитесь через <a href="/contacts/">контакты</a>, мессенджеры или телефон — мы перезвоним в ближайшее время.</li>
           <li>Обсуждаем задачу: товарные знаки, патенты, авторские права и сопутствующие процедуры.</li>
           <li>Готовим документы и сопровождаем в Роспатенте, ФАС, ФТС, СИП и судах — по вашей ситуации.</li>
         </ol>
-        <p class="lireate-team-text lireate-team-text--muted">Подробнее об офисе и форме заявки — на странице <a href="/kontaktyi/">Контакты</a>.</p>
+        <p class="lireate-team-text lireate-team-text--muted">Подробнее об офисе и форме заявки — на странице <a href="/contacts/">Контакты</a>.</p>
       </article>
     </div>
   </section>
