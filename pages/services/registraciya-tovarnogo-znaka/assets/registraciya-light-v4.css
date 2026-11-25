@@ -1,0 +1,16 @@
+/* LIREATE TM V4 enhancements — hover and readable expanded steps, no SEO/form changes. */
+body.lx-tm-white.lireate-theme-light-v4 .lx-pilot-step{position:relative;overflow:hidden}
+body.lx-tm-white.lireate-theme-light-v4 .lx-pilot-step::after{
+ content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;
+ background:#e32020;transform:scaleX(0);transform-origin:left;transition:transform .38s ease
+}
+body.lx-tm-white.lireate-theme-light-v4 .lx-pilot-step:hover::after,
+body.lx-tm-white.lireate-theme-light-v4 .lx-pilot-step:focus-within::after{transform:scaleX(1)}
+body.lx-tm-white.lireate-theme-light-v4 .lx-pilot-step:hover{background:#f3f8ff}
+body.lx-tm-white.lireate-theme-light-v4 .lx-faq[open]{background:#f3f8ff;border-color:#c2d9fb}
+body.lx-tm-white.lireate-theme-light-v4 .lx-price-card:hover,
+body.lx-tm-white.lireate-theme-light-v4 .lx-pilot-included-card:hover{border-color:#a9c9f5}
+body.lx-tm-white.lireate-theme-light-v4 .lx-hero--landing-v2 .lx-glass{box-shadow:0 16px 45px rgba(31,33,44,.075)}
+@media(prefers-reduced-motion:reduce){
+ body.lx-tm-white.lireate-theme-light-v4 .lx-pilot-step::after{transition:none!important}
+}
