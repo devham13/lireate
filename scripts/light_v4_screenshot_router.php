@@ -11,6 +11,9 @@ $routes = array(
     '/blog-article' => $repo . '/pages/blog/_preview/index.php',
     '/team' => $repo . '/pages/team/_preview/index.php',
     '/contacts' => $repo . '/pages/kontaktyi/_preview/index.php',
+    '/about' => $repo . '/pages/o_kompanii/_preview/index.php',
+    '/docs' => $repo . '/pages/docs/_preview/index.php',
+    '/partners' => $repo . '/pages/partners/_preview/index.php',
 );
 if (isset($routes[$path])) {
     chdir($repo);

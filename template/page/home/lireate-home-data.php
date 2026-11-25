@@ -48,8 +48,16 @@ function lireate_home_team_members()
     foreach ($rows as $member) {
         $group = lireate_home_team_group(isset($member['role']) ? $member['role'] : '');
         $photo = isset($member['photo']) ? (string) $member['photo'] : '';
-        if ($photo !== '' && strpos($photo, '.jpg') !== false) {
-            $photo = preg_replace('/\.jpg$/', '.webp', $photo);
+        if ($photo !== '' && preg_match('/\.jpg$/i', $photo) && !defined('LIREATE_PREVIEW_LIVE_ORIGIN')) {
+            $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+            $webp = preg_replace('/\.jpg$/i', '.webp', $photo);
+            $candidate = $doc !== '' ? $doc . $webp : '';
+            if ($candidate !== '' && is_file($candidate)) {
+                $photo = $webp;
+            }
+        }
+        if ($photo !== '' && function_exists('lireate_preview_live_url')) {
+            $photo = lireate_preview_live_url($photo);
         }
         $out[] = array(
             'name' => isset($member['name']) ? $member['name'] : '',

@@ -123,7 +123,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); document.
   <?php endif; ?>
 
   <?php if (!empty($lb_featured)) :
-      $fcover = isset($lb_featured['cover']) ? $lb_featured['cover'] : '';
+      $fcover = isset($lb_featured['cover']) ? lireate_blog_media_url($lb_featured['cover']) : '';
       $fcover_style = $fcover !== '' ? 'background-image:url(\'' . lireate_blog_h($fcover) . '\')' : '';
       ?>
   <section class="lireate-blog-list-featured" aria-label="Свежая публикация">
@@ -167,7 +167,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); document.
             if (!empty($lb_featured) && $card['url'] === $lb_featured['url']) {
                 continue;
             }
-            $cover = isset($card['cover']) ? $card['cover'] : '';
+            $cover = isset($card['cover']) ? lireate_blog_media_url($card['cover']) : '';
             $cover_style = $cover !== '' ? 'background-image:url(\'' . lireate_blog_h($cover) . '\')' : '';
             ?>
         <article class="lireate-blog-list-card">

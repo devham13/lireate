@@ -19,6 +19,7 @@ $la_footer_css = defined('LIREATE_ABOUT_FOOTER_CSS_HREF')
 <link rel="stylesheet" href="<?php echo lireate_about_h($la_assets); ?>/lireate-about.css?v=<?php echo lireate_about_h($la_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_about_h($la_footer_css); ?>?v=<?php echo lireate_about_h($la_v); ?>">
 <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_about_h($la_v); ?>"><!-- lireate_cms_light_v4 -->
+<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_about_h($la_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-about-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_about_h(LIREATE_ABOUT_METRIKA_ID); ?>');

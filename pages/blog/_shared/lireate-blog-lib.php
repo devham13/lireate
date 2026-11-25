@@ -16,6 +16,20 @@ function lireate_blog_h($s)
 }
 }
 
+if (!function_exists('lireate_blog_media_url')) {
+function lireate_blog_media_url($url)
+{
+    $url = trim((string) $url);
+    if ($url === '') {
+        return '';
+    }
+    if (function_exists('lireate_preview_live_url')) {
+        $url = lireate_preview_live_url($url);
+    }
+    return $url;
+}
+}
+
 if (!function_exists('lireate_blog_strtolower')) {
 function lireate_blog_strtolower($text)
 {

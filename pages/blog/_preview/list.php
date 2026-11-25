@@ -2,7 +2,8 @@
 /**
  * Локальное превью списка /news (Light V4).
  */
-$repo = dirname(__DIR__, 2);
+$repo = dirname(__DIR__, 3);
+require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
 $_SERVER['DOCUMENT_ROOT'] = $repo;
 if (!defined('LIREATE_BLOG_ASSETS_BASE')) {
     define('LIREATE_BLOG_ASSETS_BASE', '/template/page/news');
@@ -22,7 +23,7 @@ $lireate_blog_list_filters = lireate_blog_list_filters_from_cms();
   <title>Блог LIREATE — превью списка Light V4</title>
   <meta name="robots" content="noindex,nofollow">
 </head>
-<body class="lireate-blog-body lireate-theme-light-v4">
+<body class="lireate-blog-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
 require_once dirname(__DIR__) . '/_shared/lireate-blog-list.inc.php';
 $footer = dirname(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';

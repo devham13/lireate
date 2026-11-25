@@ -10,7 +10,9 @@
 | --- | --- | --- | --- |
 | **php56** | [PHP 5.6 compatibility](https://github.com/devham13/lireate/actions/workflows/php56-compat.yml) | `afbb6a0` | success ([run](https://github.com/devham13/lireate/actions/runs/45635912188)) |
 | **patch** | [Performance patch checks](https://github.com/devham13/lireate/actions/workflows/performance-fixes-check.yml) | `afbb6a0` | success ([run #11](https://github.com/devham13/lireate/actions/runs/45635912146)) |
-| **php56** + **patch** | те же | `8d6567d` | **ожидание** (push 25.11; подписка на ветку) |
+| **php56** | PHP 5.6 compatibility | `8d6567d` | success ([run](https://github.com/devham13/lireate/actions/runs/45637185684)) |
+| **php56** | PHP 5.6 compatibility | `18b0e00` (HEAD) | success ([run](https://github.com/devham13/lireate/actions/runs/45637308516)) |
+| **patch** | Performance patch checks | `18b0e00` | success ([run](https://github.com/devham13/lireate/actions/runs/45637308533)) |
 
 Локально на `8d6567d`: `lireate_service_lint --slug registraciya-tovarnogo-znaka` — **OK**; `test_lireate_service_live_markers` — **OK** (4 tests).
 
@@ -20,7 +22,11 @@
 
 Каталог: **`docs/light-v4-screenshots/`** (см. `README.md`).
 
-**После главной** — `after-home-cms-*.png` из `pages/home/_preview/cms-shell.php` + `template/page/home/*` (одна инициализация Метрики в shell, форма `/mail.php`, consent `/private_data` + `/politika_konfidencialnosti`, без `noindex`).
+**После главной** — `after-home-cms-*.png` из `pages/home/_preview/cms-shell.php` + `template/page/home/*` (полная страница: карточки услуг, карусель команды с фото live, процесс, FAQ, форма, footer; SEO title/description/H1 как на live; JSON-LD `lireate-home-schema-live.inc.php`).
+
+**Превью-ассеты:** `pages/_shared/lireate-preview-bootstrap.php` + `LIREATE_PUBLIC_SITE_URL` (фото команды, обложки блога с prod).
+
+**Новые after:** `after-about-*`, `after-docs-desktop.png`, `after-partners-desktop.png`. **Портфолио/кейсы:** в репо нет `template/page/portfolio/` — нужен архив с хостинга.
 
 ## Главная: live vs CMS (структурная сверка)
 
