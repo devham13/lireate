@@ -65,7 +65,7 @@ $lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secre
         <?php
         $lx_consent_pd_id = 'lf-consent';
         $lx_consent_mkt_id = 'lf-consent-mkt';
-        require dirname(__DIR__) . '/lireate-lead-consent-fields.inc.php';
+        require dirname(dirname(__DIR__)) . '/_shared/lireate-lead-consent-fields.inc.php';
         ?>
         <button type="submit" class="lx-btn lx-btn-primary lx-form-submit" style="width:100%;margin-top:12px;"><?php echo htmlspecialchars($lx_lead_submit_label, ENT_QUOTES, 'UTF-8'); ?></button>
         <div class="lx-form-alt">

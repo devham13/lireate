@@ -259,6 +259,10 @@ def _merge_service_form_fragment(raw, service_dir):
         p = service_dir / rel
         if p.is_file():
             html += "\n" + _read(p)
+    if "lireate-lead-consent-fields.inc.php" in html:
+        consent_fields = SERVICES / "_shared" / "lireate-lead-consent-fields.inc.php"
+        if consent_fields.is_file():
+            html += "\n" + _read(consent_fields)
     if "lireate-lead-scripts.inc.php" in raw:
         for candidate in (
             service_dir / "lireate-lead-scripts.inc.php",
