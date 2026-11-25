@@ -98,16 +98,20 @@ scripts/run_live_render_fixture_screenshots.sh --sides after --pages home,articl
 Восстановление — **только из бэкапов** `publish_service` и performance-patch, вручную:
 
 ```bash
+export LIREATE_DOCROOT=~/www/public_html
 SLUG=prodlenie-tovarnogo-znaka
-DOCROOT=~/www/public_html   # LIREATE_DOCROOT
-BACKUP=~/lireate-autopub/backups/services/$SLUG/<UTCSTAMP>   # каталог из лога publish --apply
-URL_PATH=$(python3 -c "import json; print(json.load(open('$OFFICE_REPO/pages/services/$SLUG/publish.manifest.json'))['url_path'].strip('/'))")
-DEST=$DOCROOT/$URL_PATH
-# вернуть файлы из BACKUP по относительным путям (как в plan publish)
-rsync -a "$BACKUP/" "$DEST/"
-# performance Light V4 (если применялся rollout --apply):
-# ~/lireate-autopub/backups/performance/<stamp>/ — см. manifest.json в бэкапе, copy обратно в DOCROOT
+STAMP=20261125T183000Z   # из лога publish --apply
+python3 scripts/lireate_hosting_service_rollback.py \
+  --docroot "$LIREATE_DOCROOT" --slug "$SLUG" --rollback "$STAMP"
+# опционально performance из того же rollout:
+python3 scripts/lireate_hosting_service_rollback.py \
+  --docroot "$LIREATE_DOCROOT" --slug "$SLUG" --rollback "$STAMP" \
+  --perf-backup ~/lireate-autopub/backups/performance/<UTCSTAMP>
 ```
+
+`rollback-manifest.json` в бэкапе перечисляет все записанные файлы; откат **восстанавливает** перезаписанные из бэкапа и **удаляет** файлы, появившиеся при первой публикации.
+
+**Rollout:** 20 slug (без `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`). **CI render:** 21 slug с `publish.manifest.json`.
 
 Повторный выклад с `--update` возможен после правки slug в репозитории; старый каталог без marker — только полный publish с бэкапом существующего дерева.
 

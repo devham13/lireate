@@ -552,10 +552,21 @@ def _publish_slug(
                 shutil.copy2(str(src), str(bdst))
         logging.info("backup: %s", backup_root)
 
+    written_manifest = []
     dest_dir.mkdir(parents=True, exist_ok=True)
     for item in items_to_copy:
         src = Path(item["src"])
         dst = Path(item["dst"])
+        rel = item["rel"]
+        scope = "docroot" if rel.startswith("_shared/") or rel.startswith("_shared\\") else "service"
+        existed_before = dst.is_file()
+        written_manifest.append(
+            {
+                "rel": rel.replace("\\", "/"),
+                "scope": scope,
+                "existed_before": existed_before,
+            }
+        )
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(src), str(dst))
 
@@ -575,6 +586,19 @@ def _publish_slug(
     }
     (dest_dir / MANAGED_MARKER).write_text(
         json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    rollback_manifest = {
+        "slug": slug,
+        "url_path": url_path.strip("/"),
+        "dest_dir": str(dest_dir),
+        "published_at": ts,
+        "written": written_manifest,
+    }
+    backup_root.mkdir(parents=True, exist_ok=True)
+    (backup_root / "rollback-manifest.json").write_text(
+        json.dumps(rollback_manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
 

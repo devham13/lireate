@@ -273,3 +273,8 @@ body.lireate-theme-light-v4 .submitBox *{color:#fff!important}
 body.lireate-legacy-article-lu div.submitBox.js-modal-form,
 body.lireate-legacy-article-lu .submitBox.js-modal-form,
 body.lireate-legacy-article-lu #leftSideBar .submitBox.js-modal-form{color:#fff!important}
+body.lireate-legacy-article-lu a.leftSideLogo,
+body.lireate-legacy-article-lu .leftSideLogo,
+body.lireate-theme-light-v4 a.leftSideLogo,
+body.lireate-theme-light-v4 .leftSideLogo{
+  filter:brightness(0) saturate(100%)!important;-webkit-filter:brightness(0) saturate(100%)!important;opacity:.94!important}

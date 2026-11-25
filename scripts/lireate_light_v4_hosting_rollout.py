@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# Rollout: 20 slugs (s-oplatoy вне menu/publish по политике). CI render — все 21 manifest.
 EXCLUDE = frozenset({'registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat'})
 
 

@@ -25,6 +25,7 @@ SHARED_DOCROOT_REL = Path("pages/home/_shared")
 TEMPLATE_REL = Path("template/page/home")
 LEGACY_REL = TEMPLATE_REL / "lireate-home-legacy.inc.php"
 MAIN_REL = Path("template/main.php")
+MAIN_JS_REL = Path("template/js/main.js")
 HOME_V2_FLAG_REL = Path("template/page/home/lireate-home-v2.on")
 HOME_V2_FLAG_DISABLED_SUFFIX = ".lireate-light-v4-disabled"
 FORBIDDEN_TOUCH = {".htaccess"}
@@ -425,6 +426,13 @@ def apply_home_install(office_repo, docroot, php_bin=None, backup_dir=None):
                     HOME_V2_FLAG_REL.name + HOME_V2_FLAG_DISABLED_SUFFIX
                 )
             )
+    main_js = docroot / MAIN_JS_REL
+    if main_js.is_file():
+        import lireate_main_js_consent_skip_patch as mj
+
+        node_bin = shutil.which("node") or "node"
+        changed, msg = mj.apply_patch(main_js, node_bin=node_bin)
+        notes.append("main.js: {0}".format(msg))
     if template is not None:
         _changed, patch_notes, patch_created = apply_home_patch(
             docroot, template, php_bin=php_bin, skip_lint=True

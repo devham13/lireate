@@ -704,6 +704,22 @@ body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar div {
 body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar a {
   color: #0f4db8 !important;
 }
+body.lireate-home-light-v4.lireate-theme-light-v4 a.leftSideLogo,
+body.lireate-home-light-v4.lireate-theme-light-v4 .leftSideLogo {
+  filter: brightness(0) saturate(100%) !important;
+  -webkit-filter: brightness(0) saturate(100%) !important;
+  opacity: 0.94 !important;
+}
+body.lireate-home-light-v4.lireate-cms-page-dark,
+body.lireate-home-light-v4.lireate-home-dark {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-home-light-v4.lireate-cms-page-dark::before,
+body.lireate-home-light-v4.lireate-home-dark::before {
+  display: none !important;
+  content: none !important;
+}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a.link-arrow,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services a {
   color: #0f4db8 !important;

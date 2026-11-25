@@ -136,6 +136,10 @@ def patch_home_light_v4_suppress_dark_body(text):
         r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-cms-page-dark[^']*)'\s*;\s*\?>",
         re.IGNORECASE,
     )
+    home_dark_echo = re.compile(
+        r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-home-dark[^']*)'\s*;\s*\?>",
+        re.IGNORECASE,
+    )
     dark_marker = "lireate_design_cms_dark_pages_v2"
 
     def _guard_echo(match):
@@ -149,6 +153,10 @@ def patch_home_light_v4_suppress_dark_body(text):
         )
 
     nxt = dark_echo.sub(_guard_echo, planned)
+    if nxt != planned:
+        changed = True
+        planned = nxt
+    nxt = home_dark_echo.sub(_guard_echo, planned)
     if nxt != planned:
         changed = True
         planned = nxt

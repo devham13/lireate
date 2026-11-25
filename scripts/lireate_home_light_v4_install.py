@@ -69,6 +69,9 @@ def cmd_apply(office_repo, docroot, backups_root):
     template = lib.find_main_template(docroot)
     if template is not None:
         rels.append(template.relative_to(docroot))
+    main_js = docroot / "template/js/main.js"
+    if main_js.is_file():
+        rels.append(Path("template/js/main.js"))
     lib.validate_home_patch_planned(docroot, template, php_bin=php_bin)
     lib.backup_files(backup_dir, docroot, rels)
     created, notes, _tpl = lib.apply_home_install(

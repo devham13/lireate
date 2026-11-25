@@ -64,6 +64,18 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 **Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
 
+### Круг 16 (главная consent, тема, rollback услуг)
+
+| Задача | Решение |
+| --- | --- |
+| 4 чекбокса на главной | `lireate_home_light_v4_install` патчит **живой** `template/js/main.js` (`lireate_main_js_consent_skip_patch.py`, бэкап в install) |
+| Логотип home/article 1440 | filter в `lireate-home-light-v4.css` + `lireate-blog-light-v4.css` |
+| Смешанная тема reviews/PF/team | neutralize-блок в `lireate-cms-pages-light-v4.css` поверх `lireate-cms-page-dark` при `lireate-theme-light-v4` |
+| Rollback услуг | `lireate_hosting_service_rollback.py --slug … --rollback <UTCSTAMP>` + `rollback-manifest.json` из publish; perf — `--perf-backup` |
+| body `lireate-home-dark` на home | в `main.php` строка остаётся; echo обёрнут `&& $temp['page']!='home'`; светлый вид — классы Light V4 + CSS, не только override |
+
+**21 vs 20 slug:** rollout dry-run — **20** (без s-oplatoy); CI `lireate_service_publish_ci_render.py` — **21** manifest.
+
 ### Круг 15 (consent, CI услуг, контраст, светлая CMS)
 
 | Задача | Решение |

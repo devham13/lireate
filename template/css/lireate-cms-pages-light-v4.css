@@ -372,3 +372,83 @@ body.lireate-team-body .page_container {
   background: #fff !important;
   color: #1f212c !important;
 }
+
+/* Light V4 wins over legacy lireate-cms-page-dark / lireate-home-dark on the same body */
+html:has(body.lireate-reviews-body.lireate-cms-page-dark),
+html:has(body.lireate-portfolio-body.lireate-cms-page-dark),
+html:has(body.lireate-team-body.lireate-cms-page-dark),
+html:has(body.lireate-theme-light-v4.lireate-cms-page-dark),
+html:has(body.lireate-home-light-v4),
+body.lireate-reviews-body.lireate-cms-page-dark,
+body.lireate-portfolio-body.lireate-cms-page-dark,
+body.lireate-team-body.lireate-cms-page-dark,
+body.lireate-theme-light-v4.lireate-cms-page-dark,
+body.lireate-theme-light-v4.lireate-home-dark,
+body.lireate-home-light-v4.lireate-cms-page-dark,
+body.lireate-home-light-v4.lireate-home-dark {
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-reviews-body.lireate-cms-page-dark::before,
+body.lireate-portfolio-body.lireate-cms-page-dark::before,
+body.lireate-team-body.lireate-cms-page-dark::before,
+body.lireate-theme-light-v4.lireate-cms-page-dark::before,
+body.lireate-theme-light-v4.lireate-home-dark::before,
+body.lireate-home-light-v4.lireate-cms-page-dark::before,
+body.lireate-home-light-v4.lireate-home-dark::before {
+  display: none !important;
+  content: none !important;
+}
+body.lireate-reviews-body.lireate-cms-page-dark #wrapper-ap,
+body.lireate-reviews-body.lireate-cms-page-dark .wrapper,
+body.lireate-portfolio-body.lireate-cms-page-dark .wrapper,
+body.lireate-team-body.lireate-cms-page-dark .wrapper,
+body.lireate-theme-light-v4.lireate-cms-page-dark #wrapper-ap,
+body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper,
+body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper-ap,
+body.lireate-theme-light-v4.lireate-cms-page-dark .content,
+body.lireate-theme-light-v4.lireate-cms-page-dark .container.content,
+body.lireate-theme-light-v4.lireate-cms-page-dark .page_container,
+body.lireate-reviews-body #face,
+body.lireate-reviews-body #list,
+body.lireate-portfolio-body #portfolio,
+body.lireate-portfolio-body .region_list,
+body.lireate-team-body .lireate-team-page,
+body.lireate-team-body .lireate-team-wrap {
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #1f212c !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-reviews-body.lireate-cms-page-dark .container.content .row,
+body.lireate-reviews-body.lireate-cms-page-dark .container.content [class*="col-"],
+body.lireate-portfolio-body.lireate-cms-page-dark .container.content .row,
+body.lireate-theme-light-v4.lireate-cms-page-dark .container.content .row,
+body.lireate-theme-light-v4.lireate-cms-page-dark .container.content [class*="col-"],
+body.lireate-reviews-body .container.content,
+body.lireate-portfolio-body .container.content {
+  border-color: #dce8f7 !important;
+  background: #fff !important;
+}
+body.lireate-reviews-body #list .review_box .text_box,
+body.lireate-reviews-body #list .review_box .default_text,
+body.lireate-reviews-body #list .review_box > div:last-child {
+  background: #fff !important;
+  color: #52637b !important;
+}
+body.lireate-team-body .content,
+body.lireate-team-body .page_container,
+body.lireate-team-body #lireate-team {
+  background: #fff !important;
+  box-shadow: none !important;
+}
+@media (max-width: 1150px) {
+  html:has(body.lireate-theme-light-v4),
+  body.lireate-theme-light-v4,
+  body.lireate-reviews-body,
+  body.lireate-portfolio-body,
+  body.lireate-team-body {
+    background: #fff !important;
+  }
+}
