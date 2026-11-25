@@ -22,7 +22,7 @@ alwaysApply: true
 ## Вёрстка
 
 - **Не** WordPress-тема. Страница услуги автономна (inline CSS/JS и `pages/services/<slug>/assets/`).
-- Дизайн-система репозитория: `shared/longread-page-design-system.md`, роли Алина/Борис/Наташа.
+- Основная дизайн-система: `docs/lireate-design-system-v4.ru.md` и `.cursor/rules/lireate-light-v4.mdc`. `shared/longread-page-design-system.md` используется только для структуры, не цветов.
 - `main id="primary"` — для доступности и QA-маркеров.
 
 ## Доступность и SEO

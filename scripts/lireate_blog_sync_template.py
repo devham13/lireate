@@ -20,6 +20,7 @@ COPY_FILES = (
     "lireate-blog-load.php",
     "lireate-blog-lib.php",
     "lireate-blog-article.css",
+    "lireate-blog-light-v4.css",
     "lireate-blog-article.js",
     "lireate-blog-footer.css",
     "lireate-blog-list.css",
