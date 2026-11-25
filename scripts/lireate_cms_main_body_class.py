@@ -8,6 +8,11 @@ PARTNERS_BODY_COND = "<?php if($temp['page']=='partners') echo ' lireate-partner
 TEAM_BODY_COND = "<?php if($temp['page']=='team') echo ' lireate-team-body';?>"
 CONTACTS_PAGE_BODY_COND = "<?php if($temp['page']=='contacts') echo ' lireate-contacts-body';?>"
 ABOUT_BODY_COND = "<?php if($temp['page']=='o_kompanii') echo ' lireate-about-body';?>"
+HOME_LIGHT_V4_BODY_COND = (
+    "<?php if($temp['page']=='home' || (isset($_SERVER['REQUEST_URI']) && "
+    "preg_match('#^/(?:index\\.php)?$#', parse_url((string)$_SERVER['REQUEST_URI'], PHP_URL_PATH)?:''))) "
+    "echo ' lireate-home-light-v4 lireate-theme-light-v4';?>"
+)
 
 
 def _insert_after_pos(text, pos, snippet):
@@ -116,6 +121,27 @@ def patch_about_body_conditional(text):
     else:
         pos = cms_default_insert_pos(text)
     return _insert_after_pos(text, pos, ABOUT_BODY_COND)
+
+
+def patch_home_light_v4_body_conditional(text):
+    """Insert home Light V4 body classes after about snippet if present."""
+    if HOME_LIGHT_V4_BODY_COND in text:
+        return text, False
+    if ABOUT_BODY_COND in text:
+        pos = text.find(ABOUT_BODY_COND) + len(ABOUT_BODY_COND)
+    elif TEAM_BODY_COND in text:
+        pos = text.find(TEAM_BODY_COND) + len(TEAM_BODY_COND)
+    elif PARTNERS_BODY_COND in text:
+        pos = text.find(PARTNERS_BODY_COND) + len(PARTNERS_BODY_COND)
+    elif CONTACTS_PAGE_BODY_COND in text:
+        pos = text.find(CONTACTS_PAGE_BODY_COND) + len(CONTACTS_PAGE_BODY_COND)
+    elif CONTACTS_BODY_COND in text:
+        pos = text.find(CONTACTS_BODY_COND) + len(CONTACTS_BODY_COND)
+    elif DOCS_BODY_COND in text:
+        pos = text.find(DOCS_BODY_COND) + len(DOCS_BODY_COND)
+    else:
+        pos = cms_default_insert_pos(text)
+    return _insert_after_pos(text, pos, HOME_LIGHT_V4_BODY_COND)
 
 
 def _append_slug_to_arrays_with(text, required_slug, new_slug):
