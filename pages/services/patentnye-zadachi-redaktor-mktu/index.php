@@ -42,9 +42,9 @@ $schema_graph = array(
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 </head>
 <body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4">
-<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-header.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-patent-header.inc.php'; ?>
 <main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-mktu>
-<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
   <section class="lx-hero lx-hero--stack">
     <div>
       <p class="lx-eyebrow">Патентные задачи · МКТУ</p>
@@ -76,4 +76,4 @@ $schema_graph = array(
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-mktu-core.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-patent-tools.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
-<?php $lireate_max = LIREATE_MAX_CHAT_URL; include dirname(__DIR__) . '/_shared/blocks/lireate-patent-tool-footer.inc.php'; ?>
+<?php $lireate_max = LIREATE_MAX_CHAT_URL; include __DIR__ . '/blocks/lireate-patent-tool-footer.inc.php'; ?>

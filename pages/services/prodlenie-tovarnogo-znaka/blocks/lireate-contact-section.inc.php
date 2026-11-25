@@ -65,7 +65,20 @@ $lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secre
         <?php
         $lx_consent_pd_id = 'lf-consent';
         $lx_consent_mkt_id = 'lf-consent-mkt';
-        require dirname(dirname(__DIR__)) . '/_shared/lireate-lead-consent-fields.inc.php';
+        if (!function_exists('lireate_lead_consent_fields_path')) {
+            $lx_resolve = dirname(__DIR__) . '/lireate-lead-consent-resolve.inc.php';
+            if (is_file($lx_resolve)) {
+                require_once $lx_resolve;
+            }
+        }
+        $lx_consent_inc = function_exists('lireate_lead_consent_fields_path')
+            ? lireate_lead_consent_fields_path(__DIR__)
+            : '';
+        if ($lx_consent_inc === '') {
+            trigger_error('lireate-lead-consent-fields.inc.php not found', E_USER_WARNING);
+        } else {
+            require $lx_consent_inc;
+        }
         ?>
         <button type="submit" class="lx-btn lx-btn-primary lx-form-submit" style="width:100%;margin-top:12px;"><?php echo htmlspecialchars($lx_lead_submit_label, ENT_QUOTES, 'UTF-8'); ?></button>
         <div class="lx-form-alt">

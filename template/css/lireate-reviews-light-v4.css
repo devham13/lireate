@@ -131,9 +131,20 @@ body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
 }
 body.lireate-theme-light-v4 #list .review_box,
 body.lireate-theme-light-v4 #list .text_box,
-body.lireate-theme-light-v4 #list .rewiev_head {
+body.lireate-theme-light-v4 #list .rewiev_head,
+body.lireate-reviews-body #list .review_box,
+body.lireate-reviews-body #list .text_box,
+body.lireate-reviews-body .review_box,
+body.lireate-reviews-body .text_box {
   background: #fff !important;
   color: #1f212c !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-reviews-body #list,
+body.lireate-reviews-body #list .default_text,
+body.lireate-reviews-body #list p {
+  background: #fff !important;
+  color: #52637b !important;
 }
 body.lireate-theme-light-v4 #list .default_text,
 body.lireate-theme-light-v4 #list .default_text span {

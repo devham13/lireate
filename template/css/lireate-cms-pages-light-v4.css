@@ -337,3 +337,38 @@ body.lireate-theme-light-v4 .lireate-about-accent p {
 body.lireate-theme-light-v4 .lireate-about-text--muted {
   color: #52637b !important;
 }
+
+/* Светлая колонка: логотип sidebar (белый SVG → тёмный через filter) */
+body.lireate-home-light-v4 .leftSideLogo,
+body.lireate-legacy-article-lu .leftSideLogo,
+body.lireate-reviews-body .leftSideLogo,
+body.lireate-portfolio-body .leftSideLogo,
+body.lireate-team-body .leftSideLogo,
+body.lireate-theme-light-v4 .leftSideLogo {
+  filter: brightness(0) saturate(100%) !important;
+  opacity: 0.92 !important;
+}
+
+/* CMS reviews / portfolio / team — единая светлая тема (без тёмного rgb(11,16,32)) */
+html body.lireate-reviews-body.lireate-cms-page-dark,
+html body.lireate-portfolio-body.lireate-cms-page-dark,
+html body.lireate-team-body.lireate-cms-page-dark,
+body.lireate-reviews-body,
+body.lireate-portfolio-body,
+body.lireate-team-body {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-reviews-body .wrapper,
+body.lireate-reviews-body .container,
+body.lireate-reviews-body #list,
+body.lireate-reviews-body .page_container,
+body.lireate-portfolio-body .wrapper,
+body.lireate-portfolio-body .container,
+body.lireate-portfolio-body #portfolio,
+body.lireate-team-body .wrapper,
+body.lireate-team-body .container,
+body.lireate-team-body .page_container {
+  background: #fff !important;
+  color: #1f212c !important;
+}

@@ -47,6 +47,7 @@ DOCROOT_SHARED_PHP_NAMES = (
     "lireate-service-messenger-include.inc.php",
     "lireate-service-nav-links.php",
     "lireate-service-assets.php",
+    "lireate-patent-breadcrumbs.php",
 )
 DOCROOT_SHARED_STATIC_NAMES = (
     "lireate-vk-cases.css",

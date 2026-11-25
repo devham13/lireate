@@ -286,7 +286,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
           </div>
         </div>
         <div>
-          <form id="lh4-lead-form" class="ajax_form form-unit pb30" method="POST" action="<?php echo lireate_home_h($lh_mail_action); ?>" data-lead-topic="Заявка с главной LIREATE Light V4" novalidate>
+          <form id="lh4-lead-form" class="ajax_form form-unit pb30" method="POST" action="<?php echo lireate_home_h($lh_mail_action); ?>" data-lead-topic="Заявка с главной LIREATE Light V4" data-lireate-consent-managed="1" novalidate>
             <input type="hidden" name="mail_token" value="503066424d5f7b5ad2097703ef3404d2">
             <input type="hidden" name="fuck_spamers" value="<?php echo lireate_home_h($lh_spam_guard); ?>">
             <input type="hidden" name="mail" value="mailorder">

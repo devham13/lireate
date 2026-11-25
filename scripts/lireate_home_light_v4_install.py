@@ -75,6 +75,8 @@ def cmd_apply(office_repo, docroot, backups_root):
         office_repo, docroot, php_bin=php_bin, backup_dir=backup_dir
     )
     lib.write_created_manifest(backup_dir, created)
+    if template is not None:
+        lib.record_main_php_after_apply(backup_dir, template)
     print("backup: {0}".format(backup_dir))
     if created:
         print("created: " + ", ".join(str(r) for r in created))
@@ -83,12 +85,20 @@ def cmd_apply(office_repo, docroot, backups_root):
     return 0
 
 
-def cmd_rollback(docroot, backups_root, backup_id):
+def cmd_rollback(docroot, backups_root, backup_id, force=False):
     backup_dir = backups_root / backup_id
+    if not backup_dir.is_dir():
+        backup_dir = backups_root / ("home-light-v4-install-" + backup_id)
     manifest = backup_dir / "manifest.txt"
     if not manifest.is_file():
         raise SystemExit("BLOCKER: backup manifest not found: {0}".format(manifest))
     docroot = Path(docroot).resolve()
+    template = lib.find_main_template(docroot)
+    drift = lib.verify_main_php_unchanged_since_apply(backup_dir, template)
+    if drift and not force:
+        raise SystemExit(
+            "BLOCKER: {0}. Re-run with --force to restore anyway.".format(drift)
+        )
     for rel in manifest.read_text(encoding="utf-8").splitlines():
         rel = rel.strip()
         if not rel:
@@ -119,6 +129,11 @@ def main():
         default="",
         help="Restore backup home-light-v4-install-TIMESTAMP",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Rollback even if template/main.php changed since install",
+    )
     parser.add_argument("--docroot", default=os.environ.get("LIREATE_DOCROOT", ""))
     parser.add_argument("--backups-root", default=os.environ.get("LIREATE_BACKUPS_ROOT", ""))
     args = parser.parse_args()
@@ -137,7 +152,9 @@ def main():
     if args.rollback:
         if not args.rollback.strip():
             raise SystemExit("BLOCKER: pass --rollback <YYYYMMDD-HHMMSS>")
-        return cmd_rollback(docroot, backups_root, args.rollback.strip())
+        return cmd_rollback(
+            docroot, backups_root, args.rollback.strip(), force=args.force
+        )
 
     office_repo = resolve_office_repo()
     if not args.check and not args.apply:

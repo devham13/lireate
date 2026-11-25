@@ -442,6 +442,38 @@ def make_backup_id():
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
+MAIN_PHP_SHA_FILE = "main.php.after-apply.sha256"
+
+
+def _sha256_file(path):
+    import hashlib
+
+    h = hashlib.sha256()
+    with Path(path).open("rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def record_main_php_after_apply(backup_dir, main_path):
+    if main_path is None or not Path(main_path).is_file():
+        return
+    (Path(backup_dir) / MAIN_PHP_SHA_FILE).write_text(
+        _sha256_file(main_path) + "\n", encoding="utf-8"
+    )
+
+
+def verify_main_php_unchanged_since_apply(backup_dir, main_path):
+    stamp = Path(backup_dir) / MAIN_PHP_SHA_FILE
+    if not stamp.is_file() or main_path is None or not Path(main_path).is_file():
+        return None
+    expected = stamp.read_text(encoding="utf-8").strip().split()[0]
+    current = _sha256_file(main_path)
+    if current == expected:
+        return None
+    return "main.php changed since apply (sha256 {0} → {1})".format(expected[:12], current[:12])
+
+
 def write_created_manifest(backup_dir, created_rels):
     backup_dir.mkdir(parents=True, exist_ok=True)
     payload = {"created": [str(r).replace("\\", "/") for r in created_rels]}

@@ -62,7 +62,23 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 Прочие after в `docs/light-v4-screenshots/` (tm, service, blog-list…) — прежний захват `run_light_v4_fixture_screenshots.sh`, не live-render.
 
-**Код:** патч `main.php` (без `lireate-cms-page-dark` / `lireate-home-dark` на home), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
+**Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
+
+### Круг 15 (consent, CI услуг, контраст, светлая CMS)
+
+| Задача | Решение |
+| --- | --- |
+| Fatal consent на продлении / пошлинах | `lireate-lead-consent-resolve.inc.php` + общий `blocks/lireate-contact-section.inc.php`; sync по 21 slug; patent `__DIR__/blocks/` |
+| CI render услуг | `scripts/lireate_service_publish_ci_render.py` в `php56-compat` |
+| Пошлины Telegram-кнопка | белый текст на `.lx-btn-primary` в `lireate-patent-tools.css` |
+| Главная 4 чекбокса | `data-lireate-consent-managed="1"` + skip в `live-assets/.../main.js` и deploy-patch |
+| Логотип `.leftSideLogo` | `filter` в `lireate-cms-pages-light-v4.css` |
+| reviews/portfolio/team смешанная тема | светлый `body` / карточки в `lireate-cms-pages-light-v4.css`, `lireate-reviews-light-v4.css` |
+| AFTER метрики | владелец: `6554440`, `low_contrast_count=0` на 7×2 viewport |
+
+**После выкладки не запускать** `lireate_design_hosting_apply.sh`.
+
+**Откат услуг:** нет `rollout --rollback` — копирование из `~/lireate-autopub/backups/services/<slug>/<UTCSTAMP>/` и бэкапов `lireate_hosting_performance_patch.py` (см. `tests/fixtures/live-render/README.md`).
 
 ### `git show --stat f61597f -- docs/light-v4-screenshots`
 
@@ -118,6 +134,8 @@ python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --apply
 ```bash
 python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --rollback <YYYYMMDDTHHMMSSZ>
 ```
+
+**Круг 15:** после `--apply` в бэкап пишется `main.php.after-apply.sha256`. Откат **отказывается**, если `template/main.php` менялся после установки (сообщение + флаг `--force`).
 
 Пример id бэкапа главной: `20261125T165611Z`. `created.json` на откате удаляет новые файлы и **пустые** родительские каталоги (`pages/_shared`, `pages/home`, `pages/home/_shared`).
 

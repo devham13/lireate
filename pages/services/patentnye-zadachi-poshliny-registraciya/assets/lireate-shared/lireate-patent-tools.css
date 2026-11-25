@@ -464,3 +464,11 @@ body.lireate-theme-light-v4.lx-patent-tool .lx-result-panel {
   background: #f7fbff !important;
   border-color: #dce8f7 !important;
 }
+body.lireate-theme-light-v4.lx-patent-tool a.lx-btn,
+body.lireate-theme-light-v4.lx-patent-tool a.lx-btn-primary,
+body.lireate-theme-light-v4.lx-patent-tool .lx-btn.lx-btn-primary,
+body.lireate-theme-light-v4 a.lx-btn.lx-btn-primary[href*="t.me"] {
+  color: #fff !important;
+  background: #c41118 !important;
+  border-color: #b91c1c !important;
+}

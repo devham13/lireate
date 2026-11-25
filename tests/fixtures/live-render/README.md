@@ -79,13 +79,39 @@ scripts/run_live_render_fixture_screenshots.sh --sides after --pages home,articl
    ```
    Блокер 1 (главная) живёт в патче main.php, который делает `lireate_home_light_v4_install.py`:
    правьте этот установщик (и/или `template/css/lireate-home-light-v4.css`), а не main.php руками.
-   После коммита **круг 14**: установщик дополнительно оборачивает `echo ' lireate-cms-page-dark'`
-   / `lireate-home-dark` условием `$temp['page']!='home'` (маркер `lireate-home-light-v4-install:suppress-home-dark`)
-   и убирает `home` из PHP-массивов тёмных страниц.
-   **AFTER пересобран проверяющим на e17624a (круг 14, 25.11.2026 ~21:20 МСК)** — все 7 страниц,
-   главная уже с патчем main.php. `after/prodlenie.html` обрывается на форме: на стенде PHP Fatal
-   `require(.../_shared/lireate-lead-consent-fields.inc.php)` из `blocks/lireate-contact-section.inc.php` —
-   так страница выглядела бы и на хостинге.
+   **Круг 15 — патч `main.php` (`scripts/lireate_home_light_v4_install.py` + `lireate_cms_main_body_class.py`):**
+   - на `home` убирается только `lireate-cms-page-dark`; строка **`echo ' lireate-home-dark'` остаётся** (её ищет cron `lireate_home_unslop`);
+   - удаление `'home'` из PHP-массивов тёмных страниц — **только** внутри блока с маркером `lireate_design_cms_dark_pages_v2`, без глобального regex.
+   - главная: `#lh4-lead-form` с `data-lireate-consent-managed="1"`; в `live-assets/template/js/main.js` (и `deploy-patches/.../main.js.consent-skip-managed.patch` на прод) legacy-инжектор согласий пропускает форму с этим атрибутом или с уже имеющимся `input[name=consent_request]`.
+   **AFTER пересобран владельцем на `6554440` (круг 15)** — все 7 страниц с патчем main.php; `run_live_render_fixture_screenshots.sh --sides after --fail-on-contrast` → `low_contrast_count=0` на всех.
+
+### Consent на опубликованных услугах (раскладка `publish_service`)
+
+После `lireate_hosting_publish_service.py` каталог услуги лежит в `DOCROOT/<url_path>/` (например `/prodlenie_tovarnogo_znaka/`); общие include — в `<slug>/assets/lireate-shared/`, локальные блоки — в `<slug>/blocks/`. **Не** опираться на `DOCROOT/_shared/…` — файла там нет (home-install кладёт consent только в `pages/services/_shared/` в репозитории / `assets/lireate-shared/` на хостинге).
+
+`blocks/lireate-contact-section.inc.php` подключает consent через `lireate-lead-consent-resolve.inc.php` (копируется `lireate_service_sync_shared.py` в корень slug и в `assets/lireate-shared/`). Patent catalog: `require` блоков из `__DIR__ . '/blocks/'`, не из `dirname(__DIR__)`.
+
+**CI:** `python3 scripts/lireate_service_publish_ci_render.py` (workflow `php56-compat`) — для каждого slug с `publish.manifest.json` (включая `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`, всего 21): симуляция publish → `php index.php` → нет Fatal/Warning, есть `</html>`.
+
+### Откат опубликованных услуг (у `rollout` нет `--rollback`)
+
+Восстановление — **только из бэкапов** `publish_service` и performance-patch, вручную:
+
+```bash
+SLUG=prodlenie-tovarnogo-znaka
+DOCROOT=~/www/public_html   # LIREATE_DOCROOT
+BACKUP=~/lireate-autopub/backups/services/$SLUG/<UTCSTAMP>   # каталог из лога publish --apply
+URL_PATH=$(python3 -c "import json; print(json.load(open('$OFFICE_REPO/pages/services/$SLUG/publish.manifest.json'))['url_path'].strip('/'))")
+DEST=$DOCROOT/$URL_PATH
+# вернуть файлы из BACKUP по относительным путям (как в plan publish)
+rsync -a "$BACKUP/" "$DEST/"
+# performance Light V4 (если применялся rollout --apply):
+# ~/lireate-autopub/backups/performance/<stamp>/ — см. manifest.json в бэкапе, copy обратно в DOCROOT
+```
+
+Повторный выклад с `--update` возможен после правки slug в репозитории; старый каталог без marker — только полный publish с бэкапом существующего дерева.
+
+**После выкладки Light V4 не запускать** `lireate_design_hosting_apply.sh` (если есть на хостинге) — CSS/услуги уже через overlay/PF/home/rollout.
 3. Рендер: PHP 5.6 `php -S 127.0.0.1:19191 -t <копия> router.php` с SQLite-копией публичных таблиц.
 4. `python3 scripts/build_live_render_fixture.py --before-root <живой снимок> --after-root <копия> --sides after`
    (BEFORE не трогать). Скрипт сам заменяет токены форм на `FIXTURE` и обновляет `asset-map.json`.

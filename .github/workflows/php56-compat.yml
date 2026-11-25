@@ -86,3 +86,6 @@ jobs:
           LIREATE_MYSQL_PASSWORD: root
           LIREATE_MYSQL_DATABASE: lireate_ci
         run: python3 lireate_blog_ci_fixture_apply.py
+      - name: Published services PHP render (no Fatal, closes html)
+        working-directory: scripts
+        run: python3 lireate_service_publish_ci_render.py

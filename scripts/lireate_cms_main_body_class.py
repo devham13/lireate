@@ -136,10 +136,7 @@ def patch_home_light_v4_suppress_dark_body(text):
         r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-cms-page-dark[^']*)'\s*;\s*\?>",
         re.IGNORECASE,
     )
-    home_dark = re.compile(
-        r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-home-dark[^']*)'\s*;\s*\?>",
-        re.IGNORECASE,
-    )
+    dark_marker = "lireate_design_cms_dark_pages_v2"
 
     def _guard_echo(match):
         cond = match.group(1).strip()
@@ -155,19 +152,17 @@ def patch_home_light_v4_suppress_dark_body(text):
     if nxt != planned:
         changed = True
         planned = nxt
-    nxt = home_dark.sub(_guard_echo, planned)
-    if nxt != planned:
-        changed = True
-        planned = nxt
-    nxt = re.sub(
-        r"array\s*\(\s*'home'\s*,",
-        "array(",
-        planned,
-    )
-    nxt = re.sub(r",\s*'home'\s*(?=[,\)])", "", nxt)
-    if nxt != planned:
-        changed = True
-        planned = nxt
+    if dark_marker in planned:
+        start = planned.find(dark_marker)
+        end = planned.find("?>", start)
+        if end == -1:
+            end = len(planned)
+        chunk = planned[start:end]
+        chunk_new = re.sub(r"array\s*\(\s*'home'\s*,", "array(", chunk)
+        chunk_new = re.sub(r",\s*'home'\s*(?=[,\)])", "", chunk_new)
+        if chunk_new != chunk:
+            planned = planned[:start] + chunk_new + planned[end:]
+            changed = True
     return planned, changed
 
 
