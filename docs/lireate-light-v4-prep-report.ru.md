@@ -4,14 +4,17 @@
 
 **Статус:** только GitHub. Ничего на сервер не выкладывалось, crontab не менялся, main не мержили.
 
-## CI PR #118 (последний зелёный прогон на ветке)
+## CI PR #118
 
-| Check | Workflow | Результат |
-| --- | --- | --- |
-| **php56** | PHP 5.6 compatibility | success (~27s) |
-| **Performance patch checks** | Performance patch checks | success (~28s) |
+| Check / job | Workflow | Коммит | Результат |
+| --- | --- | --- | --- |
+| **php56** | [PHP 5.6 compatibility](https://github.com/devham13/lireate/actions/workflows/php56-compat.yml) | `afbb6a0` | success ([run #11 PR](https://github.com/devham13/lireate/actions/runs/45635912140)) |
+| **patch** | [Performance patch checks](https://github.com/devham13/lireate/actions/workflows/performance-fixes-check.yml) | `afbb6a0` | success ([run #11](https://github.com/devham13/lireate/actions/runs/45635912146)) |
+| **php56** + **patch** | те же | `8d6567d` | **ожидание** (push 25.11; подписка на ветку) |
 
-Падение `test_lireate_service_live_markers` по parity `mail.php` на `registraciya-tovarnogo-znaka` — **то же на `origin/main`** (форма в `blocks/lireate-contact-form.inc.php`, не в `index.php`).
+Локально на `8d6567d`: `lireate_service_lint --slug registraciya-tovarnogo-znaka` — **OK**; `test_lireate_service_live_markers` — **OK** (4 tests).
+
+На `main` workflow **php56** зелёный: [run @ cbcd12d](https://github.com/devham13/lireate/actions/runs/45625247311) — шаг **Service live-parity markers** включает lint ТЗ; при регрессии parity падёт и на main.
 
 ## Скриншоты в репозитории
 
