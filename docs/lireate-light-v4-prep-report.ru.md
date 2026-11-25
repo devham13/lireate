@@ -22,14 +22,14 @@
 Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
 Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 node scripts/capture_light_v4_screenshots.mjs`
 
-### `git show --stat HEAD -- docs/light-v4-screenshots`
+### `git show --stat 313dc0e -- docs/light-v4-screenshots`
 
 ```
-commit 6cc62ac (ветка cursor/lireate-light-v4-prep-b68f)
-27 PNG в docs/light-v4-screenshots/ обновлены (after-* + before-* в том же коммите)
+commit 313dc0e
+21 PNG обновлены + after-tm-viewport-mobile.png (новый)
 ```
 
-Полный вывод: `git show --stat 6cc62ac -- docs/light-v4-screenshots`
+Полный вывод: `git show --stat 313dc0e`
 
 ### Размеры after-* (ширина×высота, байты)
 
