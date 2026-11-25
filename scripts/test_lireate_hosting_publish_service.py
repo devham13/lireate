@@ -102,6 +102,20 @@ class HostingPublishTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertEqual((dest / "index.php").read_text(encoding="utf-8"), "legacy foreign")
 
+    def test_docroot_shared_existing_file_not_in_plan(self):
+        existing = self.docroot / "_shared" / "lireate-messenger-urls.php"
+        existing.parent.mkdir(parents=True)
+        existing.write_text("<?php /* legacy docroot shared */", encoding="utf-8")
+        service_dir = self.office_repo / "pages" / "services" / self.slug
+        plan = pub._build_publish_plan_with_shared(
+            service_dir,
+            self.office_repo,
+            "uslugi/demo-service",
+            self.docroot,
+        )
+        rels = [item["rel"] for item in plan]
+        self.assertNotIn("_shared/lireate-messenger-urls.php", rels)
+
     @mock.patch.object(pub, "_http_status", return_value=(200, None))
     def test_update_skips_foreign_but_updates_managed(self, _http):
         self._publish(apply=True)

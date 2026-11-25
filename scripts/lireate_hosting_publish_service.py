@@ -102,6 +102,10 @@ def _append_docroot_shared_static(plan, office_repo, url_path, docroot_path, nam
             rel = str((rel_dir / name).as_posix())
             if rel in existing:
                 continue
+            if docroot_path:
+                dst_path = docroot_path / rel
+                if dst_path.is_file():
+                    continue
             plan.append(
                 {
                     "rel": rel,
