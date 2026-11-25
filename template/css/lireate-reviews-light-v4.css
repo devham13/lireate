@@ -1,0 +1,15 @@
+/* Light V4 overlay for reviews CMS markup. */
+body.lireate-reviews-preview {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-reviews-preview .page_container {
+  padding: 0 !important;
+  background: #fff !important;
+}
+body.lireate-reviews-preview .lx-rv-case {
+  color: #52637b !important;
+}
+body.lireate-reviews-preview .lx-rv-case a.lx-rv-case-link {
+  color: #195acb !important;
+}

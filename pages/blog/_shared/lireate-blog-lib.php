@@ -337,6 +337,16 @@ if (!function_exists('lireate_blog_list_cover_from_row')) {
 function lireate_blog_list_cover_from_row($row)
 {
     foreach (lireate_blog_list_cover_candidate_paths($row) as $path) {
+        if ($path === '') {
+            continue;
+        }
+        $origin = lireate_blog_public_origin();
+        if ($origin !== '') {
+            $resolved = lireate_blog_resolve_cover_url($path);
+            if ($resolved !== '') {
+                return $resolved;
+            }
+        }
         if (lireate_blog_web_path_is_file($path)) {
             return lireate_blog_resolve_cover_url($path);
         }

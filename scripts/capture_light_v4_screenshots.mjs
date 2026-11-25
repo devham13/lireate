@@ -34,6 +34,9 @@ const shots = [
   { name: 'after-contacts-mobile', url: base + '/contacts', w: 390, h: 844, prep: true },
   { name: 'after-about-desktop', url: base + '/about', w: 1440, h: 900, prep: true },
   { name: 'after-about-mobile', url: base + '/about', w: 390, h: 844, prep: true },
+  { name: 'after-portfolio-desktop', url: base + '/portfolio', w: 1440, h: 900, prep: true },
+  { name: 'after-portfolio-mobile', url: base + '/portfolio', w: 390, h: 844, prep: true },
+  { name: 'after-reviews-desktop', url: base + '/reviews', w: 1440, h: 900, prep: true },
   { name: 'after-docs-desktop', url: base + '/docs', w: 1440, h: 900, prep: true },
   { name: 'after-partners-desktop', url: base + '/partners', w: 1440, h: 900, prep: true },
 ];

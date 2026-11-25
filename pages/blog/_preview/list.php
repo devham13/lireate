@@ -22,6 +22,8 @@ $lireate_blog_list_filters = lireate_blog_list_filters_from_cms();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Блог LIREATE — превью списка Light V4</title>
   <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125c">
+  <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125c">
 </head>
 <body class="lireate-blog-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php

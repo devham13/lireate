@@ -1,0 +1,26 @@
+/* Light V4 overlay for legacy portfolio CMS markup (preview + post-install). */
+body.lireate-portfolio-preview,
+body.lireate-theme-light-v4.lireate-portfolio-preview {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-portfolio-preview .page_container {
+  padding: 0 !important;
+  background: #fff !important;
+}
+body.lireate-portfolio-preview .sectionPadding {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-portfolio-preview h1,
+body.lireate-portfolio-preview h2,
+body.lireate-portfolio-preview h3 {
+  color: #1f212c !important;
+}
+body.lireate-portfolio-preview p,
+body.lireate-portfolio-preview li {
+  color: #52637b !important;
+}
+body.lireate-portfolio-preview a {
+  color: #195acb !important;
+}

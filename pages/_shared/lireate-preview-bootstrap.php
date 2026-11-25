@@ -19,6 +19,10 @@ if (!defined('LIREATE_PREVIEW_LIVE_ORIGIN')) {
     }
 }
 
+if (defined('LIREATE_PREVIEW_LIVE_ORIGIN') && !defined('LIREATE_BLOG_PUBLIC_ORIGIN')) {
+    define('LIREATE_BLOG_PUBLIC_ORIGIN', LIREATE_PREVIEW_LIVE_ORIGIN);
+}
+
 if (!function_exists('lireate_preview_live_url')) {
 function lireate_preview_live_url($path)
 {

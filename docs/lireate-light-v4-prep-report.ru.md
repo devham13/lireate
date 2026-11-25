@@ -1,96 +1,47 @@
-# LIREATE Light V4 — отчёт подготовки (без публикации на REG.RU)
+# LIREATE Light V4 — финальный отчёт подготовки (без публикации)
 
-Дата: 25.11.2026. Ветка: `cursor/lireate-light-v4-prep-b68f`. PR: **#118**. Источник дизайна: cherry-pick из draft PR #117, **без merge #117**.
+Дата: **25.11.2026**. Ветка: `cursor/lireate-light-v4-prep-b68f`. PR: **#118**. На REG.RU **не выкладывалось**, main **не мержили**.
 
-**Статус:** только GitHub. Ничего на сервер не выкладывалось, crontab не менялся, main не мержили.
+## Что сделано в этом круге
 
-## CI PR #118
+| Область | Изменение |
+| --- | --- |
+| **Главная** | Факты и тексты как на live (stats, bullets, lead, карточка «финансовая гарантия», URL `/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/`). Слоган без `aria-hidden`. Поля формы `#lh4-lead-form` — стили Light V4. |
+| **Footer** | Общий светлый оверрайд `.lx-site-footer` в `template/css/lireate-cms-pages-light-v4.css` + базовая вёрстка `lireate-service-dark.css` на превью CMS. |
+| **Блог** | `LIREATE_BLOG_PUBLIC_ORIGIN` в preview-bootstrap; обложки с live при превью; контраст автор / «Читать» / время / Max-баннер. |
+| **Portfolio / reviews / uslugi** | Пакет `packages/lireate-hosting-pf-20261125/` + зеркало в `template/page/`; install `scripts/lireate_hosting_pf_install.py` (dry-run, backup, `--apply`). Превью `/portfolio`, `/reviews` (БД на хостинге; локально — stub). |
+| **Скрины** | Пересняты home 1440/390, blog, portfolio, reviews (см. ниже). |
 
-| Check / job | Workflow | Коммит | Результат |
-| --- | --- | --- | --- |
-| **php56** | [PHP 5.6 compatibility](https://github.com/devham13/lireate/actions/workflows/php56-compat.yml) | `afbb6a0` | success ([run](https://github.com/devham13/lireate/actions/runs/45635912188)) |
-| **patch** | [Performance patch checks](https://github.com/devham13/lireate/actions/workflows/performance-fixes-check.yml) | `afbb6a0` | success ([run #11](https://github.com/devham13/lireate/actions/runs/45635912146)) |
-| **php56** | PHP 5.6 compatibility | `8d6567d` | success ([run](https://github.com/devham13/lireate/actions/runs/45637185684)) |
-| **php56** | PHP 5.6 compatibility | `18b0e00` (HEAD) | success ([run](https://github.com/devham13/lireate/actions/runs/45637308516)) |
-| **patch** | Performance patch checks | `18b0e00` | success ([run](https://github.com/devham13/lireate/actions/runs/45637308533)) |
+**Не трогали:** `pages/services/registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat/` (другой агент).
 
-Локально на `8d6567d`: `lireate_service_lint --slug registraciya-tovarnogo-znaka` — **OK**; `test_lireate_service_live_markers` — **OK** (4 tests).
+## Скриншоты (`docs/light-v4-screenshots/`)
 
-На `main` workflow **php56** зелёный: [run @ cbcd12d](https://github.com/devham13/lireate/actions/runs/45625247311) — шаг **Service live-parity markers** включает lint ТЗ; при регрессии parity падёт и на main.
+| Файл | Назначение |
+| --- | --- |
+| `after-home-cms-desktop.png`, `after-home-cms-mobile.png` | Главная CMS Light V4 |
+| `after-blog-list-desktop.png`, `after-blog-list-mobile.png` | Список блога |
+| `after-portfolio-desktop.png`, `after-portfolio-mobile.png` | Портфолио (шаблон + light overlay) |
+| `after-reviews-desktop.png` | Отзывы (шаблон + light overlay) |
+| `after-about-desktop.png`, `after-about-mobile.png` | О компании |
+| `before-home-*`, `before-tm-*`, … | Сверка с live (как раньше) |
 
-## Скриншоты в репозитории
+Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`
 
-Каталог: **`docs/light-v4-screenshots/`** (см. `README.md`).
+## CI
 
-**После главной** — `after-home-cms-*.png` из `pages/home/_preview/cms-shell.php` + `template/page/home/*` (полная страница: карточки услуг, карусель команды с фото live, процесс, FAQ, форма, footer; SEO title/description/H1 как на live; JSON-LD `lireate-home-schema-live.inc.php`).
+После push на ветку — проверить [PR #118 checks](https://github.com/devham13/lireate/pull/118) (php56, performance patch). Локально: `python3 scripts/lireate_hosting_pf_install.py --docroot /tmp/docroot` (dry-run).
 
-**Превью-ассеты:** `pages/_shared/lireate-preview-bootstrap.php` + `LIREATE_PUBLIC_SITE_URL` (фото команды, обложки блога с prod).
+## План выкладки на хостинг (пошагово)
 
-**Новые after:** `after-about-*`, `after-docs-desktop.png`, `after-partners-desktop.png`. **Портфолио/кейсы:** в репо нет `template/page/portfolio/` — нужен архив с хостинга.
+1. **Бэкап** DOCROOT и БД (portfolio/reviews завязаны на MySQL).
+2. На сервере: `git pull` ветки после merge PR в `main` (или деплой артефакта владельца).
+3. Убедиться, что **lireate-news** / unslop cron не перезапишут только что залитые CMS-файлы (см. guard в `docs/`).
+4. `python3 scripts/lireate_home_light_v4_install.py --docroot … --apply`
+5. `python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot … --apply`
+6. **`python3 scripts/lireate_hosting_pf_install.py --docroot … --apply`** — `portfolio.php`, `reviews.php`, `portfolio/`, `template/page/uslugi/`.
+7. Опубликовать услуги/патенты по текущему cron (`lireate_hosting_services_cron.sh`), **кроме** slug s-oplatoy в `pages/services/`.
+8. Smoke: главная форма → `/mail.php`, footer на CMS-страницах, `/news/`, `/portfolio/`, `/reviews/`, mobile 390, Метрика **один** init на главной.
 
-## Главная: live vs CMS (структурная сверка)
+---
 
-| Проверка | Live (типичный main.php) | CMS after (`cms-shell.php` + home inc) |
-| --- | --- | --- |
-| `robots` noindex | нет на проде | нет |
-| canonical | `/` | `href="/"` |
-| title / description | из CMS | заданы в shell (SEO-тексты совпадают по смыслу) |
-| H1 | один на главной | один в hero |
-| Форма | `ajax_form` → `/mail.php` | да; hidden `mail_token`, `fuck_spamers`, `consent_form`, UTM через `lireate-utm.js` |
-| Яндекс.Метрика | `ym(..., "init", …)` в main | **1×** init в shell; цели `data-lx-ym-goal` как на team/contacts |
-| Schema.org | JSON-LD в CMS/контенте | блоки FAQ/контент без выдуманных entity; полный graph как на проде — после install в main |
-
-## Страницы: статус и скриншоты
-
-| URL | Сделано | Скрин до | Скрин после |
-| --- | --- | --- | --- |
-| `/` | CMS-пакет + install | `before-home-*` | `after-home-cms-*` |
-| `/registraciya_tovarnogo_znaka/` | overlay v4 | `before-tm-*` | `after-tm-*` |
-| `/prodlenie_tovarnogo_znaka/` (услуга) | migrate v4 | — | `after-service-desktop.png` |
-| `/patentnye-zadachi/` каталог + 13 tools | migrate v4 (patent footer shell) | — | `after-patent-*` (пример: poshliny-registraciya) |
-| `/news/` | list overlay + fix preview | `before-news-desktop` | `after-blog-list-*` |
-| статья блога | layout overlay | — | `after-blog-article-*` |
-| `/team/` | overlay CSS/JS + body class | `before-team-desktop` | `after-team-*` |
-| `/contacts/` | overlay | `before-contacts-desktop` | `after-contacts-*` |
-| `/o_kompanii/`, `/docs/`, `/partners/` | overlay в template | — | следующий прогон (аналогично team) |
-| `/portfolio/`, кейсы CMS | **нет в репо** | — | только live «до»; нужен install с хостинга |
-
-**Не трогали:** `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat/` (другой агент).
-
-## +73k строк в diff — состав
-
-Это **не** vendor/node_modules. Основной объём — повторяющиеся копии **`lireate_service_sync_shared.py`** в `pages/services/*/assets/lireate-shared/` (по одному на slug), в т.ч.:
-
-- `lireate-qrcode-npm.js` (~2089 строк × множество каталогов)
-- `lireate-patent-tools.js` (~1142 строк)
-- `lireate-light-v4.css/js`, patent payment cores, reviews.json, blocks `*.inc.php`
-
-Крупнейшие **уникальные** новые файлы: `template/css/lireate-home-light-v4.css`, `design-proposals/.../index.html`, `template/page/home/lireate-home-page.inc.php`.
-
-## Патентные задачи
-
-`scripts/lireate_light_v4_migrate.py` — режим **patent shell**: страницы без `</body>` в `index.php`, JS вставляется перед `lireate-patent-tool-footer.inc.php`. **13/13** + каталог применены в ветке.
-
-## Блог
-
-- Исправлен `pages/blog/_preview/list.php` (load.php + config → нет 500).
-- `lireate-theme-light-v4` на list/article; новые статьи получают overlay через `template/page/news/*` + `_shared`.
-
-## Cron lireate-news
-
-Push в `lireate-news` **403** для бота. Diff guard: **`docs/lireate-news-home-unslop-guard.diff`** (локальный коммит `afbb6a0`). Нужен ручной PR в `devham13/lireate-news` с ветки `cursor/light-v4-home-guard-b68f` или `git apply` diff.
-
-## План выкладки (порядок)
-
-1. Бэкап `light-v4-pre-20261125T142321Z`.
-2. `git pull` office-repo на хостинге.
-3. `LIREATE_HOME_LIGHT_V4=1` или merge guard в lireate-news **до** включения главной.
-4. `lireate_home_light_v4_install.py --apply` + `lireate_cms_light_v4_overlay_install.py --apply`.
-5. Team/contacts/about/docs/partners — соответствующие `*_install.py`.
-6. Услуги: `lireate_hosting_publish_service.py --slug … --update --apply` (кроме s-oplatoy).
-7. Вернуть perf `seo-perf-20261120-v1` в docroot `_shared`.
-8. Smoke: формы, 1× Metrika, mobile 390.
-
-## Откат
-
-Restore `template.tgz` из бэкапа; `lireate_home_light_v4_install --restore-backup`; redeploy предыдущего SHA услуг; `LIREATE_HOME_UNSLOP=no`.
+Подробная история ранних прогонов — в комментариях PR #118 и предыдущих коммитах ветки.

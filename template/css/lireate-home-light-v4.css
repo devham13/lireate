@@ -416,3 +416,48 @@ section#lireate-home-light-v4 .lh4-root {
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Форма «Нет времени искать ответ» — поля Light V4 */
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form label:not(.lx-consent) {
+  display: block;
+  margin: 4px 0 6px;
+  font: 700 13px/1.3 Manrope, Inter, sans-serif;
+  color: #1f212c;
+  letter-spacing: 0.01em;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form input[type="text"],
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form input[type="tel"] {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
+  border: 1px solid #dce8f7;
+  border-radius: 14px;
+  background: #fff;
+  color: #1f212c;
+  font: 500 16px/1.25 Manrope, Inter, sans-serif;
+  box-sizing: border-box;
+  box-shadow: inset 0 1px 2px rgba(31, 33, 44, 0.04);
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form input[type="text"]:focus,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form input[type="tel"]:focus {
+  outline: 3px solid #3a86ff;
+  outline-offset: 2px;
+  border-color: #9dbfe2;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form label.lx-consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font: 500 13px/1.45 Manrope, Inter, sans-serif;
+  color: #52637b;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #lh4-lead-form label.lx-consent a {
+  color: #195acb;
+}

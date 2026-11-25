@@ -35,12 +35,12 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
       <div class="reveal">
         <div class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span> Интеллектуальная собственность · товарные знаки · патенты · авторское право</div>
         <h1 class="lh4-seo-h1">Патентное бюро «Лирейт»</h1>
-        <p class="lh4-hero-slogan" aria-hidden="true">Защита интеллектуальной собственности <em>начинается с Лирейт</em></p>
-        <p class="lead">Регистрация и защита интеллектуальной собственности. Помогаем выбрать способ защиты, говорим о реальных возможностях и сроках и сопровождаем до результата.</p>
+        <p class="lh4-hero-slogan">Защита интеллектуальной собственности <em>начинается с Лирейт</em></p>
+        <p class="lead">Регистрация товарных знаков, патентов, программ ЭВМ и договоры. Помогаем выбрать способ защиты, говорим о реальных возможностях и сроках и сопровождаем до результата.</p>
         <ul class="hero-bullets">
-          <li><i>✓</i><span>бесплатная консультация и понятный первый шаг для клиента</span></li>
-          <li><i>✓</i><span>работаем честно: говорим только о реальных возможностях и сроках</span></li>
-          <li><i>✓</i><span>оплата за результат и сопровождение специалистами по интеллектуальной собственности</span></li>
+          <li><i>✓</i><span>бесплатная консультация</span></li>
+          <li><i>✓</i><span>говорим только о реальных возможностях и сроках — никаких ложных обещаний</span></li>
+          <li><i>✓</i><span>работаем с финансовой гарантией</span></li>
         </ul>
         <div class="hero-actions">
           <a class="btn primary" href="/findtz">Проверить товарный знак</a>
@@ -72,9 +72,9 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
     <div class="wrap stats">
       <div class="stats-grid reveal">
         <div class="stat"><strong class="count" data-from="2000" data-to="2015">2015</strong><span>работаем с этого года</span></div>
-        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>специалистов в команде</span></div>
-        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>минут до первого ответа</span></div>
-        <div class="stat"><strong class="checkmark">✓</strong><span>оплата за результат</span></div>
+        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>специалистов</span></div>
+        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>минут до ответа</span></div>
+        <div class="stat"><strong class="checkmark">✓</strong><span>с финансовой гарантией</span></div>
       </div>
     </div>
   </section>
@@ -169,7 +169,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
       </div>
       <div class="pricing-grid">
         <article class="price-card reveal"><div class="service-num">Первый шаг</div><h3>Бесплатная консультация</h3><div class="price">0 ₽</div><p>Оставьте заявку — специалисты свяжутся с вами и подскажут, что делать дальше.</p><a class="link-arrow" href="<?php echo lireate_home_h(LIREATE_HOME_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer">Получить консультацию ↗</a></article>
-        <article class="price-card reveal"><div class="service-num">Товарный знак</div><h3>Регистрация с оплатой за результат</h3><div class="price">от 30 000 ₽</div><p>Регистрация товарного знака с полным сопровождением.</p><a class="link-arrow" href="/registraciya_tovarnogo_znaka/">Подробнее об услуге ↗</a></article>
+        <article class="price-card reveal"><div class="service-num">Товарный знак</div><h3>Регистрация товарного знака с финансовой гарантией</h3><div class="price">от 30000 руб.</div><p>Вы решили самостоятельно зарегистрировать свой товарный знак? Это похвально. В среднем вам понадобится около 100 часов на обучение и изучение требований Роспатента. Если у вас есть время на ошибки, мы желаем вам успехов. Регистрация нужна уже сейчас? Мы готовы помочь.</p><a class="link-arrow" href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">Подробнее об услуге ↗</a></article>
       </div>
     </div>
   </section>
