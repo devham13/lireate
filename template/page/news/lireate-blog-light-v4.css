@@ -121,3 +121,29 @@ body.lireate-theme-light-v4 .lx-site-footer-requisites summary{color:#195acb!imp
 body.lireate-theme-light-v4 .lx-site-footer-requisites-panel{color:#52637b!important;background:#fff!important}
 body.lireate-theme-light-v4 .lireate-blog-list-featured-label{left:auto;right:12px;top:12px}
 body.lireate-theme-light-v4 .lireate-blog-list-featured-body{padding-top:4px}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer,
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) section#blog + .lx-site-footer{
+  background:#f7fbff!important;border-top:1px solid #dce8f7!important;
+}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-title,
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-title,
+body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer p.lx-site-footer-title{color:#1f212c!important;font-weight:700!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-lead,
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-meta,
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-lead,
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-meta{color:#52637b!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-contact,
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-contact a,
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-contact,
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-contact a{color:#1f212c!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-contact a,
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-contact a{color:#195acb!important;font-weight:600!important;text-decoration:none!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-nav{display:flex!important;flex-wrap:wrap!important;gap:10px 16px!important;margin-top:14px!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-nav>a,
+body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer-nav>a{color:#195acb!important;font-weight:600!important;visibility:visible!important;display:inline!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-dot{color:#8fa3bf!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-requisites,
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-requisites-panel{background:#fff!important;color:#52637b!important;border:1px solid #dce8f7!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-requisites summary{color:#195acb!important;font-weight:600!important}
+body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-copy,
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-copy{color:#52637b!important}

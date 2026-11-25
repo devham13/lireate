@@ -80,10 +80,7 @@ body.lireate-home-preview .hamburger .hamb-top { top: 14px; }
 body.lireate-home-preview .hamburger .hamb-middle { top: 21px; }
 body.lireate-home-preview .hamburger .hamb-bottom { top: 28px; }
 @media (max-width: 480px) {
-  body.lireate-home-preview .lh4-root .eyebrow-mark,
-  body.lireate-home-preview .lh4-hero .lh4-h1,
-  body.lireate-home-preview .lh4-hero h1 {
-    padding-left: 52px;
-    padding-right: 12px;
+  body.lireate-home-preview .lh4-root {
+    padding-top: 52px;
   }
 }

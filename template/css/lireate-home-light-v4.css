@@ -604,11 +604,8 @@ body.lireate-theme-light-v4.lireate-home-light-v4 .hamburger .hamb-middle { top:
 body.lireate-home-light-v4.lireate-theme-light-v4 .hamburger .hamb-bottom,
 body.lireate-theme-light-v4.lireate-home-light-v4 .hamburger .hamb-bottom { top: 28px; }
 @media (max-width: 480px) {
-  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .eyebrow-mark,
-  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-h1,
-  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root h1,
-  body.lireate-theme-light-v4.lireate-home-light-v4 .main-screen h1 {
-    padding-left: 52px;
-    padding-right: 12px;
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root,
+  body.lireate-theme-light-v4.lireate-home-light-v4 .main-screen {
+    padding-top: 52px;
   }
 }

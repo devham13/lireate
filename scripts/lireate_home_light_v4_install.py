@@ -114,11 +114,6 @@ def main():
     parser.add_argument("--backups-root", default=os.environ.get("LIREATE_BACKUPS_ROOT", ""))
     args = parser.parse_args()
 
-    office_repo = resolve_office_repo()
-    if not args.check and not args.apply:
-        parser.print_help()
-        return 2
-
     docroot = args.docroot.strip()
     if not docroot:
         raise SystemExit("BLOCKER: set --docroot or LIREATE_DOCROOT")
@@ -130,14 +125,20 @@ def main():
     )
     backups_root = Path(backups_root).expanduser()
 
-    if args.check:
-        return cmd_check(office_repo, docroot)
-    if args.apply:
-        return cmd_apply(office_repo, docroot, backups_root)
     if args.rollback:
         if not args.backup_id.strip():
             raise SystemExit("BLOCKER: pass --backup-id")
         return cmd_rollback(docroot, backups_root, args.backup_id.strip())
+
+    office_repo = resolve_office_repo()
+    if not args.check and not args.apply:
+        parser.print_help()
+        return 2
+
+    if args.check:
+        return cmd_check(office_repo, docroot)
+    if args.apply:
+        return cmd_apply(office_repo, docroot, backups_root)
     return 2
 
 

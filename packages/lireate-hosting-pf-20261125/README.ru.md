@@ -6,7 +6,8 @@
 
 - `template/page/portfolio.php`, `reviews.php`, `lireate-*-cms.inc.php`, `lireate-cms-db.inc.php` — CMS-вставки (без секретов; БД через `data/db.php` на хостинге)
 - `template/page/portfolio/` — карточки кейсов
-- `uslugi/` — каталог услуг (`lireate-uslugi-cms.inc.php`, CSS, lib)
+
+`template/page/uslugi/` **не входит** в PF-install (на хостинге новее снимка пакета).
 
 Установка на DOCROOT: `scripts/lireate_hosting_pf_install.py` (dry-run по умолчанию, `--apply` + бэкап).
 

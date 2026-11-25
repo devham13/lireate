@@ -17,7 +17,7 @@
 | `after-home-cms-viewport-desktop.png` | Главная **первый экран** (CMS hamburger + подменю) | 1440 |
 | `after-home-cms-viewport-mobile.png` | Главная **первый экран** | **390** |
 | `after-tm-desktop.png`, `after-tm-mobile.png`, `after-tm-viewport-mobile.png` | Регистрация ТЗ (sticky bar — viewport) | 1440 / **390** |
-| `after-service-desktop.png`, `after-service-mobile.png` | Продление ТЗ | 1440 / **390** |
+| `after-service-desktop.png`, `after-service-mobile.png`, `after-service-viewport-mobile.png` | Продление ТЗ (viewport 390) | 1440 / **390** |
 | `after-patent-desktop.png`, `after-patent-mobile.png` | Патентная задача | 1440 / **390** |
 | `after-blog-list-desktop.png`, `after-blog-list-mobile.png` | Блог (обложки live) | 1440 / **390** |
 | `after-about-desktop.png`, `after-about-mobile.png` | О компании (светлая) | 1440 / **390** |
@@ -28,14 +28,13 @@
 Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
 Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 node scripts/capture_light_v4_screenshots.mjs`
 
-### `git show --stat 313dc0e -- docs/light-v4-screenshots`
+### `git show --stat f4fdfba -- docs/light-v4-screenshots`
 
 ```
-commit 313dc0e
-21 PNG обновлены + after-tm-viewport-mobile.png (новый)
+commit f4fdfba — пересняты after-home, after-blog-list, after-tm, after-service, …
 ```
 
-Полный вывод: `git show --stat 313dc0e`
+Полный вывод: `git show --stat f4fdfba`
 
 ### Размеры after-* (ширина×высота, байты)
 
@@ -114,20 +113,26 @@ python3 scripts/lireate_hosting_pf_install.py --docroot "$DOCROOT" --apply
 | `template/css/lireate-home-light-v4.css`, `lireate-home-preview-chrome.css` | overlay | `template/css/…` |
 | `template/page/team/*`, `o_kompanii/*`, `partners/*`, `docs/*`, `kontaktyi/*` | overlay | те же пути под `template/page/<раздел>/` |
 | `pages/<раздел>/_shared/*` (team, about, …) | overlay | `template/page/<раздел>/` **и** `pages/<раздел>/_shared/` |
-| `packages/…/uslugi/*` (4 файла) | PF | `template/page/uslugi/` (только перезапись своих файлов, без `rmtree`) |
+| `template/page/news/*` (блог) | `lireate_blog_install.py` | `template/page/news/` + патч шаблонов списка/статьи |
 
-PF: `--rollback --backup-id` → `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/manifest.txt`.
+PF: `--rollback --backup-id` → `$DOCROOT/.lireate-backup-pf/<UTCSTAMP>/manifest.txt`. **`template/page/uslugi/` PF не трогает** (живые файлы новее снимка).
+
+### Блог + главная (порядок)
+
+1. `lireate_blog_install.py --check|--apply` — шаблоны `/news`, без `main.php`; откат: `--rollback --backup-id`.
+2. `lireate_home_light_v4_install.py --check|--apply` — `main.php` (дом); откат: `--rollback --backup-id`.
+3. overlay + PF.
 
 ### Услуги (~20 slug) — хостинг
 
-План/прогон (только REG.RU):
-
 ```bash
-python3 scripts/lireate_light_v4_hosting_rollout.py --docroot "$DOCROOT"          # dry-run команд
-python3 scripts/lireate_light_v4_hosting_rollout.py --docroot "$DOCROOT" --apply    # publish + perf
+export LIREATE_DOCROOT="$DOCROOT"
+export LIREATE_OFFICE_REPO="$OFFICE_REPO"
+python3 scripts/lireate_light_v4_hosting_rollout.py --docroot "$DOCROOT"          # dry-run: publish --update без --apply по каждому slug
+python3 scripts/lireate_light_v4_hosting_rollout.py --docroot "$DOCROOT" --apply   # + LIREATE_ALLOW_PUBLISH=yes + perf patch
 ```
 
-Для каждого slug: `lireate_hosting_publish_service.py --slug <slug> --update --apply --skip-git-pull`, затем `lireate_hosting_performance_patch.py` (`seo-perf-20261120-v1`). **Исключение:** `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`.
+**Исключение slug:** `registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat`.
 
 Заголовок «как защитить…» в превью блога: поднята первая буква только в `pages/blog/_preview/`; на live текст из CMS/MySQL не меняется.
 

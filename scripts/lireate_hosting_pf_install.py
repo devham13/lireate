@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install portfolio/reviews/uslugi Light V4 templates into DOCROOT/template/page (not site root)."""
+"""Install portfolio/reviews Light V4 templates into DOCROOT/template/page (not site root)."""
 
 import argparse
 import shutil
@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PKG = ROOT / 'packages' / 'lireate-hosting-pf-20261125'
 
 REPO_FILES = (
     Path('template/page/portfolio.php'),
@@ -23,13 +22,6 @@ REPO_FILES = (
 )
 
 PORTFOLIO_CASE_REL = Path('template/page/portfolio')
-USLUGI_REL = Path('template/page/uslugi')
-USLUGI_PKG_FILES = (
-    'index.php',
-    'lireate-uslugi-cms.inc.php',
-    'lireate-uslugi-lib.php',
-    'lireate-uslugi.css',
-)
 
 
 def backup_root(docroot):
@@ -53,13 +45,6 @@ def plan_install(docroot):
         for path in sorted(pf_dir.glob('*.php')):
             rel = PORTFOLIO_CASE_REL / path.name
             rows.append((path, docroot / rel))
-
-    uslugi_pkg = PKG / 'uslugi'
-    for name in USLUGI_PKG_FILES:
-        src = uslugi_pkg / name
-        if not src.is_file():
-            return None, 'BLOCKER: missing package uslugi/{0}'.format(name)
-        rows.append((src, docroot / USLUGI_REL / name))
 
     return rows, None
 
