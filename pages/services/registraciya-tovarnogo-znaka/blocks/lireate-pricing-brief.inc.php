@@ -26,6 +26,6 @@
       </tbody>
     </table>
   </div>
-  <p class="lx-pricing-brief-total">Госпошлины за полный базовый цикл составят <strong>35 000 ₽</strong>. <a href="#pricing">Подробная разбивка и допклассы</a>. Модель <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">с оплатой за результат</a> — отдельная страница.</p>
+  <p class="lx-pricing-brief-total">Госпошлины за полный базовый цикл составят <strong>35 000 ₽</strong>. <a href="#pricing">Подробная разбивка и допклассы</a>. <a href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">Регистрация товарного знака с финансовой гарантией</a> — отдельная страница.</p>
   <a class="lx-btn lx-btn-primary lx-cta-to-form" href="#contact" data-lx-tz-form-open="pricing_brief">Получить расчёт</a>
 </section>
