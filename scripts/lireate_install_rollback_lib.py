@@ -16,8 +16,26 @@ def write_created_manifest(backup_dir, created_rels):
     )
 
 
+def _prune_empty_parents(docroot, rels, notes):
+    parents = set()
+    for rel in rels:
+        parent = Path(rel).parent
+        while str(parent) not in (".", ""):
+            parents.add(parent)
+            parent = parent.parent
+    docroot = Path(docroot)
+    for parent in sorted(parents, key=lambda p: len(str(p)), reverse=True):
+        full = docroot / parent
+        if full.is_dir() and not any(full.iterdir()):
+            try:
+                full.rmdir()
+                notes.append("removed empty dir {0}".format(parent))
+            except OSError:
+                pass
+
+
 def remove_created_from_backup(backup_dir, docroot):
-    """Delete paths recorded in created.json (files or trees)."""
+    """Delete paths recorded in created.json (files or trees); prune empty parents."""
     created_path = Path(backup_dir) / "created.json"
     if not created_path.is_file():
         return []
@@ -36,4 +54,5 @@ def remove_created_from_backup(backup_dir, docroot):
         elif path.is_dir():
             shutil.rmtree(path, ignore_errors=True)
             notes.append("removed created dir {0}".format(rel))
+    _prune_empty_parents(docroot, rels, notes)
     return notes

@@ -25,7 +25,10 @@ SHARED_DOCROOT_REL = Path("pages/home/_shared")
 TEMPLATE_REL = Path("template/page/home")
 LEGACY_REL = TEMPLATE_REL / "lireate-home-legacy.inc.php"
 MAIN_REL = Path("template/main.php")
+HOME_V2_FLAG_REL = Path("template/page/home/lireate-home-v2.on")
+HOME_V2_FLAG_DISABLED_SUFFIX = ".lireate-light-v4-disabled"
 FORBIDDEN_TOUCH = {".htaccess"}
+LIREATE_HOME_WRAPPER_RE = re.compile(r'<div[^>]*\bid=["\']lireate-home["\'][^>]*>', re.IGNORECASE)
 PAGE_CONTAINER_RE = re.compile(r"<div\s+class=\"page_container\">", re.IGNORECASE)
 HOME_COND_RE = re.compile(r"<\?php\s+if\s*\(\s*\$temp\['page'\]\s*==\s*'home'\s*\)\s*\{", re.IGNORECASE)
 MAIN_SCREEN_HERO_RE = re.compile(
@@ -215,14 +218,80 @@ def _page_container_home_hook():
     ) % _replacement_block()
 
 
+def _strip_patched_section(text):
+    span = _span_patched_section(text)
+    if not span:
+        return text, False
+    return text[: span[0]] + text[span[1] :], True
+
+
+def _home_light_v4_after_wrapper_insert(text):
+    m = LIREATE_HOME_WRAPPER_RE.search(text)
+    if not m:
+        return None
+    end = _index_after_balanced_div(text, m.start())
+    if end is None:
+        return None
+    text, _ = _strip_patched_section(text)
+    block = "<?php if($temp['page']=='home'){ ?>\n" + _replacement_block() + "<?php } ?>\n"
+    return text[:end] + block + text[end:], True, "inserted home Light V4 after #lireate-home wrapper"
+
+
+def disable_home_v2_flag(docroot, backup_dir):
+    docroot = Path(docroot)
+    flag = docroot / HOME_V2_FLAG_REL
+    if not flag.is_file():
+        return None
+    backup_dir = Path(backup_dir)
+    bak = backup_dir / HOME_V2_FLAG_REL
+    bak.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(flag, bak)
+    disabled = flag.with_name(flag.name + HOME_V2_FLAG_DISABLED_SUFFIX)
+    if disabled.is_file():
+        disabled.unlink()
+    flag.rename(disabled)
+    return HOME_V2_FLAG_REL
+
+
+def restore_home_v2_flag(docroot, backup_dir):
+    docroot = Path(docroot)
+    disabled = docroot / HOME_V2_FLAG_REL.with_name(
+        HOME_V2_FLAG_REL.name + HOME_V2_FLAG_DISABLED_SUFFIX
+    )
+    flag = docroot / HOME_V2_FLAG_REL
+    bak = Path(backup_dir) / HOME_V2_FLAG_REL
+    if bak.is_file():
+        flag.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(bak, flag)
+        if disabled.is_file():
+            disabled.unlink()
+        return HOME_V2_FLAG_REL
+    if disabled.is_file():
+        disabled.rename(flag)
+        return HOME_V2_FLAG_REL
+    return None
+
+
 def patch_home_main_content(text):
     if INSTALL_MARKER in text:
+        m = LIREATE_HOME_WRAPPER_RE.search(text)
+        if m:
+            wrap_end = _index_after_balanced_div(text, m.start())
+            span = _span_patched_section(text)
+            if wrap_end is not None and span and span[0] > m.start() and span[1] <= wrap_end:
+                moved = _home_light_v4_after_wrapper_insert(text)
+                if moved is not None:
+                    return moved
         span = _span_patched_section(text)
         if span:
             repl = _replacement_block()
             new_text = text[: span[0]] + repl + text[span[1] :]
             return new_text, new_text != text, "refreshed existing home include block"
         return text, False, "already patched (marker present)"
+
+    outside = _home_light_v4_after_wrapper_insert(text)
+    if outside is not None:
+        return outside
 
     hero_span = _span_main_hero_block(text)
     if hero_span:
@@ -338,7 +407,7 @@ def apply_home_patch(docroot, template_path, php_bin=None, skip_lint=False):
     return True, notes, []
 
 
-def apply_home_install(office_repo, docroot, php_bin=None):
+def apply_home_install(office_repo, docroot, php_bin=None, backup_dir=None):
     office_repo = Path(office_repo).resolve()
     docroot = Path(docroot).resolve()
     pairs = copy_plan(office_repo)
@@ -346,6 +415,15 @@ def apply_home_install(office_repo, docroot, php_bin=None):
     validate_home_patch_planned(docroot, template, php_bin=php_bin)
     created = apply_copies(office_repo, docroot, pairs)
     notes = []
+    if backup_dir is not None:
+        flag_rel = disable_home_v2_flag(docroot, backup_dir)
+        if flag_rel is not None:
+            notes.append("home: disabled legacy flag {0}".format(flag_rel))
+            created.append(
+                HOME_V2_FLAG_REL.with_name(
+                    HOME_V2_FLAG_REL.name + HOME_V2_FLAG_DISABLED_SUFFIX
+                )
+            )
     if template is not None:
         _changed, patch_notes, patch_created = apply_home_patch(
             docroot, template, php_bin=php_bin, skip_lint=True
@@ -373,27 +451,9 @@ def write_created_manifest(backup_dir, created_rels):
 
 
 def remove_created_files(docroot, backup_dir):
-    notes = []
-    created = Path(backup_dir) / "created.json"
-    if not created.is_file():
-        return notes
-    try:
-        payload = json.loads(created.read_text(encoding="utf-8"))
-        rels = payload.get("created", payload if isinstance(payload, list) else [])
-    except ValueError:
-        return notes
-    docroot = Path(docroot)
-    import shutil
+    import lireate_install_rollback_lib as rollback_lib
 
-    for rel in sorted(rels, key=lambda r: len(str(r)), reverse=True):
-        path = docroot / rel
-        if path.is_file():
-            path.unlink()
-            notes.append("removed created {0}".format(rel))
-        elif path.is_dir():
-            shutil.rmtree(path, ignore_errors=True)
-            notes.append("removed created dir {0}".format(rel))
-    return notes
+    return rollback_lib.remove_created_from_backup(backup_dir, docroot)
 
 
 def backup_files(backup_dir, docroot, rel_paths):

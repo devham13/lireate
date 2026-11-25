@@ -19,6 +19,21 @@ def resolve_php_cgi_bin():
     ):
         if candidate and Path(candidate).is_file():
             return candidate
+    which_php = shutil.which("php")
+    if which_php:
+        try:
+            proc = subprocess.run(
+                [which_php, "-v"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                timeout=15,
+                check=False,
+            )
+            out = (proc.stdout or b"").decode("utf-8", errors="replace")
+            if "5.6" in out:
+                return which_php
+        except (OSError, subprocess.TimeoutExpired):
+            pass
     return None
 
 

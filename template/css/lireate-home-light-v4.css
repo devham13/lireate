@@ -206,6 +206,13 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-card:hover .
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .photo-shine{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1s ease}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-card:hover .photo-shine{transform:translateX(140%)}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-mini{border-top:3px solid var(--brand-red)}
+@media (min-width: 1101px) {
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right{padding-bottom:12px}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-mini{
+  position:relative;right:auto;bottom:auto;margin:18px 0 0;max-width:none;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-info .role{margin-bottom:18px;padding-right:0}
+}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .badge{color:var(--blue);border-color:#dae6f8;background:#f4f8ff}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .btn{overflow:hidden;position:relative;isolation:isolate;transition:transform .32s var(--motion-ease), background .28s, color .28s, box-shadow .32s}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .btn.primary{background:var(--brand-red);border-color:var(--brand-red);color:white}
@@ -397,10 +404,17 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-c
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card:hover .link-arrow{transform:translateX(5px)}
 @media(prefers-reduced-motion:reduce){body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card, body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card::before, body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card::after, body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services .service-card .link-arrow{transition:none!important}}
 
-/* CMS shell: hide legacy home hero when Light V4 root is active */
-body.lireate-home-light-v4.lireate-theme-light-v4:has(.lh4-root) .main-screen.lireate-hero-v4,
-body.lireate-home-light-v4.lireate-theme-light-v4:has(.lh4-root) #lireate-home {
+/* CMS shell: hide legacy hero inside #lireate-home, keep Light V4 section visible */
+body.lireate-home-light-v4.lireate-theme-light-v4:has(.lh4-root) #lireate-home .main-screen.lireate-hero-v4 {
   display: none !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4:has(.lh4-root) #lireate-home > .page_container:empty,
+body.lireate-home-light-v4.lireate-theme-light-v4:has(.lh4-root) #lireate-home .page_container:not(:has(#lireate-home-light-v4-wrap)) {
+  display: none !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 #lireate-home-light-v4-wrap,
+body.lireate-home-light-v4.lireate-theme-light-v4 section#lireate-home-light-v4-wrap {
+  display: block !important;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4:has(.lh4-root) .page_container {
   background: transparent !important;

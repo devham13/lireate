@@ -1,117 +1,99 @@
-/* Light V4 overlay for legacy portfolio CMS markup (preview + post-install). */
+/* Light V4 overlay for legacy portfolio CMS markup (preview + CMS). */
 body.lireate-portfolio-preview,
-body.lireate-theme-light-v4.lireate-portfolio-preview {
+body.lireate-theme-light-v4.lireate-portfolio-preview,
+body.lireate-theme-light-v4 {
   background: #fff !important;
   color: #1f212c !important;
 }
-body.lireate-portfolio-preview .page_container {
+body.lireate-portfolio-preview .page_container,
+body.lireate-theme-light-v4 .page_container {
   padding: 0 !important;
   background: #fff !important;
 }
-body.lireate-portfolio-preview .sectionPadding {
+body.lireate-portfolio-preview .sectionPadding,
+body.lireate-theme-light-v4 .sectionPadding {
   background: #fff !important;
   color: #1f212c !important;
 }
 body.lireate-portfolio-preview h1,
 body.lireate-portfolio-preview h2,
-body.lireate-portfolio-preview h3 {
+body.lireate-portfolio-preview h3,
+body.lireate-theme-light-v4 h1,
+body.lireate-theme-light-v4 h2,
+body.lireate-theme-light-v4 h3 {
   color: #1f212c !important;
 }
 body.lireate-portfolio-preview p,
-body.lireate-portfolio-preview li {
+body.lireate-portfolio-preview li,
+body.lireate-theme-light-v4 #portfolio p,
+body.lireate-theme-light-v4 #face p,
+body.lireate-theme-light-v4 #portfolio li {
   color: #52637b !important;
 }
-body.lireate-portfolio-preview a {
+body.lireate-portfolio-preview a,
+body.lireate-theme-light-v4 #portfolio a,
+body.lireate-theme-light-v4 #face a {
   color: #195acb !important;
 }
 body.lireate-portfolio-preview,
 body.lireate-portfolio-preview .page_container,
-body.lireate-portfolio-preview .sectionPadding {
+body.lireate-portfolio-preview .sectionPadding,
+body.lireate-theme-light-v4 .sectionPadding {
   font-family: Manrope, "Open Sans", sans-serif !important;
 }
-body.lireate-portfolio-preview .lx-pf-light-head {
-  max-width: 1056px;
-  margin: 24px auto 8px;
-  padding: 0 16px;
-  font-family: Manrope, sans-serif;
-}
-body.lireate-portfolio-preview .lx-pf-light-head h1 {
-  margin: 0 0 8px;
-  font-size: clamp(28px, 3vw, 36px);
-  color: #1f212c !important;
-}
-body.lireate-portfolio-preview .lx-pf-light-head p {
-  margin: 0;
-  color: #52637b !important;
-}
-body.lireate-portfolio-preview .region_list {
-  max-width: 1056px;
-  margin: 0 auto;
-  padding: 0 16px 32px;
-}
-body.lireate-portfolio-preview .region_title {
-  font-weight: 800;
-  font-size: 18px;
-  margin: 24px 0 10px;
-  color: #1f212c !important;
-}
-body.lireate-portfolio-preview .city_button {
-  display: block !important;
-  font-weight: 700;
-  font-size: 15px;
-  margin: 14px 0 8px;
-  color: #1f212c !important;
-}
-body.lireate-portfolio-preview .trade_mark_box {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-  margin: 0 0 16px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  box-shadow: none;
-}
-body.lireate-portfolio-preview .trade_mark_box_close {
-  display: none !important;
-}
-body.lireate-portfolio-preview .trade_mark_link {
-  display: block;
-  border: 1px solid #dce8f7;
-  border-radius: 14px;
-  padding: 14px 16px;
-  background: #f7fbff;
-  color: #1f212c !important;
-  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06);
-  font-weight: 600;
-  margin: 0 !important;
-}
-body.lireate-portfolio-preview .lx-pf-cert {
-  grid-column: 1 / -1;
-  margin: -4px 0 8px;
-  font-size: 13px;
-  color: #52637b !important;
-}
-body.lireate-portfolio-preview #portfolio .contentBox {
+body.lireate-portfolio-preview #portfolio .contentBox,
+body.lireate-theme-light-v4 #portfolio .contentBox {
   height: auto !important;
-  min-height: 280px;
+  min-height: 280px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-content: flex-start !important;
 }
-body.lireate-portfolio-preview #face .titleDesc span {
+body.lireate-portfolio-preview #portfolio .region_list,
+body.lireate-theme-light-v4 #portfolio .region_list {
+  width: 25% !important;
+  max-width: none !important;
+  flex: 0 0 25% !important;
+  margin: 0 0 24px !important;
+  padding-right: 24px !important;
+  box-sizing: border-box !important;
+}
+body.lireate-portfolio-preview #face .titleDesc span,
+body.lireate-theme-light-v4 #face .titleDesc span {
   color: #e32020 !important;
   font-weight: 700 !important;
 }
-body.lireate-portfolio-preview .lx-pf-cases {
+body.lireate-portfolio-preview .lx-pf-cases,
+body.lireate-theme-light-v4 .lx-pf-cases {
   background: #f7fbff !important;
   border: 1px solid #dce8f7 !important;
 }
-body.lireate-portfolio-preview .lx-pf-cases-title {
+body.lireate-portfolio-preview .lx-pf-cases-title,
+body.lireate-theme-light-v4 .lx-pf-cases-title {
   color: #1f212c !important;
 }
-body.lireate-portfolio-preview .lx-pf-cases li {
+body.lireate-portfolio-preview .lx-pf-cases li,
+body.lireate-theme-light-v4 .lx-pf-cases li {
   background: #fff !important;
   border-color: #dce8f7 !important;
   color: #1f212c !important;
 }
-body.lireate-portfolio-preview .lx-pf-cases li a {
+body.lireate-portfolio-preview .lx-pf-cases li a,
+body.lireate-theme-light-v4 .lx-pf-cases li a {
   color: #195acb !important;
+}
+@media (max-width: 960px) {
+  body.lireate-portfolio-preview #portfolio .region_list,
+  body.lireate-theme-light-v4 #portfolio .region_list {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+  }
+}
+@media (max-width: 520px) {
+  body.lireate-portfolio-preview #portfolio .region_list,
+  body.lireate-theme-light-v4 #portfolio .region_list {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+  }
 }

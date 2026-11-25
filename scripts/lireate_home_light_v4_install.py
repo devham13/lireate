@@ -71,7 +71,9 @@ def cmd_apply(office_repo, docroot, backups_root):
         rels.append(template.relative_to(docroot))
     lib.validate_home_patch_planned(docroot, template, php_bin=php_bin)
     lib.backup_files(backup_dir, docroot, rels)
-    created, notes, _tpl = lib.apply_home_install(office_repo, docroot, php_bin=php_bin)
+    created, notes, _tpl = lib.apply_home_install(
+        office_repo, docroot, php_bin=php_bin, backup_dir=backup_dir
+    )
     lib.write_created_manifest(backup_dir, created)
     print("backup: {0}".format(backup_dir))
     if created:
@@ -97,7 +99,10 @@ def cmd_rollback(docroot, backups_root, backup_id):
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(str(src), str(dst))
             print("restored {0}".format(rel))
-    notes = lib.remove_created_files(docroot, backup_dir)
+    import lireate_install_rollback_lib as rollback_lib
+
+    lib.restore_home_v2_flag(docroot, backup_dir)
+    notes = rollback_lib.remove_created_from_backup(backup_dir, docroot)
     for line in notes:
         print(line)
     print("rollback restored backup {0}".format(backup_id))

@@ -25,10 +25,20 @@
 | `after-portfolio-desktop.png`, `after-portfolio-mobile.png` | Портфолио Light V4 | 1440 / **390** |
 | `after-reviews-desktop.png` | Отзывы Light V4 | 1440 |
 
-Превью: `LIREATE_PUBLIC_SITE_URL=https://<prod-host> php -S 127.0.0.1:19080 -t . scripts/light_v4_screenshot_router.php`  
-Захват: `LIREATE_PREVIEW_BASE=http://127.0.0.1:19080 LIREATE_PUBLIC_SITE_URL=https://<prod-host> node scripts/capture_light_v4_screenshots.mjs`
+**Круг 13 — только реальный CMS-рендер для after-* (не `_preview`, не cms-shell):**
 
-Портфолио/отзывы в превью: `template/page/portfolio.php` / `reviews.php` (не `live-*-fragment.html`). Портфолио: счётчики 32/68/1565 и блок «Кейсы с видеоотзывами» из шаблона + fixture.
+1. `python3 scripts/lireate_cms_fixture_docroot.py` — DOCROOT с `index.php` + `template/main.php`, MySQL `lireate_ci` (`scripts/fixtures/cms-docroot/schema.sql`, нейтральные строки без маркеров владельца).
+2. Установщики: `lireate_home_light_v4_install.py --apply`, overlay, PF, те же файлы что `blog --apply` (без PHP 5.6 gate — gate в CI).
+3. Сервер: `LIREATE_FIXTURE_DOCROOT=… php -S 127.0.0.1:19080 -t $DOCROOT scripts/light_v4_main_render_router.php`
+4. Захват: `bash scripts/run_light_v4_fixture_screenshots.sh` (before-* — живой `LIREATE_PUBLIC_SITE_URL`; after CMS — fixture; after tm/patent/service — `pages/services/…/index.php` через тот же router).
+
+| Скриншот after-* | Рендер | Данные |
+| --- | --- | --- |
+| `after-home-cms-*` | fixture `index.php` + патченный `main.php` | fixture MySQL + home V4 |
+| `after-portfolio-*`, `after-reviews-*`, `after-team-*`, `after-blog-*` | fixture `main.php` → `template/page/*.php` | fixture MySQL (нейтральные «Клиент А…») |
+| `after-tm-*`, `after-service-*`, `after-patent-*` | репозиторий `pages/services/…/index.php` | статика услуги (без БД) |
+
+Скриншоты на **fixture-данных** в отчёте владельцу как эталон live **не показываем** (другой объём портфолио/отзывов); в репозитории — для регрессии CI/агента.
 
 ### `git show --stat f61597f -- docs/light-v4-screenshots`
 
@@ -82,10 +92,10 @@ python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --apply
 Откат:
 
 ```bash
-python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --rollback <YYYYMMDD-HHMMSS>
+python3 scripts/lireate_home_light_v4_install.py --docroot "$DOCROOT" --rollback <YYYYMMDDTHHMMSSZ>
 ```
 
-`created.json` на откате удаляет новые файлы (в т.ч. пустой `pages/home/_shared/`).
+Пример id бэкапа главной: `20261125T165611Z`. `created.json` на откате удаляет новые файлы и **пустые** родительские каталоги (`pages/_shared`, `pages/home`, `pages/home/_shared`).
 
 ### 2. `scripts/lireate_cms_light_v4_overlay_install.py`
 
@@ -136,7 +146,12 @@ PF: `--rollback <YYYYMMDD-HHMMSS>` → `~/lireate-autopub/backups/hosting-pf/pf-
 
 - Убран `static` в `lireate_blog_render_service_footer()` — batch render gate больше не теряет `lx-site-footer` на 2–5 статьях.
 - Статьи: `lireate-theme-light-v4` на `body` (как список), контраст MAX в боковой колонке.
-- CI: `blog --apply` CGI gate на PHP 5.6 (workflow `php56-compat.yml`).
+
+### Круг 13 (реальный main.php + CI fixture)
+
+- **CI:** MySQL 5.7 service, `php:5.6` + `mysqli`, `scripts/lireate_blog_ci_fixture_apply.py` — полный `blog --apply` на fixture DOCROOT + CGI gate (`LIREATE_PHP_CGI_BIN` / `php` из setup-php 5.6).
+- **Главная:** Light V4 **вне** `#lireate-home`; legacy hero скрывается точечно; при `--apply` флаг `lireate-home-v2.on` → `*.lireate-light-v4-disabled`, body без `lireate-home-v2`.
+- **Статьи / PF:** расширенные overrides Light V4 для `lireate-legacy-article-lu` + `lireate-cms-page-dark`; портфолио/отзывы — селекторы `body.lireate-theme-light-v4`, flex сетки.
 
 ### Услуги (~20 slug) — хостинг
 

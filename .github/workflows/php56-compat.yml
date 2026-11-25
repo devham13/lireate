@@ -8,6 +8,19 @@ on:
 jobs:
   php56:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: lireate_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -56,20 +69,20 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "5.6"
+          extensions: mysqli
       - name: PHP syntax lint (pages + template, PHP 5.6)
         run: |
           set -euo pipefail
           while IFS= read -r -d '' f; do
             php -l "$f"
           done < <(find pages template -name '*.php' -print0)
-      - name: blog --apply CGI gate (PHP 5.6 docroot slice)
+      - name: Install mysql client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+      - name: blog --apply on fixture docroot (PHP 5.6 CGI)
         working-directory: scripts
-        run: |
-          python3 -c "
-          import sys
-          from pathlib import Path
-          from lireate_blog_cgi_gate import run_php_cgi_live_gate_diag
-          repo = Path('..').resolve()
-          rc = run_php_cgi_live_gate_diag(repo, repo)
-          sys.exit(rc)
-          "
+        env:
+          LIREATE_MYSQL_HOST: 127.0.0.1
+          LIREATE_MYSQL_USER: root
+          LIREATE_MYSQL_PASSWORD: root
+          LIREATE_MYSQL_DATABASE: lireate_ci
+        run: python3 lireate_blog_ci_fixture_apply.py
