@@ -28,10 +28,6 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="lireate-blog-ci-fixture-"))
     try:
         docroot = build_fixture_docroot(tmp / "docroot", office_repo=REPO, mysql=True)
-        list_tpl = REPO / "scripts" / "fixtures" / "cms-news-list-template.php"
-        import lireate_blog_install_lib as blog_lib  # noqa: E402
-
-        blog_lib.apply_blog_install_to_docroot(REPO, docroot)
         autopub = tmp / "autopub"
         autopub.mkdir(parents=True, exist_ok=True)
         env_path = autopub / ".env"
