@@ -44,6 +44,7 @@ def main():
         env["LIREATE_DOCROOT"] = str(docroot)
         env["LIREATE_AUTOPUB_HOME"] = str(autopub)
         env["LIREATE_OFFICE_REPO"] = str(REPO)
+        env["LIREATE_BLOG_SKIP_PREAPPLY_GATE"] = "1"
         subprocess.check_call(
             [sys.executable, str(SCRIPT_DIR / "lireate_blog_install.py"), "--apply"],
             env=env,
