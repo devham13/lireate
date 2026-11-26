@@ -6,7 +6,7 @@ if (!function_exists('lireate_cms_light_v4_print_css')) {
 function lireate_cms_light_v4_print_css($extra_hrefs)
 {
     static $printed = array();
-    $v = '20261126r21';
+    $v = '20261126r22';
     if (defined('LIREATE_LIGHT_V4_ASSET_VERSION')) {
         $v = LIREATE_LIGHT_V4_ASSET_VERSION;
     }

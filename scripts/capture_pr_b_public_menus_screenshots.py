@@ -12,42 +12,38 @@ OUT = REPO / "docs/screenshots/pr-b-public-menus"
 PORT = 8894
 BASE = "http://127.0.0.1:{0}".format(PORT)
 
-SHOTS = (
-    ("registraciya-service-1440.png", "/tm", 1440),
-    ("registraciya-service-390.png", "/tm", 390),
-    ("blog-article-1440.png", "/blog-article", 1440),
-    ("patent-poshliny-1440.png", "/patent", 1440),
-    ("mktu-after-1440.png", "/pages/mktu/_preview/index.php", 1440),
-    ("mktu-after-390.png", "/pages/mktu/_preview/index.php", 390),
-    ("uslugi-after-1440.png", "/template/page/uslugi/_preview/index.php", 1440),
-    ("uslugi-after-390.png", "/template/page/uslugi/_preview/index.php", 390),
-    ("contacts-after-1440.png", "/pages/kontaktyi/_preview/index.php", 1440),
-    ("contacts-after-390.png", "/pages/kontaktyi/_preview/index.php", 390),
-    ("partners-after-1440.png", "/pages/partners/_preview/index.php", 1440),
-    ("docs-after-1440.png", "/pages/docs/_preview/index.php", 1440),
+# (filename, path, widths)
+PAGES = (
+    ("home", "/", (1440, 390)),
+    ("uslugi", "/uslugi", (1440, 390)),
+    ("mktu", "/mktu", (1440, 390)),
+    ("partners", "/partners", (1440, 390)),
+    ("docs", "/docs", (1440, 390)),
+    ("contacts", "/contacts", (1440, 390)),
+    ("team", "/team", (1440, 390)),
+    ("o-kompanii", "/o_kompanii", (1440, 390)),
+    ("blog-list", "/blog", (1440, 390)),
+    ("blog-article", "/blog-article", (1440, 390)),
+    ("registraciya-tovarnogo-znaka", "/tm", (1440, 390)),
+    ("patent-poshliny", "/patent", (1440, 390)),
+    ("findtz", "/findtz", (1440, 390)),
+    ("prodlenie", "/service", (1440, 390)),
 )
 
 
 def start_server(cwd):
     router = cwd / "scripts" / "light_v4_screenshot_router.php"
-    if not router.is_file():
-        router = cwd / "pages" / "home" / "_preview" / "router.php"
     proc = subprocess.Popen(
-        [
-            "php",
-            "-S",
-            "127.0.0.1:{0}".format(PORT),
-            str(router),
-        ],
+        ["php", "-S", "127.0.0.1:{0}".format(PORT), str(router)],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         cwd=str(cwd),
     )
-    time.sleep(0.7)
+    time.sleep(0.8)
     return proc
 
 
-def shot(page, url, path, width, height=900):
+def shot(page, url, path, width, height):
     page.set_viewport_size({"width": width, "height": height})
     page.goto(url, wait_until="networkidle", timeout=120000)
     page.evaluate(
@@ -101,9 +97,12 @@ def main():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page()
-            for name, rel, width in SHOTS:
-                height = 1200 if width <= 480 else 900
-                shot(page, BASE + rel, OUT / name, width, height)
+            for slug, rel, widths in PAGES:
+                for w in widths:
+                    height = 844 if w <= 480 else 900
+                    name = "{0}-{1}.png".format(slug, w)
+                    shot(page, BASE + rel, OUT / name, w, height)
+                    print("OK", name)
             browser.close()
     finally:
         proc.terminate()

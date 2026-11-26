@@ -31,12 +31,14 @@ define('LIREATE_BLOG_PUBLIC_ORIGIN', 'https://lireate.ru'); // pragma: allowlist
 <?php
 require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 lireate_public_cms_include_chrome();
+lireate_public_cms_content_open();
 define('LIREATE_BLOG_ASSETS_BASE', $assets_base);
 require_once dirname(__DIR__) . '/_shared/lireate-blog-layout.inc.php';
 $footer = dirname(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';
 if (is_file($footer)) {
     include $footer;
 }
+lireate_public_cms_content_close();
 ?>
 </body>
 </html>

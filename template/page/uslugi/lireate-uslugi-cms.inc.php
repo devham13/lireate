@@ -2,7 +2,7 @@
 require_once __DIR__ . '/lireate-uslugi-lib.php';
 $lu_groups = lireate_uslugi_groups();
 $lu_v = LIREATE_USLUGI_VERSION;
-$lu_lv4 = defined('LIREATE_LIGHT_V4_ASSET_VERSION') ? LIREATE_LIGHT_V4_ASSET_VERSION : '20261126r21';
+$lu_lv4 = defined('LIREATE_LIGHT_V4_ASSET_VERSION') ? LIREATE_LIGHT_V4_ASSET_VERSION : '20261126r22';
 $lu_m = lireate_uslugi_messengers();
 $lu_count = 0;
 foreach ($lu_groups as $g) { $lu_count += count($g['cards']); }

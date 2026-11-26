@@ -9,7 +9,10 @@ $_SERVER['DOCUMENT_ROOT'] = $repo;
 <?php
 require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 lireate_public_cms_include_chrome();
+lireate_public_cms_content_open();
+lireate_public_cms_include_subnav();
 require $repo . '/template/page/partners/lireate-partners-cms.inc.php';
+lireate_public_cms_content_close();
 ?>
 </body>
 </html>

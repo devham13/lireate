@@ -23,8 +23,10 @@ body.lireate-theme-light-v4 .lh4-subnav-links {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 14px;
+  flex: 1 1 auto;
+  min-width: 0;
   font-family: Manrope, "Open Sans", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.35;
 }
@@ -41,11 +43,12 @@ body.lireate-theme-light-v4 .lh4-subnav-right {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
 }
 body.lireate-theme-light-v4 .lh4-subnav-phone {
   font-family: Manrope, "Open Sans", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: #0f4db8;
   text-decoration: none;
@@ -57,7 +60,7 @@ body.lireate-theme-light-v4 .lh4-subnav-phone:focus-visible {
 }
 body.lireate-theme-light-v4 .lh4-subnav-cta.btn.primary {
   font-family: Manrope, "Open Sans", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   padding: 8px 14px;
   white-space: nowrap;

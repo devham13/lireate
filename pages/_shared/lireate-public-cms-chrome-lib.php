@@ -9,7 +9,7 @@ if (!function_exists('lireate_public_cms_chrome_version')) {
         if (defined('LIREATE_LIGHT_V4_ASSET_VERSION')) {
             return LIREATE_LIGHT_V4_ASSET_VERSION;
         }
-        return '20261126r21';
+        return '20261126r22';
     }
 }
 
@@ -43,6 +43,8 @@ if (!function_exists('lireate_public_cms_include_chrome')) {
     {
         $dir = lireate_public_cms_chrome_shared_dir();
         $v = lireate_public_cms_chrome_version();
+        echo '<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v='
+            . lireate_public_cms_chrome_h($v) . '">' . "\n";
         echo '<link rel="stylesheet" href="/template/css/lireate-public-cms-chrome.css?v='
             . lireate_public_cms_chrome_h($v) . '">' . "\n";
         echo '<script>if(document.body){document.body.classList.add("lireate-public-cms-chrome");}</script>' . "\n";

@@ -134,7 +134,7 @@ function lireate_uslugi_icon($name) {
 /** Подвал хаба /uslugi/ (Light V4 при lireate-theme-light-v4). */
 function lireate_uslugi_render_footer() {
     $footer = $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-site-footer.inc.php';
-    $lv4 = defined('LIREATE_LIGHT_V4_ASSET_VERSION') ? LIREATE_LIGHT_V4_ASSET_VERSION : '20261126r21';
+    $lv4 = defined('LIREATE_LIGHT_V4_ASSET_VERSION') ? LIREATE_LIGHT_V4_ASSET_VERSION : '20261126r22';
     $css_rel = '/template/page/news/lireate-blog-footer-light-v4.css';
     $css = $_SERVER['DOCUMENT_ROOT'] . $css_rel;
     if (!is_file($css)) {

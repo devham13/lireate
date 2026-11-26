@@ -1,7 +1,7 @@
 <?php
-$repo = dirname(__DIR__, 3);
+$repo = dirname(dirname(dirname(__DIR__)));
 $_SERVER['DOCUMENT_ROOT'] = $repo;
-$v = '20261126r21';
+$v = '20261126r22';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -11,17 +11,14 @@ $v = '20261126r21';
   <title>МКТУ — preview Light V4</title>
   <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="/template/css/lireate-mktu-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
-  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="/template/css/lireate-global-subnav-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
 </head>
 <body class="cms-default lireate-mktu-lu-body lireate-theme-light-v4 lireate-cms-page-dark lireate-screenshot-capture">
 <?php
 require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 lireate_public_cms_include_chrome();
-?>
-<?php
-require_once $repo . '/pages/_shared/lireate-lh4-subnav-lib.php';
-lireate_lh4_include_subnav();
+lireate_public_cms_content_open();
+lireate_public_cms_include_subnav();
 ?>
 <section class="mktu_head">
   <div class="container content">
@@ -36,5 +33,6 @@ lireate_lh4_include_subnav();
     <p>Научные и технологические услуги; разработка ПО.</p>
   </div>
 </section>
+<?php lireate_public_cms_content_close(); ?>
 </body>
 </html>

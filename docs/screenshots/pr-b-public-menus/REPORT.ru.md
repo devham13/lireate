@@ -1,46 +1,43 @@
-# PR B — публичные меню и Light V4 (Yura)
+# PR B — публичные меню и Light V4
 
-Ветка: `cursor/light-v4-menus-shell-b68f` (база `main`). **Merge: не выполнять** — PR описание для родительского агента.
+Ветка: `cursor/light-v4-menus-shell-b68f` (база `main`). **Merge: не выполнять.**
 
-## Скриншоты (preview)
+## Изменения (r22 chrome)
 
-Генерация: `python3 scripts/capture_pr_b_public_menus_screenshots.py` (viewport, scrollY=0).
+- Светлый единый `#leftSideBar` через `lireate-public-cms-chrome.css` + `lireate-cms-pages-light-v4.css` (иконки соцсетей 20px, без огромного Telegram).
+- Колонка контента `.lireate-public-cms-content` с `margin-left:280px` (≥1151px); subnav внутри колонки, справа телефон и «Оставить заявку».
+- Превью страниц обёрнуты в `content_open` + `subnav`.
+- Версия ассетов: `LIGHT_V4_ASSET_VERSION=20261126r22`.
 
-| Страница | 1440 | 390 |
+## Скриншоты (scrollY=0)
+
+Каталог: `docs/screenshots/pr-b-public-menus/`. Генерация: `python3 scripts/capture_pr_b_public_menus_screenshots.py`.
+
+| Страница | 1440×900 | 390×844 |
 |---|---|---|
-| Услуга (регистрация ТЗ) | `registraciya-service-1440.png` | `registraciya-service-390.png` |
-| Статья блога | `blog-article-1440.png` | — |
-| Патентные пошлины | `patent-poshliny-1440.png` | — |
-| `/uslugi/` (hub) | `uslugi-after-1440.png` (+ legacy `uslugi-before-*`) | `uslugi-after-390.png` |
-| `/mktu` | `mktu-before-1440.png` (live) / `mktu-after-1440.png` | `mktu-after-390.png` |
-| Контакты | `contacts-after-1440.png` | `contacts-after-390.png` |
-| Партнёры | `partners-after-1440.png` | — |
-| Документы | `docs-after-1440.png` | — |
+| Главная `/` | `home-1440.png` | `home-390.png` |
+| `/uslugi/` | `uslugi-1440.png` | `uslugi-390.png` |
+| `/mktu` | `mktu-1440.png` | `mktu-390.png` |
+| `/partners` | `partners-1440.png` | `partners-390.png` |
+| `/docs` | `docs-1440.png` | `docs-390.png` |
+| `/contacts/` | `contacts-1440.png` | `contacts-390.png` |
+| `/team` | `team-1440.png` | `team-390.png` |
+| `/o_kompanii` | `o-kompanii-1440.png` | `o-kompanii-390.png` |
+| Блог список | `blog-list-1440.png` | `blog-list-390.png` |
+| Статья блога | `blog-article-1440.png` | `blog-article-390.png` |
+| Регистрация ТЗ | `registraciya-tovarnogo-znaka-1440.png` | `registraciya-tovarnogo-znaka-390.png` |
+| Пошлины (патент) | `patent-poshliny-1440.png` | `patent-poshliny-390.png` |
+| `/findtz/` | `findtz-1440.png` | `findtz-390.png` |
+| Продление | `prodlenie-1440.png` | `prodlenie-390.png` |
 
-Before `/uslugi/`: preview на `main` @ `1133b9b` (без `lh4-subnav`, без `lireate-theme-light-v4`). After: ветка PR B, `template/page/uslugi/_preview/index.php`.
+Дополнительно: `mktu-before-1440.png` (live).
 
-Источник after: `template/page/uslugi/_preview/index.php`, `pages/mktu/_preview/index.php`, Playwright + `php -S`.
+### Проверено визуально
 
-## Deploy (REG.RU docroot)
+- `/mktu`: заголовок не под сайдбаром; subnav с CTA; светлое меню.
+- Услуга: тот же светлый сайдбар, lh4-subnav + якорное lx-nav.
+- Иконки мессенджеров в сайдбаре одного размера.
 
-1. `git pull` merge PR в `main` (владелец / cron).
-2. `python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot "$LIREATE_DOCROOT" --apply` — global subnav, partners/docs/contacts/inc, uslugi tree, mktu CSS.
-3. `python3 scripts/lireate_mktu_light_v4_install.py --docroot "$LIREATE_DOCROOT" --apply` — патч `template/main.php` head для `/mktu` (маркер `lireate-mktu-light-v4-install-head:v1`).
-4. `python3 scripts/lireate_menu_remove_oplata.py --docroot "$LIREATE_DOCROOT" --apply` — убрать «Оплата услуг» (Tochka) из sidebar и дублей; **data/db.php не трогается**.
-5. Очистить CDN/браузерный кэш CSS (`20261126r21`).
+## Deploy / rollback
 
-## Rollback
-
-1. Overlay: `python3 scripts/lireate_cms_light_v4_overlay_install.py --docroot ... --rollback <backup-id>` (каталог `~/lireate-autopub/backups/cms-overlay-…`).
-2. MKTU: восстановить `template/main.php` из бэкапа `mktu-light-v4-…` в том же каталоге backups.
-3. Menu oplata: восстановить затронутые PHP из бэкапа `menu-remove-oplata-…`.
-4. При необходимости откатить коммит в `main` и повторить overlay с предыдущей ревизией ассетов.
-
-## Блокеры
-
-- Нет SSH/FTP с Cloud Agent на прод (ожидаемый CRON/ручной apply Юры).
-- `lireate_mktu_light_v4_install` требует живого фрагмента `lireate_design_mktu_lu_head_v1` в `template/main.php` на хостинге.
-
-## Инвентаризация
-
-`docs/pr-b-public-menu-inventory.ru.md` — `python3 scripts/lireate_public_pages_menu_inventory.py`.
+См. предыдущие блоки overlay + `lireate_hosting_publish_service` (копирует `pages/_shared` chrome на docroot).

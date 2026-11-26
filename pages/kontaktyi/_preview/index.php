@@ -10,7 +10,10 @@ require_once $repo . '/template/page/kontaktyi/lireate-contacts-config.php';
 <?php
 require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 lireate_public_cms_include_chrome();
+lireate_public_cms_content_open();
+lireate_public_cms_include_subnav();
 require $repo . '/template/page/kontaktyi/lireate-contacts-cms.inc.php';
+lireate_public_cms_content_close();
 ?>
 </body>
 </html>
