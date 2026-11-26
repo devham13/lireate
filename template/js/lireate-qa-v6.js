@@ -79,13 +79,39 @@
     });
   }
   function covers(){
-     all(".lireate-blog-list-card-cover img, .lireate-blog-list-featured-cover img").forEach(function(img){
-       img.addEventListener("error",function(){
-         if(img.parentNode){img.parentNode.classList.add("lireate-blog-list-card-cover--fallback");}
+    // Two legacy templates coexist on /news:
+    // .lireate-blog-list-card-cover and .lireate-blog-list-card__img <picture>.
+    // Try the *real original upload* if a resize-cache URL is broken.
+    all(".lireate-blog-list-card-cover img, .lireate-blog-list-featured-cover img, .lireate-blog-list-card__img img").forEach(function(img){
+       if(img.dataset.lxqCoverChecked)return;
+       img.dataset.lxqCoverChecked="1";
+       var wrapping=img.closest(".lireate-blog-list-card-cover,.lireate-blog-list-featured-cover,.lireate-blog-list-card__img");
+       function fallback(){
          img.hidden=true;
-       },{once:true});
-       if(img.complete && img.naturalWidth===0)img.dispatchEvent(new Event("error"));
-     });
+         if(wrapping){wrapping.classList.add("lxq-cover-fallback");}
+       }
+       function recover(){
+         if(img.dataset.lxqCoverRetried){fallback();return;}
+         img.dataset.lxqCoverRetried="1";
+         var src=img.getAttribute("src")||"";
+         var match=src.match(/^\/upload\/resize_cache\/iblock\/([^/]+)\/[^/]+\/([^/?#]+\.(?:jpe?g|png|webp))(?:[?#]|$)/i);
+         if(!match){fallback();return;}
+         var original="/upload/iblock/"+match[1]+"/"+match[2];
+         var probe=new Image();
+         probe.onload=function(){
+           // Disable missing WebP resize srcset when the original is healthy.
+           var picture=img.closest("picture");
+           if(picture){all("source",picture).forEach(function(source){source.removeAttribute("srcset");});}
+           img.removeAttribute("srcset");
+           img.hidden=false;
+           img.src=original;
+         };
+         probe.onerror=fallback;
+         probe.src=original;
+       }
+       img.addEventListener("error",recover,{once:true});
+       if(img.complete&&img.naturalWidth===0)recover();
+    });
   }
   function start(){initFooter();initPatentTools();initMktu();patentClean();covers();}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});else start();
