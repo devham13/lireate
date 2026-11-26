@@ -97,48 +97,30 @@
    messengerPanel();
  }
  function detail(c){
-   var h1=one("main h1")||one(".page_container h1");
-   if(!h1)return;
-   var main=h1.closest("main")||one("main")||one(".page_container");
-   if(!main)return;
+   var original=one(".case-hero");
+   if(!original){return;}
    document.body.classList.add("lxpf5-detail","lxpf5-ready");
-   var hero=el("section","lxpf5-detail-hero");hero.setAttribute("aria-label","Кейс из портфолио Лирейт");
-   var copy=el("div","lxpf5-detail-copy");
-   var breadcrumbs=el("nav","lxpf5-breadcrumbs");breadcrumbs.setAttribute("aria-label","Хлебные крошки");
-   var home=el("a",null,"Главная");home.href="/";breadcrumbs.appendChild(home);
-   breadcrumbs.appendChild(el("span",null,"/"));
-   var portfolio=el("a",null,"Портфолио");portfolio.href="/portfolio/";breadcrumbs.appendChild(portfolio);
-   breadcrumbs.appendChild(el("span",null,"/ "+c[1]));
-   copy.appendChild(breadcrumbs);
-   copy.appendChild(el("span","lxpf5-eyebrow","LIREATE · РЕГИСТРАЦИЯ ТОВАРНОГО ЗНАКА"));
-   h1.classList.add("lxpf5-hero-title");copy.appendChild(h1);
-   var ps=main.querySelectorAll("p"),intro=null;
-   Array.prototype.forEach.call(ps,function(p){
-     if(!intro&&p.textContent.indexOf("Бюро «Лирейт» зарегистрировало")!==-1)intro=p;
-   });
-   if(intro){intro.classList.add("lxpf5-hero-lead");copy.appendChild(intro);}
-   else{copy.appendChild(el("p","lxpf5-hero-lead","Практика патентного бюро «Лирейт»: сопровождение регистрации товарных знаков."));}
-   var actions=el("div","lxpf5-hero-actions");
-   btn(actions,"https://t.me/lireate_patent","Обсудить свой знак ↗","lxpf5-red",true).setAttribute("data-lx-ym-goal","perehod_v_telegramm");
-   btn(actions,"/registraciya_tovarnogo_znaka/","Услуга регистрации","lxpf5-outline",false);
-   copy.appendChild(actions);
-   var mini=el("div","lxpf5-hero-fact");mini.appendChild(el("span",null,"Свидетельство ФИПС"));mini.appendChild(el("strong",null,"№ "+c[4]));mini.appendChild(el("span",null,c[2]));copy.appendChild(mini);
-   hero.appendChild(copy);
-   var card=el("figure","lxpf5-trademark-card");
-   var imageBox=el("div","lxpf5-trademark-photo");
-   var image=el("img");image.src=logo(c);image.alt="Зарегистрированный товарный знак «"+c[1]+"»";image.decoding="async";
-   image.onerror=function(){image.style.display="none";imageBox.appendChild(el("span","lxpf5-logo-fallback",c[1]));};
-   imageBox.appendChild(image);card.appendChild(imageBox);
-   var cap=el("figcaption","lxpf5-trademark-caption");
-   cap.appendChild(el("span","lxpf5-trademark-label","Кейс регистрации"));
-   cap.appendChild(el("strong",null,c[1]));
-   cap.appendChild(el("span",null,"Зарегистрированный товарный знак клиента · "+c[2]));
-   var link=el("a",null,"Другие работы Лирейт ↗");link.href="/portfolio/";cap.appendChild(link);
-   card.appendChild(cap);hero.appendChild(card);
-   // Place above case content but below existing breadcrumbs if they are first.
-   var first=main.firstElementChild;
-   if(first&&first.tagName==="NAV"&&/breadcrumb/i.test(first.className)){main.insertBefore(hero,first.nextSibling);}
-   else{main.insertBefore(hero,first);}
+   var container=one(".case-hero__container",original)||original;
+   var title=one(".case-hero__title",container);
+   var kicker=el("span","lxpf5-eyebrow lxpf5-case-kicker","LIREATE · ПОРТФОЛИО · ТОВАРНЫЕ ЗНАКИ");
+   if(title)container.insertBefore(kicker,title);
+   var figure=one(".case-hero__logo",container);
+   if(figure){
+      var figTitle=el("div","lxpf5-logo-caption");
+      figTitle.appendChild(el("span","lxpf5-trademark-label","Кейс регистрации"));
+      figTitle.appendChild(el("strong",null,c[1]));
+      figTitle.appendChild(el("span",null,"Зарегистрированный товарный знак · "+c[2]));
+      figure.appendChild(figTitle);
+   }
+   var actions=one(".case-hero__actions",container);
+   if(actions){
+     btn(actions,"https://t.me/lireate_patent","Написать в Telegram ↗","lxpf5-hero-msg",true).setAttribute("data-lx-ym-goal","perehod_v_telegramm");
+   }
+   var fact=el("div","lxpf5-hero-fact");
+   fact.appendChild(el("span",null,"Свидетельство ФИПС"));
+   fact.appendChild(el("strong",null,"№ "+c[4]));
+   fact.appendChild(el("span",null,c[2]));
+   container.appendChild(fact);
    messengerPanel();
  }
  function init(){
