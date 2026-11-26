@@ -11,9 +11,9 @@
     '/zashchita_avtorskih_prav':{photo:'specialist-copyright.webp',role:'Защита авторских прав',next:'Оценим доказательства авторства, нарушение и способы защиты ваших прав.'},
     '/dogovory':{photo:'specialist-registraciya.webp',role:'Договоры в сфере интеллектуальной собственности',next:'Опишите объект прав и задачу сделки — подберём подходящий вид договора.'}
   };
-  var CHEST={focus:'50% 20%',zoom:'1',origin:'50% 24%'};
+  var CHEST={focus:'50% 16%',zoom:'1',origin:'50% 20%'};
   var PHOTO_FRAME={
-    'specialist-certificate.webp':{focus:'50% 24%',zoom:'1',origin:'50% 28%'},
+    'specialist-certificate.webp':{focus:'50% 18%',zoom:'1',origin:'50% 22%'},
     'specialist-registraciya.webp':CHEST,
     'specialist-prolongation.webp':CHEST,
     'specialist-opposition.webp':CHEST,
