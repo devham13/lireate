@@ -5,7 +5,7 @@
 Повтор:
 
 ```bash
-export LIREATE_PUBLIC_SITE_HOST="${LIREATE_PUBLIC_SITE_HOST:-}"  # prod host, e.g. public site
+# при необходимости: export LIREATE_PUBLIC_SITE_HOST=<публичный хост продакшена>
 cd scripts && node capture_portfolio_v5_prod_screenshots.mjs
 ```
 

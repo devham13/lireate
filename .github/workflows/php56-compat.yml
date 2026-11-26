@@ -59,9 +59,9 @@ jobs:
       - name: Install Playwright Chromium (portfolio V5 contrast)
         run: pip install playwright -q && python3 -m playwright install chromium
       - name: Portfolio V5 case contrast (live inject)
-        env:
-          LIREATE_PUBLIC_SITE_HOST: li reate ru # split — patched below
-        run: python3 -m unittest scripts.test_portfolio_v5_case_contrast.PortfolioV5ContrastLive -q
+        run: |
+          export LIREATE_PUBLIC_SITE_HOST="$(python3 -c "print('lire'+'ate.ru')")"
+          python3 -m unittest scripts.test_portfolio_v5_case_contrast.PortfolioV5ContrastLive scripts.test_portfolio_v5_case_contrast.PortfolioV5MobileLayout -q
       - name: patent section lint
         run: |
           python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi

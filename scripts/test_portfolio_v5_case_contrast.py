@@ -154,17 +154,72 @@ class PortfolioV5ContrastLive(unittest.TestCase):
         self.assertFalse(failures, "Contrast < 4.5: " + ", ".join(failures))
 
 
+def _measure_h1_width(browser, origin: str, slug: str, viewport_w: int):
+    from playwright.sync_api import TimeoutError as PwTimeout
+
+    context = browser.new_context(viewport={"width": viewport_w, "height": 844})
+    page = context.new_page()
+    try:
+        page.goto(f"{origin}/portfolio/{slug}/", wait_until="domcontentloaded", timeout=120000)
+        page.wait_for_selector("article.lx-case .lx-case-hero", timeout=60000)
+    except PwTimeout:
+        context.close()
+        return None
+    page.add_style_tag(content=CSS)
+    page.add_script_tag(content=JS)
+    page.wait_for_timeout(2000)
+    width = page.evaluate(
+        """() => {
+        const h1 = document.querySelector('article.lx-case h1');
+        return h1 ? h1.getBoundingClientRect().width : null;
+      }"""
+    )
+    context.close()
+    return width
+
+
+@unittest.skipUnless(_has_playwright(), "playwright not installed")
+class PortfolioV5MobileLayout(unittest.TestCase):
+    def test_case_h1_min_width_390(self):
+        from playwright.sync_api import sync_playwright
+
+        origin = _site_origin()
+        failures = []
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-dev-shm-usage"],
+            )
+            for slug in SLUGS:
+                w = None
+                for attempt in range(3):
+                    w = _measure_h1_width(browser, origin, slug, 390)
+                    if w is not None and w >= 300:
+                        break
+                    if w is not None and attempt == 2:
+                        break
+                self.assertIsNotNone(w, f"{slug}: h1 not found at 390px")
+                if w < 300:
+                    failures.append(f"{slug} h1 width={w:.1f}px")
+            browser.close()
+        print("390px h1 widths checked for 14 slugs; failures:", failures)
+        self.assertFalse(failures, "H1 too narrow at 390px: " + ", ".join(failures))
+
+
 class PortfolioV5CssGuards(unittest.TestCase):
     def test_high_specificity_lx_case_selectors(self):
         css = CSS
         needle = "body.lireate-cms-page-dark.lx-portfolio-v5.lxpf5-ready .page_container article.lx-case h1"
         self.assertIn(needle, css)
+        self.assertIn("@media(max-width:1023px)", css)
+        self.assertIn("@media(min-width:1024px)", css)
+        self.assertIn("grid-template-columns:1fr!important", css)
         self.assertIn("lx-portfolio-v5", (REPO / "template/js/lireate-portfolio-v5.js").read_text(encoding="utf-8"))
 
     def test_install_head_includes_manrope(self):
-        import lireate_portfolio_v5_install as mod
-
-        self.assertIn("family=Manrope", mod.HEAD)
+        install_src = (REPO / "scripts/lireate_portfolio_v5_install.py").read_text(encoding="utf-8")
+        self.assertIn("family=Manrope", install_src)
+        self.assertIn("20261126c", install_src)
 
 
 if __name__ == "__main__":

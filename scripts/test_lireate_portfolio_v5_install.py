@@ -81,6 +81,7 @@ class PortfolioV5Tests(unittest.TestCase):
         )
         head = mod.HEAD
         self.assertIn("family=Manrope", head)
+        self.assertIn("20261126c", head)
 
     def test_missing_main_is_hard_blocker(self):
         (self.docroot / mod.MAIN).unlink()

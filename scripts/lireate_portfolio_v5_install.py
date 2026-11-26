@@ -33,8 +33,8 @@ HEAD = (
     '<link rel="preconnect" href="https://fonts.googleapis.com" />\n'
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n'
     '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" />\n'
-    '<link rel="stylesheet" href="/template/css/lireate-portfolio-v5.css?v=20261126b">\n'
-    '<script defer src="/template/js/lireate-portfolio-v5.js?v=20261126b"></script>\n'
+    '<link rel="stylesheet" href="/template/css/lireate-portfolio-v5.css?v=20261126c">\n'
+    '<script defer src="/template/js/lireate-portfolio-v5.js?v=20261126c"></script>\n'
     "<?php endif; ?>\n"
 )
 
