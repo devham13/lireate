@@ -101,6 +101,7 @@ jobs:
           mkdir -p .ci-rollout-docroot
           docker run --rm -v "$PWD:/work" -w /work python:3.6 bash -c '
             set -euo pipefail
+            sed -i -e "s|deb.debian.org|archive.debian.org|g" -e "s|security.debian.org|archive.debian.org|g" /etc/apt/sources.list
             apt-get update -qq
             DEBIAN_FRONTEND=noninteractive apt-get install -y -qq php-cli >/dev/null
             python scripts/check_hosting_py36_compat.py
