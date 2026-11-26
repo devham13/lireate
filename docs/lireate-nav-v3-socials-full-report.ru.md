@@ -1,52 +1,85 @@
-# Nav V3 + соцсети (полный chrome) — отчёт PR
+# Nav V3 + соцсети (полный chrome) — отчёт для Юры
 
-Дата: 2026-11-26. **Без merge и без выкладки на хостинг.**
+Дата: 2026-11-26. **PR без merge и без выкладки на REG.RU.**
 
-## Что сделано
+## PR и коммит
 
-- Единый bundle `pages/_shared/lireate-navigation-v3-bundle-lib.php`: CSS/JS Nav V3 + `lireate-public-cms-chrome.css` + `lireate-global-subnav-light-v4.css`.
-- Публичный chrome: `lireate-public-cms-chrome-lib.php`, sidebar с 5 соцсетями (YouTube `UCpg1LWotCQWwzviPDb_9Rew`, VK `vk.ru/lireate`), без Tochka/«Оплата услуг» в разметке превью.
-- Верхнее меню: динамические якоря по `REQUEST_URI` (`lireate-lh4-subnav-lib.php`), стили 16–19px, sticky, телефон + CTA.
-- JS: spy активного якоря на главной и CMS-страницах; Escape/outside click для мобильного меню.
-- Превью: home/team/uslugi/mktu/blog + фрагмент услуги RTZ; роутер `pages/_preview/nav-v3-router.php`.
-- Install (только репо): `scripts/lireate_hosting_navigation_v3.py` → `NAV_ASSET_QS=20261126r2`, доп. CSS в head.
-- CI: `scripts/test_lireate_nav_v3_full.py` + существующий hide-oplata.
+| Поле | Значение |
+|------|----------|
+| PR | https://github.com/devham13/lireate/pull/127 |
+| Ветка | `cursor/nav-v3-socials-full-b68f` |
+| SHA | *(см. последний push в PR)* |
+| Asset QS | `20261126r3` |
 
-## Скриншоты
+## Обязательные пункты ТЗ (выполнено в PR)
 
-Каталог: `docs/screenshots/nav-v3/`
+1. **Desktop collapse** — `body.side-collapsed`, кнопка `#collapseSide`, узкая панель 78px; состояние в `localStorage` ключ `lireateNavV3SideCollapsed`.
+2. **Mobile «Разделы»** — `#anchorToggle` + `#anchorMobile` (сетка якорей текущей страницы), ≤1150px, в т.ч. **768px** при скрытом subnav.
+3. **is-scrolled** — класс на `.lh4-subnav` / `.ln3-page-subnav` при `scrollY > 36`, усиленная тень.
+4. **Без наложения пунктов** — горизонтальный скролл subnav на 1151–1390px; phone/CTA уменьшены; mobile якоря отдельной полосой.
 
-| Фаза | Пути |
-|------|------|
-| BEFORE (live) | `before/<slug>/<width>.png` |
-| AFTER (preview) | `after/<slug>/<width>.png`, на 320–390 также `*-menu-open.png` |
+## Скриншоты (репозиторий)
 
-Страницы: `home`, `team`, `uslugi`, `mktu`, `service-rtz`, `blog`.  
-Ширины: 320, 375, 390, 768, 1280, 1440, 1920.
+Каталог: **`docs/screenshots/nav-v3/`**
 
-Снятие: `python3 scripts/capture_nav_v3_screenshots.py` (нужен `LIREATE_PUBLIC_SITE_URL`).
+| Slug | Live BEFORE | AFTER preview |
+|------|-------------|---------------|
+| `home` | `before/home/<width>.png` | `after/home/<width>.png` |
+| `team` | `before/team/…` | `after/team/…` |
+| `uslugi` | `before/uslugi/…` | `after/uslugi/…` |
+| `mktu` | `before/mktu/…` | `after/mktu/…` |
+| `service-rtz` | `before/service-rtz/…` | `after/service-rtz/…` |
+| `blog-article` | `before/blog-article/…` | `after/blog-article/…` |
 
-## Спорные / ограничения
+Ширины: **320, 375, 390, 768, 1280, 1440, 1920**.
 
-- На **live** левое меню по-прежнему из CMS `template/main.php`; chrome из `pages/_shared` — для превью и будущей интеграции услуг (wire), не автодеплой в этом PR.
-- Главная в AFTER: sidebar через chrome-inc (визуально ближе к референсу), на проде до отдельной интеграции остаётся CMS-меню + глобальный head Nav V3.
-- Услуга RTZ в AFTER — укороченный фрагмент с chrome, не полный longread.
-- Якоря внутренних страниц завязаны на id в Light V4 разметке; если id на проде отличаются, spy подстроить после выкладки страниц.
+Дополнительно AFTER:
+
+- `*-menu-open.png` — бургер (≤768px)
+- `*-sections-open.png` — «Разделы» (320–768)
+- `1440-side-collapsed.png` — свёрнутый сайдбар
+
+Снятие: `python3 scripts/capture_nav_v3_screenshots.py` (`LIREATE_PUBLIC_SITE_URL`; статья — `LIREATE_NAV_BLOG_ARTICLE_PATH`, по умолчанию slug проверки ТЗ).
+
+## Основные файлы PR
+
+- `pages/_shared/lireate-navigation-v3-bundle-lib.php`
+- `pages/_shared/lireate-public-cms-chrome-lib.php`
+- `pages/_shared/lireate-public-cms-chrome.inc.php`
+- `pages/_shared/lireate-public-cms-sidebar.inc.php`
+- `pages/_shared/lireate-lh4-subnav-lib.php`
+- `pages/_shared/lireate-lh4-subnav.inc.php`
+- `pages/_shared/lireate-lh4-mobile-anchors.inc.php`
+- `template/css/lireate-navigation-dual-v3.css`
+- `template/css/lireate-public-cms-chrome.css`
+- `template/css/lireate-global-subnav-light-v4.css`
+- `template/js/lireate-navigation-dual-v3.js`
+- `scripts/lireate_hosting_navigation_v3.py`
+- `scripts/capture_nav_v3_screenshots.py`
+- `scripts/test_lireate_nav_v3_full.py`
+- `pages/_preview/nav-v3-router.php`
+- Превью: `pages/home/_preview/cms-shell.php`, `pages/team/_preview/`, `template/page/uslugi/_preview/`, `pages/mktu/_preview/`, `pages/blog/_preview/article-chrome.php`, `pages/services/registraciya-tovarnogo-znaka/_preview/`
+
+## Соцсети (5 шт., превью sidebar)
+
+| Сеть | URL в `lireate-public-cms-sidebar.inc.php` | Статус |
+|------|--------------------------------------------|--------|
+| Telegram | https://t.me/lireate_patent | live-цель из CMS |
+| WhatsApp | https://wa.me/79600484957 | live |
+| Max | https://max.ru/channel_lireate | live (иконка CMS) |
+| VK | https://vk.ru/lireate | **подтверждён** на prod footer |
+| YouTube | https://www.youtube.com/channel/UCpg1LWotCQWwzviPDb_9Rew | **подтверждён** канал |
+
+## «Оплата услуг» / Tochka
+
+- В превью-sidebar **нет** пункта Tochka.
+- На live CMS в HTML ссылка может остаться; скрытие: CSS `#leftSideBar a…tochka…` + JS `hidePaymentLink()` в `lireate-navigation-dual-v3.js`.
+
+## Ограничения
+
+- Полный chrome на **live** CMS пока через global head + существующий `#leftSideBar`; `pages/_shared` chrome — превью и wire услуг.
+- RTZ AFTER — фрагмент с chrome для навигации, не полный longread деплой.
 
 ## Референс
 
-Ветка `design/nav-v3-socials-reference` @ `c18f1ff` — **не включена** в PR, использовалась только для чтения.
-
-### Соответствие референсу (разбор [Extract reference nav HTML patterns](bc-bea202e1-c3c4-59c8-80b2-ae12cfcedcaa))
-
-| Паттерн референса | В #127 |
-|-------------------|--------|
-| Sticky top-nav, 16–19px, разделители, `ln3-active` + подчёркивание | Да: `lh4-subnav` + `lireate-global-subnav-light-v4.css`, home — `lireate-navigation-dual-v3.css` |
-| `scroll-progress` в шапке | Да на главной Light V4 (`lireate-home-page.inc.php`); в CMS chrome — нет |
-| 5 соцсетей, inline SVG, grid | Да в `lireate-public-cms-sidebar.inc.php` + patch path в JS |
-| Mobile drawer sidebar + shade | Да: `lireate-public-cms-chrome` burger/veil, ≤1150px |
-| Desktop collapse sidebar → ~78px (`body.side-collapsed`) | **Нет** — отдельная итерация (CMS `#leftSideBar` на проде без collapse) |
-| ≤660px: скрыть top-nav, кнопка «Якоря» + `anchor-mobile` | **Частично:** subnav скрыт с ≤1150px (как у главной); отдельной полосы «Разделы»/anchor-mobile нет — якоря только через бургер или контент |
-| `is-scrolled` + усиленная тень шапки | **Нет** в chrome subnav (на home — логика в home JS) |
-
-Вывод: визуал и соцсети близки к референсу; сознательно не переносили collapse desktop и mobile-only anchor-grid, чтобы не ломать CMS-разметку и согласованность с брейкпоинтом 1150px главной.
+`design/nav-v3-socials-reference` @ `c18f1ff` — не в PR, только чтение.

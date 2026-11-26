@@ -12,7 +12,7 @@ if (!function_exists('lireate_public_cms_chrome_version')) {
         if (defined('LIREATE_LIGHT_V4_ASSET_VERSION')) {
             return LIREATE_LIGHT_V4_ASSET_VERSION;
         }
-        return '20261126r2';
+        return '20261126r3';
     }
 }
 

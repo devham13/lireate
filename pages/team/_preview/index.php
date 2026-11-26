@@ -1,7 +1,7 @@
 <?php
 $repo = dirname(dirname(dirname(__DIR__)));
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
-    define('LIREATE_NAV_V3_ASSET_QS', '20261126r2');
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r3');
 }
 require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
 $_SERVER['DOCUMENT_ROOT'] = $repo;

@@ -44,7 +44,7 @@ if (!defined('LIREATE_ABOUT_ASSETS_BASE')) {
     define('LIREATE_ABOUT_ASSETS_BASE', '/template/page/o_kompanii');
 }
 if (!defined('LIREATE_ABOUT_TEMPLATE_VERSION')) {
-    define('LIREATE_ABOUT_TEMPLATE_VERSION', '20261126r20');
+    define('LIREATE_ABOUT_TEMPLATE_VERSION', '20261126r30');
 }
 if (!defined('LIREATE_ABOUT_METRIKA_ID')) {
     $la_metrika = getenv('LIREATE_YANDEX_METRIKA_ID');

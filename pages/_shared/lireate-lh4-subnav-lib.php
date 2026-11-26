@@ -16,7 +16,7 @@ if (!function_exists('lireate_lh4_subnav_version')) {
         if (defined('LIREATE_LIGHT_V4_ASSET_VERSION')) {
             return LIREATE_LIGHT_V4_ASSET_VERSION;
         }
-        return '20261126r22';
+        return '20261126r32';
     }
 }
 
@@ -44,6 +44,9 @@ if (!function_exists('lireate_lh4_subnav_cta_href')) {
 if (!function_exists('lireate_lh4_subnav_items_for_request')) {
     function lireate_lh4_subnav_items_for_request()
     {
+        if (defined('LIREATE_LH4_FORCE_ANCHORS') && is_array(LIREATE_LH4_FORCE_ANCHORS)) {
+            return LIREATE_LH4_FORCE_ANCHORS;
+        }
         $uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '/';
         $path = parse_url($uri, PHP_URL_PATH);
         if ($path === null) {
@@ -67,7 +70,17 @@ if (!function_exists('lireate_lh4_subnav_items_for_request')) {
                 array('href' => '#mktu-search', 'label' => 'Поиск'),
             );
         }
-        if (preg_match('#^/news(?:/|$)#', $path) && strpos($path, '/news/') === 0 && $path !== '/news' && $path !== '/news/') {
+        if ($path === '/news' || $path === '/news/') {
+            return array(
+                array('href' => '#lireate-blog-list-page', 'label' => 'Список'),
+            );
+        }
+        if (preg_match('#^/news/.+#', $path)) {
+            return array(
+                array('href' => '#blog-article', 'label' => 'Статья'),
+            );
+        }
+        if (defined('LIREATE_LH4_BLOG_ARTICLE') && LIREATE_LH4_BLOG_ARTICLE) {
             return array(
                 array('href' => '#blog-article', 'label' => 'Статья'),
             );
@@ -92,6 +105,22 @@ if (!function_exists('lireate_lh4_subnav_items_for_request')) {
             array('href' => '/#faq', 'label' => 'FAQ'),
             array('href' => '/#blog', 'label' => 'Блог'),
         );
+    }
+}
+
+if (!function_exists('lireate_lh4_render_mobile_anchors')) {
+    function lireate_lh4_render_mobile_anchors($items)
+    {
+        if (!is_array($items) || count($items) === 0) {
+            return false;
+        }
+        $lh4n_mobile_items = $items;
+        $path = dirname(__FILE__) . '/lireate-lh4-mobile-anchors.inc.php';
+        if (!is_file($path)) {
+            return false;
+        }
+        include $path;
+        return true;
     }
 }
 

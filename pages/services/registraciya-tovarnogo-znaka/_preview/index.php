@@ -6,7 +6,7 @@ $repo = dirname(__DIR__, 4);
 $_SERVER['DOCUMENT_ROOT'] = $repo;
 $_SERVER['REQUEST_URI'] = '/registraciya_tovarnogo_znaka/';
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
-    define('LIREATE_NAV_V3_ASSET_QS', '20261126r2');
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r3');
 }
 require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
 require_once $repo . '/pages/services/_shared/lireate-public-cms-chrome-wire.inc.php';

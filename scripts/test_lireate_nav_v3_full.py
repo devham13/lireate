@@ -29,7 +29,19 @@ class NavV3FullTests(unittest.TestCase):
         self.assertIn("lireate-navigation-dual-v3.css", text)
         self.assertIn("lireate-public-cms-chrome.css", text)
         self.assertIn("lireate-global-subnav-light-v4.css", text)
-        self.assertIn("20261126r2", text)
+        self.assertIn("20261126r3", text)
+
+    def test_js_has_collapse_and_anchor_mobile(self):
+        js = (ROOT / "template/js/lireate-navigation-dual-v3.js").read_text(encoding="utf-8")
+        self.assertIn("lireateNavV3SideCollapsed", js)
+        self.assertIn("side-collapsed", js)
+        self.assertIn("anchorToggle", js)
+        self.assertIn("anchorMobile", js)
+
+    def test_mobile_anchors_partial_present(self):
+        text = (SHARED / "lireate-lh4-mobile-anchors.inc.php").read_text(encoding="utf-8")
+        self.assertIn("Разделы", text)
+        self.assertIn("anchor-mobile", text)
 
     def test_shared_php_has_no_double_question_marks(self):
         for path in SHARED.glob("*.php"):

@@ -59,7 +59,7 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 document.documentElement.classList.add('lireate-blog-html');
 if (document.body) { document.body.classList.add('lireate-blog-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
-<div class="lireate-blog-list-page" data-lireate-blog-list-version="<?php echo lireate_blog_h($lb_v); ?>">
+<div class="lireate-blog-list-page" id="lireate-blog-list-page" data-lireate-blog-list-version="<?php echo lireate_blog_h($lb_v); ?>">
   <?php
   $lb_total_items = isset($GLOBALS['lireate_blog_list_total_items']) ? (int) $GLOBALS['lireate_blog_list_total_items'] : count($lb_items);
   $lb_total_pages = isset($GLOBALS['lireate_blog_list_total_pages']) ? (int) $GLOBALS['lireate_blog_list_total_pages'] : 1;

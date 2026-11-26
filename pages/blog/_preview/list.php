@@ -4,7 +4,7 @@
  */
 $repo = dirname(dirname(dirname(__DIR__)));
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
-    define('LIREATE_NAV_V3_ASSET_QS', '20261126r2');
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r3');
 }
 if (!defined('LIREATE_BLOG_LIGHT_V4_FOOTER')) {
     define('LIREATE_BLOG_LIGHT_V4_FOOTER', true);

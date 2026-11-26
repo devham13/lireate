@@ -2,7 +2,12 @@
 /** Полное левое меню CMS (live), без Tochka payment (скрывается CSS/JS). */
 ?>
 <section id="leftSideBar" class="lireate-public-cms-sidebar" aria-label="Меню сайта">
-  <a class="leftSideLogo" href="/" aria-label="LIREATE — на главную"></a>
+  <div class="lpc-sidebar-head">
+    <a class="leftSideLogo" href="/" aria-label="LIREATE — на главную"></a>
+    <button type="button" class="lireate-public-cms-collapse" id="collapseSide" aria-label="Свернуть боковое меню" aria-pressed="false">
+      <span class="lpc-collapse-icon" aria-hidden="true"></span>
+    </button>
+  </div>
   <nav id="leftSideNav" aria-label="Разделы">
     <div class="leftSideTitle">Услуги</div>
     <div class="leftSideNaviButton js-question">Товарный знак <div class="leftSideArrow"></div></div>

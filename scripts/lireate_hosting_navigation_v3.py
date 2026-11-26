@@ -16,7 +16,7 @@ import tempfile
 
 REPO = Path(__file__).resolve().parents[1]
 VERSION = 'lireate-dual-nav-v3-20261126'
-NAV_ASSET_QS = '20261126r2'
+NAV_ASSET_QS = '20261126r3'
 ASSETS = [
     Path('template/css/lireate-navigation-dual-v3.css'),
     Path('template/css/lireate-public-cms-chrome.css'),

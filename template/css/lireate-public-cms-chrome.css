@@ -208,7 +208,6 @@ body.lireate-public-cms-chrome .lx-nav-pill .lx-nav-links a:hover {
     left: 0;
   }
   body.lireate-public-cms-chrome .lireate-public-cms-content {
-    margin-left: 280px;
     width: auto;
   }
 }
@@ -227,5 +226,83 @@ body.lireate-public-cms-chrome .lx-nav-pill .lx-nav-links a:hover {
   body.lireate-public-cms-chrome .lireate-public-cms-content {
     margin-left: 0;
     padding-top: 56px;
+  }
+  body.lireate-public-cms-chrome .lireate-public-cms-collapse {
+    display: none !important;
+  }
+}
+
+:root {
+  --lpc-side-width: 280px;
+  --lpc-side-width-collapsed: 78px;
+}
+body.lireate-public-cms-chrome .lpc-sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px 0;
+}
+body.lireate-public-cms-chrome .lireate-public-cms-collapse {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  margin: 16px 8px 0 0;
+  padding: 0;
+  border: 1px solid #dce8f7;
+  border-radius: 10px;
+  background: #fff;
+  color: #1f212c;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(31, 46, 76, 0.08);
+}
+body.lireate-public-cms-chrome .lpc-collapse-icon {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 0 auto;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(1px, -1px);
+  transition: transform 0.2s ease;
+}
+body.lireate-public-cms-chrome.side-collapsed .lpc-collapse-icon {
+  transform: rotate(-135deg) translate(1px, -1px);
+}
+@media (min-width: 1151px) {
+  body.lireate-public-cms-chrome #leftSideBar {
+    width: var(--lpc-side-width);
+    transition: width 0.2s ease, transform 0.25s ease;
+  }
+  body.lireate-public-cms-chrome .lireate-public-cms-content {
+    margin-left: var(--lpc-side-width);
+    transition: margin-left 0.2s ease;
+  }
+  body.lireate-public-cms-chrome.side-collapsed {
+    --lpc-side-width: var(--lpc-side-width-collapsed);
+  }
+  body.lireate-public-cms-chrome.side-collapsed #leftSideNav .leftSideTitle,
+  body.lireate-public-cms-chrome.side-collapsed #leftSideNav .leftSideNaviButton,
+  body.lireate-public-cms-chrome.side-collapsed #leftSideNav .js-answer,
+  body.lireate-public-cms-chrome.side-collapsed #leftSideNav .leftSideTel,
+  body.lireate-public-cms-chrome.side-collapsed #leftSideBar .submitBox,
+  body.lireate-public-cms-chrome.side-collapsed #leftSideNav .bottomLine {
+    display: none !important;
+  }
+  body.lireate-public-cms-chrome.side-collapsed #leftSideNav .leftSideSoc {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 6px;
+  }
+  body.lireate-public-cms-chrome.side-collapsed #leftSideNav .leftSideSoc a {
+    width: 44px;
+    max-width: 44px;
+    flex: 0 0 44px;
+  }
+  body.lireate-public-cms-chrome.side-collapsed .leftSideLogo {
+    width: 44px;
+    height: 44px;
+    margin: 16px auto 6px;
   }
 }

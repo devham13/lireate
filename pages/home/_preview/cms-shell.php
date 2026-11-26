@@ -9,9 +9,9 @@ putenv('LIREATE_PUBLIC_SITE_URL');
 putenv('LIREATE_PUBLIC_SITE_HOST');
 require_once $repo_root . '/pages/_shared/lireate-preview-bootstrap.php';
 require_once $repo_root . '/pages/home/_shared/lireate-home-config.php';
-$lh_preview_v = defined('LIREATE_HOME_CSS_VERSION') ? LIREATE_HOME_CSS_VERSION : '20261126r27';
+$lh_preview_v = defined('LIREATE_HOME_CSS_VERSION') ? LIREATE_HOME_CSS_VERSION : '20261126r37';
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
-    define('LIREATE_NAV_V3_ASSET_QS', '20261126r2');
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r3');
 }
 if (!defined('LIREATE_HOME_PREVIEW')) {
     define('LIREATE_HOME_PREVIEW', true);

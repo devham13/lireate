@@ -20,6 +20,7 @@ $routes = array(
     '/uslugi' => $repo . '/template/page/uslugi/_preview/index.php',
     '/mktu' => $repo . '/pages/mktu/_preview/index.php',
     '/news' => $repo . '/pages/blog/_preview/list.php',
+    '/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta' => $repo . '/pages/blog/_preview/article-chrome.php',
     '/registraciya_tovarnogo_znaka' => $repo . '/pages/services/registraciya-tovarnogo-znaka/_preview/index.php',
 );
 

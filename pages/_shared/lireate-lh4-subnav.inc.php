@@ -25,3 +25,8 @@ $lh4n_items = function_exists('lireate_lh4_subnav_items_for_request')
     </div>
   </div>
 </nav>
+<?php
+if (!empty($lh4n_items)) {
+    lireate_lh4_render_mobile_anchors($lh4n_items);
+}
+?>

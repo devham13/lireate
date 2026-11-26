@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import os
 import subprocess
-import sys
 import time
 from pathlib import Path
 
@@ -13,13 +12,22 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/screenshots/nav-v3"
 WIDTHS = (320, 375, 390, 768, 1280, 1440, 1920)
 
+BLOG_ARTICLE_PATH = os.environ.get(
+    "LIREATE_NAV_BLOG_ARTICLE_PATH",
+    "/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta/",
+).rstrip("/")
+
 PAGES = (
     ("home", "/", "/"),
     ("team", "/team/", "/team"),
     ("uslugi", "/uslugi/", "/uslugi"),
     ("mktu", "/mktu", "/mktu"),
     ("service-rtz", "/registraciya_tovarnogo_znaka/", "/registraciya_tovarnogo_znaka"),
-    ("blog", "/news/", "/news"),
+    (
+        "blog-article",
+        BLOG_ARTICLE_PATH + "/",
+        BLOG_ARTICLE_PATH,
+    ),
 )
 
 
@@ -43,13 +51,36 @@ def start_preview_server(port: int) -> subprocess.Popen:
     return proc
 
 
-def capture(browser, url: str, out: Path, width: int, mobile_menu: bool) -> None:
+def capture(
+    browser,
+    url: str,
+    out: Path,
+    width: int,
+    *,
+    mobile_menu: bool = False,
+    side_collapsed: bool = False,
+    anchor_open: bool = False,
+) -> None:
     page = browser.new_page(viewport={"width": width, "height": 900})
     page.goto(url, wait_until="networkidle", timeout=120000)
     page.wait_for_timeout(900)
+    if side_collapsed and width >= 1151:
+        collapse = page.locator("#collapseSide").first
+        if collapse.count() and collapse.is_visible():
+            collapsed = page.evaluate(
+                "document.body.classList.contains('side-collapsed')"
+            )
+            if not collapsed:
+                collapse.click()
+                page.wait_for_timeout(350)
+    if anchor_open and width <= 1150:
+        toggle = page.locator("#anchorToggle").first
+        if toggle.count() and toggle.is_visible():
+            toggle.click()
+            page.wait_for_timeout(350)
     if mobile_menu and width <= 768:
         burger = page.locator("#lireatePublicCmsBurger, .lireate-public-cms-burger").first
-        if burger.count():
+        if burger.count() and burger.is_visible():
             burger.click()
             page.wait_for_timeout(400)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -79,23 +110,41 @@ def main() -> int:
                 for width in WIDTHS:
                     if run_before:
                         before = OUT / "before" / slug / ("%d.png" % width)
-                        capture(
-                            browser,
-                            base + live_path,
-                            before,
-                            width,
-                            False,
-                        )
+                        capture(browser, base + live_path, before, width)
                     if run_after:
-                        after = OUT / "after" / slug / ("%d.png" % width)
                         preview_url = "http://127.0.0.1:%d%s" % (
                             args.port,
                             preview_path if preview_path != "/" else "/",
                         )
-                        capture(browser, preview_url, after, width, False)
-                        if width <= 390:
+                        after = OUT / "after" / slug / ("%d.png" % width)
+                        capture(browser, preview_url, after, width)
+                        if width <= 768:
                             menu_out = OUT / "after" / slug / ("%d-menu-open.png" % width)
-                            capture(browser, preview_url, menu_out, width, True)
+                            capture(
+                                browser,
+                                preview_url,
+                                menu_out,
+                                width,
+                                mobile_menu=True,
+                            )
+                        if width in (320, 375, 390, 768) and width <= 1150:
+                            anchor_out = OUT / "after" / slug / ("%d-sections-open.png" % width)
+                            capture(
+                                browser,
+                                preview_url,
+                                anchor_out,
+                                width,
+                                anchor_open=True,
+                            )
+                        if width == 1440:
+                            collapsed_out = OUT / "after" / slug / ("1440-side-collapsed.png")
+                            capture(
+                                browser,
+                                preview_url,
+                                collapsed_out,
+                                width,
+                                side_collapsed=True,
+                            )
             browser.close()
     finally:
         if preview_proc is not None:
