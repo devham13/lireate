@@ -111,3 +111,21 @@ body.lxq-patent-legal .lxq-verified-empty{display:none!important}
 @media(max-width:960px){body.lxq-patent-tasks .lx-cat-cards{grid-template-columns:repeat(2,minmax(0,1fr))}body.lxq-patent-tasks #leftSideBar.lxq-tools-sidebar{transform:translateX(-105%);transition:transform .25s}body.lxq-patent-tasks.lxq-sidebar-open #leftSideBar.lxq-tools-sidebar{transform:translateX(0)}body.lxq-patent-tasks .lireate-svc-page{width:auto!important;margin:0 14px 40px!important;padding:12px!important}body.lxq-patent-tasks .lx-nav-shell,body.lxq-patent-tasks .lx-patent-footer-shell{margin-left:0!important;width:100%!important}body.lxq-patent-tasks .lxq-mobile-nav-toggle{position:fixed;display:flex;bottom:22px;left:16px;z-index:102;background:var(--lq-red);color:#fff;border:0;border-radius:14px;padding:14px 18px;font-weight:800;box-shadow:0 8px 26px rgba(31,33,44,.17)}body.lxq-patent-tasks .lxq-overlay{position:fixed;inset:0;background:rgba(22,33,50,.45);z-index:98}body.lxq-patent-tasks .lxq-overlay[hidden]{display:none}}
 @media(max-width:640px){body .lireate-partners-page .lireate-partners-grid{grid-template-columns:1fr!important}body .lireate-contacts-page .lireate-contacts-social-grid{grid-template-columns:1fr!important}body .lireate-contacts-page a.lireate-contacts-social-item{min-height:146px}body.lxq-patent-tasks .lx-cat-cards{grid-template-columns:1fr!important}body.lxq-patent-tasks .lx-hero{padding:23px 20px!important}body.lxq-patent-tasks .lireate-svc-page{margin:0 6px 34px!important;padding:7px!important}}
 @media(prefers-reduced-motion:reduce){body .lireate-partners-page *,body .lireate-contacts-page *,body.lxq-patent-tasks *,body.lxq-mktu *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* Legacy /news template uses a <picture> wrapper and old image background. */
+body .lireate-blog-list-page .lireate-blog-list-card__img{
+  position:relative!important;background-image:none!important;background-color:#edf5ff!important;
+  overflow:hidden!important;border-radius:16px 16px 0 0
+}
+body .lireate-blog-list-page .lireate-blog-list-card__img img{
+  display:block!important;width:100%!important;height:100%!important;object-fit:cover!important
+}
+body .lireate-blog-list-page :is(.lireate-blog-list-card-cover,.lireate-blog-list-featured-cover,.lireate-blog-list-card__img).lxq-cover-fallback,
+body .lireate-blog-list-page :is(.lireate-blog-list-card-cover,.lireate-blog-list-featured-cover).lireate-blog-list-card-cover--fallback{background-image:linear-gradient(130deg,#e7f1ff,#f6faff)!important}
+body .lireate-blog-list-page :is(.lireate-blog-list-card-cover,.lireate-blog-list-featured-cover,.lireate-blog-list-card__img).lxq-cover-fallback::after{
+  content:"LIREATE · интеллектуальная собственность";position:absolute;inset:15%;
+  display:flex;align-items:center;justify-content:center;color:#346495!important;
+  font:900 clamp(14px,1.4vw,20px)/1.35 Manrope,Arial,sans-serif;text-align:center;letter-spacing:-.025em
+}
+body .lireate-blog-list-page .lireate-blog-list-cover-img[hidden],
+body .lireate-blog-list-page .lireate-blog-list-card__img img[hidden]{display:none!important}
