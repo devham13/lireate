@@ -92,20 +92,53 @@ _CMS_PROD_BLOB = {
     'template/page/partners/lireate-partners-page.inc.php': 'cc1d97119752c2cccbec61c9239ec1397a2f1b76',
     'template/lireate/lireate-service-footer.inc.php': 'd8b9d8f4d5a698ac10d1a3ef7fc3b58cadb2561d',
 }
+# template/page/* after QA V6 deploy a4ca4e8 (still valid live base on host).
+_CMS_A4CA4E8_BLOB = {
+    'template/page/kontaktyi/lireate-contacts-page.inc.php': '1d5ce72f715025fbac9cd87e5de699d410608a74',
+    'template/page/partners/lireate-partners-page.inc.php': '7ce2fa7617e9b3c9eda7d63671ea21989c37f29f',
+    'template/page/news/lireate-blog-list.inc.php': '2d0907d7e9f58ee12df8d48a0cb50a652233fd89',
+}
+_SHARED_A4CA4E8_BLOB = {
+    'pages/kontaktyi/_shared/lireate-contacts-page.inc.php': '1d5ce72f715025fbac9cd87e5de699d410608a74',
+    'pages/partners/_shared/lireate-partners-page.inc.php': '7ce2fa7617e9b3c9eda7d63671ea21989c37f29f',
+}
+# patentnye-zadachi/*/index.php on host after a4ca4e8 (strip perf+v7 to match).
+_TOOL_DEPLOYED_A4 = {
+    'patentnye-zadachi/index.php': '69ea47dc1f196d51d24258bea39660edcca7fe8e',
+    'patentnye-zadachi/adres-zayavitelya/index.php': 'e24999194feef2ef313b112e2994d864e6512c71',
+    'patentnye-zadachi/fail-slovesnogo-znaka/index.php': 'f82398b31caf3bf72df0a2c001bcefc74a827f7b',
+    'patentnye-zadachi/kontakty-fips/index.php': '2bf78fb547551dc49e565cad5ff09a40be6863f7',
+    'patentnye-zadachi/oplata-patentnyh-poshlin/index.php': '0f6e386567f97717cf00961561ec8f5a3d346928',
+    'patentnye-zadachi/oplata-uslug-fips/index.php': '1f01c7198a2db78f810f87fcff8fa3bbc988da30',
+    'patentnye-zadachi/poisk-platezha-evm/index.php': '8a3e755ebffbd7bb2d8e8ea26cb3efaa6611b80e',
+    'patentnye-zadachi/poshliny-izmeneniya/index.php': 'e40741ff7db661476fb5a3e739b350d19cdc9841',
+    'patentnye-zadachi/poshliny-prodlenie/index.php': '876d964089205d530b6be3cba140355f82dc4212',
+    'patentnye-zadachi/poshliny-registraciya/index.php': 'e19b6e078ecab26f3e60e7370fb5dd6fa442ad77',
+    'patentnye-zadachi/redaktor-mktu/index.php': 'f726dc13f1e030dddf52cba641507f66072f48a7',
+    'patentnye-zadachi/sokrashchenie-mktu/index.php': 'c800677ec9f27156d2a5fd2e8426ae340c7f0b01',
+    'patentnye-zadachi/starye-zayavki/index.php': '64101551fe25b9ba4b00840100700cb6adf9e753',
+}
 
 def _allowed_main_prod(path):
-    main = _CMS_MAIN_BLOB[path]
+    allowed = {_CMS_MAIN_BLOB[path]}
     prod = _CMS_PROD_BLOB.get(path)
     if prod:
-        return frozenset({main, prod})
-    return frozenset({main})
+        allowed.add(prod)
+    a4 = _CMS_A4CA4E8_BLOB.get(path)
+    if a4:
+        allowed.add(a4)
+    return frozenset(allowed)
 
 def _allowed_shared(path):
     target = blob_sha((REPO / path).read_bytes())
+    allowed = {target}
     prod = _SHARED_PROD_BLOB.get(path)
     if prod:
-        return frozenset({target, prod})
-    return frozenset({target})
+        allowed.add(prod)
+    a4 = _SHARED_A4CA4E8_BLOB.get(path)
+    if a4:
+        allowed.add(a4)
+    return frozenset(allowed)
 
 BASE_ALLOWED = {live: _allowed_main_prod(live) for live in _CMS_MAIN_BLOB}
 CMS = dict(_CMS_MAIN_BLOB)
@@ -146,6 +179,10 @@ def blob_sha(data):
     return hashlib.sha1(b"blob " + str(len(data)).encode('ascii') + b'\0' + data).hexdigest()
 
 BASE_ALLOWED.update({live: _allowed_shared(live) for live in SHARED_CMS})
+for live in CMS:
+    src = REPO / live
+    if src.is_file():
+        BASE_ALLOWED[live] = BASE_ALLOWED[live] | {blob_sha(src.read_bytes())}
 
 def strip_perf(data):
     text = data.decode('utf-8')
@@ -330,8 +367,12 @@ def live_matches_allowed(old, relative, before=None):
         return True
     return False
 
-def tool_live_allowed(old, before):
-    allowed = frozenset({before})
+def tool_live_allowed(old, before, live_rel):
+    allowed = {before}
+    a4 = _TOOL_DEPLOYED_A4.get(str(live_rel))
+    if a4:
+        allowed.add(a4)
+    allowed = frozenset(allowed)
     if blob_sha(old) in allowed:
         return True
     stripped = strip_ephemeral(old)
@@ -425,7 +466,7 @@ def build_plan(docroot, with_tools=False, with_shared=False):
             elif relative in expected:
                 before = expected[relative]
                 if relative in TOOL_LIVE:
-                    ok = tool_live_allowed(old, before)
+                    ok = tool_live_allowed(old, before, relative)
                 else:
                     ok = live_matches_allowed(old, relative, before)
                 if not ok:
@@ -446,11 +487,14 @@ def build_plan(docroot, with_tools=False, with_shared=False):
 
 def write_atomic(target, data):
     target.parent.mkdir(parents=True, exist_ok=True)
+    mode = (target.stat().st_mode & 0o777) if target.is_file() else 0o644
     fd, temp = tempfile.mkstemp(prefix='.lqv6-', dir=str(target.parent))
     try:
-        with os.fdopen(fd, 'wb') as stream: stream.write(data)
-        os.chmod(temp, target.stat().st_mode & 0o777 if target.is_file() else 0o644)
+        with os.fdopen(fd, 'wb') as stream:
+            stream.write(data)
+        os.chmod(temp, mode)
         os.replace(temp, target)
+        os.chmod(target, mode)
     finally:
         if os.path.exists(temp): os.unlink(temp)
 

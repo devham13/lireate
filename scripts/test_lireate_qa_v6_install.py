@@ -4,7 +4,6 @@ import base64
 import gzip
 import json
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -34,6 +33,13 @@ V7_BEFORE_HEAD = (
     '<link rel="stylesheet" href="/template/css/lireate-sitewide-sidebar-v7.css?v=20261126">\n'
     '<script defer src="/template/js/lireate-sitewide-sidebar-v7.js?v=20261126"></script>\n'
 )
+
+ASSET_DEPLOY_FIXTURE = {
+    'template/css/lireate-qa-v6.css': 'asset-deploy-lireate-qa-v6-css',
+    'template/js/lireate-qa-v6.js': 'asset-deploy-lireate-qa-v6-js',
+    'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php': 'asset-deploy-lireate-patent-tasks-sidebar-v6-inc',
+    'template/images/logo/logo-light-v5.svg': 'asset-deploy-logo-light-v5-svg',
+}
 
 
 def packed_manifest():
@@ -69,6 +75,20 @@ def prod_perf_live_bytes(baseline):
     if '</head>' not in text:
         raise ValueError('expected </head>')
     return text.replace('</head>', PROD_PERF_BEFORE_HEAD + '</head>', 1).encode('utf-8')
+
+
+def prod_tool_v7_perf_bytes(a4_sha):
+    baseline = packed_bytes('tool-deploy-' + a4_sha)
+    text = baseline.decode('utf-8')
+    if '</head>' not in text:
+        raise ValueError('expected </head>')
+    # Host order after QA v6 perf cron + sidebar v7: perf, then v7, then </head>
+    injected = PROD_PERF_BEFORE_HEAD + V7_BEFORE_HEAD + '</head>'
+    return text.replace('</head>', injected, 1).encode('utf-8')
+
+
+def deploy_tool_bytes(a4_sha):
+    return packed_bytes('tool-deploy-' + a4_sha)
 
 
 class QaV6Tests(unittest.TestCase):
@@ -139,11 +159,11 @@ class QaV6Tests(unittest.TestCase):
 
     def test_strip_v7_for_hash_guard(self):
         source, (live, before) = next(iter(mod.TOOLS.items()))
-        baseline = tool_baseline_bytes(before)
-        text = baseline.decode('utf-8').replace('</head>', V7_BEFORE_HEAD + '</head>', 1)
-        live = text.encode('utf-8')
-        stripped = mod.strip_ephemeral(live)
-        self.assertEqual(mod.blob_sha(stripped), before)
+        a4_sha = mod._TOOL_DEPLOYED_A4[live]
+        live_bytes = prod_tool_v7_perf_bytes(a4_sha)
+        stripped = mod.strip_ephemeral(live_bytes)
+        self.assertEqual(mod.blob_sha(stripped), a4_sha)
+        self.assertTrue(mod.tool_live_allowed(live_bytes, before, Path(live)))
 
     def test_main_qa_marker_idempotent(self):
         main = self.docroot / mod.MAIN
@@ -174,14 +194,39 @@ class QaV6Tests(unittest.TestCase):
         self.assertIn('lireate-sitewide-sidebar-v7', out)
 
     def test_assets_prod_deployed_dry_run(self):
-        for live, source in mod.ASSETS.items():
+        for live, pack_key in ASSET_DEPLOY_FIXTURE.items():
             path = self.docroot / live
             path.parent.mkdir(parents=True, exist_ok=True)
-            data = subprocess.check_output(['git', 'show', 'a4ca4e8:{0}'.format(source)])
+            data = packed_bytes(pack_key)
             path.write_bytes(data)
             self.assertTrue(mod.asset_live_allowed(data, live), live)
         plan = mod.build_plan(self.docroot)
         self.assertIn(Path('template/css/lireate-qa-v6.css'), plan)
+
+    def test_cms_a4ca4e8_template_accepted(self):
+        for rel, pack_key in (
+            ('template/page/kontaktyi/lireate-contacts-page.inc.php', 'contacts-a4ca4e8.inc'),
+            ('template/page/partners/lireate-partners-page.inc.php', 'partners-a4ca4e8.inc'),
+            ('template/page/news/lireate-blog-list.inc.php', 'blog-list-a4ca4e8.inc'),
+        ):
+            data = packed_bytes(pack_key)
+            self.assertTrue(mod.live_matches_allowed(data, Path(rel)), rel)
+
+    def test_tools_a4_prod_perf_v7_guard(self):
+        before_by_live = {live: before for _s, (live, before) in mod.TOOLS.items()}
+        for live_rel, a4_sha in mod._TOOL_DEPLOYED_A4.items():
+            live = prod_tool_v7_perf_bytes(a4_sha)
+            stripped = mod.strip_ephemeral(live)
+            self.assertEqual(mod.blob_sha(stripped), a4_sha, live_rel)
+            self.assertTrue(mod.tool_live_allowed(live, before_by_live[live_rel], Path(live_rel)))
+
+    def test_tools_prod_v7_perf_dry_run(self):
+        for live_rel, a4_sha in mod._TOOL_DEPLOYED_A4.items():
+            live_path = self.docroot / live_rel
+            live_path.parent.mkdir(parents=True, exist_ok=True)
+            live_path.write_bytes(prod_tool_v7_perf_bytes(a4_sha))
+        plan = mod.build_plan(self.docroot, with_tools=True)
+        self.assertEqual(len([p for p in plan if str(p).startswith('patentnye-zadachi/')]), len(mod._TOOL_DEPLOYED_A4))
 
     def test_apply_shared_tools_rollback_standalone(self):
         for live, source in mod.ASSETS.items():
