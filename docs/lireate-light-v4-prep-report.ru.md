@@ -64,6 +64,14 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 **Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
 
+### Круг 23 — mobile header, cache bust CMS
+
+| Задача | Решение |
+| --- | --- |
+| Двойная шапка 390px | `lh4-subnav { display:none }` при max-width 991px |
+| /o_kompanii, контакты ?v=2026-11-18a | `TEMPLATE_VERSION` → `20261126r19` (= LIGHT_V4) |
+| Аудит shared CSS | partners/docs configs → r19; `test_lireate_light_v4_shared_asset_version` |
+
 ### Круг 22 — subnav сверху, сайдбар 100vh
 
 | Задача | Решение |

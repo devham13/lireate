@@ -26,6 +26,18 @@ class HomeLightV4LayoutTests(unittest.TestCase):
         self.assertIn("#leftSideBar", home_css)
         self.assertIn("min-height: 100vh", cms_css)
 
+    def test_mobile_single_header_hides_subnav(self):
+        """390px viewport: only CMS #topBar, not duplicate lh4-subnav strip."""
+        css = HOME_CSS.read_text(encoding="utf-8")
+        self.assertIn("max-width: 991px", css)
+        self.assertIn(".lh4-subnav", css)
+        self.assertIn("display: none", css)
+        block_start = css.find("@media (max-width: 991px)")
+        self.assertGreater(block_start, 0)
+        block = css[block_start : block_start + 400]
+        self.assertIn(".lh4-subnav", block)
+        self.assertIn("display: none", block)
+
 
 if __name__ == "__main__":
     unittest.main()
