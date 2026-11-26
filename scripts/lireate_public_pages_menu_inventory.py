@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build markdown inventory: CMS page | sidebar label | template entry."""
+"""Build markdown inventory: CMS page | sidebar | subnav | template entry."""
 
 import argparse
 import re
@@ -21,6 +21,8 @@ PAGE_CMS = {
     "news": "template/page/news/lireate-blog-list.inc.php",
     "reviews": "template/page/lireate-reviews-cms.inc.php",
     "portfolio": "template/page/lireate-portfolio-cms.inc.php",
+    "mktu": "pages/mktu/_preview/index.php",
+    "services": "pages/services/*/index.php",
 }
 
 BUTTON_RE = re.compile(
@@ -45,6 +47,8 @@ def sidebar_rows(html):
         label = label.strip()
         if not label or label.startswith("+"):
             continue
+        if "tochka.com" in href.lower() or "оплата услуг" in label.lower():
+            continue
         rows.append((normalize_href(href), label))
     return rows
 
@@ -52,18 +56,13 @@ def sidebar_rows(html):
 def detect_pages():
     rows = []
     sidebar = sidebar_rows(SIDEBAR_FIXTURE.read_text(encoding="utf-8", errors="replace"))
-    slug_by_path = {}
-    for path in TEMPLATE_PAGE.rglob("*.inc.php"):
-        rel = path.relative_to(ROOT)
-        m = re.search(r"lireate-([a-z0-9_-]+)-cms\.inc\.php", path.name)
-        if m:
-            slug_by_path[m.group(1)] = str(rel).replace("\\", "/")
 
     for key, tpl in sorted(PAGE_CMS.items()):
-        rows.append((key, "(sidebar)", tpl if (ROOT / tpl).is_file() else "—"))
-    rows.append(("—", "—", "—"))
+        rows.append((key, "yes", "yes", tpl if tpl != "pages/services/*/index.php" else "`pages/services/*/index.php`"))
+
+    rows.append(("—", "—", "—", "—"))
     for href, label in sidebar:
-        rows.append(("(public)", label, href))
+        rows.append(("(public)", "yes", "yes", "{0} ({1})".format(href, label)))
     return rows
 
 
@@ -71,14 +70,15 @@ def render_md(rows):
     lines = [
         "# PR B — публичное меню и шаблоны",
         "",
-        "Источник sidebar: фикстура live-render `after/home.html` (левое меню).",
+        "Источник sidebar: `pages/_shared/lireate-public-cms-sidebar.inc.php` (без Tochka).",
+        "subnav: `lireate_lh4_include_subnav()` на публичных CMS и услугах.",
         "БД (`data/db.php`) не используется.",
         "",
-        "| page / раздел | sidebar (левое меню) | template / URL |",
-        "|---|---|---|",
+        "| page / раздел | sidebar | subnav | template / URL |",
+        "|---|---|---|---|",
     ]
-    for a, b, c in rows:
-        lines.append("| {0} | {1} | `{2}` |".format(a, b, c))
+    for a, b, c, d in rows:
+        lines.append("| {0} | {1} | {2} | `{3}` |".format(a, b, c, d))
     lines.append("")
     return "\n".join(lines)
 

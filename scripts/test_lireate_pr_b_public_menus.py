@@ -7,6 +7,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SUBNAV_CSS = ROOT / "template/css/lireate-global-subnav-light-v4.css"
+CHROME_CSS = ROOT / "template/css/lireate-public-cms-chrome.css"
+SIDEBAR = ROOT / "pages/_shared/lireate-public-cms-sidebar.inc.php"
+SERVICE_SAMPLE = ROOT / "pages/services/registraciya-tovarnogo-znaka/index.php"
 PAGES = (
     ROOT / "pages/partners/_shared/lireate-partners-page.inc.php",
     ROOT / "pages/docs/_shared/lireate-docs-page.inc.php",
@@ -58,6 +61,21 @@ class PrBPublicMenusTests(unittest.TestCase):
         self.assertIn("lireate-theme-light-v4", text)
         self.assertIn("data-lireate-fg", text)
         self.assertIn("lireate_fg:uslugi-footer", (ROOT / "template/page/uslugi/lireate-uslugi-lib.php").read_text(encoding="utf-8"))
+
+    def test_public_cms_chrome_assets(self):
+        self.assertTrue(CHROME_CSS.is_file())
+        sidebar = SIDEBAR.read_text(encoding="utf-8")
+        self.assertNotIn("tochka.com", sidebar.lower())
+        self.assertIn("leftSideBar", sidebar)
+        css = CHROME_CSS.read_text(encoding="utf-8")
+        self.assertRegex(css, r"min-width:\s*1151px")
+        self.assertRegex(css, r"max-width:\s*1150px")
+
+    def test_service_wired_with_chrome(self):
+        text = SERVICE_SAMPLE.read_text(encoding="utf-8")
+        self.assertIn("lireate-public-cms-chrome-wire:v1", text)
+        self.assertIn("lireate_public_cms_include_chrome", text)
+        self.assertIn("lx-nav-pill", text)
 
 
 if __name__ == "__main__":

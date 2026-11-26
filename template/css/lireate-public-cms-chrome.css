@@ -1,0 +1,137 @@
+/* Unified public CMS chrome: sidebar desktop ≥1151px, burger ≤1150px */
+body.lireate-public-cms-chrome .lireate-public-cms-veil {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1090;
+  background: rgba(15, 23, 42, 0.45);
+}
+body.lireate-public-cms-chrome.lireate-public-cms-menu-open .lireate-public-cms-veil {
+  display: block;
+}
+body.lireate-public-cms-chrome .lireate-public-cms-burger {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1201;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #dce8f7;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(31, 46, 76, 0.12);
+  cursor: pointer;
+}
+body.lireate-public-cms-chrome .lireate-public-cms-burger .hamb-top,
+body.lireate-public-cms-chrome .lireate-public-cms-burger .hamb-middle,
+body.lireate-public-cms-chrome .lireate-public-cms-burger .hamb-bottom {
+  display: block;
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 2px;
+  background: #1f212c;
+  border-radius: 2px;
+}
+body.lireate-public-cms-chrome .lireate-public-cms-burger .hamb-top { top: 14px; }
+body.lireate-public-cms-chrome .lireate-public-cms-burger .hamb-middle { top: 21px; }
+body.lireate-public-cms-chrome .lireate-public-cms-burger .hamb-bottom { top: 28px; }
+
+body.lireate-public-cms-chrome #leftSideBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 1100;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+  transition: transform 0.25s ease, left 0.25s ease;
+}
+body.lireate-public-cms-chrome #leftSideBar .leftSideLogo {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 24px auto 12px;
+  height: 48px;
+  background: url(/template/images/logo/logo.svg) center/contain no-repeat;
+}
+body.lireate-public-cms-chrome #leftSideNav .js-answer {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.25s ease;
+}
+body.lireate-public-cms-chrome #leftSideNav .leftSideArrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+body.lireate-public-cms-chrome .lireate-public-cms-content,
+body.lireate-public-cms-chrome .lireate-svc-page,
+body.lireate-public-cms-chrome .lireate-team-page,
+body.lireate-public-cms-chrome .lireate-about-page,
+body.lireate-public-cms-chrome .lireate-blog-list-page,
+body.lireate-public-cms-chrome .lireate-blog-page,
+body.lireate-public-cms-chrome #lireate-uslugi,
+body.lireate-public-cms-chrome .lu-page,
+body.lireate-public-cms-chrome .wrapper > .content,
+body.lireate-public-cms-chrome .page_container {
+  transition: margin-left 0.2s ease;
+}
+
+@media (min-width: 1151px) {
+  body.lireate-public-cms-chrome .lireate-public-cms-burger {
+    display: none !important;
+  }
+  body.lireate-public-cms-chrome #leftSideBar {
+    transform: none;
+    left: 0;
+  }
+  body.lireate-public-cms-chrome .lireate-public-cms-content,
+  body.lireate-public-cms-chrome .lireate-svc-page,
+  body.lireate-public-cms-chrome .lireate-team-page,
+  body.lireate-public-cms-chrome .lireate-about-page,
+  body.lireate-public-cms-chrome .lireate-blog-list-page,
+  body.lireate-public-cms-chrome .lireate-blog-page,
+  body.lireate-public-cms-chrome #lireate-uslugi,
+  body.lireate-public-cms-chrome .lu-page,
+  body.lireate-public-cms-chrome .wrapper > .content,
+  body.lireate-public-cms-chrome .page_container {
+    margin-left: 280px;
+  }
+  body.lireate-public-cms-chrome .lx-nav-shell {
+    margin-left: 280px;
+  }
+}
+
+@media (max-width: 1150px) {
+  body.lireate-public-cms-chrome .lireate-public-cms-burger {
+    display: block;
+  }
+  body.lireate-public-cms-chrome #leftSideBar {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  body.lireate-public-cms-chrome.lireate-public-cms-menu-open #leftSideBar {
+    transform: translateX(0);
+  }
+  body.lireate-public-cms-chrome .lireate-public-cms-content,
+  body.lireate-public-cms-chrome .lireate-svc-page,
+  body.lireate-public-cms-chrome .lireate-team-page,
+  body.lireate-public-cms-chrome .lireate-about-page,
+  body.lireate-public-cms-chrome .lireate-blog-list-page,
+  body.lireate-public-cms-chrome .lireate-blog-page,
+  body.lireate-public-cms-chrome #lireate-uslugi,
+  body.lireate-public-cms-chrome .lu-page,
+  body.lireate-public-cms-chrome .wrapper > .content,
+  body.lireate-public-cms-chrome .page_container {
+    margin-left: 0;
+    padding-top: 56px;
+  }
+  body.lireate-public-cms-chrome .lx-nav-shell {
+    margin-left: 0;
+    padding-top: 48px;
+  }
+}

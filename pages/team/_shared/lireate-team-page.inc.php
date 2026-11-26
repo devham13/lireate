@@ -36,6 +36,10 @@ document.documentElement.classList.add('lireate-team-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_team_h(LIREATE_TEAM_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-team-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<?php
+require_once dirname(__DIR__, 2) . '/_shared/lireate-lh4-subnav-lib.php';
+lireate_lh4_include_subnav();
+?>
 <div class="lireate-team-page" data-lireate-team-version="<?php echo lireate_team_h($lt_v); ?>">
   <header class="lireate-team-hero">
     <div class="lireate-team-wrap">

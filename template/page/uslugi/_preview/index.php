@@ -14,6 +14,10 @@ if (!defined('LIREATE_LIGHT_V4_ASSET_VERSION')) {
   <title>Услуги — preview Light V4</title>
 </head>
 <body class="cms-default lireate-uslugi-body lireate-theme-light-v4 lireate-cms-page-dark lireate-screenshot-capture">
+<?php
+require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
+lireate_public_cms_include_chrome();
+?>
 <div id="lireate-uslugi">
 <?php require $repo . '/template/page/uslugi/lireate-uslugi-cms.inc.php'; ?>
 </div>

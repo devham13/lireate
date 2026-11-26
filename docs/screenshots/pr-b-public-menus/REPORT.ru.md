@@ -4,10 +4,18 @@
 
 ## Скриншоты (preview)
 
+Генерация: `python3 scripts/capture_pr_b_public_menus_screenshots.py` (viewport, scrollY=0).
+
 | Страница | 1440 | 390 |
 |---|---|---|
-| `/uslugi/` (hub) | `uslugi-before-1440.png` / `uslugi-after-1440.png` | `uslugi-before-390.png` / `uslugi-after-390.png` |
-| `/mktu` | `mktu-after-1440.png` (+ `mktu-before-note.txt` — каталог только на хостинге) | `mktu-after-390.png` |
+| Услуга (регистрация ТЗ) | `registraciya-service-1440.png` | `registraciya-service-390.png` |
+| Статья блога | `blog-article-1440.png` | — |
+| Патентные пошлины | `patent-poshliny-1440.png` | — |
+| `/uslugi/` (hub) | `uslugi-after-1440.png` (+ legacy `uslugi-before-*`) | `uslugi-after-390.png` |
+| `/mktu` | `mktu-before-1440.png` (live) / `mktu-after-1440.png` | `mktu-after-390.png` |
+| Контакты | `contacts-after-1440.png` | `contacts-after-390.png` |
+| Партнёры | `partners-after-1440.png` | — |
+| Документы | `docs-after-1440.png` | — |
 
 Before `/uslugi/`: preview на `main` @ `1133b9b` (без `lh4-subnav`, без `lireate-theme-light-v4`). After: ветка PR B, `template/page/uslugi/_preview/index.php`.
 
