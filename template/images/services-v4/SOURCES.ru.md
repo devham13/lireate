@@ -4,7 +4,11 @@
 
 Установщик `scripts/lireate_six_services_photo_v4_install.py` копирует **только** пять `specialist-*.webp` в корне каталога, без `originals/`.
 
-## Три фото с фоном (обновление 26.11.2026)
+## Полные кадры до пояса (originals/waist, 26.11.2026)
+
+Сборка: `python3 scripts/build_services_v4_waist_originals.py` → `specialist-registraciya.webp`, `specialist-prolongation.webp`, `specialist-opposition.webp` (black-blazer-on), `specialist-copyright.webp` (blazer-over-arm).
+
+## Три фото с фоном (legacy, заменены waist-оригиналами)
 
 Оригиналы владельца (JPEG с полным фоном) конвертированы в:
 

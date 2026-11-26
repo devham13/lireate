@@ -18,7 +18,7 @@ META_PATH = DIR / "reframe-midbody-meta.json"
 FRAME_W, FRAME_H = 453, 378
 FRAME_RATIO = FRAME_W / FRAME_H
 TOP_MARGIN_FRAC = 0.08
-CROWN_ABOVE_FACE = 0.14
+CROWN_ABOVE_FACE = 0.12
 OUT_W = 906
 OUT_H = int(round(OUT_W / FRAME_RATIO))
 MAX_BYTES = 220 * 1024
@@ -136,9 +136,15 @@ def source_path(name: str) -> Path:
 
 
 def main() -> int:
+    import sys
+
+    only = {a.replace(".webp", "") for a in sys.argv[1:] if a.endswith(".webp")}
+    only |= {a for a in sys.argv[1:] if a.startswith("specialist-") and not a.endswith(".webp")}
     SRC_DIR.mkdir(parents=True, exist_ok=True)
     all_meta: dict = {}
     for webp in sorted(DIR.glob("specialist-*.webp")):
+        if only and webp.stem not in only:
+            continue
         src = source_path(webp.name)
         bgr = load_bgr(src)
         cropped, meta = midbody_crop(bgr, webp.stem)
