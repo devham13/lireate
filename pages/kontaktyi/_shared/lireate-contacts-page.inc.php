@@ -36,11 +36,13 @@ $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-contacts.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_footer_css); ?>?v=<?php echo lireate_contacts_h($lc_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126a">
 <script>
 document.documentElement.classList.add('lireate-contacts-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_contacts_h(LIREATE_CONTACTS_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-contacts-body'); }
 </script>
+<script>(function(){document.documentElement.classList.add('lireate-company-v5');if(document.body){document.body.classList.add('lireate-company-v5');}else{document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lireate-company-v5');},{once:true});}})();</script>
 <div class="lireate-contacts-page" data-lireate-contacts-version="<?php echo lireate_contacts_h($lc_v); ?>">
   <header class="lireate-contacts-hero">
     <div class="lireate-contacts-wrap">
@@ -54,6 +56,16 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
         <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-phone" href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone2_display); ?></a>
         <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-phone2" href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone1_display); ?></a>
       </div>
+
+      <aside class="lc5-hero-media lc5-hero-media--compact" aria-label="ОФИС ЛИРЕЙТ">
+        <div class="lc5-icon-shell" aria-hidden="true"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 108s37-38 37-69a37 37 0 1 0-74 0c0 31 37 69 37 69Z"/><circle cx="60" cy="42" r="14"/><path d="M36 107h48"/></svg></div>
+        <div class="lc5-media-body">
+          <span class="lc5-chip">ОФИС ЛИРЕЙТ</span>
+          <strong>Зеленодольск</strong>
+          <p>Республика Татарстан, ул. Карла Маркса, 24, офис 1.</p>
+          <a href="#lc-form-title">Оставить обращение ↗</a>
+        </div>
+      </aside>
     </div>
   </header>
 
