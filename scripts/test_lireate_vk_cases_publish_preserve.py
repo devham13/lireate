@@ -2,10 +2,8 @@
 """Rollout/publish must not replace per-page vk-cases.json with generic shared copy."""
 
 import hashlib
-import json
 import os
 import shutil
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -16,10 +14,11 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import lireate_hosting_publish_service as pub  # noqa: E402
 
-LIVE_MD5 = {
-    "zashchita-avtorskih-prav": "35f7c2f6603f3cf03e47c8b72bccb683",
-    "vozrazhenie-protiv-registracii-tovarnogo-znaka": "34d7600aecbac29a11d154b5c109d7b0",
-}
+PRESERVE_SLUGS = (
+    "zashchita-avtorskih-prav",
+    "vozrazhenie-protiv-registracii-tovarnogo-znaka",
+)
+GENERIC = ROOT / "pages" / "services" / "_shared" / "vk-cases.json"
 
 
 def md5(path):
@@ -27,27 +26,31 @@ def md5(path):
 
 
 class VkCasesPublishTests(unittest.TestCase):
-    def test_apply_keeps_custom_vk_cases_md5(self):
+    def test_apply_keeps_slug_vk_cases_not_generic(self):
+        if not GENERIC.is_file():
+            self.skipTest("shared vk-cases missing")
+        generic_md5 = md5(GENERIC)
         tmp = Path(tempfile.mkdtemp(prefix="lireate-vk-cases-"))
         docroot = tmp / "docroot"
         home = tmp / "autopub"
         state = home / "state" / "services-published.json"
         docroot.mkdir(parents=True)
         try:
-            for slug, expected in LIVE_MD5.items():
-                manifest = json.loads(
-                    (ROOT / "pages" / "services" / slug / "publish.manifest.json").read_text(
-                        encoding="utf-8"
-                    )
-                )
-                url_path = manifest["url_path"]
+            os.environ["LIREATE_ALLOW_PUBLISH"] = "yes"
+            os.environ["LIREATE_SKIP_SERVICE_HTTP_VERIFY"] = "yes"
+            for slug in PRESERVE_SLUGS:
+                slug_src = ROOT / "pages" / "services" / slug / "assets" / "lireate-shared" / "vk-cases.json"
+                if not slug_src.is_file():
+                    self.skipTest("slug vk-cases missing: {0}".format(slug))
+                slug_md5 = md5(slug_src)
+                if slug_md5 == generic_md5:
+                    self.fail("slug vk-cases must differ from _shared for test: {0}".format(slug))
+                manifest_path = ROOT / "pages" / "services" / slug / "publish.manifest.json"
+                url_path = __import__("json").loads(manifest_path.read_text(encoding="utf-8"))["url_path"]
                 dest = docroot / url_path / "assets" / "lireate-shared"
                 dest.mkdir(parents=True)
-                custom = ROOT / "pages" / "services" / slug / "assets" / "lireate-shared" / "vk-cases.json"
-                shutil.copy2(str(custom), str(dest / "vk-cases.json"))
-                self.assertEqual(expected, md5(dest / "vk-cases.json"))
-                os.environ["LIREATE_ALLOW_PUBLISH"] = "yes"
-                os.environ["LIREATE_SKIP_SERVICE_HTTP_VERIFY"] = "yes"
+                shutil.copy2(str(GENERIC), str(dest / "vk-cases.json"))
+                self.assertEqual(generic_md5, md5(dest / "vk-cases.json"))
                 code = pub._publish_slug(
                     slug,
                     ROOT,
@@ -62,9 +65,9 @@ class VkCasesPublishTests(unittest.TestCase):
                 )
                 self.assertEqual(0, code, slug)
                 self.assertEqual(
-                    expected,
+                    slug_md5,
                     md5(dest / "vk-cases.json"),
-                    "vk-cases.json md5 must match live after publish --apply",
+                    "publish must deploy slug-specific vk-cases, not generic",
                 )
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
