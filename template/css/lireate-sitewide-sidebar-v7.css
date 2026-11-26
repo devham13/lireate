@@ -54,6 +54,7 @@ body.lsv7-managed .lsv7-mobile-toggle,body.lsv7-managed .lsv7-veil{display:none}
  body.lsv7-managed .lsv7-mobile-toggle{position:fixed;display:flex!important;align-items:center;justify-content:center;left:14px;bottom:18px;z-index:9903;min-height:47px;padding:11px 16px;border:0;border-radius:13px;color:#fff;background:var(--lsv7-red);font:800 13px/1.3 Manrope,Arial,sans-serif;box-shadow:0 10px 27px rgba(25,35,60,.24);cursor:pointer}
  body.lsv7-managed .lsv7-veil:not([hidden]){display:block!important;position:fixed;inset:0;z-index:9900;background:rgba(22,30,45,.48)}
  body.lsv7-managed .lsv7-veil[hidden]{display:none!important}
+ body.lsv7-managed.lireate-svc-body .lsv7-mobile-toggle{bottom:88px}
  body.lsv7-managed .lx-nav-shell{width:100%!important;max-width:100%!important;margin-left:0!important}
 }
 @media(prefers-reduced-motion:reduce){body.lsv7-managed #leftSideBar.lsv7-sidebar,body.lsv7-managed #leftSideBar.lsv7-sidebar *{transition:none!important;animation:none!important}}
