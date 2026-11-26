@@ -140,9 +140,8 @@ def patch_home_light_v4_suppress_dark_body(text):
         return items_new.strip()
 
     inline_in_array_dark = re.compile(
-        r"if\s*\(\s*in_array\s*\(\s*\$temp\['page'\]\s*,\s*array\s*\((.*?)\)\s*,\s*true\s*\)\s*\)\s*"
+        r"if\s*\(\s*in_array\s*\(\s*\$temp\['page'\]\s*,\s*array\s*\(([^()]*)\)\s*,\s*true\s*\)\s*\)\s*"
         r"echo\s+'\s*lireate-cms-page-dark\s*'\s*;",
-        re.DOTALL,
     )
 
     def _patch_in_array_inline(m):

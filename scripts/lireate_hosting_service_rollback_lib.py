@@ -65,8 +65,6 @@ def restore_service_publish(docroot, backup_dir, manifest):
         scope = item.get("scope", "service")
         if item.get("existed_before"):
             continue
-        if scope == "docroot" and rel.startswith("_shared/"):
-            continue
         target = _target_for_rel(docroot, dest_dir, rel, scope)
         if target.is_file():
             backup_file = backup_dir / rel

@@ -23,6 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 from lireate_dotenv import load_dotenv  # noqa: E402
+import lireate_hosting_service_rollback_lib as publish_rollback  # noqa: E402
 
 SKIP_NAMES = {
     "publish.manifest.json",
@@ -532,49 +533,28 @@ def _publish_slug(
             continue
         items_to_copy.append(item)
 
-    if update_mode and dest_dir.is_dir() and items_to_copy:
-        backup_root.mkdir(parents=True, exist_ok=True)
-        for item in items_to_copy:
-            dst = Path(item["dst"])
-            if dst.is_file():
-                bdst = backup_root / item["rel"]
-                bdst.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(str(dst), str(bdst))
-        logging.info("backup: %s", backup_root)
-
+    backup_root.mkdir(parents=True, exist_ok=True)
+    print("backup: {0}".format(backup_root))
+    logging.info("backup: %s", backup_root)
+    for item in items_to_copy:
+        dst = Path(item["dst"])
+        if dst.is_file():
+            bdst = backup_root / item["rel"]
+            bdst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(dst), str(bdst))
     if not update_mode and dest_dir.is_dir() and existing_managed:
-        backup_root.mkdir(parents=True, exist_ok=True)
         for rel in existing_managed.get("files", {}):
             src = dest_dir / rel
-            if src.is_file():
+            if src.is_file() and not (backup_root / rel).is_file():
                 bdst = backup_root / rel
                 bdst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(str(src), str(bdst))
-        logging.info("backup: %s", backup_root)
 
     written_manifest = []
     managed_dst = dest_dir / MANAGED_MARKER
     managed_existed = managed_dst.is_file()
     if managed_existed:
-        backup_root.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(managed_dst), str(backup_root / MANAGED_MARKER))
-
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    for item in items_to_copy:
-        src = Path(item["src"])
-        dst = Path(item["dst"])
-        rel = item["rel"]
-        scope = "docroot" if rel.startswith("_shared/") or rel.startswith("_shared\\") else "service"
-        existed_before = dst.is_file()
-        written_manifest.append(
-            {
-                "rel": rel.replace("\\", "/"),
-                "scope": scope,
-                "existed_before": existed_before,
-            }
-        )
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(str(src), str(dst))
 
     marker_files = {item["rel"]: {"sha256": item["sha256"], "size": item["size"]} for item in plan}
     if existing_managed and update_mode:
@@ -583,25 +563,59 @@ def _publish_slug(
             if rel not in marker_files:
                 marker_files[rel] = meta
 
-    marker = {
-        "slug": slug,
-        "url_path": url_path,
-        "published_at": ts,
-        "source_repo": str(office_repo),
-        "files": marker_files,
-    }
-    (dest_dir / MANAGED_MARKER).write_text(
-        json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    try:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        for item in items_to_copy:
+            src = Path(item["src"])
+            dst = Path(item["dst"])
+            rel = item["rel"]
+            scope = "docroot" if rel.startswith("_shared/") or rel.startswith("_shared\\") else "service"
+            existed_before = dst.is_file()
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(src), str(dst))
+            written_manifest.append(
+                {
+                    "rel": rel.replace("\\", "/"),
+                    "scope": scope,
+                    "existed_before": existed_before,
+                }
+            )
 
-    written_manifest.append(
-        {
-            "rel": MANAGED_MARKER,
-            "scope": "service",
-            "existed_before": managed_existed,
+        marker = {
+            "slug": slug,
+            "url_path": url_path,
+            "published_at": ts,
+            "source_repo": str(office_repo),
+            "files": marker_files,
         }
-    )
+        (dest_dir / MANAGED_MARKER).write_text(
+            json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        written_manifest.append(
+            {
+                "rel": MANAGED_MARKER,
+                "scope": "service",
+                "existed_before": managed_existed,
+            }
+        )
+    except Exception as exc:
+        partial_manifest = {
+            "slug": slug,
+            "url_path": url_path.strip("/"),
+            "dest_dir": str(dest_dir),
+            "published_at": ts,
+            "written": written_manifest,
+            "managed_created": False,
+        }
+        publish_rollback.restore_service_publish(docroot_path, backup_root, partial_manifest)
+        (backup_root / "rollback-manifest.json").write_text(
+            json.dumps(partial_manifest, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        _print_status("BLOCKER", "publish write failed: {0}".format(exc))
+        return 1
+
     rollback_manifest = {
         "slug": slug,
         "url_path": url_path.strip("/"),
@@ -610,7 +624,6 @@ def _publish_slug(
         "written": written_manifest,
         "managed_created": not managed_existed,
     }
-    backup_root.mkdir(parents=True, exist_ok=True)
     (backup_root / "rollback-manifest.json").write_text(
         json.dumps(rollback_manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",

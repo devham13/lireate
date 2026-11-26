@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # Rollout: 20 slugs (s-oplatoy вне menu/publish по политике). CI render — все 21 manifest.
 EXCLUDE = frozenset({'registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat'})
 BACKUP_STAMP_RE = re.compile(r"backup:\s*(\S+)")
+PERF_BACKUP_RE = re.compile(r"PERFORMANCE_PATCH_APPLIED;\s*backup:\s*(\S+)")
 
 
 def service_slugs():
@@ -51,6 +52,23 @@ def parse_backup_stamp(stdout):
     return ''
 
 
+def parse_perf_backup_ref(stdout):
+    match = PERF_BACKUP_RE.search(stdout or '')
+    if not match:
+        return ''
+    return match.group(1).strip()
+
+
+def _exc_output(exc):
+    if isinstance(exc, subprocess.CalledProcessError):
+        out = getattr(exc, 'output', None)
+        if out is None:
+            out = getattr(exc, 'stdout', None)
+        err = getattr(exc, 'stderr', None) or ''
+        return (out or '') + (err or '')
+    return ''
+
+
 def run_publish(publish, slug, env, apply):
     cmd = [
         sys.executable,
@@ -73,35 +91,53 @@ def run_publish(publish, slug, env, apply):
     if proc.returncode != 0:
         sys.stderr.write(proc.stdout or '')
         sys.stderr.write(proc.stderr or '')
-        raise subprocess.CalledProcessError(proc.returncode, cmd)
+        raise subprocess.CalledProcessError(
+            proc.returncode, cmd, output=proc.stdout, stderr=proc.stderr
+        )
     return combined
 
 
-def rollback_applied(office, docroot, autopub_home, applied):
+def rollback_slug(office, docroot, autopub_home, slug, pub_stamp, perf_stamp=''):
     rollback = office / 'scripts' / 'lireate_hosting_service_rollback.py'
     if not rollback.is_file():
         print('WARN: rollback script missing, cannot unwind partial rollout')
         return
-    for slug, stamp in reversed(applied):
-        if not stamp:
-            print('WARN: no backup stamp for slug {0}, skip rollback'.format(slug))
-            continue
-        print('ROLLBACK slug={0} stamp={1}'.format(slug, stamp))
-        subprocess.run(
-            [
-                sys.executable,
-                str(rollback),
-                '--docroot',
-                str(docroot),
-                '--slug',
-                slug,
-                '--rollback',
-                stamp,
-                '--home',
-                str(autopub_home),
-            ],
-            check=False,
-        )
+    if not pub_stamp:
+        print('WARN: no backup stamp for slug {0}, skip rollback'.format(slug))
+        return
+    print('ROLLBACK slug={0} publish={1} perf={2}'.format(slug, pub_stamp, perf_stamp or '-'))
+    cmd = [
+        sys.executable,
+        str(rollback),
+        '--docroot',
+        str(docroot),
+        '--slug',
+        slug,
+        '--rollback',
+        pub_stamp,
+        '--home',
+        str(autopub_home),
+    ]
+    if perf_stamp:
+        cmd.extend(['--perf-backup', perf_stamp])
+    subprocess.run(cmd, check=False)
+
+
+def rollback_applied(office, docroot, autopub_home, applied):
+    for entry in reversed(applied):
+        if len(entry) == 2:
+            slug, pub_stamp, perf_stamp = entry[0], entry[1], ''
+        else:
+            slug, pub_stamp, perf_stamp = entry
+        rollback_slug(office, docroot, autopub_home, slug, pub_stamp, perf_stamp)
+
+
+def unwind_partial(office, docroot, autopub_home, applied, failed_slug, failed_pub='', failed_perf=''):
+    if applied:
+        print('=== ROLLBACK partial rollout ({0} prior slug(s)) ==='.format(len(applied)))
+    rollback_applied(office, docroot, autopub_home, applied)
+    if failed_pub:
+        rollback_slug(office, docroot, autopub_home, failed_slug, failed_pub, failed_perf or '')
 
 
 def main():
@@ -166,12 +202,14 @@ def main():
         for slug in slugs:
             print('')
             print('=== APPLY {0} ==='.format(slug))
+            pub_stamp = ''
+            perf_stamp = ''
             try:
                 out = run_publish(publish, slug, env, True)
                 if out.strip():
                     print(out.rstrip())
-                stamp = parse_backup_stamp(out)
-                subprocess.check_call(
+                pub_stamp = parse_backup_stamp(out)
+                perf_proc = subprocess.run(
                     [
                         sys.executable,
                         str(perf),
@@ -182,13 +220,32 @@ def main():
                         '--apply',
                     ],
                     env=env,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    universal_newlines=True,
                 )
-                applied.append((slug, stamp))
+                perf_out = (perf_proc.stdout or '') + '\n' + (perf_proc.stderr or '')
+                if perf_proc.returncode != 0:
+                    sys.stderr.write(perf_proc.stdout or '')
+                    sys.stderr.write(perf_proc.stderr or '')
+                    raise subprocess.CalledProcessError(
+                        perf_proc.returncode,
+                        perf_proc.args,
+                        output=perf_proc.stdout,
+                        stderr=perf_proc.stderr,
+                    )
+                if perf_out.strip():
+                    print(perf_out.rstrip())
+                perf_stamp = parse_perf_backup_ref(perf_out)
+                applied.append((slug, pub_stamp, perf_stamp))
             except (subprocess.CalledProcessError, OSError) as exc:
+                extra = _exc_output(exc)
+                if not pub_stamp:
+                    pub_stamp = parse_backup_stamp(extra)
+                if not perf_stamp:
+                    perf_stamp = parse_perf_backup_ref(extra)
                 print('BLOCKER: publish failed for slug {0}: {1}'.format(slug, exc))
-                if applied:
-                    print('=== ROLLBACK partial rollout ({0} slugs) ==='.format(len(applied)))
-                    rollback_applied(office, docroot, autopub_home, applied)
+                unwind_partial(office, docroot, autopub_home, applied, slug, pub_stamp, perf_stamp)
                 return 1
 
     print('')

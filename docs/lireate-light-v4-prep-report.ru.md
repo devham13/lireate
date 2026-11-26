@@ -64,6 +64,14 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 **Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
 
+### Круг 20 — regex body без DOTALL, live main fixture, rollout rollback + perf
+
+| Задача | Решение |
+| --- | --- |
+| `php -l` main.php после install | `array\(([^()]*)\)` только перед `lireate-cms-page-dark`; фикстура `tests/fixtures/live-render/live-assets/template/main.php` |
+| Rollout откат | publish backup до записи + partial unwind; `--perf-backup` с полным путём; docroot `_shared` снимается при rollback |
+| CI | `test_lireate_light_v4_rollout_partial_rollback`, php -l полного planned main |
+
 ### Круг 19 (`7310a13`) — inline body patch, rollout preflight/rollback, py3.6 apply
 
 | Задача | Решение |
