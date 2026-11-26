@@ -1,45 +1,5 @@
 [
   {
-    "file": "docs/screenshots/company-v5/o_kompanii-390.png",
-    "live_path": "/o_kompanii",
-    "width": 390,
-    "injected": true,
-    "hasV5Css": true,
-    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
-    "timesFont": false,
-    "hasLc5": true
-  },
-  {
-    "file": "docs/screenshots/company-v5/o_kompanii-1440.png",
-    "live_path": "/o_kompanii",
-    "width": 1440,
-    "injected": true,
-    "hasV5Css": true,
-    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
-    "timesFont": false,
-    "hasLc5": true
-  },
-  {
-    "file": "docs/screenshots/company-v5/team-390.png",
-    "live_path": "/team/",
-    "width": 390,
-    "injected": true,
-    "hasV5Css": true,
-    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
-    "timesFont": false,
-    "hasLc5": true
-  },
-  {
-    "file": "docs/screenshots/company-v5/team-1440.png",
-    "live_path": "/team/",
-    "width": 1440,
-    "injected": true,
-    "hasV5Css": true,
-    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
-    "timesFont": false,
-    "hasLc5": true
-  },
-  {
     "file": "docs/screenshots/company-v5/partners-390.png",
     "live_path": "/partners",
     "width": 390,
@@ -52,26 +12,6 @@
   {
     "file": "docs/screenshots/company-v5/partners-1440.png",
     "live_path": "/partners",
-    "width": 1440,
-    "injected": true,
-    "hasV5Css": true,
-    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
-    "timesFont": false,
-    "hasLc5": true
-  },
-  {
-    "file": "docs/screenshots/company-v5/docs-390.png",
-    "live_path": "/docs",
-    "width": 390,
-    "injected": true,
-    "hasV5Css": true,
-    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
-    "timesFont": false,
-    "hasLc5": true
-  },
-  {
-    "file": "docs/screenshots/company-v5/docs-1440.png",
-    "live_path": "/docs",
     "width": 1440,
     "injected": true,
     "hasV5Css": true,

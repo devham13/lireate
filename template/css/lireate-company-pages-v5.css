@@ -6,6 +6,7 @@
 html.lireate-company-v5, body.lireate-company-v5 {
   --lc5-ink:#1f212c;
   --lc5-muted:#52637b;
+  --lc5-readable:#2d4764;
   --lc5-red:#e32020;
   --lc5-blue:#195acb;
   --lc5-border:#dce7f6;
@@ -361,6 +362,56 @@ body.lireate-company-v5 :is(.lireate-contacts-submit,.lireate-partners-submit){b
 body.lireate-company-v5 :is(.lireate-contacts-consent,.lireate-partners-consent,.lx-consent){color:var(--lc5-muted)!important}
 body.lireate-company-v5 :is(.lireate-team-modal-panel,.lireate-about-modal-panel,.lireate-partners-modal-panel,.lireate-contacts-modal-panel){
   color:var(--lc5-ink)!important;background:#fff!important;border:1px solid var(--lc5-border)!important;border-radius:22px!important
+}
+/* Beat template/css/lireate-cms-page-dark.css (.container.content p { #cbd5e1 !important }) on live. */
+html body.lireate-cms-page-dark.lireate-company-v5 :is(#wrapper-ap,#page-content-wrapper,.wrapper,.wrapper-ap,.content,.container.content,.page_container){
+  background:#fff!important;
+  background-color:#fff!important;
+  color:var(--lc5-ink)!important;
+}
+html body.lireate-cms-page-dark.lireate-company-v5 .container.content
+:is(.lireate-about-page,.lireate-team-page,.lireate-partners-page,.lireate-docs-page,.lireate-contacts-page){
+  color:var(--lc5-ink)!important;
+  background:#fff!important;
+}
+html body.lireate-cms-page-dark.lireate-company-v5 .container.content
+:is(.lireate-about-page,.lireate-team-page,.lireate-partners-page,.lireate-docs-page,.lireate-contacts-page)
+:is(
+  p,li,dd,small,span,
+  .lireate-about-lead,.lireate-team-lead,.lireate-partners-lead,.lireate-docs-lead,.lireate-contacts-lead,
+  .lireate-about-text,.lireate-team-text,.lireate-about-text--muted,.lireate-team-text--muted,
+  .lireate-about-spec-label,.lireate-about-partner-role,
+  .lireate-team-member-role,.lireate-partners-team-role,.lireate-partners-modal-role,.lireate-partners-city,
+  .lireate-contacts-team-role,.lireate-contacts-social-label,
+  .lireate-partners-badge,.lireate-docs-badge,.lireate-contacts-badge,
+  .lireate-about-spec li,.lireate-team-steps li,.lireate-team-list-bullets li,
+  .lireate-partners-consent,.lireate-contacts-consent,.lireate-docs-card-desc,
+  label,.lireate-contacts-label
+){
+  color:var(--lc5-readable)!important;
+}
+html body.lireate-cms-page-dark.lireate-company-v5 .container.content
+:is(.lireate-about-page,.lireate-team-page,.lireate-partners-page,.lireate-docs-page,.lireate-contacts-page)
+:is(
+  .lireate-partners-field dt,.lireate-partners-contacts dt,.lireate-docs-dl dt,.lireate-contacts-dl dt
+){
+  color:#61728b!important;
+}
+html body.lireate-cms-page-dark.lireate-company-v5 .container.content
+:is(.lireate-about-page,.lireate-team-page,.lireate-partners-page,.lireate-docs-page,.lireate-contacts-page)
+:is(.lireate-about-lead,.lireate-team-lead,.lireate-partners-lead,.lireate-docs-lead,.lireate-contacts-lead){
+  color:var(--lc5-readable)!important;
+  font-weight:500!important;
+}
+html body.lireate-cms-page-dark.lireate-company-v5 .container.content
+:is(.lireate-about-page,.lireate-team-page,.lireate-partners-page,.lireate-docs-page,.lireate-contacts-page)
+:is(.lireate-team-sub,.lireate-about-tagline,.lireate-team-tagline){
+  color:var(--lc5-blue)!important;
+}
+html body.lireate-cms-page-dark.lireate-company-v5 .container.content
+:is(.lireate-about-page,.lireate-team-page,.lireate-partners-page,.lireate-docs-page,.lireate-contacts-page)
+:is(.lireate-about-kicker,.lireate-team-kicker,.lireate-partners-kicker,.lireate-docs-kicker,.lireate-contacts-kicker){
+  color:var(--lc5-red)!important;
 }
 /* Sidebar: original brand SVG adapted to light backgrounds (retains its red symbol).
    The original 759.7 × 136.1 viewBox is 5.58:1. No mask/cropping and no stretched image. */

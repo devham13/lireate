@@ -85,7 +85,7 @@ def inject_v5(page, preview_html: str) -> dict:
         """async ({previewHtml}) => {
             document.documentElement.classList.add('lireate-company-v5');
             document.body.classList.add('lireate-company-v5');
-            const href = '/template/css/lireate-company-pages-v5.css?v=20261126a';
+            const href = '/template/css/lireate-company-pages-v5.css?v=20261126b';
             if (!document.querySelector('link[href*="lireate-company-pages-v5"]')) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
@@ -183,7 +183,22 @@ def capture_page(
 
 
 def main() -> int:
+    import argparse
     from playwright.sync_api import sync_playwright
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--only",
+        metavar="SLUGS",
+        help="comma list: o_kompanii,team,partners,docs,contacts",
+    )
+    args = parser.parse_args()
+    page_filter = None
+    if args.only:
+        wanted = {s.strip() for s in args.only.split(",") if s.strip()}
+        page_filter = [row for row in PAGES if row[0] in wanted]
+        if not page_filter:
+            raise SystemExit("BLOCKER: no pages match --only")
 
     port = int(os.environ.get("LIREATE_COMPANY_V5_PREVIEW_PORT", "19085"))
     base = site_base()
@@ -192,7 +207,8 @@ def main() -> int:
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(args=["--no-sandbox"])
-            for slug, live_path, preview_path in PAGES:
+            rows = page_filter if page_filter is not None else PAGES
+            for slug, live_path, preview_path in rows:
                 live_url = base + live_path
                 preview_url = "http://127.0.0.1:%d%s" % (port, preview_path)
                 for width in (390, 1440):
