@@ -1,0 +1,438 @@
+/* LIREATE COMPANY LIGHT V5 — 5 information pages + full-width sidebar logo.
+ * Loaded only by /o_kompanii, /team, /partners, /docs and /contacts.
+ * Preserve PHP-rendered text, contact details, team and partner data, documents,
+ * forms, analytics and existing mobile navigation handlers.
+ */
+html.lireate-company-v5, body.lireate-company-v5 {
+  --lc5-ink:#1f212c;
+  --lc5-muted:#52637b;
+  --lc5-red:#e32020;
+  --lc5-blue:#195acb;
+  --lc5-border:#dce7f6;
+  --lc5-ice:#f3f8ff;
+  --lc5-soft:#f8fbff;
+  background:#fff!important;
+  color:var(--lc5-ink)!important;
+  color-scheme:light;
+}
+body.lireate-company-v5 .wrapper,
+body.lireate-company-v5 .container.content,
+body.lireate-company-v5 .page_container,
+body.lireate-company-v5 .content.text-center {
+  background:#fff!important;
+  color:var(--lc5-ink)!important;
+}
+html body.lireate-company-v5 :is(
+  .lireate-about-page,
+  .lireate-team-page,
+  .lireate-partners-page,
+  .lireate-docs-page,
+  .lireate-contacts-page
+){
+  --la-bg:#fff;--lt-bg:#fff;--lp-bg:#fff;--ld-bg:#fff;--lc-bg:#fff;
+  --la-card:#fff;--lt-card:#fff;--lp-card:#fff;--ld-card:#fff;--lc-card:#fff;
+  --la-text:#1f212c;--lt-text:#1f212c;--lp-text:#1f212c;--ld-text:#1f212c;--lc-text:#1f212c;
+  --la-muted:#52637b;--lt-muted:#52637b;--lp-muted:#52637b;--ld-muted:#52637b;--lc-muted:#52637b;
+  --la-line:#dce7f6;--lt-line:#dce7f6;--lp-line:#dce7f6;--ld-line:#dce7f6;--lc-line:#dce7f6;
+  --la-green:#195acb;--lt-green:#195acb;--lp-green:#195acb;--ld-green:#195acb;--lc-green:#195acb;
+  width:100%!important;
+  min-width:0;
+  margin:0!important;
+  padding:0 0 60px!important;
+  background:#fff!important;
+  color:var(--lc5-ink)!important;
+  font-family:Manrope,"Inter",Arial,sans-serif!important;
+  font-size:16px!important;
+  line-height:1.6!important;
+  overflow:clip;
+}
+html body.lireate-company-v5 :is(
+  .lireate-about-page,
+  .lireate-team-page,
+  .lireate-partners-page,
+  .lireate-docs-page,
+  .lireate-contacts-page
+) * {box-sizing:border-box}
+body.lireate-company-v5 :is(
+  .lireate-about-page,
+  .lireate-team-page,
+  .lireate-partners-page,
+  .lireate-docs-page,
+  .lireate-contacts-page
+) :is(h1,h2,h3,h4,dt,strong){
+  font-family:Manrope,"Inter",Arial,sans-serif!important;
+  color:var(--lc5-ink)!important;
+}
+body.lireate-company-v5 :is(
+  .lireate-about-page,
+  .lireate-team-page,
+  .lireate-partners-page,
+  .lireate-docs-page,
+  .lireate-contacts-page
+) :is(p,li,dd,small){
+  color:var(--lc5-muted)!important;
+}
+body.lireate-company-v5 :is(
+  .lireate-about-page,
+  .lireate-team-page,
+  .lireate-partners-page,
+  .lireate-docs-page,
+  .lireate-contacts-page
+) a:not(.lc5-button){
+  color:var(--lc5-blue);
+}
+body.lireate-company-v5 :is(
+  .lireate-about-page,
+  .lireate-team-page,
+  .lireate-partners-page,
+  .lireate-docs-page,
+  .lireate-contacts-page
+) a:hover:not(.lc5-button){color:var(--lc5-red)}
+body.lireate-company-v5 :is(
+  .lireate-about-wrap,
+  .lireate-team-wrap,
+  .lireate-partners-wrap,
+  .lireate-docs-wrap,
+  .lireate-contacts-wrap
+) {
+  width:min(1220px,calc(100% - 56px))!important;
+  max-width:1220px!important;
+  margin-inline:auto!important;
+  min-width:0;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+html body.lireate-company-v5 :is(
+  .lireate-about-hero,
+  .lireate-team-hero,
+  .lireate-partners-hero,
+  .lireate-docs-hero,
+  .lireate-contacts-hero
+){
+  position:relative;
+  background:radial-gradient(circle at 88% 33%,rgba(224,239,255,.85),transparent 44%),#fff!important;
+  background-image:radial-gradient(circle at 88% 33%,rgba(224,239,255,.85),transparent 44%)!important;
+  border:0!important;
+  border-bottom:1px solid var(--lc5-border)!important;
+  padding:58px 0 62px!important;
+  margin:0 0 50px!important;
+  overflow:hidden;
+}
+html body.lireate-company-v5 :is(
+  .lireate-about-hero,
+  .lireate-team-hero,
+  .lireate-partners-hero,
+  .lireate-docs-hero,
+  .lireate-contacts-hero
+)>:is(.lireate-about-wrap,.lireate-team-wrap,.lireate-partners-wrap,.lireate-docs-wrap,.lireate-contacts-wrap){
+  display:grid!important;
+  grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);
+  grid-template-rows:auto auto auto auto 1fr;
+  align-items:start;
+  column-gap:clamp(25px,4vw,80px);
+  min-height:465px;
+}
+body.lireate-company-v5 :is(.lireate-about-kicker,.lireate-team-kicker,.lireate-partners-kicker,.lireate-docs-kicker,.lireate-contacts-kicker){
+  display:block;
+  grid-column:1!important;
+  grid-row:auto;
+  margin:10px 0 15px!important;
+  font:800 12px/1.4 Manrope,Arial,sans-serif!important;
+  color:var(--lc5-red)!important;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+body.lireate-company-v5 :is(.lireate-about-h1,.lireate-team-h1,.lireate-partners-h1,.lireate-docs-h1,.lireate-contacts-h1){
+  grid-column:1!important;
+  grid-row:auto;
+  max-width:670px;
+  margin:0 0 22px!important;
+  padding:0!important;
+  color:var(--lc5-ink)!important;
+  font:900 clamp(38px,4vw,67px)/1.09 Manrope,Arial,sans-serif!important;
+  letter-spacing:-.06em!important;
+  text-transform:none!important;
+  overflow-wrap:normal;
+}
+body.lireate-company-v5 :is(.lireate-about-sub,.lireate-team-sub,.lireate-about-tagline,.lireate-team-tagline){
+  grid-column:1!important;
+  max-width:630px;
+  color:var(--lc5-blue)!important;
+  font-size:15px!important;
+  font-weight:700!important;
+  margin:0 0 12px!important;
+}
+body.lireate-company-v5 :is(.lireate-about-lead,.lireate-team-lead,.lireate-partners-lead,.lireate-docs-lead,.lireate-contacts-lead){
+  grid-column:1!important;
+  grid-row:auto;
+  max-width:630px;
+  margin:0 0 22px!important;
+  color:var(--lc5-muted)!important;
+  font:500 clamp(16px,1.45vw,19px)/1.65 Manrope,Arial,sans-serif!important;
+}
+body.lireate-company-v5 :is(
+  .lireate-about-hero-actions,
+  .lireate-team-hero-actions,
+  .lireate-partners-hero-actions,
+  .lireate-contacts-hero-actions
+){
+  grid-column:1!important;
+  grid-row:auto;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:9px!important;
+  align-self:start;
+  justify-content:flex-start!important;
+  margin:0!important;
+}
+body.lireate-company-v5 :is(
+  .lireate-about-pill,
+  .lireate-team-pill,
+  .lireate-partners-pill,
+  .lireate-contacts-pill
+){
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto!important;
+  min-height:43px!important;
+  height:auto!important;
+  padding:10px 14px!important;
+  border-radius:11px!important;
+  border:1px solid #c4d8f3!important;
+  background:#fff!important;
+  color:var(--lc5-blue)!important;
+  font:800 12px/1.35 Manrope,Arial,sans-serif!important;
+  text-decoration:none!important;
+  box-shadow:none!important;
+  transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+body.lireate-company-v5 :is(
+  .lireate-about-pill--solid,
+  .lireate-team-pill--solid,
+  .lireate-partners-pill--solid,
+  .lireate-contacts-pill--solid
+) {background:var(--lc5-red)!important;border-color:var(--lc5-red)!important;color:#fff!important}
+body.lireate-company-v5 :is(.lireate-about-pill,.lireate-team-pill,.lireate-partners-pill,.lireate-contacts-pill):hover{
+  transform:translateY(-2px);
+  border-color:#8eb8eb!important;
+  box-shadow:0 8px 18px rgba(27,72,130,.13)!important;
+}
+body.lireate-company-v5 :is(.lireate-about-pill--solid,.lireate-team-pill--solid,.lireate-partners-pill--solid,.lireate-contacts-pill--solid):hover{
+  background:#ca141e!important;
+  color:#fff!important;
+  border-color:#ca141e!important;
+}
+
+/* The same portrait/framed information card used on the home first screen. */
+body.lireate-company-v5 .lc5-hero-media {
+  grid-column:2;
+  grid-row:1 / -1;
+  justify-self:stretch;
+  align-self:center;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  border:1px solid var(--lc5-border);
+  border-radius:25px;
+  background:#fff;
+  box-shadow:0 24px 64px rgba(31,33,44,.085);
+  overflow:hidden;
+}
+body.lireate-company-v5 .lc5-photo-shell{
+  height:310px;
+  overflow:hidden;
+  background:#eef5fc;
+}
+body.lireate-company-v5 .lc5-photo-shell img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 24%;
+}
+body.lireate-company-v5 .lc5-media-body{padding:20px 23px 24px;display:flex;flex-direction:column;gap:8px}
+body.lireate-company-v5 .lc5-chip{
+  width:fit-content;
+  max-width:100%;
+  border:1px solid #dbe8f9;
+  border-radius:999px;
+  background:#f2f7ff;
+  padding:6px 11px;
+  font:800 10px/1.35 Manrope,Arial,sans-serif;
+  letter-spacing:.03em;
+  color:#385c87;
+}
+body.lireate-company-v5 .lc5-media-body strong{font:900 clamp(21px,2vw,27px)/1.15 Manrope,Arial,sans-serif!important;letter-spacing:-.04em;color:var(--lc5-ink)!important}
+body.lireate-company-v5 .lc5-media-body p{margin:0!important;color:var(--lc5-muted)!important;font:500 13px/1.55 Manrope,Arial,sans-serif!important}
+body.lireate-company-v5 .lc5-media-body a{color:var(--lc5-blue)!important;font-size:12px;font-weight:800;text-decoration:none}
+body.lireate-company-v5 .lc5-media-body a:hover{color:var(--lc5-red)!important}
+body.lireate-company-v5 .lc5-icon-shell{
+  min-height:215px;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 40% 45%,#fff,#eaf3ff 80%);
+}
+body.lireate-company-v5 .lc5-icon-shell svg{width:110px;height:110px;stroke:var(--lc5-blue);stroke-width:1.3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+body.lireate-company-v5 .lc5-hero-media--compact .lc5-icon-shell{min-height:250px}
+body.lireate-company-v5 .lc5-hero-media--compact .lc5-media-body{min-height:150px}
+
+/* Sections, supporting cards, real people, real documents, partners. */
+body.lireate-company-v5 :is(
+  .lireate-about-about,.lireate-about-roster,
+  .lireate-team-about,.lireate-team-roster,
+  .lireate-partners-list,.lireate-partners-team,
+  .lireate-docs-section,.lireate-contacts-team
+){margin-top:40px!important;margin-bottom:52px!important}
+body.lireate-company-v5 :is(
+  .lireate-about-card,.lireate-about-member-card,
+  .lireate-team-card,.lireate-team-member-card,
+  .lireate-partners-card,.lireate-partners-team-card,
+  .lireate-docs-card,.lireate-docs-req-card,
+  .lireate-contacts-card,.lireate-contacts-team-card,
+  .lireate-contacts-info-card,.lireate-about-partner
+){
+  background:#fff!important;
+  background-image:none!important;
+  border:1px solid var(--lc5-border)!important;
+  border-radius:18px!important;
+  color:var(--lc5-ink)!important;
+  box-shadow:0 11px 35px rgba(22,53,101,.045)!important;
+  overflow:hidden;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+body.lireate-company-v5 :is(
+  .lireate-about-member-card,.lireate-team-member-card,
+  .lireate-partners-card,.lireate-partners-team-card,
+  .lireate-contacts-team-card
+):hover{transform:translateY(-3px);border-color:#bad4f5!important;box-shadow:0 16px 38px rgba(22,53,101,.09)!important}
+body.lireate-company-v5 :is(
+  .lireate-about-card-title,.lireate-team-card-title,
+  .lireate-partners-card-title,.lireate-contacts-card-title,
+  .lireate-docs-h2,.lireate-about-partner-name,
+  .lireate-team-member-name,.lireate-contacts-team-name,
+  .lireate-partners-name,.lireate-docs-card-title
+){
+  font-family:Manrope,Arial,sans-serif!important;
+  color:var(--lc5-ink)!important;
+  text-transform:none!important;
+  letter-spacing:-.035em!important;
+}
+body.lireate-company-v5 :is(
+ .lireate-about-card-title,.lireate-team-card-title,
+ .lireate-docs-h2,.lireate-contacts-card-title
+){font-size:clamp(22px,2.25vw,33px)!important;line-height:1.2!important;font-weight:850!important}
+body.lireate-company-v5 :is(
+ .lireate-about-badge,.lireate-team-badge,.lireate-partners-badge,
+ .lireate-docs-badge,.lireate-contacts-badge
+){border:1px solid #d6e6fa!important;border-radius:999px!important;background:#eef6ff!important;color:var(--lc5-blue)!important;padding:5px 11px!important;font:800 10px/1.4 Manrope,Arial,sans-serif!important;letter-spacing:.06em}
+body.lireate-company-v5 :is(
+ .lireate-about-badge--green,.lireate-team-badge--green,
+ .lireate-partners-badge--green,.lireate-docs-badge--green,.lireate-contacts-badge--green
+){background:#f0f6ff!important;color:var(--lc5-blue)!important}
+body.lireate-company-v5 :is(.lireate-about-accent,.lireate-team-card--wide){background:#f7fbff!important;border-left:3px solid var(--lc5-blue)!important}
+body.lireate-company-v5 :is(.lireate-about-spec li,.lireate-team-steps li,.lireate-team-list-bullets li){color:var(--lc5-muted)!important}
+body.lireate-company-v5 :is(.lireate-about-partner-photo,.lireate-team-member-photo-wrap,.lireate-partners-photo-wrap,.lireate-contacts-team-photo){background-color:#f1f7ff!important}
+body.lireate-company-v5 :is(.lireate-team-member-photo,.lireate-partners-photo,.lireate-about-member-photo){object-fit:cover!important}
+body.lireate-company-v5 .lireate-about-partner{padding:0!important}
+body.lireate-company-v5 .lireate-about-partner-photo{background-size:cover!important}
+body.lireate-company-v5 :is(.lireate-team-grid,.lireate-about-grid,.lireate-partners-grid,.lireate-docs-grid,.lireate-contacts-team-grid){gap:18px!important}
+body.lireate-company-v5 .lireate-partners-card{padding:22px!important}
+body.lireate-company-v5 .lireate-partners-head{align-items:center!important}
+body.lireate-company-v5 .lireate-partners-city{color:var(--lc5-blue)!important;font-weight:800!important}
+body.lireate-company-v5 :is(.lireate-partners-field dt,.lireate-partners-contacts dt,.lireate-docs-dl dt,.lireate-contacts-dl dt){color:#61728b!important}
+body.lireate-company-v5 :is(.lireate-partners-field dd,.lireate-partners-contacts dd,.lireate-docs-dl dd,.lireate-contacts-dl dd){color:var(--lc5-ink)!important;overflow-wrap:anywhere}
+body.lireate-company-v5 .lireate-docs-req-card{padding:26px!important}
+body.lireate-company-v5 .lireate-docs-card{padding:25px!important}
+body.lireate-company-v5 .lireate-docs-actions a{border-radius:10px!important;min-height:42px!important;padding:10px 15px!important;font-weight:800!important}
+body.lireate-company-v5 .lireate-docs-btn--solid{background:var(--lc5-red)!important;color:#fff!important;border:1px solid var(--lc5-red)!important}
+body.lireate-company-v5 .lireate-docs-btn--outline{background:#f4f8ff!important;color:var(--lc5-blue)!important;border:1px solid #c8dcf5!important}
+body.lireate-company-v5 .lireate-docs-card-title a{font-weight:800!important;color:var(--lc5-ink)!important}
+body.lireate-company-v5 .lireate-contacts-grid{margin-top:30px!important;gap:22px!important}
+body.lireate-company-v5 .lireate-contacts-map{overflow:hidden!important;border:1px solid var(--lc5-border)!important;border-radius:16px!important;background:#f6faff!important}
+body.lireate-company-v5 :is(.lireate-contacts-input,.lireate-partners-input,.lireate-partners-textarea,.lireate-contacts-form .form-control,.lireate-partners-form .form-control){
+  color:var(--lc5-ink)!important;
+  background:#f9fbff!important;
+  border:1px solid #cdddf0!important;
+  border-radius:10px!important;
+  box-shadow:none!important;
+}
+body.lireate-company-v5 :is(.lireate-contacts-input,.lireate-partners-input,.lireate-partners-textarea)::placeholder{color:#7889a0!important}
+body.lireate-company-v5 :is(.lireate-contacts-submit,.lireate-partners-submit){background:var(--lc5-red)!important;color:#fff!important;border:1px solid var(--lc5-red)!important;border-radius:12px!important;font-weight:800!important}
+body.lireate-company-v5 :is(.lireate-contacts-consent,.lireate-partners-consent,.lx-consent){color:var(--lc5-muted)!important}
+body.lireate-company-v5 :is(.lireate-team-modal-panel,.lireate-about-modal-panel,.lireate-partners-modal-panel,.lireate-contacts-modal-panel){
+  color:var(--lc5-ink)!important;background:#fff!important;border:1px solid var(--lc5-border)!important;border-radius:22px!important
+}
+/* Sidebar: original brand SVG adapted to light backgrounds (retains its red symbol).
+   The original 759.7 × 136.1 viewBox is 5.58:1. No mask/cropping and no stretched image. */
+html body.lireate-company-v5 #leftSideBar a.leftSideLogo{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:min(196px,calc(100% - 16px))!important;
+  max-width:100%!important;
+  height:60px!important;
+  min-height:60px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background-color:transparent!important;
+  background-image:url("/template/images/logo/logo-light-v5.svg")!important;
+  background-repeat:no-repeat!important;
+  background-size:contain!important;
+  background-position:center center!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  -webkit-mask:none!important;
+  mask:none!important;
+  filter:none!important;
+  opacity:1!important;
+  transform:none!important;
+  overflow:visible!important;
+}
+html body.lireate-company-v5 #leftSideBar .lpc-sidebar-head{
+  min-height:84px!important;
+  padding:12px 12px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+}
+html body.lireate-company-v5.side-collapsed #leftSideBar a.leftSideLogo{
+  width:38px!important;min-width:38px!important;height:48px!important;min-height:48px!important;
+  background-size:210px auto!important;
+  background-position:left center!important;
+}
+html body.lireate-company-v5 #leftSideBar{background:#fff!important;border-right:1px solid var(--lc5-border)!important}
+html body.lireate-company-v5 #leftSideBar a:focus-visible,
+html body.lireate-company-v5 .lc5-hero-media a:focus-visible,
+html body.lireate-company-v5 :is(.lireate-docs-page,.lireate-contacts-page,.lireate-partners-page) :is(a,button,input,textarea):focus-visible{
+  outline:3px solid #3a86ff!important;outline-offset:3px!important
+}
+@media (max-width:1080px){
+ html body.lireate-company-v5 :is(.lireate-about-hero,.lireate-team-hero,.lireate-partners-hero,.lireate-docs-hero,.lireate-contacts-hero)>:is(.lireate-about-wrap,.lireate-team-wrap,.lireate-partners-wrap,.lireate-docs-wrap,.lireate-contacts-wrap){
+   grid-template-columns:minmax(0,1fr) minmax(270px,.9fr);column-gap:24px;
+ }
+ body.lireate-company-v5 .lc5-photo-shell{height:260px}
+ body.lireate-company-v5 .lc5-media-body{padding:18px}
+}
+@media (max-width:760px){
+ html body.lireate-company-v5 :is(.lireate-about-hero,.lireate-team-hero,.lireate-partners-hero,.lireate-docs-hero,.lireate-contacts-hero){
+   padding:35px 0 45px!important;margin-bottom:32px!important;
+ }
+ html body.lireate-company-v5 :is(.lireate-about-hero,.lireate-team-hero,.lireate-partners-hero,.lireate-docs-hero,.lireate-contacts-hero)>:is(.lireate-about-wrap,.lireate-team-wrap,.lireate-partners-wrap,.lireate-docs-wrap,.lireate-contacts-wrap){
+   display:flex!important;flex-direction:column!important;gap:0!important;min-height:0;
+ }
+ body.lireate-company-v5 :is(.lireate-about-h1,.lireate-team-h1,.lireate-partners-h1,.lireate-docs-h1,.lireate-contacts-h1){font-size:clamp(34px,7vw,47px)!important;margin-bottom:14px!important}
+ body.lireate-company-v5 :is(.lireate-about-lead,.lireate-team-lead,.lireate-partners-lead,.lireate-docs-lead,.lireate-contacts-lead){font-size:16px!important;margin-bottom:17px!important}
+ body.lireate-company-v5 .lc5-hero-media{width:min(500px,100%);align-self:stretch;margin:24px auto 0}
+ body.lireate-company-v5 :is(.lireate-about-wrap,.lireate-team-wrap,.lireate-partners-wrap,.lireate-docs-wrap,.lireate-contacts-wrap){width:calc(100% - 32px)!important}
+ body.lireate-company-v5 :is(.lireate-about-card,.lireate-team-card,.lireate-docs-card,.lireate-partners-card,.lireate-contacts-card){padding:20px!important}
+}
+@media (max-width:460px){
+ body.lireate-company-v5 .lc5-photo-shell{height:245px}
+ body.lireate-company-v5 .lc5-hero-media{border-radius:17px}
+ body.lireate-company-v5 :is(.lireate-about-pill,.lireate-team-pill,.lireate-partners-pill,.lireate-contacts-pill){flex:1 1 42%!important;padding:10px!important;font-size:11px!important}
+ body.lireate-company-v5 :is(.lireate-about-h1,.lireate-team-h1,.lireate-partners-h1,.lireate-docs-h1,.lireate-contacts-h1){font-size:clamp(33px,9vw,43px)!important}
+ body.lireate-company-v5 .lc5-hero-media--compact .lc5-icon-shell{min-height:190px}
+}
+@media (prefers-reduced-motion:reduce){
+ body.lireate-company-v5 *,body.lireate-company-v5 *::before,body.lireate-company-v5 *::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}

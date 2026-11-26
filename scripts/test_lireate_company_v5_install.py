@@ -10,6 +10,11 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import lireate_company_v5_install as inst
 
 EB93_COMMIT = "eb93cb9ccff3f89791a1579d2fb8eef289fc7cf5"
+EB93_FIXTURE = inst.REPO / "scripts/fixtures/company_v5_eb93_docroot"
+CONTACTS_PATHS = (
+    inst.PHP[4],
+    inst.PHP[9],
+)
 HERO_MEDIA_PAGES = (
     inst.PHP[2],
     inst.PHP[3],
@@ -118,6 +123,28 @@ class CompanyV5InstallTests(unittest.TestCase):
             self.assertEqual(len(re.findall(r"<h1\b", page, re.I)), 1, str(rel))
 
 
+def _eb93_git_bytes(rel_s: str) -> bytes:
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            str(inst.REPO),
+            "fetch",
+            "--depth",
+            "1",
+            "origin",
+            EB93_COMMIT,
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return subprocess.check_output(
+        ["git", "-C", str(inst.REPO), "show", "%s:%s" % (EB93_COMMIT, rel_s)],
+        stderr=subprocess.DEVNULL,
+    )
+
+
 class CompanyV5Eb93DryRunTests(unittest.TestCase):
     def test_dry_run_ok_on_eb93cb9_live_tree(self):
         tmp = tempfile.TemporaryDirectory()
@@ -126,17 +153,16 @@ class CompanyV5Eb93DryRunTests(unittest.TestCase):
         try:
             for rel in inst.FILES:
                 rel_s = str(rel)
-                try:
-                    blob = subprocess.check_output(
-                        ["git", "show", "%s:%s" % (EB93_COMMIT, rel_s)],
-                        cwd=inst.REPO,
-                        stderr=subprocess.DEVNULL,
-                    )
-                except subprocess.CalledProcessError:
-                    self.fail("missing file at %s: %s" % (EB93_COMMIT, rel_s))
+                if rel in CONTACTS_PATHS:
+                    data = _eb93_git_bytes(rel_s)
+                else:
+                    src = EB93_FIXTURE / rel
+                    if not src.is_file():
+                        self.fail("missing eb93 fixture: " + str(src))
+                    data = src.read_bytes()
                 dest = docroot / rel
                 dest.parent.mkdir(parents=True, exist_ok=True)
-                dest.write_bytes(blob)
+                dest.write_bytes(data)
             changes = inst.plan(docroot)
             self.assertTrue(set(changes).issubset(set(inst.FILES)))
             for rel in inst.PHP:
