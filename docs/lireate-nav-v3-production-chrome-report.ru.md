@@ -1,60 +1,42 @@
-# Nav V3 — боевой chrome (не только _preview)
+# Nav V3 — единое левое меню (боевой chrome)
 
 | | |
 |--|--|
 | PR | https://github.com/devham13/lireate/pull/129 |
-| SHA | `8c45183` |
 | Ветка | `cursor/nav-v3-production-chrome-b68f` |
-| База | `main` (после merge PR #127 / `7f4c19b`) |
+| База | `main` (без merge с агента) |
 
-## Суть
+## Суть (требование Юры)
 
-1. **Регистрация ТЗ** — `pages/services/registraciya-tovarnogo-znaka/index.php` подключает `lireate-service-cms-chrome.inc.php` (общий `_shared`, пока только этот slug): sidebar + subnav Путь/Стоимость/FAQ/Заявка + «Оставить заявку», скрыт `lx-nav-shell`.
-2. **CMS main.php** — `lireate_hosting_navigation_v3.py` добавляет классы `lireate-public-cms-chrome lireate-theme-light-v4`, копирует `pages/_shared/*.php`, CSS/JS `20261126r6`; collapse/соцсети работают и при `#collapseSide` без класса (JS).
-3. **Главная mobile 390** — светлая шапка `#topBar`, убран зазор, «Разделы» по центру (`lireate-navigation-dual-v3.css`).
-4. **/mktu** — mask-логотип для `lireate-mktu-lu-body`.
+- **Левое меню как на главной** на CMS-страницах (`template/main.php` после `lireate_hosting_navigation_v3.py --apply`) и на standalone-услугах (`lireate_service_cms_chrome_wire_*`).
+- Пункты, сворачивание `#collapseSide`, mobile «Разделы» (`lireate-lh4-mobile-anchors.inc.php`).
+- **PR #128 (six-services photo v4):** `template/css/lireate-service-cms-chrome-layout.css` — chrome не перекрывает hero / expert stack при `body.lx-photo-v4`.
+- SEO, формы, `mail.php` не трогались.
 
-CSS попадает в cron-бандл через `<link>` в `template/main.php` (performance patch).
+## Реализация
 
-## Файлы на сервер (после apply)
+| Слой | Что сделано |
+|------|-------------|
+| CMS | `lireate-cms-main-chrome-shell.inc.php`; install заменяет `leftSideNav.php`, оборачивает `page_container` в `.lireate-public-cms-content` + lh4 subnav |
+| Услуги | Список приоритетных slug + default для остальных каталогов услуг; патч `scripts/lireate_patch_service_cms_chrome.py` |
+| Ассеты | QS `20261126r7`: + `lireate-cms-pages-light-v4.css`, `lireate-service-cms-chrome-layout.css` |
+| Capture | `nav-v3-production-router.php` + `capture_nav_v3_production_screenshots.py` |
 
-| Путь в DOCROOT | Источник |
-|----------------|----------|
-| `template/css/lireate-navigation-dual-v3.css` | repo |
-| `template/css/lireate-public-cms-chrome.css` | repo |
-| `template/css/lireate-global-subnav-light-v4.css` | repo |
-| `template/js/lireate-navigation-dual-v3.js` | repo |
-| `template/main.php` | патч head + body classes |
-| `pages/_shared/lireate-*.php` | 7 файлов chrome/subnav |
-| `registraciya_tovarnogo_znaka/` | publish услуги (+ `_shared/lireate-service-cms-chrome.inc.php`) |
-
-## Установка (REG.RU, Python 3.6+)
+## Установка (REG.RU)
 
 ```bash
-cd ~/www/<office-repo>
-git fetch && git checkout <SHA>  # этот PR
-
-# Nav V3 (dry-run)
 python3 scripts/lireate_hosting_navigation_v3.py \
-  --docroot "$HOME/www/public_html" \
-  --backup-root "$HOME/lireate-autopub/backups/navigation"
-
-# apply (PHP 5.6 lint внутри; на 3.6 без capture_output)
-/opt/python/python-3.8.8/bin/python3 scripts/lireate_hosting_navigation_v3.py \
   --docroot "$HOME/www/public_html" \
   --backup-root "$HOME/lireate-autopub/backups/navigation" \
   --apply --php-bin php
-
-# Услуга РТЗ (если ещё не выкладывали index с chrome)
-LIREATE_ALLOW_PUBLISH=yes python3 scripts/lireate_hosting_publish_service.py \
-  --slug registraciya-tovarnogo-znaka --apply
 ```
 
-Cron ~16:00 склеит CSS в `lireate-bundle-*.css` — отдельный шаг не нужен.
+Опубликовать обновлённые `index.php` услуг — обычный cron `lireate_hosting_publish_service.py` по slug.
 
-## Скрины (production-like)
+## Скрины (production-like, 1440 и 390)
 
-`python3 scripts/capture_nav_v3_production_screenshots.py` →  
-`docs/screenshots/nav-v3/production/{home,service-rtz,mktu}/`
+`python3 scripts/capture_nav_v3_production_screenshots.py` → `docs/screenshots/nav-v3/production/`
 
-**Без merge и без выкладки с агента.**
+Маршруты: `/`, `/registraciya_tovarnogo_znaka/`, `/findtz/`, `/prodlenie_tovarnogo_znaka/`, `/mktu/`, `/news/`, `/team/`, `/contacts/`.
+
+**Без merge в `main` и без выкладки с агента.**

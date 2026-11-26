@@ -16,8 +16,10 @@ import tempfile
 
 REPO = Path(__file__).resolve().parents[1]
 VERSION = 'lireate-dual-nav-v3-20261126'
-NAV_ASSET_QS = '20261126r6'
+NAV_ASSET_QS = '20261126r7'
 BODY_MARKER = 'lireate-nav-v3-body:v1'
+SHELL_MARKER = 'lireate-nav-v3-cms-shell:v1'
+WRAP_OPEN_MARKER = 'lireate-nav-v3-cms-shell:wrap-open'
 BODY_CLASSES = 'lireate-public-cms-chrome lireate-theme-light-v4'
 SHARED_PHP = [
     Path('pages/_shared/lireate-public-cms-chrome-lib.php'),
@@ -27,11 +29,14 @@ SHARED_PHP = [
     Path('pages/_shared/lireate-lh4-subnav.inc.php'),
     Path('pages/_shared/lireate-lh4-mobile-anchors.inc.php'),
     Path('pages/_shared/lireate-navigation-v3-bundle-lib.php'),
+    Path('pages/_shared/lireate-cms-main-chrome-shell.inc.php'),
 ]
 ASSETS = [
     Path('template/css/lireate-navigation-dual-v3.css'),
     Path('template/css/lireate-public-cms-chrome.css'),
     Path('template/css/lireate-global-subnav-light-v4.css'),
+    Path('template/css/lireate-cms-pages-light-v4.css'),
+    Path('template/css/lireate-service-cms-chrome-layout.css'),
     Path('template/js/lireate-navigation-dual-v3.js'),
 ]
 MAIN = Path('template/main.php')
@@ -40,6 +45,7 @@ HEAD = (
     '<link rel="stylesheet" href="/template/css/lireate-navigation-dual-v3.css?v=' + NAV_ASSET_QS + '">\n'
     '<link rel="stylesheet" href="/template/css/lireate-public-cms-chrome.css?v=' + NAV_ASSET_QS + '">\n'
     '<link rel="stylesheet" href="/template/css/lireate-global-subnav-light-v4.css?v=' + NAV_ASSET_QS + '">\n'
+    '<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=' + NAV_ASSET_QS + '">\n'
     '<script defer src="/template/js/lireate-navigation-dual-v3.js?v=' + NAV_ASSET_QS + '"></script>\n'
 )
 
@@ -51,6 +57,38 @@ def safe_path(docroot, rel):
     if result.exists() and not result.is_file():
         raise ValueError('Not a regular file: ' + str(result))
     return result
+
+
+def patch_main_cms_shell(text):
+    if SHELL_MARKER in text:
+        return text
+    legacy = 'include "./template/parts/leftSideNav.php";'
+    replacement = (
+        '/* ' + SHELL_MARKER + ' */ '
+        '$_lpc_shell = $_SERVER[\'DOCUMENT_ROOT\'].\'/pages/_shared/lireate-cms-main-chrome-shell.inc.php\'; '
+        'if (is_file($_lpc_shell)) { require_once $_lpc_shell; lireate_cms_main_v3_render_sidebar(); } '
+        'else { include "./template/parts/leftSideNav.php"; }'
+    )
+    if legacy not in text:
+        return text
+    text = text.replace(legacy, replacement, 1)
+    open_needle = '<div class="page_container">'
+    if WRAP_OPEN_MARKER not in text and open_needle in text:
+        open_snip = (
+            '<?php /* ' + WRAP_OPEN_MARKER + ' */ '
+            'if (function_exists(\'lireate_cms_main_v3_content_wrap_open\')) { '
+            'lireate_cms_main_v3_content_wrap_open(); } ?>\n\t\t\t' + open_needle
+        )
+        text = text.replace('\t\t\t' + open_needle, open_snip, 1)
+    close_needle = '</div><!-- /page_container -->'
+    if (SHELL_MARKER in text and 'lireate_cms_main_v3_content_wrap_close' not in text
+            and close_needle in text):
+        close_snip = (
+            close_needle + '\n\t\t\t<?php if (function_exists(\'lireate_cms_main_v3_content_wrap_close\')) { '
+            'lireate_cms_main_v3_content_wrap_close(); } ?>'
+        )
+        text = text.replace('\t\t\t' + close_needle, close_snip, 1)
+    return text
 
 
 def patch_main_body_classes(text):
@@ -90,6 +128,7 @@ def build_plan(docroot):
         changed = re.sub(r'</head\s*>', lambda m: HEAD + m.group(0),
                          original, count=1, flags=re.I)
     changed = patch_main_body_classes(changed)
+    changed = patch_main_cms_shell(changed)
     plan = {MAIN: changed.encode('utf-8')}
     for rel in SHARED_PHP:
         src = REPO / rel

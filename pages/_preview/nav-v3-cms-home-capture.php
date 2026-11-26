@@ -7,7 +7,7 @@ require_once $repo_root . '/pages/_shared/lireate-preview-bootstrap.php';
 require_once $repo_root . '/pages/home/_shared/lireate-home-config.php';
 $lh_preview_v = defined('LIREATE_HOME_CSS_VERSION') ? LIREATE_HOME_CSS_VERSION : '20261126r27';
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
-    define('LIREATE_NAV_V3_ASSET_QS', '20261126r6');
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r7');
 }
 $_SERVER['DOCUMENT_ROOT'] = $repo_root;
 $temp = array('page' => 'home');
@@ -29,6 +29,7 @@ $metrika_id = '';
 require_once $repo_root . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 lireate_public_cms_include_chrome();
 lireate_public_cms_content_open();
+lireate_public_cms_include_subnav();
 ?>
 <div class="wrapper">
   <div class="container text-center content">

@@ -32,7 +32,12 @@ def main():
       pages = [
           ("home", "/", [1440, 390], ["", "-menu-open", "-side-collapsed"]),
           ("service-rtz", "/registraciya_tovarnogo_znaka/", [1440, 390], [""]),
-          ("mktu", "/mktu/", [1440], [""]),
+          ("findtz", "/findtz/", [1440, 390], [""]),
+          ("prodlenie", "/prodlenie_tovarnogo_znaka/", [1440, 390], [""]),
+          ("mktu", "/mktu/", [1440, 390], [""]),
+          ("news", "/news/", [1440, 390], [""]),
+          ("team", "/team/", [1440, 390], [""]),
+          ("contacts", "/contacts/", [1440, 390], [""]),
       ]
       for slug, path, widths, suffixes in pages:
         slug_dir = OUT / slug
