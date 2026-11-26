@@ -70,7 +70,7 @@ class CompanyV5ContrastCssTests(unittest.TestCase):
         self.assertGreaterEqual(contrast_ratio(fg, bg), 7.0)
 
     def test_asset_version_query_in_templates(self):
-        needle = "lireate-company-pages-v5.css?v=20261126b"
+        needle = "lireate-company-pages-v5.css?v=20261126c"
         for rel in (
             "template/page/partners/lireate-partners-page.inc.php",
             "template/page/kontaktyi/lireate-contacts-page.inc.php",

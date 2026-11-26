@@ -20,7 +20,7 @@ $la_footer_css = defined('LIREATE_ABOUT_FOOTER_CSS_HREF')
 <link rel="stylesheet" href="<?php echo lireate_about_h($la_footer_css); ?>?v=<?php echo lireate_about_h($la_v); ?>">
 <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_about_h($la_v); ?>"><!-- lireate_cms_light_v4 -->
 <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_about_h($la_v); ?>">
-<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126b">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
 <script>
 document.documentElement.classList.add('lireate-about-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_about_h(LIREATE_ABOUT_METRIKA_ID); ?>');
@@ -40,18 +40,6 @@ if (document.body) { document.body.classList.add('lireate-about-body'); document
         <a class="lireate-about-pill lireate-about-pill--outline" href="<?php echo lireate_about_h(LIREATE_ABOUT_PHONE_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_about_h(LIREATE_ABOUT_PHONE_DISPLAY); ?></a>
         <a class="lireate-about-pill lireate-about-pill--outline" href="<?php echo lireate_about_h(LIREATE_ABOUT_PHONE2_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_about_h(LIREATE_ABOUT_PHONE2_DISPLAY); ?></a>
       </div>
-
-      <aside class="lc5-hero-media lc5-hero-person" aria-label="Специалист Лирейт">
-        <div class="lc5-photo-shell">
-          <img src="/template/images/home/gabdrakhmanova-elvira-2026-11.webp" width="460" height="370" alt="Габдрахманова Эльвира Дамировна, руководитель отдела регистрации интеллектуальной собственности" fetchpriority="high" loading="eager" decoding="async">
-        </div>
-        <div class="lc5-media-body">
-          <span class="lc5-chip">Руководитель отдела · Команда Лирейт</span>
-          <strong>Эльвира Габдрахманова</strong>
-          <p>Руководитель отдела регистрации интеллектуальной собственности</p>
-          <a href="/team">Команда Лирейт ↗</a>
-        </div>
-      </aside>
     </div>
   </header>
 

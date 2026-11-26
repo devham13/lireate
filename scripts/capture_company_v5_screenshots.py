@@ -85,7 +85,7 @@ def inject_v5(page, preview_html: str) -> dict:
         """async ({previewHtml}) => {
             document.documentElement.classList.add('lireate-company-v5');
             document.body.classList.add('lireate-company-v5');
-            const href = '/template/css/lireate-company-pages-v5.css?v=20261126b';
+            const href = '/template/css/lireate-company-pages-v5.css?v=20261126c';
             if (!document.querySelector('link[href*="lireate-company-pages-v5"]')) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';

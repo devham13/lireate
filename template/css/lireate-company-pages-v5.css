@@ -119,19 +119,33 @@ html body.lireate-company-v5 :is(
   margin:0 0 50px!important;
   overflow:hidden;
 }
-html body.lireate-company-v5 :is(
-  .lireate-about-hero,
-  .lireate-team-hero,
-  .lireate-partners-hero,
-  .lireate-docs-hero,
-  .lireate-contacts-hero
-)>:is(.lireate-about-wrap,.lireate-team-wrap,.lireate-partners-wrap,.lireate-docs-wrap,.lireate-contacts-wrap){
+html body.lireate-company-v5 :is(.lireate-partners-hero,.lireate-docs-hero,.lireate-contacts-hero)
+  >:is(.lireate-partners-wrap,.lireate-docs-wrap,.lireate-contacts-wrap){
   display:grid!important;
   grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);
   grid-template-rows:auto auto auto auto 1fr;
   align-items:start;
   column-gap:clamp(25px,4vw,80px);
   min-height:465px;
+}
+html body.lireate-company-v5 :is(.lireate-about-hero,.lireate-team-hero)
+  >:is(.lireate-about-wrap,.lireate-team-wrap){
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  gap:0!important;
+  min-height:0!important;
+  width:min(760px,calc(100% - 32px))!important;
+  max-width:760px!important;
+  margin-inline:auto!important;
+}
+html body.lireate-company-v5 :is(.lireate-about-hero,.lireate-team-hero)
+  >:is(.lireate-about-wrap,.lireate-team-wrap) :is(
+    .lireate-about-h1,.lireate-team-h1,.lireate-about-lead,.lireate-team-lead,
+    .lireate-team-sub,.lireate-team-tagline,.lireate-about-hero-actions,.lireate-team-hero-actions
+  ){
+  max-width:min(720px,100%)!important;
+  width:100%!important;
 }
 body.lireate-company-v5 :is(.lireate-about-kicker,.lireate-team-kicker,.lireate-partners-kicker,.lireate-docs-kicker,.lireate-contacts-kicker){
   display:block;

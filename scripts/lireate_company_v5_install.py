@@ -41,7 +41,7 @@ FILES = PHP + ASSETS
 # Refuse to overwrite a live PHP file with a different blob ID (concurrent
 # edits / different CMS version). The installer does not force through drift.
 # On REG.RU, live template/page/*-page.inc.php matches pages/*/_shared (not legacy
-# main template blobs). BASE_BLOB for both paths uses shared main commit blobs.
+# main template blobs). BASE_ALLOWED accepts main shared blobs and live eb93cb9.
 _SHARED_MAIN_BLOB = {
     "about": "aae9678d2bb526bd9f5fd83b4cd58363396218b3",
     "team": "271ba364ddad4336cbd1f5910372000032c64f18",
@@ -49,18 +49,38 @@ _SHARED_MAIN_BLOB = {
     "docs": "0c0353d76dbf98735fc45b41055a7406895bf718",
     "contacts": "62baf790c44b528a6c5610aee69f50588161386a",
 }
-BASE_BLOB = {
-    str(PHP[0]): _SHARED_MAIN_BLOB["about"],
-    str(PHP[1]): _SHARED_MAIN_BLOB["team"],
-    str(PHP[2]): _SHARED_MAIN_BLOB["partners"],
-    str(PHP[3]): _SHARED_MAIN_BLOB["docs"],
-    str(PHP[4]): _SHARED_MAIN_BLOB["contacts"],
-    str(PHP[5]): _SHARED_MAIN_BLOB["about"],
-    str(PHP[6]): _SHARED_MAIN_BLOB["team"],
-    str(PHP[7]): _SHARED_MAIN_BLOB["partners"],
-    str(PHP[8]): _SHARED_MAIN_BLOB["docs"],
-    str(PHP[9]): _SHARED_MAIN_BLOB["contacts"],
-    str(ASSETS[1]): "5a3242c525f22eee671b266405d2ef07644db8d4",
+# Blobs reviewed on live after PR #131 deploy (commit eb93cb9, 2026-11-26).
+_LIVE_EB93_BLOB = {
+    "about": "39f733d378eb660580a7956c01ef49d0a2b47e55",
+    "team": "370119a48162f2c0376c133f90bb9668ba9d7522",
+    "partners": "0f04e0924f7fc6450ddbbc3f3d4e81bcb05d7c6e",
+    "docs": "388ab3b998a940e38121a7f0ba451785f936e4d1",
+    "contacts": "1059d97107c011f87acef6d6bc96c4d3e332871d",
+    "company_css": "fecd7161ba8116e73061fd0e81caa7fd9b72e9bf",
+}
+
+
+def _php_base(key):
+    return frozenset({_SHARED_MAIN_BLOB[key], _LIVE_EB93_BLOB[key]})
+
+
+# Accept either pristine main shared PHP/CSS or the current live tree (eb93cb9).
+BASE_ALLOWED = {
+    str(PHP[0]): _php_base("about"),
+    str(PHP[1]): _php_base("team"),
+    str(PHP[2]): _php_base("partners"),
+    str(PHP[3]): _php_base("docs"),
+    str(PHP[4]): _php_base("contacts"),
+    str(PHP[5]): _php_base("about"),
+    str(PHP[6]): _php_base("team"),
+    str(PHP[7]): _php_base("partners"),
+    str(PHP[8]): _php_base("docs"),
+    str(PHP[9]): _php_base("contacts"),
+    str(ASSETS[0]): frozenset({_LIVE_EB93_BLOB["company_css"]}),
+    str(ASSETS[1]): frozenset({
+        "5a3242c525f22eee671b266405d2ef07644db8d4",
+        "6a318851ff07e55173983ed77326c4e188880865",  # live eb93cb9 chrome.css
+    }),
 }
 
 
@@ -94,9 +114,10 @@ def plan(docroot):
             existing = dest.read_bytes()
             if existing == desired:
                 continue
-            if str(rel) not in BASE_BLOB:
+            allowed = BASE_ALLOWED.get(str(rel))
+            if not allowed:
                 raise ValueError("BLOCKER: existing unexpected shared asset: " + str(rel))
-            if blob_id(existing) != BASE_BLOB[str(rel)]:
+            if blob_id(existing) not in allowed:
                 raise ValueError(
                     "BLOCKER: live PHP differs from reviewed main version: " +
                     str(rel) + "; inspect/rebase changes with Cursor instead of overwriting"
