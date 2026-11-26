@@ -84,3 +84,26 @@ body.lireate-home-preview .hamburger .hamb-bottom { top: 28px; }
     padding-top: 52px;
   }
 }
+/* Desktop: как live — видимый #leftSideBar, без бургера (≥1151px) */
+@media (min-width: 1151px) {
+  body.lireate-home-preview #leftSideBar {
+    transform: translateX(0);
+    width: 240px;
+    left: 0;
+  }
+  body.lireate-home-preview .wrapper {
+    margin-left: 290px;
+    width: calc(100% - 290px);
+    max-width: none;
+    box-sizing: border-box;
+  }
+  body.lireate-home-preview .container.content,
+  body.lireate-home-preview .page_container {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  body.lireate-home-preview .lireate-cms-chrome .hamburger {
+    display: none !important;
+  }
+}

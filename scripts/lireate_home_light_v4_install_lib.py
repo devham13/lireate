@@ -120,6 +120,8 @@ def copy_plan(office_repo):
     for rel in (
         Path("template/css/lireate-home-light-v4.css"),
         Path("template/js/lireate-home-light-v4.js"),
+        Path("template/images/home/gabdrakhmanova-elvira-2026-11.jpg"),
+        Path("template/images/home/gabdrakhmanova-elvira-2026-11.webp"),
         Path("pages/services/_shared/lireate-lead-consent-fields.inc.php"),
         Path("pages/services/_shared/lireate-lead-consent-marketing.js"),
         Path("template/js/lireate-home-consent-marketing.js"),
@@ -140,19 +142,23 @@ def _replacement_block():
 
 
 def _head_snippet():
-    from lireate_light_v4_asset_version import LIGHT_V4_ASSET_VERSION
+    from lireate_light_v4_asset_version import HOME_CSS_VERSION, LIGHT_V4_ASSET_VERSION
 
     version = LIGHT_V4_ASSET_VERSION
     return (
         "<?php if($temp['page']=='home' || (isset($_SERVER['REQUEST_URI']) && "
         "preg_match('#^/(?:index\\.php)?$#', parse_url((string)$_SERVER['REQUEST_URI'], PHP_URL_PATH)?:''))){ ?>\n"
+        "<link rel=\"preload\" as=\"image\" href=\"/template/images/home/gabdrakhmanova-elvira-2026-11.jpg\" "
+        "imagesrcset=\"/template/images/home/gabdrakhmanova-elvira-2026-11.webp type('image/webp'), "
+        "/template/images/home/gabdrakhmanova-elvira-2026-11.jpg type('image/jpeg')\" "
+        "imagesizes=\"(min-width:861px) 42vw, 92vw\" fetchpriority=\"high\">\n"
         "<link rel=\"stylesheet\" href=\"/template/css/lireate-home-light-v4.css?v=%s\"><!-- %s -->\n"
         "<link rel=\"stylesheet\" href=\"/template/css/lireate-light-v4.css?v=%s\">\n"
         "<link rel=\"stylesheet\" href=\"/template/page/news/lireate-blog-footer-light-v4.css?v=%s\">\n"
         "<script src=\"/template/js/lireate-home-light-v4.js?v=%s\" defer></script>\n"
         "<script src=\"/template/js/lireate-light-v4.js?v=%s\" defer></script>\n"
         "<?php } ?>\n"
-    ) % (version, HEAD_MARKER, version, version, version, version)
+    ) % (HOME_CSS_VERSION, HEAD_MARKER, version, version, version, version)
 
 
 def patch_head_assets(text):

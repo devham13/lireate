@@ -117,3 +117,32 @@ function lireate_home_process_stages()
   );
 }
 }
+
+if (!function_exists('lireate_home_hero_expert_portrait')) {
+function lireate_home_hero_expert_portrait()
+{
+    $jpg_rel = '/template/images/home/gabdrakhmanova-elvira-2026-11.jpg';
+    $webp_rel = '/template/images/home/gabdrakhmanova-elvira-2026-11.webp';
+    $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+    $has_jpg = $doc !== '' && is_file($doc . $jpg_rel);
+    $has_webp = $doc !== '' && is_file($doc . $webp_rel);
+    $jpg = $jpg_rel;
+    $webp = '';
+    if ($has_webp) {
+        $webp = $webp_rel;
+    }
+    if (!$has_jpg && function_exists('lireate_preview_live_url')) {
+        $jpg = lireate_preview_live_url($jpg);
+        if ($webp !== '' && ! $has_webp) {
+            $webp = lireate_preview_live_url($webp);
+        }
+    }
+    return array(
+        'jpg' => $jpg,
+        'webp' => $webp,
+        'alt' => 'Габдрахманова Эльвира — Лирейт',
+        'width' => 683,
+        'height' => 1024,
+    );
+}
+}

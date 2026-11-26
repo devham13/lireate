@@ -59,7 +59,7 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .mobile-toggle span{
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .mobile-menu{display:none;padding:0 0 16px}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .mobile-menu a{display:block;padding:12px 0;border-bottom:1px solid var(--line);font-weight:700}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero{padding:56px 0 36px}
-body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:38px;align-items:center}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:38px;align-items:start}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .eyebrow{font-size:11px;font-weight:800;letter-spacing:.16em;color:#4b6081;text-transform:uppercase}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero h1{font:800 clamp(42px,5vw,76px)/1.02 Inter Tight,Manrope,sans-serif;letter-spacing:-.06em;margin:18px 0 18px;max-width:760px}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero h1 em{font-style:normal;color:var(--blue)}
@@ -71,7 +71,7 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-actions{displa
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-note{font-size:12px;color:#52637b;font-weight:600}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right{position:relative}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo{aspect-ratio:1.03/1; background:var(--blue-softer)}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo{aspect-ratio:683/1024;background:var(--blue-softer)}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-info{padding:22px 24px 24px}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .badge{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:var(--blue-softer);border:1px solid var(--line);font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-info h2{margin:14px 0 6px;font:800 32px/1.02 Inter Tight,Manrope,sans-serif;letter-spacing:-.05em}
@@ -201,8 +201,10 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero h1{letter-spac
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero .hero-right{will-change:transform;transform:translate3d(var(--hero-x,0px),var(--hero-y,0px),0);transition:transform .45s var(--motion-ease)}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-card{overflow:hidden;border-radius:26px;box-shadow:0 22px 64px rgba(24,35,65,.12);position:relative;border-color:#e4e7f1}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo{position:relative;overflow:hidden;background:var(--blue-softer)}
-body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo img{object-position:top center;transform:scale(1.025);transition:transform 1.2s var(--motion-ease)}
-body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-card:hover .expert-photo img{transform:scale(1.085)}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo picture{display:block;width:100%;height:100%}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo img{object-fit:contain;object-position:center top;width:100%;height:100%;max-height:100%;transform:none;transition:none}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-card:hover .expert-photo img{transform:none}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-card:hover .expert-photo img{transform:scale(1.78) !important}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .photo-shine{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1s ease}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-card:hover .photo-shine{transform:translateX(140%)}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-mini{border-top:3px solid var(--brand-red)}
@@ -741,4 +743,52 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a.btn.primary,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav-cta.btn.primary,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a.btn.primary:hover {
   color: #fff !important;
+}
+/* r21: hero — левая колонка (надзаголовок) начинается на уровне верха фото, без вертикального центрирования */
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid > .reveal:first-child{align-self:start;margin-top:0;padding-top:0}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid > .reveal:first-child > .eyebrow:first-child{margin-top:0}
+/* r22: hero portrait — полный кадр 683×1024, без object-fit:cover */
+@media (min-width: 861px) {
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid{align-items:start}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid > .reveal:first-child{padding-top:0;margin-top:0}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-card{align-self:start}
+}
+/* r24: портрет hero — кадр по грудь, лицо крупнее (cover + scale, макушка в кадре) */
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo picture{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo img{
+  object-fit:cover !important;
+  object-position:50% 2% !important;
+  transform:scale(1.78) !important;
+  transform-origin:50% 12% !important;
+}
+@media (min-width: 861px) {
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right{max-width:min(34vw,340px);justify-self:end}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo{
+  aspect-ratio:10/13;
+  max-height:min(44vh,400px);
+  width:100%;
+  height:auto;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo picture{
+  max-height:min(44vh,400px);
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo img{
+  width:100%;
+  height:100%;
+  max-height:min(44vh,400px);
+}
+}
+@media (max-width: 860px) {
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo{
+  aspect-ratio:10/13;
+  max-height:min(68vw,380px);
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo img{
+  transform:scale(1.55) !important;
+}
 }

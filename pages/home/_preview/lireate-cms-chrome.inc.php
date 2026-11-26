@@ -1,7 +1,10 @@
 <?php
 /** Упрощённое CMS-меню для превью (структура как на live: hamburger + leftSideBar). */
 ?>
-<link rel="stylesheet" href="/template/css/lireate-home-preview-chrome.css?v=20261125d">
+<?php
+$lh_chrome_v = defined('LIREATE_HOME_CSS_VERSION') ? LIREATE_HOME_CSS_VERSION : '20261126r23';
+?>
+<link rel="stylesheet" href="/template/css/lireate-home-preview-chrome.css?v=<?php echo htmlspecialchars($lh_chrome_v, ENT_QUOTES, 'UTF-8'); ?>">
 <div class="lireate-cms-chrome">
   <button type="button" class="hamburger is-closed" data-toggle="offcanvas" aria-label="Меню сайта">
     <span class="hamb-top"></span>

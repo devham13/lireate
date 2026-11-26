@@ -207,7 +207,6 @@ body.lireate-screenshot-capture .lh4-root .reveal:not(.visible) {
   transition: none !important;
 }
 
-body.lireate-home-preview .wrapper,
 body.lireate-home-preview .container.content,
 body.lireate-home-preview .page_container {
   width: 100% !important;
@@ -217,6 +216,25 @@ body.lireate-home-preview .page_container {
   text-align: left !important;
   background: #fff !important;
   overflow: visible !important;
+}
+body.lireate-home-preview .wrapper {
+  max-width: none !important;
+  padding: 0 !important;
+  text-align: left !important;
+  background: #fff !important;
+  overflow: visible !important;
+}
+@media (min-width: 1151px) {
+  body.lireate-home-preview .wrapper {
+    margin-left: 290px !important;
+    width: calc(100% - 290px) !important;
+  }
+}
+@media (max-width: 1150px) {
+  body.lireate-home-preview .wrapper {
+    margin: 0 !important;
+    width: 100% !important;
+  }
 }
 
 .lh4-hero-slogan {
