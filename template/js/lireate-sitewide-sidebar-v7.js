@@ -5,7 +5,7 @@
  */
 (function(){
 "use strict";
-var FRAGMENT="/template/lireate/lireate-sidebar-v7-fragment.php";
+var FRAGMENT="/template/lireate/lireate-sidebar-v7.html";
 var SKIP=/^\/(?:admin|bitrix|wp-admin|wp-json|api|auth|login|personal|ajax|cron|vendor|upload|assets|template)\b/i;
 if(SKIP.test(location.pathname))return;
 var body=document.body;
