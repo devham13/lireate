@@ -1,14 +1,15 @@
 /* LIREATE Dual Navigation V3: mark visible homepage section. CMS menu is left intact. */
 (function(){
  "use strict";
- function init(){
-  var root=document.getElementById("lireate-home-light-v4");
-  if(!root)return;
-  var nav=root.querySelector(".lh4-subnav-links");
+ function initSpy(scope,nav){
   if(!nav)return;
+  var root=scope||document;
   var items=Array.prototype.filter.call(
    Array.prototype.map.call(nav.querySelectorAll('a[href^="#"]'),function(link){
-    return {link:link,target:root.querySelector(link.getAttribute("href"))};
+    var href=link.getAttribute("href");
+    var target=href?root.querySelector(href):null;
+    if(!target&&href){target=document.querySelector(href);}
+    return {link:link,target:target};
    }),function(item){return !!item.target;}
   );
   if(!items.length)return;
@@ -35,8 +36,17 @@
   items.forEach(function(item){item.link.addEventListener("click",function(){active(item);});});
   update();
  }
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
- else init();
+ function boot(){
+  var home=document.getElementById("lireate-home-light-v4");
+  if(home){
+   var homeNav=home.querySelector(".lh4-subnav-links");
+   if(homeNav)initSpy(home,homeNav);
+  }
+  var pageNav=document.querySelector(".ln3-page-subnav .lh4-subnav-links");
+  if(pageNav)initSpy(document,pageNav);
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);
+ else boot();
 })();
 
 /* Brand mark paths: Simple Icons (simple-icons/simple-icons, CC0), 24x24.

@@ -1,0 +1,103 @@
+/* Global LH4 subnav for CMS pages (not home hero CSS). Requires body.lireate-theme-light-v4 */
+body.lireate-theme-light-v4 .lh4-subnav {
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #e3edf7;
+  backdrop-filter: blur(10px);
+  max-height: none;
+}
+body.lireate-theme-light-v4 .lh4-subnav-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+  max-width: 1180px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: Manrope, "Open Sans", sans-serif;
+  font-size: clamp(14px, 1.05vw, 18px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links a {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  border-left: 1px solid #f0f3f9;
+  color: #1f212c;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links a:first-child {
+  border-left: 0;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 14%;
+  right: 14%;
+  height: 2px;
+  background: #e32020;
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links a:hover,
+body.lireate-theme-light-v4 .lh4-subnav-links a:focus-visible,
+body.lireate-theme-light-v4 .lh4-subnav-links a.ln3-active {
+  color: #e32020;
+  background: #f8fbff;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links a:hover::after,
+body.lireate-theme-light-v4 .lh4-subnav-links a.ln3-active::after {
+  transform: scaleX(1);
+}
+body.lireate-theme-light-v4 .lh4-subnav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+}
+body.lireate-theme-light-v4 .lh4-subnav-phone {
+  font-family: Manrope, "Open Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f4db8;
+  text-decoration: none;
+  white-space: nowrap;
+}
+body.lireate-theme-light-v4 .lh4-subnav-phone:hover,
+body.lireate-theme-light-v4 .lh4-subnav-phone:focus-visible {
+  color: #195acb;
+}
+body.lireate-theme-light-v4 .lh4-subnav-cta.btn.primary {
+  font-family: Manrope, "Open Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 14px;
+  white-space: nowrap;
+  color: #fff !important;
+}
+@media (max-width: 1150px) {
+  body.lireate-theme-light-v4 .lh4-subnav {
+    display: none !important;
+  }
+}

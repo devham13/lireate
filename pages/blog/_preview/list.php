@@ -3,12 +3,16 @@
  * Локальное превью списка /news (Light V4).
  */
 $repo = dirname(dirname(dirname(__DIR__)));
+if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r2');
+}
 if (!defined('LIREATE_BLOG_LIGHT_V4_FOOTER')) {
     define('LIREATE_BLOG_LIGHT_V4_FOOTER', true);
 }
 define('LIREATE_BLOG_LIST_COVER_IMG', true);
 require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
 $_SERVER['DOCUMENT_ROOT'] = $repo;
+$_SERVER['REQUEST_URI'] = '/news/';
 if (!defined('LIREATE_BLOG_ASSETS_BASE')) {
     define('LIREATE_BLOG_ASSETS_BASE', '/template/page/news');
 }
@@ -110,10 +114,15 @@ $lireate_blog_list_filters = lireate_blog_list_filters_from_cms();
 </head>
 <body class="lireate-blog-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
+require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
+lireate_public_cms_include_chrome();
+lireate_public_cms_content_open();
+lireate_public_cms_include_subnav();
 require_once dirname(__DIR__) . '/_shared/lireate-blog-list.inc.php';
 if (function_exists('lireate_blog_render_service_footer')) {
     lireate_blog_render_service_footer();
 }
+lireate_public_cms_content_close();
 ?>
 </body>
 </html>

@@ -10,6 +10,9 @@ putenv('LIREATE_PUBLIC_SITE_HOST');
 require_once $repo_root . '/pages/_shared/lireate-preview-bootstrap.php';
 require_once $repo_root . '/pages/home/_shared/lireate-home-config.php';
 $lh_preview_v = defined('LIREATE_HOME_CSS_VERSION') ? LIREATE_HOME_CSS_VERSION : '20261126r27';
+if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r2');
+}
 if (!defined('LIREATE_HOME_PREVIEW')) {
     define('LIREATE_HOME_PREVIEW', true);
 }
@@ -43,7 +46,11 @@ $metrika_id = '52622734'; // pragma: allowlist secret
   <script src="/template/js/lireate-utm.js?v=20261117b1"></script>
 </head>
 <body class="cms-default lireate-home-light-v4 lireate-theme-light-v4 lireate-home-preview">
-<?php require __DIR__ . '/lireate-cms-chrome.inc.php'; ?>
+<?php
+require_once $repo_root . '/pages/_shared/lireate-public-cms-chrome-lib.php';
+lireate_public_cms_include_chrome();
+lireate_public_cms_content_open();
+?>
 <div class="wrapper">
   <div class="container text-center content">
     <div class="page_container">
@@ -54,19 +61,11 @@ require $repo_root . '/template/page/home/lireate-home-cms.inc.php';
   </div>
 </div>
 <?php
+lireate_public_cms_content_close();
 $footer = $repo_root . '/pages/services/_shared/lireate-service-footer.inc.php';
 if (is_file($footer)) {
     include $footer;
 }
 ?>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  var btn = document.querySelector('.lireate-cms-chrome .hamburger');
-  if (!btn) return;
-  btn.addEventListener('click', function () {
-    document.body.classList.toggle('lireate-cms-menu-open');
-  });
-});
-</script>
 </body>
 </html>
