@@ -17,6 +17,7 @@ foreach ($lh_team as $m) {
 if ($lh_expert === null && count($lh_team) > 0) {
     $lh_expert = $lh_team[0];
 }
+$lh_hero_portrait = lireate_home_hero_expert_portrait();
 $lh_spam_guard = md5(date('m.Y'));
 $lh_mail_action = '/mail.php';
 $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
@@ -61,7 +62,7 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
       <div class="hero-right reveal">
         <?php if ($lh_expert !== null) : ?>
         <article class="expert-card">
-          <div class="expert-photo"><div class="photo-shine" aria-hidden="true"></div><img src="<?php echo lireate_home_h($lh_expert['photo']); ?>" alt="<?php echo lireate_home_h($lh_expert['name']); ?>"></div>
+          <div class="expert-photo"><div class="photo-shine" aria-hidden="true"></div><picture><?php if ($lh_hero_portrait['webp'] !== '') : ?><source type="image/webp" srcset="<?php echo lireate_home_h($lh_hero_portrait['webp']); ?>"><?php endif; ?><img src="<?php echo lireate_home_h($lh_hero_portrait['jpg']); ?>" alt="<?php echo lireate_home_h($lh_hero_portrait['alt']); ?>" width="<?php echo (int) $lh_hero_portrait['width']; ?>" height="<?php echo (int) $lh_hero_portrait['height']; ?>" fetchpriority="high" decoding="async"></picture></div>
           <div class="expert-info">
             <div class="badge"><?php echo lireate_home_h($lh_expert['role']); ?></div>
             <h2><?php echo lireate_home_h(preg_replace('/\\s+\\S+$/u', '', $lh_expert['name'])); ?></h2>

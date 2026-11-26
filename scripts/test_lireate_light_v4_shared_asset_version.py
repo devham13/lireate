@@ -86,7 +86,7 @@ class LightV4SharedAssetVersionTests(unittest.TestCase):
         """Home hero CSS has its own cache-bust token (r21+) in the main.php head snippet."""
         import lireate_home_light_v4_install_lib as home_lib
 
-        self.assertEqual("20261126r21", ver.HOME_CSS_VERSION)
+        self.assertEqual("20261126r22", ver.HOME_CSS_VERSION)
         snippet = home_lib._head_snippet()
         self.assertIn(
             "/template/css/lireate-home-light-v4.css?v={0}".format(ver.HOME_CSS_VERSION), snippet

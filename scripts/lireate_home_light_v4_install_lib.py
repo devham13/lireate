@@ -120,6 +120,8 @@ def copy_plan(office_repo):
     for rel in (
         Path("template/css/lireate-home-light-v4.css"),
         Path("template/js/lireate-home-light-v4.js"),
+        Path("template/images/home/gabdrakhmanova-elvira-2026-11.jpg"),
+        Path("template/images/home/gabdrakhmanova-elvira-2026-11.webp"),
         Path("pages/services/_shared/lireate-lead-consent-fields.inc.php"),
         Path("pages/services/_shared/lireate-lead-consent-marketing.js"),
         Path("template/js/lireate-home-consent-marketing.js"),
@@ -146,6 +148,10 @@ def _head_snippet():
     return (
         "<?php if($temp['page']=='home' || (isset($_SERVER['REQUEST_URI']) && "
         "preg_match('#^/(?:index\\.php)?$#', parse_url((string)$_SERVER['REQUEST_URI'], PHP_URL_PATH)?:''))){ ?>\n"
+        "<link rel=\"preload\" as=\"image\" href=\"/template/images/home/gabdrakhmanova-elvira-2026-11.jpg\" "
+        "imagesrcset=\"/template/images/home/gabdrakhmanova-elvira-2026-11.webp type('image/webp'), "
+        "/template/images/home/gabdrakhmanova-elvira-2026-11.jpg type('image/jpeg')\" "
+        "imagesizes=\"(min-width:861px) 42vw, 92vw\" fetchpriority=\"high\">\n"
         "<link rel=\"stylesheet\" href=\"/template/css/lireate-home-light-v4.css?v=%s\"><!-- %s -->\n"
         "<link rel=\"stylesheet\" href=\"/template/css/lireate-light-v4.css?v=%s\">\n"
         "<link rel=\"stylesheet\" href=\"/template/page/news/lireate-blog-footer-light-v4.css?v=%s\">\n"
