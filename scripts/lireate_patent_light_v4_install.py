@@ -17,6 +17,9 @@ import tempfile
 
 REPO = Path(__file__).resolve().parents[1]
 MARKER = 'lireate-patent-light-v4-install:v1'
+DARK_EXCLUDE_MARKER = 'lireate-patent-light-v4-dark-exclude:v1'
+DARK_PAGES_NEEDLE = "array('home','patent','patent_prom_obr',"
+DARK_PAGES_REPL = "/* " + DARK_EXCLUDE_MARKER + " */ array('home',"
 MAIN = Path('template/main.php')
 FILES = [
     Path('pages/patents/_shared/lireate-patent-data.php'),
@@ -56,6 +59,14 @@ def _hook(page_key):
 
 def _disable_legacy_open(match, page_key):
     return "<?php if($temp['page']=='" + page_key + "' && false): /* legacy */ ?>"
+
+
+def patch_main_dark_exclusion(text):
+    if DARK_EXCLUDE_MARKER in text:
+        return text
+    if DARK_PAGES_NEEDLE not in text:
+        return text
+    return text.replace(DARK_PAGES_NEEDLE, DARK_PAGES_REPL)
 
 
 def patch_main_legacy_blocks(text):
@@ -100,11 +111,14 @@ def patch_main_apsw_fallback(text):
 
 
 def patch_main(text):
-    if MARKER in text and INCLUDE_SNIPPET in text:
+    if MARKER in text and INCLUDE_SNIPPET in text and DARK_EXCLUDE_MARKER in text:
         return text
+    if MARKER in text and INCLUDE_SNIPPET in text:
+        return patch_main_dark_exclusion(text)
+    text = patch_main_dark_exclusion(text)
     legacy = patch_main_legacy_blocks(text)
     if legacy is not None:
-        return legacy
+        return patch_main_dark_exclusion(legacy)
     fallback = patch_main_apsw_fallback(text)
     if fallback is not None:
         return fallback

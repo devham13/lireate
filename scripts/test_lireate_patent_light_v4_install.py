@@ -61,6 +61,12 @@ class TestPatentInstaller(unittest.TestCase):
             self.assertEqual(main.read_text(), orig)
             self.assertFalse((docroot / 'template/css/lireate-patent-light-v4.css').exists())
 
+    def test_dark_exclusion_patch(self):
+        src = "array('home','patent','patent_prom_obr','reviews'"
+        out = module.patch_main_dark_exclusion(src)
+        self.assertIn(module.DARK_EXCLUDE_MARKER, out)
+        self.assertIn("array('home','reviews'", out.replace(" ", ""))
+
     def test_legacy_fixture_apply_on_live_render_main(self):
         live_main = REPO / 'tests/fixtures/live-render/live-assets/template/main.php'
         if not live_main.is_file():
@@ -82,6 +88,7 @@ class TestPatentInstaller(unittest.TestCase):
             patched = main.read_text(encoding='utf-8')
             self.assertIn("patent' && false", patched)
             self.assertIn("patent_prom_obr' && false", patched)
+            self.assertIn(module.DARK_EXCLUDE_MARKER, patched)
             lint = subprocess.run(['php', '-l', str(main)], capture_output=True, text=True)
             self.assertEqual(lint.returncode, 0, lint.stderr)
 

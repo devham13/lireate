@@ -18,6 +18,16 @@ class PatentLightV4LayoutTests(unittest.TestCase):
         self.assertIn('class="lp4-btn lp4-btn-main js-modal-form"', text)
         self.assertIn("data-frm=\"name,tel\"", text)
         self.assertIn("data-tomail=", text)
+        self.assertIn("max.ru/channel_lireate", text)
+        self.assertIn("wa.me/79600484957", text)
+        self.assertNotIn("Бесплатная первичная консультация", text)
+
+    def test_live_h1_titles_in_data(self):
+        php = DATA.read_text(encoding="utf-8")
+        self.assertIn("Патентование изобретений в Роспатенте", php)
+        self.assertIn("Патент на промышленный образец (дизайн изделия)", php)
+        self.assertIn("взыскали с 3 продавцов", php)
+        self.assertIn("500 000 рублей", php)
 
     def test_patent_pages_use_distinct_portraits(self):
         php = DATA.read_text(encoding="utf-8")

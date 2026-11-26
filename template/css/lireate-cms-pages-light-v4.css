@@ -225,9 +225,13 @@ body.lireate-home-preview .wrapper {
   overflow: visible !important;
 }
 @media (min-width: 1151px) {
-  body.lireate-home-preview .wrapper {
+  body.lireate-home-preview:not(.lireate-public-cms-chrome) .wrapper {
     margin-left: 290px !important;
     width: calc(100% - 290px) !important;
+  }
+  body.lireate-home-preview.lireate-public-cms-chrome .wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
   }
 }
 @media (max-width: 1150px) {
@@ -454,13 +458,20 @@ body.lireate-theme-light-v4 .lireate-about-text--muted {
 }
 
 /* Sidebar logo: white SVG as mask + dark fill (not background shorthand on <a>) */
-body.lireate-home-light-v4 a.leftSideLogo,
-body.lireate-legacy-article-lu a.leftSideLogo,
-body.lireate-reviews-body a.leftSideLogo,
-body.lireate-portfolio-body a.leftSideLogo,
-body.lireate-team-body a.leftSideLogo,
-body.lireate-theme-light-v4 a.leftSideLogo,
-#leftSideBar a.leftSideLogo {
+body.lireate-public-cms-chrome #leftSideBar a.leftSideLogo {
+  background-image: none !important;
+  background-color: #1f212c !important;
+  -webkit-mask-image: url(/template/images/logo/logo.svg) !important;
+  mask-image: url(/template/images/logo/logo.svg) !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+body.lireate-theme-light-v4:not(.lireate-public-cms-chrome) a.leftSideLogo,
+body:not(.lireate-public-cms-chrome) #leftSideBar a.leftSideLogo {
   display: block !important;
   background-image: none !important;
   background-color: #1f212c !important;
@@ -481,6 +492,8 @@ html body.lireate-reviews-body.lireate-cms-page-dark,
 html body.lireate-portfolio-body.lireate-cms-page-dark,
 html body.lireate-team-body.lireate-cms-page-dark,
 html body.lireate-about-body.lireate-cms-page-dark,
+html body.lireate-patent-light-v4.lireate-cms-page-dark,
+body.lireate-patent-light-v4.lireate-theme-light-v4,
 body.lireate-reviews-body,
 body.lireate-portfolio-body,
 body.lireate-team-body,
@@ -500,7 +513,11 @@ body.lireate-team-body .container,
 body.lireate-team-body .page_container,
 body.lireate-about-body .wrapper,
 body.lireate-about-body .container,
-body.lireate-about-body .page_container {
+body.lireate-about-body .page_container,
+body.lireate-patent-light-v4 .wrapper,
+body.lireate-patent-light-v4 .page_container,
+body.lireate-patent-light-v4 .container.content,
+body.lireate-patent-light-v4 #lireate-patent-v4 {
   background: #fff !important;
   color: #1f212c !important;
 }
@@ -510,12 +527,16 @@ html:has(body.lireate-reviews-body.lireate-cms-page-dark),
 html:has(body.lireate-portfolio-body.lireate-cms-page-dark),
 html:has(body.lireate-team-body.lireate-cms-page-dark),
 html:has(body.lireate-about-body.lireate-cms-page-dark),
+html:has(body.lireate-patent-light-v4.lireate-cms-page-dark),
+html:has(body.lireate-patent-light-v4.lireate-theme-light-v4),
 html:has(body.lireate-theme-light-v4.lireate-cms-page-dark),
 html:has(body.lireate-home-light-v4),
 body.lireate-reviews-body.lireate-cms-page-dark,
 body.lireate-portfolio-body.lireate-cms-page-dark,
 body.lireate-team-body.lireate-cms-page-dark,
 body.lireate-about-body.lireate-cms-page-dark,
+body.lireate-patent-light-v4.lireate-cms-page-dark,
+body.lireate-patent-light-v4.lireate-theme-light-v4,
 body.lireate-theme-light-v4.lireate-cms-page-dark,
 body.lireate-theme-light-v4.lireate-home-dark,
 body.lireate-home-light-v4.lireate-cms-page-dark,
@@ -528,6 +549,8 @@ body.lireate-reviews-body.lireate-cms-page-dark::before,
 body.lireate-portfolio-body.lireate-cms-page-dark::before,
 body.lireate-team-body.lireate-cms-page-dark::before,
 body.lireate-about-body.lireate-cms-page-dark::before,
+body.lireate-patent-light-v4.lireate-cms-page-dark::before,
+body.lireate-patent-light-v4.lireate-theme-light-v4::before,
 body.lireate-theme-light-v4.lireate-cms-page-dark::before,
 body.lireate-theme-light-v4.lireate-home-dark::before,
 body.lireate-home-light-v4.lireate-cms-page-dark::before,
@@ -543,6 +566,11 @@ body.lireate-about-body.lireate-cms-page-dark .wrapper,
 body.lireate-about-body.lireate-cms-page-dark .page_container,
 body.lireate-about-body.lireate-cms-page-dark .container.content,
 body.lireate-about-body .lireate-about-page,
+body.lireate-patent-light-v4.lireate-cms-page-dark #wrapper-ap,
+body.lireate-patent-light-v4.lireate-cms-page-dark .wrapper,
+body.lireate-patent-light-v4.lireate-cms-page-dark .page_container,
+body.lireate-patent-light-v4.lireate-cms-page-dark .container.content,
+body.lireate-patent-light-v4 #lireate-patent-v4,
 body.lireate-theme-light-v4.lireate-cms-page-dark #wrapper-ap,
 body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper,
 body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper-ap,

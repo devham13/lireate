@@ -40,6 +40,19 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
       </div>
     </div>
   </div>
+<?php
+require_once dirname(dirname(dirname(__DIR__))) . '/pages/_shared/lireate-lh4-subnav-lib.php';
+$lh4_home_anchors = array(
+    array('href' => '#services', 'label' => 'Услуги'),
+    array('href' => '#team', 'label' => 'Команда'),
+    array('href' => '#cases', 'label' => 'Кейсы'),
+    array('href' => '#pricing', 'label' => 'Стоимость'),
+    array('href' => '#how', 'label' => 'Этапы'),
+    array('href' => '#faq', 'label' => 'FAQ'),
+    array('href' => '#blog', 'label' => 'Блог'),
+);
+lireate_lh4_render_mobile_anchors($lh4_home_anchors);
+?>
 
   <section class="hero">
     <div class="wrap hero-grid">

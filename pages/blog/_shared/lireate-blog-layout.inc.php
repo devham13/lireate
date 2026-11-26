@@ -79,7 +79,7 @@ if (document.body) {
     </details>
     <?php endif; ?>
 
-    <article class="lireate-blog-main">
+    <article class="lireate-blog-main" id="blog-article">
       <header class="lireate-blog-header<?php echo $lb_collage_mode ? ' lireate-blog-header--collage-v1' : ''; ?>">
         <div class="lireate-blog-header-top<?php echo $lb_collage_mode ? ' lireate-blog-header-top--collage' : ''; ?>">
           <a class="lireate-blog-pill lireate-blog-pill--back" href="/news/">‹ Все статьи блога</a>

@@ -20,9 +20,8 @@
 #lireate-patent-v4 .lp4-kicker-dot{width:7px;height:7px;display:inline-block;background:var(--lp-red);border-radius:50%}
 #lireate-patent-v4 h1,#lireate-patent-v4 h2,#lireate-patent-v4 h3,#lireate-patent-v4 p{margin-top:0}
 #lireate-patent-v4 h1{font-family:'Inter Tight',Manrope,sans-serif;font-size:clamp(42px,4.4vw,72px);line-height:1.06;letter-spacing:-.052em;font-weight:800;margin:0 0 24px;max-width:830px}
-#lireate-patent-v4 .lp4-hero-lead{max-width:670px;font-size:clamp(16px,1.3vw,18px);line-height:1.8;color:var(--lp-muted);font-weight:500;margin:0 0 25px}
-#lireate-patent-v4 .lp4-hero-points{display:flex;flex-direction:column;gap:12px;margin-bottom:32px;font-size:14px;color:#304760;font-weight:700}
-#lireate-patent-v4 .lp4-hero-points span::first-letter{color:var(--lp-blue)}
+#lireate-patent-v4 .lp4-hero-subtitle{max-width:780px;font-size:clamp(20px,2.2vw,28px);line-height:1.35;color:var(--lp-ink);font-weight:700;margin:0 0 20px;letter-spacing:-.02em}
+#lireate-patent-v4 .lp4-hero-lead{max-width:670px;font-size:clamp(16px,1.3vw,18px);line-height:1.8;color:var(--lp-text);font-weight:500;margin:0 0 18px}
 #lireate-patent-v4 .lp4-buttons{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:25px}
 #lireate-patent-v4 .lp4-btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;text-align:center;padding:14px 20px;min-height:52px;border-radius:12px;font-weight:800;font-size:13px;border:1px solid var(--lp-ink);transition:transform .22s,background .22s,box-shadow .22s}
 #lireate-patent-v4 .lp4-btn:hover{transform:translateY(-2px)}
@@ -39,6 +38,12 @@
 #lireate-patent-v4 .lp4-photo-caption span{display:block;opacity:.72;text-transform:uppercase;font-size:10px;letter-spacing:.13em;margin-bottom:8px}
 #lireate-patent-v4 .lp4-photo-caption strong{display:block;max-width:330px;font-size:18px;line-height:1.4}
 #lireate-patent-v4 .lp4-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--lp-line);border-bottom:1px solid var(--lp-line)}
+#lireate-patent-v4 .lp4-stats--facts{grid-template-columns:repeat(4,minmax(0,1fr))}
+#lireate-patent-v4 .lp4-criteria-note{margin:28px 0 0;font-size:16px;line-height:1.75;color:var(--lp-text);max-width:860px}
+#lireate-patent-v4 .lp4-question-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+#lireate-patent-v4 .lp4-question-list li{padding:14px 18px;border:1px solid var(--lp-line);border-radius:12px;background:#fff;font-size:14px;line-height:1.65;color:var(--lp-text)}
+#lireate-patent-v4 .lp4-guarantee-list{list-style:none;margin:0;padding:0;display:grid;gap:14px;max-width:920px}
+#lireate-patent-v4 .lp4-guarantee-list li{padding:16px 20px;border-left:3px solid var(--lp-red);background:#fff;border-radius:0 14px 14px 0;font-size:15px;line-height:1.7;color:var(--lp-text);box-shadow:0 8px 24px rgba(24,65,115,.04)}
 #lireate-patent-v4 .lp4-stats>div{padding:29px 22px;display:flex;align-items:center;gap:19px;border-left:1px solid var(--lp-line)}
 #lireate-patent-v4 .lp4-stats>div:first-child{border-left:0}
 #lireate-patent-v4 .lp4-stats span{font-size:28px;font-weight:800;letter-spacing:-.07em;color:var(--lp-red)}
@@ -95,7 +100,7 @@
 #lireate-patent-v4 :is(a,button,summary):focus-visible{outline:3px solid #3a86ff;outline-offset:3px}
 @media(max-width:1380px){#lireate-patent-v4 .lp4-topnav-phone{display:none}#lireate-patent-v4 .lp4-nav-link{font-size:13px}}
 @media(max-width:1150px){#lireate-patent-v4 .lp4-topnav{display:none}#lireate-patent-v4 .lp4-wrap{width:min(1060px,calc(100% - 44px))}#lireate-patent-v4 .lp4-hero{padding-top:65px;gap:25px}#lireate-patent-v4 h1{font-size:clamp(39px,4.6vw,58px)}#lireate-patent-v4 .lp4-countries{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:740px){#lireate-patent-v4 .lp4-wrap{width:calc(100% - 36px)}#lireate-patent-v4 .lp4-hero{grid-template-columns:1fr;padding-top:42px;padding-bottom:30px}#lireate-patent-v4 .lp4-photo-card{width:min(100%,470px);margin-inline:auto}#lireate-patent-v4 .lp4-photo-frame{aspect-ratio:.87}#lireate-patent-v4 h1{font-size:clamp(39px,9vw,55px)}#lireate-patent-v4 .lp4-stats{grid-template-columns:1fr}#lireate-patent-v4 .lp4-stats>div{border-left:0;border-top:1px solid var(--lp-line);padding:16px 10px}#lireate-patent-v4 .lp4-stats>div:first-child{border-top:0}#lireate-patent-v4 .lp4-card-grid,#lireate-patent-v4 .lp4-steps,#lireate-patent-v4 .lp4-checklist,#lireate-patent-v4 .lp4-contact{grid-template-columns:1fr}#lireate-patent-v4 .lp4-checklist{gap:25px}#lireate-patent-v4 .lp4-contact{gap:25px}#lireate-patent-v4 .lp4-section{padding-block:67px}#lireate-patent-v4 .lp4-card-number{margin-bottom:25px}#lireate-patent-v4 .lp4-info-card{min-height:230px}}
+@media(max-width:740px){#lireate-patent-v4 .lp4-wrap{width:calc(100% - 36px)}#lireate-patent-v4 .lp4-hero{grid-template-columns:1fr;padding-top:42px;padding-bottom:30px}#lireate-patent-v4 .lp4-photo-card{width:min(100%,470px);margin-inline:auto}#lireate-patent-v4 .lp4-photo-frame{aspect-ratio:.87}#lireate-patent-v4 h1{font-size:clamp(39px,9vw,55px)}#lireate-patent-v4 .lp4-stats,#lireate-patent-v4 .lp4-stats--facts{grid-template-columns:1fr}#lireate-patent-v4 .lp4-stats>div{border-left:0;border-top:1px solid var(--lp-line);padding:16px 10px}#lireate-patent-v4 .lp4-stats>div:first-child{border-top:0}#lireate-patent-v4 .lp4-card-grid,#lireate-patent-v4 .lp4-steps,#lireate-patent-v4 .lp4-checklist,#lireate-patent-v4 .lp4-contact{grid-template-columns:1fr}#lireate-patent-v4 .lp4-checklist{gap:25px}#lireate-patent-v4 .lp4-contact{gap:25px}#lireate-patent-v4 .lp4-section{padding-block:67px}#lireate-patent-v4 .lp4-card-number{margin-bottom:25px}#lireate-patent-v4 .lp4-info-card{min-height:230px}}
 @media(max-width:420px){#lireate-patent-v4 .lp4-countries{grid-template-columns:1fr}#lireate-patent-v4 .lp4-buttons{flex-direction:column;align-items:stretch}#lireate-patent-v4 .lp4-btn{width:100%}#lireate-patent-v4 h1{font-size:39px}#lireate-patent-v4 .lp4-photo-caption{padding:45px 20px 19px}}
 @media(prefers-reduced-motion:reduce){#lireate-patent-v4 *,#lireate-patent-v4 *::after{transition:none!important;animation:none!important}}
 /* CMS shell: keep left menu + light page canvas on legacy dark body classes */
@@ -110,3 +115,10 @@ body.lireate-patent-light-v4.lireate-theme-light-v4 #lireate-patent-v4{margin-bo
 body.lireate-patent-light-v4.lireate-theme-light-v4 #leftSideBar,
 body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 #leftSideBar{min-height:100vh!important;background:#fff!important;color:#1f212c!important;border-color:#dce8f7!important}
 body.lireate-patent-light-v4.lireate-theme-light-v4 #leftSideBar a:not(.leftSideLogo){color:#0f4db8!important}
+html:has(body.lireate-patent-light-v4.lireate-theme-light-v4),
+body.lireate-patent-light-v4.lireate-theme-light-v4 #page-content-wrapper,
+body.lireate-patent-light-v4.lireate-theme-light-v4 #wrapper-ap,
+body.lireate-patent-light-v4.lireate-theme-light-v4 .wrapper-ap{background:#fff!important;background-color:#fff!important;color:#1f212c!important}
+body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 .container.content :is(p,li,h1,h2,h3,h4,span,div),
+body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 #lireate-patent-v4 :is(p,li,h1,h2,h3,.lp4-hero-lead,.lp4-hero-subtitle,.lp4-criteria-note){color:#364963!important}
+body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 #lireate-patent-v4 :is(h1,h2,h3){color:#1f212c!important}

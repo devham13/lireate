@@ -11,7 +11,12 @@ import tempfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-OUT = Path(os.environ.get("LIREATE_PATENT_SHOTS_DIR", "/opt/cursor/artifacts/screenshots"))
+OUT = Path(
+    os.environ.get(
+        "LIREATE_PATENT_SHOTS_DIR",
+        str(REPO / "docs/screenshots/patent-v4"),
+    )
+)
 
 PAGES = (
     ("patent", "/patent"),
