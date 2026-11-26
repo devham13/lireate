@@ -797,3 +797,49 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-
   transform-origin:50% 8% !important;
 }
 }
+/* r26: шире карточка (сетка), высота фото не больше r25 — вся expert-card в первый экран */
+@media (min-width: 861px) {
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid{
+  grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);
+  gap:clamp(24px,2.6vw,36px);
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right{
+  max-width:min(50vw,468px);
+  width:100%;
+  justify-self:end;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo picture,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo img{
+  max-height:min(46vh,480px);
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-info{
+  padding:16px 20px 18px;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-info h2{
+  font-size:clamp(26px,2.15vw,30px);
+  margin:10px 0 4px;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-info .role{
+  font-size:13px;
+  line-height:1.45;
+  margin-bottom:12px;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-info .badge{
+  font-size:10px;
+  padding:6px 10px;
+}
+}
+@media (min-width: 861px) and (max-height: 920px) {
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo picture,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo img{
+  max-height:min(40vh,420px);
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-info{
+  padding:14px 18px 16px;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-info h2{
+  font-size:clamp(24px,2vw,28px);
+}
+}
