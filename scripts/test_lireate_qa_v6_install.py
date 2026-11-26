@@ -34,11 +34,23 @@ V7_BEFORE_HEAD = (
     '<script defer src="/template/js/lireate-sitewide-sidebar-v7.js?v=20261126"></script>\n'
 )
 
+QA_V6_CACHE = mod.QA_CACHE
+COMPANY_PAGES_V5_CACHE = '20261126c'
+
 ASSET_DEPLOY_FIXTURE = {
     'template/css/lireate-qa-v6.css': 'asset-deploy-lireate-qa-v6-css',
     'template/js/lireate-qa-v6.js': 'asset-deploy-lireate-qa-v6-js',
     'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php': 'asset-deploy-lireate-patent-tasks-sidebar-v6-inc',
     'template/images/logo/logo-light-v5.svg': 'asset-deploy-logo-light-v5-svg',
+}
+
+V70_CMS_PACK = {
+    'template/page/kontaktyi/lireate-contacts-page.inc.php': 'deploy-v70-contacts.inc',
+    'template/page/partners/lireate-partners-page.inc.php': 'deploy-v70-partners.inc',
+    'template/page/news/lireate-blog-list.inc.php': 'deploy-v70-blog-list.inc',
+    'pages/kontaktyi/_shared/lireate-contacts-page.inc.php': 'deploy-v70-contacts-shared.inc',
+    'pages/partners/_shared/lireate-partners-page.inc.php': 'deploy-v70-partners-shared.inc',
+    'pages/blog/_shared/lireate-blog-list.inc.php': 'deploy-v70-blog-list-shared.inc',
 }
 
 
@@ -89,6 +101,40 @@ def prod_tool_v7_perf_bytes(a4_sha):
 
 def deploy_tool_bytes(a4_sha):
     return packed_bytes('tool-deploy-' + a4_sha)
+
+
+def seed_v70_prod_docroot(docroot):
+    """Prod after 70d7a08 deploy (qa-v6 ?v=b, CSS rolled back to a4)."""
+    docroot.mkdir(parents=True, exist_ok=True)
+    (docroot / mod.MAIN).parent.mkdir(parents=True, exist_ok=True)
+    (docroot / mod.MAIN).write_bytes(packed_bytes('deploy-v70-main-snippet'))
+    css = docroot / 'template/css/lireate-qa-v6.css'
+    css.parent.mkdir(parents=True, exist_ok=True)
+    css.write_bytes(packed_bytes('asset-deploy-lireate-qa-v6-css'))
+    for live, source in mod.ASSETS.items():
+        if live == 'template/css/lireate-qa-v6.css':
+            continue
+        path = docroot / live
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((mod.REPO / source).read_bytes())
+    for live in mod.CMS:
+        path = docroot / live
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if live in V70_CMS_PACK:
+            path.write_bytes(packed_bytes(V70_CMS_PACK[live]))
+        else:
+            path.write_bytes((mod.REPO / live).read_bytes())
+    for live in mod.SHARED_CMS:
+        path = docroot / live
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if live in V70_CMS_PACK:
+            path.write_bytes(packed_bytes(V70_CMS_PACK[live]))
+        else:
+            path.write_bytes((mod.REPO / live).read_bytes())
+    for live_rel, sha in mod._TOOL_V70.items():
+        path = docroot / live_rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(packed_bytes('deploy-v70-tool-' + sha))
 
 
 class QaV6Tests(unittest.TestCase):
@@ -190,7 +236,7 @@ class QaV6Tests(unittest.TestCase):
         plan = mod.build_plan(self.docroot)
         self.assertIn(mod.MAIN, plan)
         out = plan[mod.MAIN].decode('utf-8')
-        self.assertIn('lireate-qa-v6.css?v=20261126c', out)
+        self.assertIn('lireate-qa-v6.css?v=' + QA_V6_CACHE, out)
         self.assertIn('lireate-sitewide-sidebar-v7', out)
 
     def test_assets_prod_deployed_dry_run(self):
@@ -202,6 +248,32 @@ class QaV6Tests(unittest.TestCase):
             self.assertTrue(mod.asset_live_allowed(data, live), live)
         plan = mod.build_plan(self.docroot)
         self.assertIn(Path('template/css/lireate-qa-v6.css'), plan)
+
+    def test_normalize_qa_v6_cache_accepts_b_and_d(self):
+        repo_tool = (mod.REPO / next(iter(mod.TOOLS))).read_bytes()
+        with_b = repo_tool.replace(
+            ('?v=' + QA_V6_CACHE).encode(),
+            b'?v=20261126b',
+        )
+        self.assertEqual(mod.strip_ephemeral(with_b), mod.strip_ephemeral(repo_tool))
+
+    def test_deploy_v70_prod_plan_and_idempotent_rollback(self):
+        seed_v70_prod_docroot(self.docroot)
+        plan = mod.build_plan(self.docroot, with_tools=True, with_shared=True)
+        self.assertEqual(len(plan), 21)
+        baseline = {
+            p.relative_to(self.docroot): p.read_bytes()
+            for p in self.docroot.rglob('*')
+            if p.is_file()
+        }
+        backup = Path(self.tmp.name) / 'v70-rollback'
+        mod.save_backup(self.docroot, plan, backup)
+        for rel, data in plan.items():
+            mod.write_atomic(self.docroot / rel, data)
+        self.assertEqual(mod.build_plan(self.docroot, with_tools=True, with_shared=True), {})
+        mod.rollback(self.docroot, backup)
+        for rel, data in baseline.items():
+            self.assertEqual((self.docroot / rel).read_bytes(), data, str(rel))
 
     def test_asset_v70_css_rolled_back_a4(self):
         css_path = self.docroot / 'template/css/lireate-qa-v6.css'
@@ -332,8 +404,8 @@ class QaV6Tests(unittest.TestCase):
             'pages/kontaktyi/_shared/lireate-contacts-page.inc.php',
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
-            self.assertIn('lireate-company-pages-v5.css?v=20261126c', src)
-            self.assertIn('lireate-qa-v6.css?v=20261126c', src)
+            self.assertIn('lireate-company-pages-v5.css?v=' + COMPANY_PAGES_V5_CACHE, src)
+            self.assertIn('lireate-qa-v6.css?v=' + QA_V6_CACHE, src)
             self.assertNotIn('lireate-light-v4.css', src)
             self.assertNotIn('lireate-contacts-map', src)
             self.assertIn('lc5-hero-media lc5-hero-media--compact', src)
@@ -353,8 +425,8 @@ class QaV6Tests(unittest.TestCase):
             'pages/partners/_shared/lireate-partners-page.inc.php',
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
-            self.assertIn('lireate-company-pages-v5.css?v=20261126c', src)
-            self.assertIn('lireate-qa-v6.css?v=20261126c', src)
+            self.assertIn('lireate-company-pages-v5.css?v=' + COMPANY_PAGES_V5_CACHE, src)
+            self.assertIn('lireate-qa-v6.css?v=' + QA_V6_CACHE, src)
             self.assertNotIn('lireate-light-v4.css', src)
             self.assertIn('<details class="lireate-partners-disclosure">', src)
             self.assertIn('<summary class="lireate-partners-summary">', src)

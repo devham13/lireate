@@ -30,6 +30,16 @@ HEAD = ('<!-- ' + MARK + ' -->\n'
         '<script defer src="/template/js/lireate-qa-v6.js?v=' + QA_CACHE + '"></script>\n')
 QA_CACHE_CSS_RE = re.compile(r'/template/css/lireate-qa-v6\.css\?v=20261126(?:[a-d])?', re.I)
 QA_CACHE_JS_RE = re.compile(r'/template/js/lireate-qa-v6\.js\?v=20261126(?:[a-d])?', re.I)
+QA_V6_CACHE_CANON_CSS = '/template/css/lireate-qa-v6.css?v=20261126'
+QA_V6_CACHE_CANON_JS = '/template/js/lireate-qa-v6.js?v=20261126'
+QA_V6_CACHE_NORMALIZE_CSS_RE = re.compile(
+    r'/template/css/lireate-qa-v6\.css\?v=20261126[a-z]?',
+    re.I,
+)
+QA_V6_CACHE_NORMALIZE_JS_RE = re.compile(
+    r'/template/js/lireate-qa-v6\.js\?v=20261126[a-z]?',
+    re.I,
+)
 MAIN = Path('template/main.php')
 
 # All paths relative to actual web DOCROOT.
@@ -122,6 +132,32 @@ _TOOL_DEPLOYED_A4 = {
     'patentnye-zadachi/sokrashchenie-mktu/index.php': 'c800677ec9f27156d2a5fd2e8426ae340c7f0b01',
     'patentnye-zadachi/starye-zayavki/index.php': '64101551fe25b9ba4b00840100700cb6adf9e753',
 }
+# Host after PR #132 deploy 70d7a08 (?v=20261126b); strip perf+v7 for tools.
+_CMS_V70_BLOB = {
+    'template/page/kontaktyi/lireate-contacts-page.inc.php': 'ef1f550ea23586e894b69fd98fbcd9168cd2dcd1',
+    'template/page/partners/lireate-partners-page.inc.php': '90dca947049a0250b7ebb2773b063bb52afaedda',
+    'template/page/news/lireate-blog-list.inc.php': '2ed0a563bccf4de333f44615ebf278f79ddd4719',
+}
+_SHARED_V70_BLOB = {
+    'pages/kontaktyi/_shared/lireate-contacts-page.inc.php': 'ef1f550ea23586e894b69fd98fbcd9168cd2dcd1',
+    'pages/partners/_shared/lireate-partners-page.inc.php': '90dca947049a0250b7ebb2773b063bb52afaedda',
+    'pages/blog/_shared/lireate-blog-list.inc.php': 'f7f066e8fa640826ef5851349859bc617ce6a100',
+}
+_TOOL_V70 = {
+    'patentnye-zadachi/index.php': '7102ff4c7a54fdd14ad13a982926bc8b69b80392',
+    'patentnye-zadachi/adres-zayavitelya/index.php': '965fd71242b49307e5e86c9776aaf81cb4b81e30',
+    'patentnye-zadachi/fail-slovesnogo-znaka/index.php': 'dc478a7ef65de7f9986e0e36501f87f186da3515',
+    'patentnye-zadachi/kontakty-fips/index.php': 'ca8ca630f01d27d412b6885532c374c51fc8fd5e',
+    'patentnye-zadachi/oplata-patentnyh-poshlin/index.php': '6ab242cbb2df8bf929ebf0f1a9bab71670276159',
+    'patentnye-zadachi/oplata-uslug-fips/index.php': '46c7488ca854d285f012845149d3e80d0616980c',
+    'patentnye-zadachi/poisk-platezha-evm/index.php': '80aa8bd4e23aed68ed9bb813bdf948f5a1e0f24b',
+    'patentnye-zadachi/poshliny-izmeneniya/index.php': '6d4621e4b5e3bca05a8d83ce40cb62c5d7bb692b',
+    'patentnye-zadachi/poshliny-prodlenie/index.php': 'b8e586f7effa927389aecaee1496f086b8096b1a',
+    'patentnye-zadachi/poshliny-registraciya/index.php': 'c5bd676ad27bcb255f2561f99e982574a7858448',
+    'patentnye-zadachi/redaktor-mktu/index.php': 'ca9e9727d1d4c7619652a678887eadbda7d937e0',
+    'patentnye-zadachi/sokrashchenie-mktu/index.php': '3ab23e62fb1cdb472242690c411b693a6198e0dc',
+    'patentnye-zadachi/starye-zayavki/index.php': '77b34cb5bde1b33962202814ac8a8d2230da7884',
+}
 
 def _allowed_main_prod(path):
     allowed = {_CMS_MAIN_BLOB[path]}
@@ -131,6 +167,9 @@ def _allowed_main_prod(path):
     a4 = _CMS_A4CA4E8_BLOB.get(path)
     if a4:
         allowed.add(a4)
+    v70 = _CMS_V70_BLOB.get(path)
+    if v70:
+        allowed.add(v70)
     return frozenset(allowed)
 
 def _allowed_shared(path):
@@ -142,6 +181,9 @@ def _allowed_shared(path):
     a4 = _SHARED_A4CA4E8_BLOB.get(path)
     if a4:
         allowed.add(a4)
+    v70 = _SHARED_V70_BLOB.get(path)
+    if v70:
+        allowed.add(v70)
     return frozenset(allowed)
 
 BASE_ALLOWED = {live: _allowed_main_prod(live) for live in _CMS_MAIN_BLOB}
@@ -202,8 +244,16 @@ def strip_v7(data):
         return data
     return stripped.encode('utf-8')
 
+def normalize_qa_v6_cache_version(data):
+    text = data.decode('utf-8')
+    new = QA_V6_CACHE_NORMALIZE_CSS_RE.sub(QA_V6_CACHE_CANON_CSS, text)
+    new = QA_V6_CACHE_NORMALIZE_JS_RE.sub(QA_V6_CACHE_CANON_JS, new)
+    if new == text:
+        return data
+    return new.encode('utf-8')
+
 def strip_ephemeral(data):
-    return strip_v7(strip_perf(data))
+    return normalize_qa_v6_cache_version(strip_v7(strip_perf(data)))
 
 def extract_perf_block(text):
     match = PERF_BLOCK_RE.search(text)
@@ -362,12 +412,17 @@ def manifest_target(docroot, rel_str):
         raise ValueError("BLOCKER manifest target not a file: " + rel_str)
     return target
 
+def _normalized_digest(data):
+    return blob_sha(strip_ephemeral(data))
+
 def live_matches_allowed(old, relative, before=None):
     allowed = BASE_ALLOWED.get(str(relative))
     if allowed is None:
         allowed = frozenset({before}) if before else frozenset()
     digest = blob_sha(old)
     if digest in allowed:
+        return True
+    if _normalized_digest(old) in allowed:
         return True
     stripped = strip_ephemeral(old)
     if stripped != old and blob_sha(stripped) in allowed:
@@ -379,8 +434,13 @@ def tool_live_allowed(old, before, live_rel):
     a4 = _TOOL_DEPLOYED_A4.get(str(live_rel))
     if a4:
         allowed.add(a4)
+    v70 = _TOOL_V70.get(str(live_rel))
+    if v70:
+        allowed.add(v70)
     allowed = frozenset(allowed)
     if blob_sha(old) in allowed:
+        return True
+    if _normalized_digest(old) in allowed:
         return True
     stripped = strip_ephemeral(old)
     return stripped != old and blob_sha(stripped) in allowed
