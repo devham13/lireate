@@ -56,9 +56,11 @@ SVG — красные графические формы не изменены, 
 5. Запустить `python3 scripts/test_lireate_company_v5_install.py`.
 6. Запустить dry-run:
    `python3 scripts/lireate_company_v5_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/company-v5"`
-7. Если сообщение **BLOCKER: live PHP differs** — остановиться. Это означает,
-   что Cursor/Grok или хостинг уже изменили live PHP поверх старой версии
-   main. **Не перезаписывать** такие файлы. Перенести только новую разметку
+7. Если сообщение **BLOCKER: live PHP differs** — остановиться. Установщик
+   сверяет live `template/page/*-page.inc.php` и `pages/*/_shared/*` с blob
+   **pages/_shared** из `origin/main` (на проде template/page — копия shared,
+   не legacy-шаблон из Git main для `template/page`). **Не перезаписывать**
+   файлы с другим blob. Перенести только новую разметку
    hero, CSS и проверенный SVG на текущую версию, обновить PR и проверить снова.
 8. Перед применением проверить наличие PHP CLI и css/svg на сервере; если CSP
    запрещает ресурсы, устранить это безопасно, без ослабления политики целиком.

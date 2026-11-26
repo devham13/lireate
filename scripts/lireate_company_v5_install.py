@@ -40,17 +40,26 @@ FILES = PHP + ASSETS
 # Git blob IDs for original main-branch PHP versions reviewed on 2026-11-26.
 # Refuse to overwrite a live PHP file with a different blob ID (concurrent
 # edits / different CMS version). The installer does not force through drift.
+# On REG.RU, live template/page/*-page.inc.php matches pages/*/_shared (not legacy
+# main template blobs). BASE_BLOB for both paths uses shared main commit blobs.
+_SHARED_MAIN_BLOB = {
+    "about": "aae9678d2bb526bd9f5fd83b4cd58363396218b3",
+    "team": "271ba364ddad4336cbd1f5910372000032c64f18",
+    "partners": "4c0a93a1d55f2dbd079190fbe64e417ee04e4721",
+    "docs": "0c0353d76dbf98735fc45b41055a7406895bf718",
+    "contacts": "62baf790c44b528a6c5610aee69f50588161386a",
+}
 BASE_BLOB = {
-    str(PHP[0]): "e619f9bce860b36b03a8a18cef964a778427787f",
-    str(PHP[1]): "fac6de2bdc683d5a617be33536dfee0f33b615d2",
-    str(PHP[2]): "5b952e2a7c1323a32f0e5307e6c663315c1e73f2",
-    str(PHP[3]): "b00637c168530d0e43fb288c8c8a71489b9b15a7",
-    str(PHP[4]): "2c36b465077012f5a5844811664f949d1f486c9c",
-    str(PHP[5]): "aae9678d2bb526bd9f5fd83b4cd58363396218b3",
-    str(PHP[6]): "271ba364ddad4336cbd1f5910372000032c64f18",
-    str(PHP[7]): "4c0a93a1d55f2dbd079190fbe64e417ee04e4721",
-    str(PHP[8]): "0c0353d76dbf98735fc45b41055a7406895bf718",
-    str(PHP[9]): "62baf790c44b528a6c5610aee69f50588161386a",
+    str(PHP[0]): _SHARED_MAIN_BLOB["about"],
+    str(PHP[1]): _SHARED_MAIN_BLOB["team"],
+    str(PHP[2]): _SHARED_MAIN_BLOB["partners"],
+    str(PHP[3]): _SHARED_MAIN_BLOB["docs"],
+    str(PHP[4]): _SHARED_MAIN_BLOB["contacts"],
+    str(PHP[5]): _SHARED_MAIN_BLOB["about"],
+    str(PHP[6]): _SHARED_MAIN_BLOB["team"],
+    str(PHP[7]): _SHARED_MAIN_BLOB["partners"],
+    str(PHP[8]): _SHARED_MAIN_BLOB["docs"],
+    str(PHP[9]): _SHARED_MAIN_BLOB["contacts"],
     str(ASSETS[1]): "5a3242c525f22eee671b266405d2ef07644db8d4",
 }
 

@@ -69,11 +69,26 @@ class CompanyV5InstallTests(unittest.TestCase):
         chrome = (inst.REPO / inst.ASSETS[1]).read_text(encoding="utf-8")
         self.assertIn("mask-image:none!important", css)
         self.assertIn("logo-light-v5.svg", chrome)
+        pairs = (
+            (inst.PHP[0], inst.PHP[5]),
+            (inst.PHP[1], inst.PHP[6]),
+            (inst.PHP[2], inst.PHP[7]),
+            (inst.PHP[3], inst.PHP[8]),
+            (inst.PHP[4], inst.PHP[9]),
+        )
+        for tpl, shared in pairs:
+            self.assertEqual(
+                (inst.REPO / tpl).read_text(encoding="utf-8"),
+                (inst.REPO / shared).read_text(encoding="utf-8"),
+                str(tpl),
+            )
         for rel in inst.PHP:
             page = (inst.REPO / rel).read_text(encoding="utf-8")
             self.assertIn("lireate-company-pages-v5.css", page)
             self.assertIn("lireate-company-v5", page)
             self.assertIn('class="lc5-hero-media', page)
+        about = (inst.REPO / inst.PHP[5]).read_text(encoding="utf-8")
+        self.assertIn("lireate_about_asset_url", about)
 
     def test_source_preserves_single_h1_in_each_page(self):
         import re
