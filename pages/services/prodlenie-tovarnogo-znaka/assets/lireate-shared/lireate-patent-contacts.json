@@ -1,0 +1,89 @@
+{
+  "checked": "2026-11-17",
+  "sourceUrl": "https://rospatent.gov.ru/ru/contacts",
+  "entries": [
+    {
+      "org": "Роспатент",
+      "department": "Справочная служба",
+      "topic": "Формальные вопросы по госуслугам",
+      "type": "phone",
+      "value": "+7 (499) 240-60-15",
+      "href": "tel:+74992406015"
+    },
+    {
+      "org": "Роспатент",
+      "department": "Справочная служба",
+      "topic": "Обращения граждан",
+      "type": "email",
+      "value": "rospatent@rospatent.gov.ru",
+      "href": "mailto:rospatent@rospatent.gov.ru"
+    },
+    {
+      "org": "Роспатент",
+      "department": "Справочная служба",
+      "topic": "Факс",
+      "type": "phone",
+      "value": "+7 (499) 243-33-37",
+      "href": "tel:+74992433337"
+    },
+    {
+      "org": "ФИПС",
+      "department": "Консультационно-справочная служба ФИПС",
+      "topic": "Порядок предоставления государственных услуг",
+      "type": "fips_consult",
+      "phones": [
+        { "value": "+7 (499) 240-58-42", "href": "tel:+74992405842" },
+        { "value": "+7 (495) 531-66-74", "href": "tel:+74955316674" }
+      ],
+      "email": { "value": "fips@rupto.ru", "href": "mailto:fips@rupto.ru" }
+    },
+    {
+      "org": "Роспатент",
+      "department": "Канцелярия",
+      "topic": "Регистрация входящей и исходящей почты",
+      "type": "phone",
+      "value": "+7 (495) 531-66-50",
+      "href": "tel:+74955316650"
+    },
+    {
+      "org": "Роспатент",
+      "department": "Пресс-служба",
+      "topic": "Запросы от СМИ",
+      "type": "phone",
+      "value": "+7 (499) 243-73-91",
+      "href": "tel:+74992437391"
+    },
+    {
+      "org": "Роспатент",
+      "department": "Пресс-служба",
+      "topic": "Запросы от СМИ",
+      "type": "email",
+      "value": "prc@rupto.ru",
+      "href": "mailto:prc@rupto.ru"
+    },
+    {
+      "org": "Роспатент",
+      "department": "Телефон доверия",
+      "topic": "Сообщения о правонарушениях",
+      "type": "phone",
+      "value": "+7 (495) 531-65-46",
+      "href": "tel:+74955316546"
+    },
+    {
+      "org": "Роспатент",
+      "department": "Руководитель",
+      "topic": "Общий e-mail",
+      "type": "email",
+      "value": "rospatent@rospatent.gov.ru",
+      "href": "mailto:rospatent@rospatent.gov.ru"
+    },
+    {
+      "org": "Роспатент",
+      "department": "Центр стратегического развития",
+      "topic": "Контакт",
+      "type": "phone",
+      "value": "+7 (495) 531-66-96",
+      "href": "tel:+74955316696"
+    }
+  ]
+}

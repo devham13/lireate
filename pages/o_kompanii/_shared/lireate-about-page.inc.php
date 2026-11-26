@@ -1,6 +1,6 @@
 <?php
 /**
- * Разметка страницы «О компании» (/o_kompanii) — тёмный стиль как /team.
+ * Разметка страницы «О компании» (/o_kompanii) — Light V4 как /team.
  */
 require_once __DIR__ . '/lireate-about-lib.php';
 
@@ -18,10 +18,12 @@ $la_footer_css = defined('LIREATE_ABOUT_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_about_h($la_assets); ?>/lireate-about.css?v=<?php echo lireate_about_h($la_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_about_h($la_footer_css); ?>?v=<?php echo lireate_about_h($la_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_about_h($la_v); ?>"><!-- lireate_cms_light_v4 -->
+<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_about_h($la_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-about-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_about_h(LIREATE_ABOUT_METRIKA_ID); ?>');
-if (document.body) { document.body.classList.add('lireate-about-body'); }
+if (document.body) { document.body.classList.add('lireate-about-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
 <div class="lireate-about-page" data-lireate-about-version="<?php echo lireate_about_h($la_v); ?>">
   <header class="lireate-about-hero">
@@ -61,7 +63,7 @@ if (document.body) { document.body.classList.add('lireate-about-body'); }
     </div>
     <?php foreach ($la_partners as $partner) : ?>
     <article class="lireate-about-card lireate-about-partner">
-      <div class="lireate-about-partner-photo" style="background-image:url('<?php echo lireate_about_h($partner['photo']); ?>')" role="img" aria-label="<?php echo lireate_about_h($partner['name']); ?>"></div>
+      <div class="lireate-about-partner-photo" style="background-image:url('<?php echo lireate_about_h(lireate_about_asset_url($partner['photo'])); ?>')" role="img" aria-label="<?php echo lireate_about_h($partner['name']); ?>"></div>
       <div class="lireate-about-partner-body">
         <h3 class="lireate-about-partner-name"><?php echo lireate_about_h($partner['name']); ?></h3>
         <p class="lireate-about-partner-role"><?php echo lireate_about_h($partner['role']); ?></p>
@@ -85,4 +87,5 @@ if (document.body) { document.body.classList.add('lireate-about-body'); }
   </section>
 
   <script src="<?php echo lireate_about_h($la_assets); ?>/lireate-metrika-goals.js?v=<?php echo lireate_about_h($la_v); ?>"></script>
+  <script src="/template/js/lireate-light-v4.js?v=<?php echo lireate_about_h($la_v); ?>" defer></script><!-- lireate_cms_light_v4 -->
 </div>

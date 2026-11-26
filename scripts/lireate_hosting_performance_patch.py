@@ -227,7 +227,12 @@ def apply_plan(docroot, plan, backup_root):
             modes[rel] = (path.stat().st_mode & 0o777) if path.exists() else 0o644
             staged[rel] = stage_file(path, data, modes[rel])
             if path.suffix == '.php':
-                result = subprocess.run([php, '-l', str(staged[rel])], capture_output=True, text=True)
+                result = subprocess.run(
+                    [php, '-l', str(staged[rel])],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    universal_newlines=True,
+                )
                 if result.returncode:
                     raise ValueError('PHP lint failed: ' + str(rel) + '\n' + result.stdout + result.stderr)
         stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')

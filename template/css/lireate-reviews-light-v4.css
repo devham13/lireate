@@ -1,0 +1,178 @@
+/* Light V4 overlay for reviews CMS markup (preview + CMS body.lireate-theme-light-v4). */
+body.lireate-reviews-preview,
+body.lireate-theme-light-v4.lireate-reviews-preview,
+body.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-reviews-preview .page_container,
+body.lireate-theme-light-v4 .page_container {
+  padding: 0 !important;
+  background: #fff !important;
+}
+body.lireate-reviews-preview .lx-rv-case,
+body.lireate-theme-light-v4 .lx-rv-case {
+  color: #52637b !important;
+}
+body.lireate-reviews-preview .lx-rv-case a.lx-rv-case-link,
+body.lireate-theme-light-v4 .lx-rv-case a.lx-rv-case-link {
+  color: #195acb !important;
+}
+body.lireate-reviews-preview,
+body.lireate-reviews-preview .page_container,
+body.lireate-reviews-preview .sectionPadding,
+body.lireate-theme-light-v4 .sectionPadding {
+  font-family: Manrope, "Open Sans", sans-serif !important;
+}
+body.lireate-reviews-preview #list .contentBox,
+body.lireate-theme-light-v4 #list .contentBox {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  width: 100% !important;
+  max-width: 1056px !important;
+  margin: 0 auto !important;
+  padding: 16px !important;
+  height: auto !important;
+  flex-wrap: unset !important;
+  justify-content: stretch !important;
+}
+body.lireate-reviews-preview #list .contentBox > div,
+body.lireate-reviews-preview #list .review_box,
+body.lireate-theme-light-v4 #list .contentBox > div,
+body.lireate-theme-light-v4 #list .review_box {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  flex: none !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+body.lireate-reviews-preview .review_box,
+body.lireate-theme-light-v4 .review_box {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 280px !important;
+  border: 1px solid #dce8f7 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06) !important;
+}
+body.lireate-reviews-preview .rewiev_head,
+body.lireate-theme-light-v4 .rewiev_head {
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 180px !important;
+}
+body.lireate-reviews-preview .play_button,
+body.lireate-theme-light-v4 .play_button {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  z-index: 2 !important;
+  width: 48px !important;
+  height: 48px !important;
+}
+body.lireate-reviews-preview .play_button .img_box,
+body.lireate-reviews-preview .play_button img,
+body.lireate-theme-light-v4 .play_button img {
+  width: 48px !important;
+  height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  object-fit: contain !important;
+}
+body.lireate-reviews-preview .rewiev_head > .img_box,
+body.lireate-theme-light-v4 .rewiev_head > .img_box {
+  display: block !important;
+  width: 100% !important;
+  height: 180px !important;
+  object-fit: cover !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+body.lireate-reviews-preview .text_box,
+body.lireate-theme-light-v4 .text_box {
+  padding: 14px 16px 16px !important;
+}
+body.lireate-reviews-preview #list p,
+body.lireate-reviews-preview .default_text,
+body.lireate-theme-light-v4 #list p,
+body.lireate-theme-light-v4 .default_text {
+  color: #52637b !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #list h1,
+body.lireate-theme-light-v4.lireate-reviews-body #list h2,
+body.lireate-theme-light-v4.lireate-reviews-body #face .contentBox,
+body.lireate-theme-light-v4.lireate-reviews-body #face .contentBox h1,
+body.lireate-theme-light-v4.lireate-reviews-body #list h1,
+body.lireate-theme-light-v4.lireate-reviews-body #face h1,
+body.lireate-theme-light-v4 #list .default_text span,
+body.lireate-theme-light-v4 .lx-rv-case,
+body.lireate-theme-light-v4 .lx-rv-case a {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lx-rv-case a.lx-rv-case-link {
+  color: #0f4db8 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer,
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer p {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #face p.titleDesc,
+body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 #list .review_box,
+body.lireate-theme-light-v4 #list .text_box,
+body.lireate-theme-light-v4 #list .rewiev_head,
+body.lireate-reviews-body #list .review_box,
+body.lireate-reviews-body #list .text_box,
+body.lireate-reviews-body .review_box,
+body.lireate-reviews-body .text_box,
+body.lireate-reviews-body.lireate-cms-page-dark .review_box,
+body.lireate-reviews-body.lireate-cms-page-dark #list .review_box,
+body.lireate-reviews-body.lireate-cms-page-dark .review_box > div,
+body.lireate-reviews-body.lireate-cms-page-dark .default_text {
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #1f212c !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-reviews-body footer,
+body.lireate-reviews-body footer:not(.lx-site-footer),
+body.lireate-reviews-body .footer,
+body.lireate-reviews-body.lireate-cms-page-dark footer,
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer {
+  background: #f7fbff !important;
+  background-color: #f7fbff !important;
+  color: #1f212c !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-reviews-body footer a,
+body.lireate-reviews-body .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-reviews-body #list,
+body.lireate-reviews-body #list .default_text,
+body.lireate-reviews-body #list p {
+  background: #fff !important;
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 #list .default_text,
+body.lireate-theme-light-v4 #list .default_text span {
+  color: #52637b !important;
+  font-weight: 600 !important;
+}
+@media (max-width: 480px) {
+  body.lireate-reviews-preview #list .contentBox,
+  body.lireate-theme-light-v4 #list .contentBox {
+    grid-template-columns: 1fr !important;
+  }
+}

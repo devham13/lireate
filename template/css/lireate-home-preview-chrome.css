@@ -1,0 +1,86 @@
+/* Упрощённая CMS-шапка (боковое меню + hamburger) для превью главной */
+body.lireate-home-preview .lireate-cms-chrome {
+  position: relative;
+  z-index: 20;
+}
+body.lireate-home-preview .leftSideLogo {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 30px auto;
+  height: 50px;
+  background: url(/template/images/logo/logo.svg) center/contain no-repeat;
+}
+body.lireate-home-preview #leftSideNav .leftSideTitle {
+  color: #6a7290;
+  font-size: 14px;
+  padding: 12px 20px 4px;
+  margin: 0;
+}
+body.lireate-home-preview #leftSideNav .leftSideNaviInSection {
+  display: block;
+  color: #dde1ef;
+  font-size: 15px;
+  padding: 6px 20px;
+  text-decoration: none;
+}
+body.lireate-home-preview #leftSideNav .leftSideNaviInSection:hover {
+  background: #394363;
+  color: #fff;
+}
+body.lireate-home-preview .lireate-cms-chrome .hamburger {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1200;
+}
+body.lireate-home-preview #leftSideBar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #2d3548;
+  z-index: 1100;
+  padding-bottom: 24px;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+}
+body.lireate-home-preview.lireate-cms-menu-open #leftSideBar {
+  transform: translateX(0);
+}
+body.lireate-home-preview .wrapper {
+  margin-left: 0;
+}
+body.lireate-home-preview .hamburger {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1201;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #dce8f7;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(31, 46, 76, 0.12);
+}
+body.lireate-home-preview .hamburger .hamb-top,
+body.lireate-home-preview .hamburger .hamb-middle,
+body.lireate-home-preview .hamburger .hamb-bottom {
+  display: block;
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 2px;
+  background: #1f212c;
+  border-radius: 2px;
+  transition: transform 0.2s ease, top 0.2s ease, opacity 0.2s ease;
+}
+body.lireate-home-preview .hamburger .hamb-top { top: 14px; }
+body.lireate-home-preview .hamburger .hamb-middle { top: 21px; }
+body.lireate-home-preview .hamburger .hamb-bottom { top: 28px; }
+@media (max-width: 480px) {
+  body.lireate-home-preview .lh4-root {
+    padding-top: 52px;
+  }
+}

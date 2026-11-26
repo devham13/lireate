@@ -62,12 +62,30 @@ $lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secre
         <input id="lf-name" name="name" type="text"<?php echo $lx_lead_name_required ? ' required' : ''; ?> autocomplete="name" placeholder="Как к вам обращаться">
         <label for="lf-phone">Телефон</label>
         <input id="lf-phone" name="tel" type="tel" required autocomplete="tel" placeholder="+7 …" inputmode="tel">
-        <label class="lx-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
+        <?php
+        $lx_consent_pd_id = 'lf-consent';
+        $lx_consent_mkt_id = 'lf-consent-mkt';
+        if (!function_exists('lireate_lead_consent_fields_path')) {
+            $lx_resolve = dirname(__DIR__) . '/lireate-lead-consent-resolve.inc.php';
+            if (is_file($lx_resolve)) {
+                require_once $lx_resolve;
+            }
+        }
+        $lx_consent_inc = function_exists('lireate_lead_consent_fields_path')
+            ? lireate_lead_consent_fields_path(__DIR__)
+            : '';
+        if ($lx_consent_inc === '') {
+            trigger_error('lireate-lead-consent-fields.inc.php not found', E_USER_WARNING);
+        } else {
+            require $lx_consent_inc;
+        }
+        ?>
         <button type="submit" class="lx-btn lx-btn-primary lx-form-submit" style="width:100%;margin-top:12px;"><?php echo htmlspecialchars($lx_lead_submit_label, ENT_QUOTES, 'UTF-8'); ?></button>
         <div class="lx-form-alt">
           <span class="lx-form-alt-label">или напишите нам</span>
           <div class="lx-form-alt-icons">
             <a id="form-alt-telegram" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram" data-lx-ym-goal="perehod_v_telegramm" aria-label="Telegram"></a>
+            <a id="form-alt-whatsapp" class="lx-form-alt-link" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="whatsapp" data-lx-ym-goal="perehod_v_messendzher" aria-label="WhatsApp"></a>
             <a id="form-alt-max" class="lx-form-alt-link lx-form-alt-link--max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max-white" data-lx-ym-goal="perehod_v_messendzher" aria-label="MAX"></a>
           </div>
         </div>

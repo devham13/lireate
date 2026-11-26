@@ -79,13 +79,15 @@ $schema_graph = [
   <link rel="stylesheet" href="assets/registraciya-landing.css">
   <link rel="stylesheet" href="assets/registraciya-pilot-v2.css">
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/registraciya-white-v3.css', $lx_service_asset_dir); ?>"><!-- lireate_tm_white_v3 -->
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
+<link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/registraciya-light-v4.css', $lx_service_asset_dir); ?>">
   <link rel="stylesheet" href="/template/css/lireate-service-mobile-bar.css?v=20261111svc1" /><!-- lireate_design_service_mobile_bar_css_v1 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
-<body class="lireate-svc-body registraciya-landing-body registraciya-pilot-v2 lx-tm-white">
+<body class="lireate-svc-body registraciya-landing-body registraciya-pilot-v2 lx-tm-white lireate-theme-light-v4">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
@@ -524,5 +526,7 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
   <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
   <script defer src="/template/js/lireate-service-mobile-bar.js?v=20261111svc3"></script>
+
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
 </body>
 </html>

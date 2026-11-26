@@ -50,10 +50,14 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-list.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<?php if (!defined('LIREATE_BLOG_LIGHT_V4_FOOTER') || !LIREATE_BLOG_LIGHT_V4_FOOTER) : ?>
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<?php endif; ?>
+<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>"><!-- lireate_blog_light_v4 -->
 <script>
 document.documentElement.classList.add('lireate-blog-html');
-if (document.body) { document.body.classList.add('lireate-blog-body'); }
+if (document.body) { document.body.classList.add('lireate-blog-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
 <div class="lireate-blog-list-page" data-lireate-blog-list-version="<?php echo lireate_blog_h($lb_v); ?>">
   <?php
@@ -122,12 +126,15 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
   <?php endif; ?>
 
   <?php if (!empty($lb_featured)) :
-      $fcover = isset($lb_featured['cover']) ? $lb_featured['cover'] : '';
+      $fcover = isset($lb_featured['cover']) ? lireate_blog_media_url($lb_featured['cover']) : '';
       $fcover_style = $fcover !== '' ? 'background-image:url(\'' . lireate_blog_h($fcover) . '\')' : '';
       ?>
   <section class="lireate-blog-list-featured" aria-label="Свежая публикация">
     <div class="lireate-blog-list-wrap lireate-blog-list-featured-grid">
       <a class="lireate-blog-list-featured-cover<?php echo $fcover === '' ? ' lireate-blog-list-featured-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($lb_featured['url']); ?>"<?php echo $fcover_style !== '' ? ' style="' . $fcover_style . '"' : ''; ?>>
+        <?php if (defined('LIREATE_BLOG_LIST_COVER_IMG') && $fcover !== '') : ?>
+        <img class="lireate-blog-list-cover-img" src="<?php echo lireate_blog_h($fcover); ?>" alt="" width="960" height="540" loading="eager" decoding="sync">
+        <?php endif; ?>
         <span class="lireate-blog-list-featured-label">Свежий материал</span>
       </a>
       <div class="lireate-blog-list-featured-body">
@@ -142,7 +149,9 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
         <p class="lireate-blog-list-featured-excerpt"><?php echo lireate_blog_h($lb_featured['excerpt']); ?></p>
         <?php endif; ?>
         <div class="lireate-blog-list-card-meta-row">
+          <?php if ((int) $lb_featured['read_mins'] > 0) : ?>
           <span class="lireate-blog-list-read-pill"><?php echo (int) $lb_featured['read_mins']; ?> мин читать</span>
+          <?php endif; ?>
           <span class="lireate-blog-list-author-inline">
             <?php if ($lb_avatar !== '') : ?>
             <img class="lireate-blog-list-author-avatar" src="<?php echo lireate_blog_h($lb_avatar); ?>.webp" width="28" height="28" alt="" loading="lazy" decoding="async">
@@ -166,11 +175,14 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
             if (!empty($lb_featured) && $card['url'] === $lb_featured['url']) {
                 continue;
             }
-            $cover = isset($card['cover']) ? $card['cover'] : '';
+            $cover = isset($card['cover']) ? lireate_blog_media_url($card['cover']) : '';
             $cover_style = $cover !== '' ? 'background-image:url(\'' . lireate_blog_h($cover) . '\')' : '';
             ?>
         <article class="lireate-blog-list-card">
           <a class="lireate-blog-list-card-cover<?php echo $cover === '' ? ' lireate-blog-list-card-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($card['url']); ?>"<?php echo $cover_style !== '' ? ' style="' . $cover_style . '"' : ''; ?>>
+            <?php if (defined('LIREATE_BLOG_LIST_COVER_IMG') && $cover !== '') : ?>
+            <img class="lireate-blog-list-cover-img" src="<?php echo lireate_blog_h($cover); ?>" alt="" width="640" height="360" loading="eager" decoding="sync">
+            <?php endif; ?>
             <?php if (!empty($card['tag'])) : ?>
             <span class="lireate-blog-list-card-tag"><?php echo lireate_blog_h($card['tag']); ?></span>
             <?php endif; ?>
@@ -180,7 +192,9 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); }
               <?php if (!empty($card['date_display'])) : ?>
               <p class="lireate-blog-list-card-date"><time datetime="<?php echo lireate_blog_h($card['date_iso']); ?>"><?php echo lireate_blog_h($card['date_display']); ?></time></p>
               <?php endif; ?>
+              <?php if ((int) $card['read_mins'] > 0) : ?>
               <span class="lireate-blog-list-read-pill"><?php echo (int) $card['read_mins']; ?> мин</span>
+              <?php endif; ?>
             </div>
             <h2 class="lireate-blog-list-card-title"><a href="<?php echo lireate_blog_h($card['url']); ?>"><?php echo lireate_blog_h($card['title']); ?></a></h2>
             <?php if (!empty($card['excerpt'])) : ?>

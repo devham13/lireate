@@ -25,7 +25,7 @@ define('LIREATE_BLOG_PUBLIC_ORIGIN', 'https://lireate.ru'); // pragma: allowlist
   <meta name="description" content="<?php echo htmlspecialchars($lireate_blog_description, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="canonical" href="<?php echo htmlspecialchars($lireate_blog_canonical, ENT_QUOTES, 'UTF-8'); ?>">
 </head>
-<body class="lireate-blog-body">
+<body class="lireate-blog-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
 define('LIREATE_BLOG_ASSETS_BASE', $assets_base);
 require_once dirname(__DIR__) . '/_shared/lireate-blog-layout.inc.php';

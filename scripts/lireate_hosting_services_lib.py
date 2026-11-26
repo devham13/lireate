@@ -1,11 +1,10 @@
 """Shared helpers for LIREATE service-page hosting cron (state, discovery, git sync)."""
 
-from __future__ import annotations
-
 import json
 import re
 import subprocess
 from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple
 
 SKIP_SERVICE_DIRS = {"_template", "_shared"}
 MANAGED_MARKER = ".lireate-managed.json"
@@ -36,11 +35,12 @@ def load_manifest(service_dir: Path) -> dict:
     return data
 
 
-def list_service_dirs(office_repo: Path) -> list[Path]:
+def list_service_dirs(office_repo):
+    # type: (Path) -> List[Path]
     services_root = office_repo / "pages" / "services"
     if not services_root.is_dir():
         return []
-    out: list[Path] = []
+    out = []  # type: List[Path]
     for path in sorted(services_root.iterdir()):
         if not path.is_dir():
             continue
@@ -51,12 +51,13 @@ def list_service_dirs(office_repo: Path) -> list[Path]:
     return out
 
 
-def parse_queue(office_repo: Path) -> list[dict[str, str]]:
+def parse_queue(office_repo):
+    # type: (Path) -> List[Dict[str, str]]
     queue_path = office_repo / "pages" / "services" / "queue.md"
     if not queue_path.is_file():
         return []
     text = queue_path.read_text(encoding="utf-8")
-    entries: list[dict[str, str]] = []
+    entries = []  # type: List[Dict[str, str]]
     parts = SECTION_RE.split(text)
     if len(parts) < 3:
         return entries
@@ -78,7 +79,8 @@ def parse_queue(office_repo: Path) -> list[dict[str, str]]:
     return entries
 
 
-def queue_slug_order(office_repo: Path) -> list[str]:
+def queue_slug_order(office_repo):
+    # type: (Path) -> List[str]
     return [e["slug"] for e in parse_queue(office_repo)]
 
 
@@ -89,10 +91,11 @@ def menu_after_for_slug(office_repo: Path, slug: str) -> str:
     return ""
 
 
-def load_state_txt(state_file: Path) -> set[str]:
+def load_state_txt(state_file):
+    # type: (Path) -> Set[str]
     if not state_file.is_file():
         return set()
-    slugs: set[str] = set()
+    slugs = set()  # type: Set[str]
     for line in state_file.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line or line.startswith("#"):
@@ -101,7 +104,8 @@ def load_state_txt(state_file: Path) -> set[str]:
     return slugs
 
 
-def save_state_txt(state_file: Path, slugs: set[str]) -> None:
+def save_state_txt(state_file, slugs):
+    # type: (Path, Set[str]) -> None
     state_file.parent.mkdir(parents=True, exist_ok=True)
     lines = sorted(slugs)
     state_file.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
@@ -120,14 +124,16 @@ def dest_looks_published(dest_dir: Path) -> bool:
     return False
 
 
-def canonical_htaccess_source(office_repo: Path) -> Path | None:
+def canonical_htaccess_source(office_repo):
+    # type: (Path) -> Optional[Path]
     path = office_repo / SERVICE_HTACCESS_CANONICAL
     if path.is_file():
         return path
     return None
 
 
-def service_htaccess_source(office_repo: Path, service_dir: Path) -> Path | None:
+def service_htaccess_source(office_repo, service_dir):
+    # type: (Path, Path) -> Optional[Path]
     local = service_dir / SERVICE_DIR_HTACCESS
     if local.is_file():
         return local
@@ -137,11 +143,12 @@ def service_htaccess_source(office_repo: Path, service_dir: Path) -> Path | None
 def repair_service_htaccess(
     office_repo: Path,
     docroot: Path,
-    slugs: set[str] | None = None,
-    dry_run: bool = True,
-) -> list[str]:
+    slugs=None,
+    dry_run=True,
+):
+    # type: (Path, Path, Optional[Set[str]], bool) -> List[str]
     """Ensure .htaccess exists in published service dirs. Returns repaired url_paths."""
-    repaired: list[str] = []
+    repaired = []  # type: List[str]
     for service_dir in list_service_dirs(office_repo):
         slug = service_dir.name
         if slugs is not None and slug not in slugs:
@@ -175,7 +182,8 @@ def repair_service_htaccess(
     return repaired
 
 
-def load_retry_state(retry_file: Path) -> dict[str, int]:
+def load_retry_state(retry_file):
+    # type: (Path) -> Dict[str, int]
     if not retry_file.is_file():
         return {}
     try:
@@ -187,12 +195,14 @@ def load_retry_state(retry_file: Path) -> dict[str, int]:
     return {str(k): int(v) for k, v in data.items() if isinstance(v, int) or str(v).isdigit()}
 
 
-def save_retry_state(retry_file: Path, data: dict[str, int]) -> None:
+def save_retry_state(retry_file, data):
+    # type: (Path, Dict[str, int]) -> None
     retry_file.parent.mkdir(parents=True, exist_ok=True)
     retry_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def record_publish_failure(retry_file: Path, slug: str, max_retries: int) -> tuple[int, bool]:
+def record_publish_failure(retry_file, slug, max_retries):
+    # type: (Path, str, int) -> Tuple[int, bool]
     counts = load_retry_state(retry_file)
     n = counts.get(slug, 0) + 1
     counts[slug] = n
@@ -207,7 +217,8 @@ def clear_publish_failure(retry_file: Path, slug: str) -> None:
         save_retry_state(retry_file, counts)
 
 
-def git_sync_office_repo(office_repo: Path, branch: str = "main") -> tuple[bool, str]:
+def git_sync_office_repo(office_repo, branch="main"):
+    # type: (Path, str) -> Tuple[bool, str]
     if not (office_repo / ".git").is_dir():
         return False, "not a git repo: {0}".format(office_repo)
     try:
@@ -247,10 +258,11 @@ def seed_state_from_docroot(
     office_repo: Path,
     docroot: Path,
     state_file: Path,
-) -> tuple[set[str], list[str]]:
+):
+    # type: (Path, Path, Path) -> Tuple[Set[str], List[str]]
     """Add slugs whose url_path already exists in DOCROOT. Returns (state, newly_seeded)."""
     state = load_state_txt(state_file)
-    seeded: list[str] = []
+    seeded = []  # type: List[str]
     for service_dir in list_service_dirs(office_repo):
         slug = service_dir.name
         try:
@@ -269,8 +281,9 @@ def seed_state_from_docroot(
 def collect_publish_candidates(
     office_repo: Path,
     docroot: Path,
-    state: set[str],
-) -> list[str]:
+    state,
+):
+    # type: (Path, Path, Set[str]) -> List[str]
     """Slugs in repo that are not yet in CRON state (services-published.txt).
 
     Partial deploys (files on disk but publish/HTTP failed) stay retryable until
@@ -278,7 +291,7 @@ def collect_publish_candidates(
     """
     order = queue_slug_order(office_repo)
     order_index = {s: i for i, s in enumerate(order)}
-    candidates: list[str] = []
+    candidates = []  # type: List[str]
 
     for service_dir in list_service_dirs(office_repo):
         slug = service_dir.name

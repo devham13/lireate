@@ -1,0 +1,590 @@
+/* Белый Light V4 для CMS-страниц team/about/docs/partners (поверх тёмных page CSS). */
+body.lireate-theme-light-v4.lireate-team-body,
+html.lireate-team-html body.lireate-team-body {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-page {
+  --lt-bg: #ffffff;
+  --lt-text: #1f212c;
+  --lt-muted: #52637b;
+  --lt-line: #dce8f7;
+  --lt-card: #ffffff;
+  --lt-green: #059669;
+  background: var(--lt-bg) !important;
+  color: var(--lt-text) !important;
+}
+body.lireate-theme-light-v4 .lireate-team-hero {
+  background: linear-gradient(180deg, #f7fbff 0%, #fff 72%) !important;
+  border-bottom-color: var(--lt-line) !important;
+}
+body.lireate-theme-light-v4 .lireate-team-kicker,
+body.lireate-theme-light-v4 .lireate-team-h1,
+body.lireate-theme-light-v4 .lireate-team-card-title,
+body.lireate-theme-light-v4 .lireate-team-member-name {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-sub,
+body.lireate-theme-light-v4 .lireate-team-lead,
+body.lireate-theme-light-v4 .lireate-team-tagline,
+body.lireate-theme-light-v4 .lireate-team-text,
+body.lireate-theme-light-v4 .lireate-team-member-role {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .lireate-team-card,
+body.lireate-theme-light-v4 .lireate-team-member-card {
+  background: #fff !important;
+  border: 1px solid #dce8f7 !important;
+  box-shadow: 0 10px 35px rgba(31, 33, 44, 0.06) !important;
+}
+body.lireate-theme-light-v4 .lireate-team-pill--solid {
+  background: #e32020 !important;
+  border-color: #e32020 !important;
+  color: #fff !important;
+}
+body.lireate-theme-light-v4 .lireate-team-pill--outline {
+  background: #fff !important;
+  border-color: #dce8f7 !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-list-bullets li,
+body.lireate-theme-light-v4 .lireate-team-steps li,
+body.lireate-theme-light-v4 .lireate-team-text--muted,
+body.lireate-theme-light-v4 .lireate-team-member-role {
+  color: #3d4f66 !important;
+}
+body.lireate-theme-light-v4 .lireate-team-badge {
+  color: #e32020 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .wrapper,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 #lireate-team,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-lead,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-text,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page li {
+  color: #2d4764 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-page a {
+  color: #0f4db8 !important;
+  font-weight: 700 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-copy,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-meta {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-lead {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-badge,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-pill--solid {
+  color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4,
+html.lireate-about-html body.lireate-about-body.lireate-cms-page-dark.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .wrapper,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .page_container,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .container.content,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page {
+  --la-bg: #fff;
+  --la-text: #1f212c;
+  --la-muted: #52637b;
+  --la-line: #dce8f7;
+  --la-card: #fff;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .container.content :is(p, li, span, div),
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-lead,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-text,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page p,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page li {
+  color: #2d4764 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a:not(.lireate-about-pill) {
+  color: #0f4db8 !important;
+  font-weight: 700 !important;
+}
+body.lireate-about-body .lireate-about-hero-actions a.lireate-about-pill--solid,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a.lireate-about-pill--solid {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-about-body .lireate-about-hero-actions a.lireate-about-pill--outline,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a.lireate-about-pill--outline {
+  color: #1f212c !important;
+  -webkit-text-fill-color: #1f212c !important;
+  background: #fff !important;
+  border: 1px solid #c5d7ef !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-h1,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-card-title,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-partner-name {
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-partner-role,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-spec-label,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-text--muted {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-accent,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-accent p {
+  color: #2d4764 !important;
+  background: #f7fbff !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-copy,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-meta {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer p,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-lead {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-pill--solid {
+  color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #face p.titleDesc,
+body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .submitBox.js-modal-form,
+body.lireate-theme-light-v4 div.submitBox.js-modal-form,
+body.lireate-reviews-body div.submitBox.js-modal-form,
+body.lireate-team-body div.submitBox.js-modal-form,
+body.lireate-portfolio-body div.submitBox.js-modal-form {
+  color: #fff !important;
+}
+body.lireate-team-body a.lireate-team-pill--solid,
+body.lireate-team-body .lireate-team-pill.lireate-team-pill--solid,
+body.lireate-team-body .lireate-team-page a.lireate-team-pill--solid,
+body.lireate-cms-page-dark.lireate-team-body .lireate-team-page a.lireate-team-pill--solid {
+  color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-reviews-body #leftSideBar .submitBox.js-modal-form,
+body.lireate-team-body #leftSideBar .submitBox.js-modal-form,
+body.lireate-portfolio-body #leftSideBar .submitBox.js-modal-form,
+body.lireate-theme-light-v4 #leftSideBar .submitBox.js-modal-form {
+  background-color: #cb2136 !important;
+  color: #fff !important;
+}
+
+body.lireate-screenshot-capture .lh4-root .reveal,
+body.lireate-home-preview .lh4-root .reveal,
+body.lireate-screenshot-capture .lh4-root .reveal:not(.visible) {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+body.lireate-home-preview .wrapper,
+body.lireate-home-preview .container.content,
+body.lireate-home-preview .page_container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  background: #fff !important;
+  overflow: visible !important;
+}
+
+.lh4-hero-slogan {
+  margin: 18px 0 18px;
+  max-width: 760px;
+  font: 800 clamp(32px, 4.2vw, 56px) / 1.05 Inter Tight, Manrope, sans-serif;
+  letter-spacing: -0.06em;
+  color: #1f212c;
+}
+.lh4-hero-slogan em {
+  font-style: normal;
+  color: #3a86ff;
+}
+.lh4-hero-subtitle {
+  margin: 0 0 12px;
+  font: 700 clamp(20px, 2.4vw, 26px) / 1.25 Manrope, sans-serif;
+  color: #1f212c;
+  letter-spacing: -0.02em;
+}
+
+body.lireate-theme-light-v4 .lireate-team-page,
+body.lireate-theme-light-v4 .lireate-about-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+
+body.lireate-theme-light-v4 .lireate-team-page .lireate-team-roster::after,
+body.lireate-theme-light-v4 .lireate-team-page .lireate-team-section-divider,
+body.lireate-theme-light-v4 .lireate-team-page hr.lireate-team-dark-rule {
+  display: none !important;
+}
+
+body.lireate-theme-light-v4 .lireate-about-partner-photo {
+  background-color: #eef5ff !important;
+  background-size: cover !important;
+  background-position: center top !important;
+}
+
+html.lireate-about-html body.lireate-about-body.lireate-theme-light-v4,
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page),
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .wrapper,
+body.lireate-team-body.lireate-theme-light-v4,
+body.lireate-blog-body.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .lx-site-footer,
+body.lireate-team-body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer {
+  background: #f7fbff !important;
+  border-top-color: #dce8f7 !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero,
+body.lireate-theme-light-v4 .lireate-about-card {
+  background: #fff !important;
+  color: #1f212c !important;
+  border-color: #e3edf7 !important;
+  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06) !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero {
+  background: linear-gradient(180deg, #f7fbff 0%, #fff 100%) !important;
+}
+body.lireate-theme-light-v4 .lireate-about-h1,
+body.lireate-theme-light-v4 .lireate-about-lead,
+body.lireate-theme-light-v4 .lireate-about-card-title,
+body.lireate-theme-light-v4 .lireate-about-text {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-page::before,
+body.lireate-theme-light-v4 .lireate-team-page::after,
+body.lireate-theme-light-v4 .lireate-team-wrap::after {
+  display: none !important;
+  background: transparent !important;
+}
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) footer:not(.lx-site-footer),
+body.lireate-team-body.lireate-theme-light-v4 footer:not(.lx-site-footer),
+body.lireate-blog-body.lireate-theme-light-v4 footer:not(.lx-site-footer) {
+  display: none !important;
+}
+body.lireate-theme-light-v4 .lx-consent {
+  display: block !important;
+  text-align: left !important;
+}
+body.lireate-theme-light-v4 .lx-consent input[type="checkbox"] {
+  vertical-align: top;
+  margin: 2px 8px 0 0;
+}
+
+/* Legacy CMS chrome (#leftSideBar, тёмное меню) поверх Light V4 */
+body.lireate-theme-light-v4 #leftSideBar,
+body.lireate-theme-light-v4 #leftSideBar .leftSideBar,
+body.lireate-theme-light-v4 #leftSideBar .sidebar,
+body.lireate-reviews-body #leftSideBar,
+body.lireate-portfolio-body #leftSideBar,
+body.lireate-team-body #leftSideBar,
+body.lireate-about-body #leftSideBar,
+body.lireate-legacy-article-lu #leftSideBar {
+  background-color: #fff !important;
+  color: #1f212c !important;
+  border-color: #dce8f7 !important;
+  min-height: 100vh !important;
+  height: auto !important;
+  top: 0 !important;
+  bottom: 0 !important;
+}
+body.lireate-theme-light-v4 #leftSideBar p,
+body.lireate-theme-light-v4 #leftSideBar li,
+body.lireate-theme-light-v4 #leftSideBar span,
+body.lireate-theme-light-v4 #leftSideBar div:not(.submitBox) {
+  background-color: transparent !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 #leftSideBar a:not(.leftSideLogo),
+body.lireate-reviews-body #leftSideBar a:not(.leftSideLogo),
+body.lireate-portfolio-body #leftSideBar a:not(.leftSideLogo),
+body.lireate-team-body #leftSideBar a:not(.leftSideLogo),
+body.lireate-about-body #leftSideBar a:not(.leftSideLogo),
+body.lireate-legacy-article-lu #leftSideBar a:not(.leftSideLogo) {
+  background-color: transparent !important;
+  color: #0f4db8 !important;
+  font-weight: 600 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body #face,
+body.lireate-theme-light-v4.lireate-reviews-body #face .sectionPadding,
+body.lireate-theme-light-v4.lireate-reviews-body section#face h1 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+
+.lh4-seo-h1 {
+  margin: 0 0 12px;
+  font: 700 clamp(22px, 2.2vw, 28px) / 1.2 Manrope, sans-serif;
+  color: #1f212c;
+  letter-spacing: -0.02em;
+}
+.lh4-seo-h1 .lh4-brand-red {
+  color: #e32020;
+}
+
+/* Light V4 — общий подвал lx-site-footer (разметка без изменений) */
+body.lireate-theme-light-v4 .lx-site-footer {
+  background: #f7fbff !important;
+  color: #1f212c !important;
+  border-top: 1px solid #dce8f7 !important;
+  padding: 32px 20px 36px !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-inner {
+  max-width: 1056px;
+  margin: 0 auto;
+}
+body.lireate-theme-light-v4 .lx-site-footer-title,
+body.lireate-theme-light-v4 .lx-site-footer-lead,
+body.lireate-theme-light-v4 .lx-site-footer-meta,
+body.lireate-theme-light-v4 .lx-site-footer-copy {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-lead,
+body.lireate-theme-light-v4 .lx-site-footer-meta {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-contact a,
+body.lireate-theme-light-v4 .lx-site-footer-nav > a,
+body.lireate-theme-light-v4 .lx-site-footer-requisites summary {
+  color: #195acb !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-dot {
+  color: #8fa3bf !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-requisites {
+  border: 1px solid #dce8f7 !important;
+  background: #fff !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-requisites-panel {
+  color: #52637b !important;
+}
+
+html.lireate-team-html body.lireate-team-body.lireate-theme-light-v4,
+body.lireate-team-body.lireate-theme-light-v4:has(.lireate-team-page) {
+  background: #fff !important;
+}
+body.lireate-team-body.lireate-theme-light-v4 .lireate-team-page,
+body.lireate-team-body.lireate-theme-light-v4 .lireate-team-wrap {
+  background: #fff !important;
+}
+
+body.lireate-theme-light-v4 .lireate-about-hero-actions .lireate-about-pill--solid {
+  background: #195acb !important;
+  color: #fff !important;
+  border-color: #195acb !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero-actions .lireate-about-pill--outline {
+  background: #fff !important;
+  color: #1f212c !important;
+  border: 1px solid #c5d7ef !important;
+}
+body.lireate-theme-light-v4 .lireate-about-partner-name {
+  color: #1f212c !important;
+  font-weight: 800 !important;
+}
+body.lireate-theme-light-v4 .lireate-about-partner-role,
+body.lireate-theme-light-v4 .lireate-about-spec-label {
+  color: #3d4d66 !important;
+}
+body.lireate-theme-light-v4 .lireate-about-spec li {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-about-accent,
+body.lireate-theme-light-v4 .lireate-about-accent p {
+  color: #1f212c !important;
+  background: #f0f6ff !important;
+  border-left: 3px solid #195acb !important;
+}
+body.lireate-theme-light-v4 .lireate-about-text--muted {
+  color: #52637b !important;
+}
+
+/* Sidebar logo: white SVG as mask + dark fill (not background shorthand on <a>) */
+body.lireate-home-light-v4 a.leftSideLogo,
+body.lireate-legacy-article-lu a.leftSideLogo,
+body.lireate-reviews-body a.leftSideLogo,
+body.lireate-portfolio-body a.leftSideLogo,
+body.lireate-team-body a.leftSideLogo,
+body.lireate-theme-light-v4 a.leftSideLogo,
+#leftSideBar a.leftSideLogo {
+  display: block !important;
+  background-image: none !important;
+  background-color: #1f212c !important;
+  -webkit-mask-image: url(/template/images/logo/logo.svg);
+  mask-image: url(/template/images/logo/logo.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  filter: none !important;
+  opacity: 0.94 !important;
+}
+
+/* CMS reviews / portfolio / team — единая светлая тема (без тёмного rgb(11,16,32)) */
+html body.lireate-reviews-body.lireate-cms-page-dark,
+html body.lireate-portfolio-body.lireate-cms-page-dark,
+html body.lireate-team-body.lireate-cms-page-dark,
+html body.lireate-about-body.lireate-cms-page-dark,
+body.lireate-reviews-body,
+body.lireate-portfolio-body,
+body.lireate-team-body,
+body.lireate-about-body {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-reviews-body .wrapper,
+body.lireate-reviews-body .container,
+body.lireate-reviews-body #list,
+body.lireate-reviews-body .page_container,
+body.lireate-portfolio-body .wrapper,
+body.lireate-portfolio-body .container,
+body.lireate-portfolio-body #portfolio,
+body.lireate-team-body .wrapper,
+body.lireate-team-body .container,
+body.lireate-team-body .page_container,
+body.lireate-about-body .wrapper,
+body.lireate-about-body .container,
+body.lireate-about-body .page_container {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+
+/* Light V4 wins over legacy lireate-cms-page-dark / lireate-home-dark on the same body */
+html:has(body.lireate-reviews-body.lireate-cms-page-dark),
+html:has(body.lireate-portfolio-body.lireate-cms-page-dark),
+html:has(body.lireate-team-body.lireate-cms-page-dark),
+html:has(body.lireate-about-body.lireate-cms-page-dark),
+html:has(body.lireate-theme-light-v4.lireate-cms-page-dark),
+html:has(body.lireate-home-light-v4),
+body.lireate-reviews-body.lireate-cms-page-dark,
+body.lireate-portfolio-body.lireate-cms-page-dark,
+body.lireate-team-body.lireate-cms-page-dark,
+body.lireate-about-body.lireate-cms-page-dark,
+body.lireate-theme-light-v4.lireate-cms-page-dark,
+body.lireate-theme-light-v4.lireate-home-dark,
+body.lireate-home-light-v4.lireate-cms-page-dark,
+body.lireate-home-light-v4.lireate-home-dark {
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-reviews-body.lireate-cms-page-dark::before,
+body.lireate-portfolio-body.lireate-cms-page-dark::before,
+body.lireate-team-body.lireate-cms-page-dark::before,
+body.lireate-about-body.lireate-cms-page-dark::before,
+body.lireate-theme-light-v4.lireate-cms-page-dark::before,
+body.lireate-theme-light-v4.lireate-home-dark::before,
+body.lireate-home-light-v4.lireate-cms-page-dark::before,
+body.lireate-home-light-v4.lireate-home-dark::before {
+  display: none !important;
+  content: none !important;
+}
+body.lireate-reviews-body.lireate-cms-page-dark #wrapper-ap,
+body.lireate-reviews-body.lireate-cms-page-dark .wrapper,
+body.lireate-portfolio-body.lireate-cms-page-dark .wrapper,
+body.lireate-team-body.lireate-cms-page-dark .wrapper,
+body.lireate-about-body.lireate-cms-page-dark .wrapper,
+body.lireate-about-body.lireate-cms-page-dark .page_container,
+body.lireate-about-body.lireate-cms-page-dark .container.content,
+body.lireate-about-body .lireate-about-page,
+body.lireate-theme-light-v4.lireate-cms-page-dark #wrapper-ap,
+body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper,
+body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper-ap,
+body.lireate-theme-light-v4.lireate-cms-page-dark .content,
+body.lireate-theme-light-v4.lireate-cms-page-dark .container.content,
+body.lireate-theme-light-v4.lireate-cms-page-dark .page_container,
+body.lireate-reviews-body #face,
+body.lireate-reviews-body #list,
+body.lireate-portfolio-body #portfolio,
+body.lireate-portfolio-body .region_list,
+body.lireate-team-body .lireate-team-page,
+body.lireate-team-body .lireate-team-wrap {
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #1f212c !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-reviews-body.lireate-cms-page-dark .container.content .row,
+body.lireate-reviews-body.lireate-cms-page-dark .container.content [class*="col-"],
+body.lireate-portfolio-body.lireate-cms-page-dark .container.content .row,
+body.lireate-theme-light-v4.lireate-cms-page-dark .container.content .row,
+body.lireate-theme-light-v4.lireate-cms-page-dark .container.content [class*="col-"],
+body.lireate-reviews-body .container.content,
+body.lireate-portfolio-body .container.content {
+  border-color: #dce8f7 !important;
+  background: #fff !important;
+}
+body.lireate-reviews-body #list .review_box .text_box,
+body.lireate-reviews-body #list .review_box .default_text,
+body.lireate-reviews-body #list .review_box > div:last-child {
+  background: #fff !important;
+  color: #52637b !important;
+}
+body.lireate-team-body .content,
+body.lireate-team-body .page_container,
+body.lireate-team-body #lireate-team {
+  background: #fff !important;
+  box-shadow: none !important;
+}
+body.lireate-about-body .content,
+body.lireate-about-body .page_container,
+body.lireate-about-body section#lireate-about,
+body.lireate-about-body #lireate-about,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 section#lireate-about,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 #lireate-about {
+  background: #fff !important;
+  background-color: #fff !important;
+  box-shadow: none !important;
+}
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .wrapper,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .wrapper {
+  background: #fff !important;
+  background-color: #fff !important;
+}
+@media (max-width: 1150px) {
+  html:has(body.lireate-theme-light-v4),
+  body.lireate-theme-light-v4,
+  body.lireate-reviews-body,
+  body.lireate-portfolio-body,
+  body.lireate-team-body,
+  body.lireate-about-body {
+    background: #fff !important;
+  }
+}

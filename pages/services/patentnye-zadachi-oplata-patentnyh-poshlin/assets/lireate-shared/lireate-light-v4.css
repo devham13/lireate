@@ -1,0 +1,256 @@
+/* LIREATE LIGHT V4 — unified opt-in design.
+   White premium legal system. Only active with body.lireate-theme-light-v4.
+   Do not remove working CMS forms, SEO or original scripts. */
+body.lireate-theme-light-v4{
+ --l4-white:#ffffff;--l4-ink:#1f212c;--l4-sub:#52637b;--l4-red:#e32020;
+ --l4-red-hover:#c71313;--l4-blue:#3a86ff;--l4-blue-soft:#f3f8ff;
+ --l4-line:#dce8f7;--l4-ease:cubic-bezier(.21,.7,.2,1);
+ --l4-shadow:0 16px 45px rgba(31,33,44,.085);
+ background:#fff;color:var(--l4-ink);font-family:Inter,Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body.lireate-theme-light-v4 .lx-bg-glow{display:none!important}
+body.lireate-theme-light-v4 .lireate-svc-page{color:var(--l4-ink);background:#fff}
+body.lireate-theme-light-v4 .lx-nav-pill{
+ background:rgba(255,255,255,.97);border:1px solid var(--l4-line);
+ box-shadow:0 12px 35px rgba(31,33,44,.07);border-radius:18px;
+ backdrop-filter:blur(14px)
+}
+body.lireate-theme-light-v4 .lx-logo,
+body.lireate-theme-light-v4 .lx-nav-links a{color:var(--l4-ink)}
+body.lireate-theme-light-v4 .lx-logo::first-letter{color:var(--l4-red)}
+body.lireate-theme-light-v4 .lx-btn-primary,
+body.lireate-theme-light-v4 .lx-form-submit{
+ background:var(--l4-red);border:1px solid var(--l4-red);color:#fff;
+ border-radius:14px;box-shadow:none;animation:none
+}
+body.lireate-theme-light-v4 .lx-btn-primary:hover,
+body.lireate-theme-light-v4 .lx-form-submit:hover{
+ background:var(--l4-red-hover);border-color:var(--l4-red-hover);transform:translateY(-2px)
+}
+body.lireate-theme-light-v4 .lx-btn-ghost{background:#fff;border:1px solid var(--l4-line);color:var(--l4-ink);border-radius:14px}
+body.lireate-theme-light-v4 .lx-btn-ghost:hover{background:var(--l4-blue-soft);border-color:var(--l4-blue)}
+body.lireate-theme-light-v4 .lireate-svc-page h1,
+body.lireate-theme-light-v4 .lireate-svc-page h2,
+body.lireate-theme-light-v4 .lireate-svc-page h3,
+body.lireate-theme-light-v4 .lx-faq summary,
+body.lireate-theme-light-v4 .lx-panel-head{color:var(--l4-ink)}
+body.lireate-theme-light-v4 .lx-section p,
+body.lireate-theme-light-v4 .lx-section li,
+body.lireate-theme-light-v4 .lx-hero-lead,
+body.lireate-theme-light-v4 .lx-hero-mini span,
+body.lireate-theme-light-v4 .lx-route-label{color:var(--l4-sub)}
+body.lireate-theme-light-v4 .lx-eyebrow,
+body.lireate-theme-light-v4 .lx-section-label{color:var(--l4-red);letter-spacing:.12em}
+body.lireate-theme-light-v4 .lx-hero h1{color:var(--l4-ink);letter-spacing:-.045em}
+body.lireate-theme-light-v4 .lx-hero h1 em{color:var(--l4-red);font-style:normal}
+body.lireate-theme-light-v4 .lx-glass,
+body.lireate-theme-light-v4 .lx-card,
+body.lireate-theme-light-v4 .lx-steps-walk-step,
+body.lireate-theme-light-v4 .lx-price-card,
+body.lireate-theme-light-v4 .lx-team-card,
+body.lireate-theme-light-v4 .lx-related-card,
+body.lireate-theme-light-v4 .lx-pilot-step,
+body.lireate-theme-light-v4 .lx-pilot-included-card{
+ background:#fff;border:1px solid var(--l4-line);color:var(--l4-ink);border-radius:22px;
+ box-shadow:0 8px 30px rgba(31,33,44,.045);
+ transition:border-color .35s var(--l4-ease),box-shadow .35s var(--l4-ease),transform .35s var(--l4-ease);
+}
+body.lireate-theme-light-v4 .lx-card:hover,
+body.lireate-theme-light-v4 .lx-price-card:hover,
+body.lireate-theme-light-v4 .lx-team-card:hover,
+body.lireate-theme-light-v4 .lx-related-card:hover,
+body.lireate-theme-light-v4 .lx-pilot-step:hover{
+ border-color:#b8d0fa;box-shadow:var(--l4-shadow);transform:translateY(-4px)
+}
+body.lireate-theme-light-v4 .lx-glass strong,
+body.lireate-theme-light-v4 .lx-card strong,
+body.lireate-theme-light-v4 .lx-card h3{color:var(--l4-ink)}
+body.lireate-theme-light-v4 .lx-route,
+body.lireate-theme-light-v4 .lx-timeline,
+body.lireate-theme-light-v4 .lx-hero-mini{background:var(--l4-blue-soft);border-color:var(--l4-line)}
+body.lireate-theme-light-v4 .lx-mini-stat,
+body.lireate-theme-light-v4 .lx-kpi{background:#fff;border-color:var(--l4-line);color:var(--l4-ink)}
+body.lireate-theme-light-v4 .lx-route-node{background:#fff;color:var(--l4-ink);border:1px solid var(--l4-line)}
+body.lireate-theme-light-v4 .lx-faq{
+ border:1px solid var(--l4-line);background:#fff;border-radius:16px;margin-bottom:10px;
+ transition:border-color .3s var(--l4-ease),background .3s var(--l4-ease)
+}
+body.lireate-theme-light-v4 .lx-faq[open]{background:var(--l4-blue-soft);border-color:#bdd5f8}
+body.lireate-theme-light-v4 .lx-faq summary:hover{color:var(--l4-red)}
+body.lireate-theme-light-v4 .lx-faq p{color:var(--l4-sub)}
+body.lireate-theme-light-v4 .lx-related-links a,
+body.lireate-theme-light-v4 .lx-section a:not(.lx-btn){color:#195acb}
+body.lireate-theme-light-v4 .lx-contact,
+body.lireate-theme-light-v4 input,
+body.lireate-theme-light-v4 textarea{border-color:var(--l4-line)}
+body.lireate-theme-light-v4 input:focus-visible,
+body.lireate-theme-light-v4 textarea:focus-visible,
+body.lireate-theme-light-v4 a:focus-visible,
+body.lireate-theme-light-v4 button:focus-visible,
+body.lireate-theme-light-v4 summary:focus-visible{
+ outline:3px solid var(--l4-blue);outline-offset:3px
+}
+/* Automatic progressive enhanced section entrance; never hide static content before JS. */
+body.lireate-theme-light-v4.l4-motion-ready .l4-reveal{
+ opacity:0;transform:translateY(18px);transition:opacity .65s var(--l4-ease),transform .65s var(--l4-ease)
+}
+body.lireate-theme-light-v4.l4-motion-ready .l4-reveal.l4-in{opacity:1;transform:none}
+body.lireate-theme-light-v4 .l4-process-card{position:relative;overflow:hidden;isolation:isolate}
+body.lireate-theme-light-v4 .l4-process-card::after{
+ content:"";height:3px;width:100%;position:absolute;left:0;bottom:0;background:var(--l4-red);
+ transform:scaleX(0);transform-origin:left;transition:transform .45s var(--l4-ease)
+}
+body.lireate-theme-light-v4 .l4-process-card:hover::after,
+body.lireate-theme-light-v4 .l4-process-card:focus-within::after{transform:scaleX(1)}
+body.lireate-theme-light-v4 .l4-service-illustration-card{
+ position:relative;overflow:hidden;isolation:isolate;background:#fff;
+}
+body.lireate-theme-light-v4 .l4-service-illustration-card::before{
+ content:"®";position:absolute;right:18px;top:12px;color:var(--l4-blue);font:800 112px/1 Georgia,serif;
+ opacity:.10;transform:rotate(-14deg);pointer-events:none;transition:transform .5s var(--l4-ease),opacity .5s var(--l4-ease)
+}
+body.lireate-theme-light-v4 .l4-service-illustration-card[data-l4-kind="patent"]::before{content:"⚙"}
+body.lireate-theme-light-v4 .l4-service-illustration-card[data-l4-kind="contract"]::before{content:"§"}
+body.lireate-theme-light-v4 .l4-service-illustration-card[data-l4-kind="software"]::before{content:"</>";font-size:76px;top:33px}
+body.lireate-theme-light-v4 .l4-service-illustration-card:hover::before{opacity:.19;transform:translateY(-6px) rotate(0) scale(1.05)}
+body.lireate-theme-light-v4 .l4-service-illustration-card > *{position:relative;z-index:1}
+@media(max-width:768px){
+ body.lireate-theme-light-v4 .lx-hero{grid-template-columns:1fr}
+ body.lireate-theme-light-v4 .lx-card-grid{grid-template-columns:1fr}
+ body.lireate-theme-light-v4 .lireate-svc-page{padding-inline:16px}
+}
+@media(max-width:520px){
+ body.lireate-theme-light-v4 .lx-nav-shell .lx-nav-pill,
+ body.lireate-theme-light-v4 .lx-nav-pill{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;width:calc(100% - 8px)!important}
+ body.lireate-theme-light-v4 .lx-nav-pill .lx-logo{flex:0 1 auto!important;margin-right:auto!important;min-width:0!important}
+ body.lireate-theme-light-v4 .lx-nav-pill .lx-btn-primary,
+ body.lireate-theme-light-v4 .lx-nav-pill a.lx-btn-primary,
+ body.lireate-theme-light-v4 .lx-nav-pill .lx-btn{margin-left:auto!important;flex:0 0 auto!important}
+}
+body.lireate-theme-light-v4 .lx-hero-lead a,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead a{color:#0a3d91!important;font-weight:800!important;text-decoration:underline}
+body.lireate-theme-light-v4.lireate-svc-page .lx-site-footer{margin-top:28px}
+body.lireate-theme-light-v4 .lx-kpi b,
+body.lireate-theme-light-v4 .lx-mini-stat strong,
+body.lireate-theme-light-v4 .lx-stat-value{color:var(--l4-ink)!important}
+body.lireate-theme-light-v4 .lx-kpi small,
+body.lireate-theme-light-v4 .lx-mini-stat span,
+body.lireate-theme-light-v4 .lx-stat-label{color:var(--l4-sub)!important}
+body.lireate-theme-light-v4 .lx-tags span,
+body.lireate-theme-light-v4 .lx-tag{color:#1f212c!important;background:#e8f2ff!important;border:1px solid #bdd5f8!important}
+body.lireate-theme-light-v4 .lx-breadcrumbs,
+body.lireate-theme-light-v4 .lx-breadcrumbs li{color:#52637b!important}
+body.lireate-theme-light-v4 .lx-breadcrumbs a{color:#195acb!important}
+body.lireate-theme-light-v4 .lx-breadcrumb-services-trigger{color:#1f212c!important;background:#fff!important;border:1px solid var(--l4-line)!important}
+body.lireate-theme-light-v4 main li,
+body.lireate-theme-light-v4 .lx-section li,
+body.lireate-theme-light-v4 .lx-feed li{color:#2d4764!important}
+body.lireate-theme-light-v4 input,
+body.lireate-theme-light-v4 select,
+body.lireate-theme-light-v4 textarea{background:#fff!important;color:#1f212c!important;border-color:var(--l4-line)!important}
+body.lireate-theme-light-v4 label,
+body.lireate-theme-light-v4 .lx-field-label{color:#1f212c!important}
+body.lireate-theme-light-v4 .lx-hint a{color:#195acb!important;font-weight:700}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section li,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-card-text,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-note,
+body.lireate-theme-light-v4 .lireate-svc-page small,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-muted{color:#52637b!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-sum,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-fee-value,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-result,
+body.lireate-theme-light-v4 .lireate-svc-page b,
+body.lireate-theme-light-v4 .lireate-svc-page strong{color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page a[href*="rospatent"],
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead a,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section a{color:#0a3d91!important;font-weight:800!important;text-decoration:underline!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer p{color:#52637b!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer a{color:#0a3d91!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-panel,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-mini,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-cta,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-pricing,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-card,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-panel{
+  background:#f7fbff!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero h1,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-kpi b,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-card strong,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-out,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-out strong,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq summary,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq p{color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-kpi small,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-price-card span{color:#52637b!important}
+body.lireate-theme-light-v4 .lx-nav-pill .lx-logo,
+body.lireate-theme-light-v4 .lx-nav-pill .lx-nav-links a{color:#1f212c!important;font-weight:700!important}
+body.lireate-theme-light-v4 .lx-nav-pill .lx-btn-primary,
+body.lireate-theme-light-v4 .lx-nav-pill .lx-btn.lx-btn-primary{
+  color:#fff!important;background:#1f212c!important;border-color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-card,
+body.lireate-theme-light-v4 .lireate-svc-page #contact,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section--contact{
+  background:#f7fbff!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section label,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section .lx-hint,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section li{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-consent,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-consent label{color:#52637b!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-consent a{color:#0a3d91!important;font-weight:700!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-tag,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-hero .lx-tag span{color:#1f212c!important;background:#e8f2ff!important;border:1px solid #bdd5f8!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-contact,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-card,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-step-card{
+  background:#fff!important;border-color:#dce8f7!important;color:#1f212c!important;
+  box-shadow:0 8px 24px rgba(31,46,76,.06)!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq summary,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-faq p,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel label,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel p{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel input,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel textarea{
+  background:#fff!important;color:#1f212c!important;border-color:#dce8f7!important}
+body.lireate-theme-light-v4 .lx-route-label{color:#52637b!important}
+body.lireate-theme-light-v4 .lx-route-steps .lx-route-node{color:#1f212c!important}
+body.lireate-theme-light-v4 .lx-section-label{
+  display:inline-block;color:#9f1239!important;background:#fff1f2;border:1px solid #fecdd3;
+  padding:4px 12px;border-radius:999px;font-weight:700}
+body.lireate-theme-light-v4 .lx-fee-table td,
+body.lireate-theme-light-v4 .lx-fee-table th{color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc{
+  background:#f7fbff!important;border:1px solid #dce8f7!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc label,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-out,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-calc-note{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-risk-item,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-risk-grid .lx-risk-item{
+  background:#fff!important;border:1px solid #dce8f7!important;color:#1f212c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-risk-item p{color:#2d4764!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-live{color:#047857!important;font-weight:800!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-related-card-type{color:#0a3d91!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-card-num{color:#5b21b6!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-eyebrow{color:#b91c1c!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-panel-head,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-panel-head span{color:#1f212c!important}
+body.lx-tm-white.registraciya-pilot-v2 .lx-mobile-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:1200;
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+@media(prefers-reduced-motion:reduce){
+ body.lireate-theme-light-v4 *,body.lireate-theme-light-v4 *::before,body.lireate-theme-light-v4 *::after{
+ transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important
+ }
+ body.lireate-theme-light-v4 .l4-reveal{opacity:1!important;transform:none!important}
+}

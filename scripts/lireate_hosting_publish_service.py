@@ -23,6 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 from lireate_dotenv import load_dotenv  # noqa: E402
+import lireate_hosting_service_rollback_lib as publish_rollback  # noqa: E402
 
 SKIP_NAMES = {
     "publish.manifest.json",
@@ -47,6 +48,7 @@ DOCROOT_SHARED_PHP_NAMES = (
     "lireate-service-messenger-include.inc.php",
     "lireate-service-nav-links.php",
     "lireate-service-assets.php",
+    "lireate-patent-breadcrumbs.php",
 )
 DOCROOT_SHARED_STATIC_NAMES = (
     "lireate-vk-cases.css",
@@ -105,6 +107,12 @@ def _append_docroot_shared_static(plan, office_repo, url_path, docroot_path, nam
             if docroot_path:
                 dst_path = docroot_path / rel
                 if dst_path.is_file():
+                    if name == "vk-cases.json" and _preserve_custom_vk_cases(
+                        office_repo,
+                        {"rel": rel, "sha256": _sha256_file(src)},
+                        dst_path,
+                    ):
+                        continue
                     continue
             plan.append(
                 {
@@ -213,6 +221,30 @@ def _sha256_file(path):
         for chunk in iter(lambda: fh.read(65536), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+_GENERIC_VK_CASES_SHA = ""
+
+
+def _office_generic_vk_cases_sha(office_repo):
+    global _GENERIC_VK_CASES_SHA
+    if not _GENERIC_VK_CASES_SHA:
+        path = office_repo / "pages" / "services" / "_shared" / "vk-cases.json"
+        if path.is_file():
+            _GENERIC_VK_CASES_SHA = _sha256_file(path)
+    return _GENERIC_VK_CASES_SHA
+
+
+def _preserve_custom_vk_cases(office_repo, item, dst):
+    rel = item["rel"].replace("\\", "/")
+    if not rel.endswith("vk-cases.json"):
+        return False
+    if not dst.is_file():
+        return False
+    generic_sha = _office_generic_vk_cases_sha(office_repo)
+    if not generic_sha or item["sha256"] != generic_sha:
+        return False
+    return _sha256_file(dst) != generic_sha
 
 
 def _setup_logging(log_path):
@@ -531,32 +563,28 @@ def _publish_slug(
             continue
         items_to_copy.append(item)
 
-    if update_mode and dest_dir.is_dir() and items_to_copy:
-        backup_root.mkdir(parents=True, exist_ok=True)
-        for item in items_to_copy:
-            dst = Path(item["dst"])
-            if dst.is_file():
-                bdst = backup_root / item["rel"]
-                bdst.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(str(dst), str(bdst))
-        logging.info("backup: %s", backup_root)
-
+    backup_root.mkdir(parents=True, exist_ok=True)
+    print("backup: {0}".format(backup_root))
+    logging.info("backup: %s", backup_root)
+    for item in items_to_copy:
+        dst = Path(item["dst"])
+        if dst.is_file():
+            bdst = backup_root / item["rel"]
+            bdst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(dst), str(bdst))
     if not update_mode and dest_dir.is_dir() and existing_managed:
-        backup_root.mkdir(parents=True, exist_ok=True)
         for rel in existing_managed.get("files", {}):
             src = dest_dir / rel
-            if src.is_file():
+            if src.is_file() and not (backup_root / rel).is_file():
                 bdst = backup_root / rel
                 bdst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(str(src), str(bdst))
-        logging.info("backup: %s", backup_root)
 
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    for item in items_to_copy:
-        src = Path(item["src"])
-        dst = Path(item["dst"])
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(str(src), str(dst))
+    written_manifest = []
+    managed_dst = dest_dir / MANAGED_MARKER
+    managed_existed = managed_dst.is_file()
+    if managed_existed:
+        shutil.copy2(str(managed_dst), str(backup_root / MANAGED_MARKER))
 
     marker_files = {item["rel"]: {"sha256": item["sha256"], "size": item["size"]} for item in plan}
     if existing_managed and update_mode:
@@ -565,19 +593,80 @@ def _publish_slug(
             if rel not in marker_files:
                 marker_files[rel] = meta
 
-    marker = {
+    try:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        for item in items_to_copy:
+            src = Path(item["src"])
+            dst = Path(item["dst"])
+            rel = item["rel"]
+            norm = rel.replace("\\", "/")
+            if _preserve_custom_vk_cases(office_repo, item, dst):
+                print("SKIP (custom vk-cases): {0}".format(rel))
+                continue
+            scope = "docroot" if norm.startswith("_shared/") or "/_shared/" in norm else "service"
+            existed_before = dst.is_file()
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(src), str(dst))
+            written_manifest.append(
+                {
+                    "rel": rel.replace("\\", "/"),
+                    "scope": scope,
+                    "existed_before": existed_before,
+                }
+            )
+
+        marker = {
+            "slug": slug,
+            "url_path": url_path,
+            "published_at": ts,
+            "source_repo": str(office_repo),
+            "files": marker_files,
+        }
+        (dest_dir / MANAGED_MARKER).write_text(
+            json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        written_manifest.append(
+            {
+                "rel": MANAGED_MARKER,
+                "scope": "service",
+                "existed_before": managed_existed,
+            }
+        )
+    except Exception as exc:
+        partial_manifest = {
+            "slug": slug,
+            "url_path": url_path.strip("/"),
+            "dest_dir": str(dest_dir),
+            "published_at": ts,
+            "written": written_manifest,
+            "managed_created": False,
+        }
+        publish_rollback.restore_service_publish(docroot_path, backup_root, partial_manifest)
+        (backup_root / "rollback-manifest.json").write_text(
+            json.dumps(partial_manifest, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        _print_status("BLOCKER", "publish write failed: {0}".format(exc))
+        return 1
+
+    rollback_manifest = {
         "slug": slug,
-        "url_path": url_path,
+        "url_path": url_path.strip("/"),
+        "dest_dir": str(dest_dir),
         "published_at": ts,
-        "source_repo": str(office_repo),
-        "files": marker_files,
+        "written": written_manifest,
+        "managed_created": not managed_existed,
     }
-    (dest_dir / MANAGED_MARKER).write_text(
-        json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
+    (backup_root / "rollback-manifest.json").write_text(
+        json.dumps(rollback_manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
 
-    st, http_err = _http_status(public_url)
+    if _truthy("LIREATE_SKIP_SERVICE_HTTP_VERIFY"):
+        st, http_err = 200, None
+    else:
+        st, http_err = _http_status(public_url)
     if st != 200:
         detail = "published files but HTTP {0} for {1}".format(st, public_url)
         if http_err:

@@ -22,7 +22,12 @@ if (!function_exists('lireate_service_asset_query')) {
     {
         $relative_path = ltrim(str_replace('\\', '/', (string) $relative_path), '/');
         $q = lireate_service_asset_query($relative_path, $service_dir);
-        return htmlspecialchars($relative_path . $q, ENT_QUOTES, 'UTF-8');
+        $href = $relative_path . $q;
+        if (defined('LIREATE_PREVIEW_SERVICE_WEB_ROOT')) {
+            $root = rtrim((string) LIREATE_PREVIEW_SERVICE_WEB_ROOT, '/');
+            $href = $root . '/' . $relative_path . $q;
+        }
+        return htmlspecialchars($href, ENT_QUOTES, 'UTF-8');
     }
 
     function lireate_service_asset_echo($relative_path, $service_dir)

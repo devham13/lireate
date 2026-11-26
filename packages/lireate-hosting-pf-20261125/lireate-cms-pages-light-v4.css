@@ -1,0 +1,250 @@
+/* Белый Light V4 для CMS-страниц team/about/docs/partners (поверх тёмных page CSS). */
+body.lireate-theme-light-v4.lireate-team-body,
+html.lireate-team-html body.lireate-team-body {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-page {
+  --lt-bg: #ffffff;
+  --lt-text: #1f212c;
+  --lt-muted: #52637b;
+  --lt-line: #dce8f7;
+  --lt-card: #ffffff;
+  --lt-green: #059669;
+  background: var(--lt-bg) !important;
+  color: var(--lt-text) !important;
+}
+body.lireate-theme-light-v4 .lireate-team-hero {
+  background: linear-gradient(180deg, #f7fbff 0%, #fff 72%) !important;
+  border-bottom-color: var(--lt-line) !important;
+}
+body.lireate-theme-light-v4 .lireate-team-kicker,
+body.lireate-theme-light-v4 .lireate-team-h1,
+body.lireate-theme-light-v4 .lireate-team-card-title,
+body.lireate-theme-light-v4 .lireate-team-member-name {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-sub,
+body.lireate-theme-light-v4 .lireate-team-lead,
+body.lireate-theme-light-v4 .lireate-team-tagline,
+body.lireate-theme-light-v4 .lireate-team-text,
+body.lireate-theme-light-v4 .lireate-team-member-role {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .lireate-team-card,
+body.lireate-theme-light-v4 .lireate-team-member-card {
+  background: #fff !important;
+  border: 1px solid #dce8f7 !important;
+  box-shadow: 0 10px 35px rgba(31, 33, 44, 0.06) !important;
+}
+body.lireate-theme-light-v4 .lireate-team-pill--solid {
+  background: #e32020 !important;
+  border-color: #e32020 !important;
+  color: #fff !important;
+}
+body.lireate-theme-light-v4 .lireate-team-pill--outline {
+  background: #fff !important;
+  border-color: #dce8f7 !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-list-bullets li,
+body.lireate-theme-light-v4 .lireate-team-steps li,
+body.lireate-theme-light-v4 .lireate-team-text--muted,
+body.lireate-theme-light-v4 .lireate-team-member-role {
+  color: #3d4f66 !important;
+}
+body.lireate-theme-light-v4 .lireate-team-badge {
+  color: #e32020 !important;
+}
+
+body.lireate-screenshot-capture .lh4-root .reveal,
+body.lireate-home-preview .lh4-root .reveal,
+body.lireate-screenshot-capture .lh4-root .reveal:not(.visible) {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+body.lireate-home-preview .wrapper,
+body.lireate-home-preview .container.content,
+body.lireate-home-preview .page_container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  background: #fff !important;
+  overflow: visible !important;
+}
+
+.lh4-hero-slogan {
+  margin: 18px 0 18px;
+  max-width: 760px;
+  font: 800 clamp(32px, 4.2vw, 56px) / 1.05 Inter Tight, Manrope, sans-serif;
+  letter-spacing: -0.06em;
+  color: #1f212c;
+}
+.lh4-hero-slogan em {
+  font-style: normal;
+  color: #3a86ff;
+}
+.lh4-hero-subtitle {
+  margin: 0 0 12px;
+  font: 700 clamp(20px, 2.4vw, 26px) / 1.25 Manrope, sans-serif;
+  color: #1f212c;
+  letter-spacing: -0.02em;
+}
+
+body.lireate-theme-light-v4 .lireate-team-page,
+body.lireate-theme-light-v4 .lireate-about-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+
+body.lireate-theme-light-v4 .lireate-team-page .lireate-team-roster::after,
+body.lireate-theme-light-v4 .lireate-team-page .lireate-team-section-divider,
+body.lireate-theme-light-v4 .lireate-team-page hr.lireate-team-dark-rule {
+  display: none !important;
+}
+
+body.lireate-theme-light-v4 .lireate-about-partner-photo {
+  background-color: #eef5ff !important;
+  background-size: cover !important;
+  background-position: center top !important;
+}
+
+html.lireate-about-html body.lireate-about-body.lireate-theme-light-v4,
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page),
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .wrapper,
+body.lireate-team-body.lireate-theme-light-v4,
+body.lireate-blog-body.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .lx-site-footer,
+body.lireate-team-body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer {
+  background: #f7fbff !important;
+  border-top-color: #dce8f7 !important;
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero,
+body.lireate-theme-light-v4 .lireate-about-card {
+  background: #fff !important;
+  color: #1f212c !important;
+  border-color: #e3edf7 !important;
+  box-shadow: 0 8px 24px rgba(31, 46, 76, 0.06) !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero {
+  background: linear-gradient(180deg, #f7fbff 0%, #fff 100%) !important;
+}
+body.lireate-theme-light-v4 .lireate-about-h1,
+body.lireate-theme-light-v4 .lireate-about-lead,
+body.lireate-theme-light-v4 .lireate-about-card-title,
+body.lireate-theme-light-v4 .lireate-about-text {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-team-page::before,
+body.lireate-theme-light-v4 .lireate-team-page::after,
+body.lireate-theme-light-v4 .lireate-team-wrap::after {
+  display: none !important;
+  background: transparent !important;
+}
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) footer:not(.lx-site-footer),
+body.lireate-team-body.lireate-theme-light-v4 footer:not(.lx-site-footer),
+body.lireate-blog-body.lireate-theme-light-v4 footer:not(.lx-site-footer) {
+  display: none !important;
+}
+body.lireate-theme-light-v4 .lx-consent {
+  display: block !important;
+  text-align: left !important;
+}
+body.lireate-theme-light-v4 .lx-consent input[type="checkbox"] {
+  vertical-align: top;
+  margin: 2px 8px 0 0;
+}
+
+.lh4-seo-h1 {
+  margin: 0 0 12px;
+  font: 700 clamp(22px, 2.2vw, 28px) / 1.2 Manrope, sans-serif;
+  color: #1f212c;
+  letter-spacing: -0.02em;
+}
+
+/* Light V4 — общий подвал lx-site-footer (разметка без изменений) */
+body.lireate-theme-light-v4 .lx-site-footer {
+  background: #f7fbff !important;
+  color: #1f212c !important;
+  border-top: 1px solid #dce8f7 !important;
+  padding: 32px 20px 36px !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-inner {
+  max-width: 1056px;
+  margin: 0 auto;
+}
+body.lireate-theme-light-v4 .lx-site-footer-title,
+body.lireate-theme-light-v4 .lx-site-footer-lead,
+body.lireate-theme-light-v4 .lx-site-footer-meta,
+body.lireate-theme-light-v4 .lx-site-footer-copy {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-lead,
+body.lireate-theme-light-v4 .lx-site-footer-meta {
+  color: #52637b !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-contact a,
+body.lireate-theme-light-v4 .lx-site-footer-nav > a,
+body.lireate-theme-light-v4 .lx-site-footer-requisites summary {
+  color: #195acb !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-dot {
+  color: #8fa3bf !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-requisites {
+  border: 1px solid #dce8f7 !important;
+  background: #fff !important;
+}
+body.lireate-theme-light-v4 .lx-site-footer-requisites-panel {
+  color: #52637b !important;
+}
+
+html.lireate-team-html body.lireate-team-body.lireate-theme-light-v4,
+body.lireate-team-body.lireate-theme-light-v4:has(.lireate-team-page) {
+  background: #fff !important;
+}
+body.lireate-team-body.lireate-theme-light-v4 .lireate-team-page,
+body.lireate-team-body.lireate-theme-light-v4 .lireate-team-wrap {
+  background: #fff !important;
+}
+
+body.lireate-theme-light-v4 .lireate-about-hero-actions .lireate-about-pill--solid {
+  background: #195acb !important;
+  color: #fff !important;
+  border-color: #195acb !important;
+}
+body.lireate-theme-light-v4 .lireate-about-hero-actions .lireate-about-pill--outline {
+  background: #fff !important;
+  color: #1f212c !important;
+  border: 1px solid #c5d7ef !important;
+}
+body.lireate-theme-light-v4 .lireate-about-partner-name {
+  color: #1f212c !important;
+  font-weight: 800 !important;
+}
+body.lireate-theme-light-v4 .lireate-about-partner-role,
+body.lireate-theme-light-v4 .lireate-about-spec-label {
+  color: #3d4d66 !important;
+}
+body.lireate-theme-light-v4 .lireate-about-spec li {
+  color: #1f212c !important;
+}
+body.lireate-theme-light-v4 .lireate-about-accent,
+body.lireate-theme-light-v4 .lireate-about-accent p {
+  color: #1f212c !important;
+  background: #f0f6ff !important;
+  border-left: 3px solid #195acb !important;
+}
+body.lireate-theme-light-v4 .lireate-about-text--muted {
+  color: #52637b !important;
+}

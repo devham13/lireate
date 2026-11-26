@@ -112,32 +112,40 @@
       '.lx-site-footer-social-btn--tg'
     ];
     tgSelectors.forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (el) {
-        bindGoal(el, 'telegram');
-      });
+      var list = document.querySelectorAll(sel);
+      var i;
+      for (i = 0; i < list.length; i += 1) {
+        bindGoal(list[i], 'telegram');
+      }
     });
 
-    ['#link-whatsapp', '#form-alt-whatsapp', '.lx-mobile-bar-btn[data-lx-icon="whatsapp"]', '.lx-site-footer-social-btn--wa'].forEach(
-      function (sel) {
-        document.querySelectorAll(sel).forEach(function (el) {
-          bindGoal(el, 'whatsapp');
-        });
+    ['#link-whatsapp', '#form-alt-whatsapp', '.lx-mobile-bar-btn[data-lx-icon="whatsapp"]', '.lx-site-footer-social-btn--wa'].forEach(function (sel) {
+      var list = document.querySelectorAll(sel);
+      var j;
+      for (j = 0; j < list.length; j += 1) {
+        bindGoal(list[j], 'whatsapp');
       }
-    );
+    });
 
     ['#link-max', '#hero-max', '#dock-max', '#form-alt-max', '.lx-dock-max', '.lx-mobile-bar-btn--max', '.lx-mobile-bar-btn[data-lx-icon="max-white"]'].forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (el) {
-        bindGoal(el, 'max');
-      });
+      var list = document.querySelectorAll(sel);
+      var k;
+      for (k = 0; k < list.length; k += 1) {
+        bindGoal(list[k], 'max');
+      }
     });
 
-    document.querySelectorAll('a[href^="tel:"]').forEach(function (el) {
-      bindGoal(el, 'phone');
-    });
+    var telLinks = document.querySelectorAll('a[href^="tel:"]');
+    var t;
+    for (t = 0; t < telLinks.length; t += 1) {
+      bindGoal(telLinks[t], 'phone');
+    }
 
-    document.querySelectorAll('[data-lx-ym-goal]').forEach(function (el) {
-      bindGoal(el, el.getAttribute('data-lx-ym-goal'));
-    });
+    var customGoals = document.querySelectorAll('[data-lx-ym-goal]');
+    var c;
+    for (c = 0; c < customGoals.length; c += 1) {
+      bindGoal(customGoals[c], customGoals[c].getAttribute('data-lx-ym-goal'));
+    }
 
     var form = document.getElementById('lireate-lead-form');
     if (form) {

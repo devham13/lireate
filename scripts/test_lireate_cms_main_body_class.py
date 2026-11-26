@@ -1,59 +1,102 @@
 #!/usr/bin/env python3
-"""Tests for CMS main.php body class patch (docs + contacts)."""
-
+import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO_ROOT / "scripts"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 
-import lireate_cms_main_body_class as cms_body  # noqa: E402
-import lireate_contacts_install_lib as contacts_lib  # noqa: E402
-import lireate_docs_install_lib as docs_lib  # noqa: E402
+import lireate_cms_main_body_class as cms  # noqa: E402
+import lireate_home_light_v4_install_lib as home_lib  # noqa: E402
 
-MAIN_WITH_CONTACTS = REPO_ROOT / "scripts/fixtures/cms-main-with-contacts-body.php"
-EXPECTED_BOTH = (
-    'class="cms-default'
-    + cms_body.DOCS_BODY_COND
-    + cms_body.CONTACTS_BODY_COND
-    + '"'
-)
+LIVE_SNIPPET = ROOT / "scripts" / "fixtures" / "cms-main-live-body-line392-snippet.php"
+LIVE_MAIN_FIXTURE = ROOT / "tests/fixtures/live-render/live-assets/template/main.php"
 
 
 class CmsMainBodyClassTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        if not MAIN_WITH_CONTACTS.is_file():
-            import lireate_fetch_main_contacts_fixture as fetch
-
-            rc = fetch.main()
-            if rc != 0:
-                raise unittest.SkipTest("could not build cms-main-with-contacts-body.php fixture")
-
-    def test_docs_patch_after_cms_default_with_contacts(self):
-        text = MAIN_WITH_CONTACTS.read_text(encoding="utf-8")
-        self.assertIn(cms_body.CONTACTS_BODY_COND, text)
-        planned, changed = docs_lib.patch_body_class_conditional(text)
+    def test_live_snippet_suppresses_dark_on_home(self):
+        src = LIVE_SNIPPET.read_text(encoding="utf-8")
+        out, changed = cms.patch_home_light_v4_suppress_dark_body(src)
         self.assertTrue(changed)
-        self.assertIn(EXPECTED_BOTH, planned)
-        self.assertNotIn("if($temp[<?php", planned)
-        err = docs_lib.lint_php_content(docs_lib.resolve_php_bin(), planned, "main.php")
-        self.assertIsNone(err, err)
+        self.assertIn("lireate-home-light-v4-install:suppress-home-dark", out)
+        self.assertIn("/* lireate-home-dark */", out)
+        self.assertNotIn("? ' lireate-home-dark'", out)
+        self.assertIn("$temp['page']!='home'", out)
 
-    def test_docs_patch_idempotent(self):
-        text = MAIN_WITH_CONTACTS.read_text(encoding="utf-8")
-        once, _ = docs_lib.patch_body_class_conditional(text)
-        twice, changed = docs_lib.patch_body_class_conditional(once)
-        self.assertFalse(changed)
-        self.assertEqual(once, twice)
+    def test_live_snippet_idempotent(self):
+        src = LIVE_SNIPPET.read_text(encoding="utf-8")
+        out, _ = cms.patch_home_light_v4_suppress_dark_body(src)
+        out2, changed2 = cms.patch_home_light_v4_suppress_dark_body(out)
+        self.assertFalse(changed2)
+        self.assertEqual(out, out2)
 
-    def test_contacts_patch_idempotent_with_docs_present(self):
-        text = MAIN_WITH_CONTACTS.read_text(encoding="utf-8")
-        with_docs, _ = docs_lib.patch_body_class_conditional(text)
-        again, changed = contacts_lib.patch_body_class_conditional(with_docs)
-        self.assertFalse(changed)
-        self.assertEqual(with_docs, again)
+    def test_live_main_fixture_home_install_php_lint(self):
+        if not LIVE_MAIN_FIXTURE.is_file():
+            self.skipTest("live main.php fixture missing")
+        original = LIVE_MAIN_FIXTURE.read_text(encoding="utf-8")
+        self.assertIn("lireate_design_cms_lu_assets_v1", original)
+        self.assertIn("lireate_design_cms_dark_pages_v2", original)
+        self.assertIn("$temp['page'] === 'home'", original)
+        planned = home_lib.plan_home_main_content(original)
+        self.assertIn("suppress-home-dark", planned)
+        self.assertNotRegex(planned, r"===\s*\)\s*:")
+        self.assertIn("$temp['page'] === 'home'", planned)
+        php = home_lib.resolve_php_bin()
+        tmp = Path(tempfile.mkdtemp()) / "main.php"
+        try:
+            tmp.write_text(planned, encoding="utf-8")
+            lint = home_lib.run_subprocess([php, "-l", str(tmp)])
+            self.assertEqual(0, lint.returncode, lint.stdout + lint.stderr)
+        finally:
+            shutil.rmtree(tmp.parent, ignore_errors=True)
+
+    def test_live_main_fixture_render_no_dark_on_home(self):
+        if not LIVE_MAIN_FIXTURE.is_file():
+            self.skipTest("live main.php fixture missing")
+        body_start = LIVE_MAIN_FIXTURE.read_text(encoding="utf-8").find("<body")
+        self.assertGreater(body_start, 0)
+        original = (
+            "<?php $temp=array('page'=>'home'); $_lx_home_v2=false; ?>\n"
+            + LIVE_MAIN_FIXTURE.read_text(encoding="utf-8")[body_start:]
+        )
+        planned = cms.patch_home_light_v4_suppress_dark_body(original)[0]
+        planned, _ = cms.patch_home_light_v4_body_conditional(planned)
+        tmp = Path(tempfile.mkdtemp()) / "main.php"
+        try:
+            tmp.write_text(planned, encoding="utf-8")
+            proc = subprocess.run(
+                ["php", "-f", str(tmp)],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+                check=False,
+            )
+            self.assertEqual(0, proc.returncode, proc.stderr)
+            m = re.search(r'<body class="([^"]*)"', proc.stdout)
+            self.assertIsNotNone(m, proc.stdout[:500])
+            cls = m.group(1)
+            self.assertNotIn("lireate-cms-page-dark", cls)
+            self.assertNotIn("lireate-home-dark", cls)
+            self.assertIn("lireate-home-light-v4", cls)
+        finally:
+            shutil.rmtree(tmp.parent, ignore_errors=True)
+
+    def test_live_main_fixture_lineage_comment(self):
+        if not LIVE_MAIN_FIXTURE.is_file():
+            self.skipTest("live main.php fixture missing")
+        # Byte copy of live template/main.php (md5 9e2479f6...) with only the
+        # legacy DB credentials (lines ~4822-4825) replaced by FIXTURE.
+        import hashlib
+        raw = LIVE_MAIN_FIXTURE.read_bytes()
+        self.assertEqual("17b6c1336d2b400237a42930cb5da3ef", hashlib.md5(raw).hexdigest())
+        text = raw.decode("utf-8")
+        self.assertEqual(6120, text.count("\n") + (0 if text.endswith("\n") else 1))
+        for var in ("host", "database", "user", "password"):
+            self.assertRegex(text, r"\$" + var + r"\s*=\s*'FIXTURE';")
 
 
 if __name__ == "__main__":

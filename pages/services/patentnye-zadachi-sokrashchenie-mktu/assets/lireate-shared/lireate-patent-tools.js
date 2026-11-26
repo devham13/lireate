@@ -4,6 +4,7 @@
   var Fees = typeof LireatePatentFees !== 'undefined' ? LireatePatentFees : null;
   var Mktu = typeof LireatePatentMktu !== 'undefined' ? LireatePatentMktu : null;
   var STORAGE_KEY = 'lireate-patent-class-counts-v1';
+  var PAY_STORAGE_KEY = 'lireate-patent-pay-v1';
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
@@ -52,6 +53,15 @@
       /* ignore */
     }
   }
+
+  function storePayDraft(draft) {
+    try {
+      sessionStorage.setItem(PAY_STORAGE_KEY, JSON.stringify(draft));
+    } catch (err) {
+      /* ignore */
+    }
+  }
+
 
   function buildPrintText(title, lines, total, meta) {
     var out = [title, ''];
@@ -270,6 +280,22 @@
       });
       if (resultBody) {
         resultBody.innerHTML = html;
+        var allLines = (payload.lines || [])
+          .concat(payload.afterLines || [])
+          .concat(payload.optionalLines || []);
+        var hand = document.createElement('p');
+        hand.className = 'lx-hint';
+        hand.innerHTML =
+          '<a href="/patentnye-zadachi/oplata-patentnyh-poshlin/">Подготовить оплату →</a>';
+        var link = hand.querySelector('a');
+        if (link) {
+          link.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            storePayDraft({ source: toolId, total: payload.total, lines: allLines });
+            window.location.href = '/patentnye-zadachi/oplata-patentnyh-poshlin/';
+          });
+        }
+        resultBody.appendChild(hand);
       }
       if (totalEl) {
         totalEl.textContent = Fees.formatRub(payload.total);

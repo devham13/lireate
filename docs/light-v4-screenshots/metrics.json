@@ -1,0 +1,480 @@
+{
+ "after-home-1440": {
+  "scrollHeight": 8041,
+  "hscroll": false,
+  "body": "cms-default lireate-home-light-v4 lireate-theme-light-v4 lx-home-js lx-motion-ok motion-ready l4-motion-ready",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Патентное бюро «Лирейт»",
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0,
+    "color": "rgb(156, 168, 196)"
+   },
+   {
+    "t": "Патентное бюро «Лирейт»",
+    "x": 294,
+    "y": 274,
+    "w": 553,
+    "h": 147,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": {
+   "y": 0,
+   "h": 0,
+   "display": "none",
+   "color": "rgb(156, 168, 196)",
+   "bg": "rgba(0, 0, 0, 0)"
+  },
+  "lightV4Home": {
+   "y": 0,
+   "h": 7593,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "sidebar": {
+   "y": 0,
+   "h": 900,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-article-1440": {
+  "scrollHeight": 7627,
+  "hscroll": false,
+  "body": "cms-default lireate-legacy-article-lu lireate-cms-page-dark lireate-blog-body lireate-theme-light-v4",
+  "bodyBg": "rgb(11, 16, 32)",
+  "h1": [
+   {
+    "t": "Проверка товарного знака перед регистрацией: чек-лист Роспат",
+    "x": 323,
+    "y": 116,
+    "w": 640,
+    "h": 70,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 900,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-reviews-1440": {
+  "scrollHeight": 3692,
+  "hscroll": false,
+  "body": "cms-default lireate-static-lu lireate-reviews-body lireate-cms-page-dark lireate-theme-light-v4 lireate-reviews-preview",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Видео отзывы",
+    "x": 367,
+    "y": 72,
+    "w": 944,
+    "h": 44,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 900,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": [],
+  "grid": {
+   ".review_box": {
+    "n": 26,
+    "overlaps": 0,
+    "minW": 328,
+    "maxW": 328
+   },
+   ".lx-rv-case": {
+    "n": 14,
+    "overlaps": 0,
+    "minW": 294,
+    "maxW": 294
+   }
+  }
+ },
+ "after-team-1440": {
+  "scrollHeight": 2043,
+  "hscroll": false,
+  "body": "cms-default lireate-team-body lireate-cms-page-dark lireate-theme-light-v4",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Команда Лирейт",
+    "x": 310,
+    "y": 64,
+    "w": 1058,
+    "h": 47,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 900,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-portfolio-1440": {
+  "scrollHeight": 3033,
+  "hscroll": false,
+  "body": "cms-default lireate-static-lu lireate-portfolio-body lireate-cms-page-dark lireate-theme-light-v4 lireate-portfolio-preview",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Портфолио: зарегистрированные товарные знаки клиентов",
+    "x": 367,
+    "y": 72,
+    "w": 944,
+    "h": 87,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 900,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": [],
+  "grid": {
+   ".lx-pf-case": {
+    "n": 0,
+    "overlaps": 0,
+    "minW": null,
+    "maxW": null
+   },
+   ".region_list": {
+    "n": 61,
+    "overlaps": 0,
+    "minW": 236,
+    "maxW": 236
+   }
+  }
+ },
+ "after-poshliny-1440": {
+  "scrollHeight": 1004,
+  "hscroll": false,
+  "body": "lireate-svc-body lx-patent-tool lireate-theme-light-v4 l4-motion-ready",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Пошлины регистрации товарного знака",
+    "x": 180,
+    "y": 202,
+    "w": 1068,
+    "h": 47,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": null,
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-prodlenie-1440": {
+  "scrollHeight": 5440,
+  "hscroll": false,
+  "body": "lireate-svc-body lireate-theme-light-v4 l4-motion-ready",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Продление товарного знака в Роспатенте",
+    "x": 180,
+    "y": 280,
+    "w": 534,
+    "h": 109,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": null,
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-home-390": {
+  "scrollHeight": 12812,
+  "hscroll": false,
+  "body": "cms-default lireate-home-light-v4 lireate-theme-light-v4 lx-home-js lx-motion-ok motion-ready l4-motion-ready",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Патентное бюро «Лирейт»",
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0,
+    "color": "rgb(156, 168, 196)"
+   },
+   {
+    "t": "Патентное бюро «Лирейт»",
+    "x": 14,
+    "y": 228,
+    "w": 362,
+    "h": 86,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": {
+   "y": 0,
+   "h": 0,
+   "display": "none",
+   "color": "rgb(156, 168, 196)",
+   "bg": "rgba(0, 0, 0, 0)"
+  },
+  "lightV4Home": {
+   "y": 60,
+   "h": 12066,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "sidebar": {
+   "y": 0,
+   "h": 844,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-article-390": {
+  "scrollHeight": 12093,
+  "hscroll": false,
+  "body": "cms-default lireate-legacy-article-lu lireate-cms-page-dark lireate-blog-body lireate-theme-light-v4",
+  "bodyBg": "rgb(11, 16, 32)",
+  "h1": [
+   {
+    "t": "Проверка товарного знака перед регистрацией: чек-лист Роспат",
+    "x": 16,
+    "y": 277,
+    "w": 358,
+    "h": 43,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 844,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-reviews-390": {
+  "scrollHeight": 9219,
+  "hscroll": false,
+  "body": "cms-default lireate-static-lu lireate-reviews-body lireate-cms-page-dark lireate-theme-light-v4 lireate-reviews-preview",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Видео отзывы",
+    "x": 40,
+    "y": 112,
+    "w": 310,
+    "h": 25,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 844,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": [],
+  "grid": {
+   ".review_box": {
+    "n": 26,
+    "overlaps": 0,
+    "minW": 310,
+    "maxW": 310
+   },
+   ".lx-rv-case": {
+    "n": 14,
+    "overlaps": 0,
+    "minW": 276,
+    "maxW": 276
+   }
+  }
+ },
+ "after-team-390": {
+  "scrollHeight": 4274,
+  "hscroll": false,
+  "body": "cms-default lireate-team-body lireate-cms-page-dark lireate-theme-light-v4",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Команда Лирейт",
+    "x": 40,
+    "y": 124,
+    "w": 310,
+    "h": 29,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 844,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-portfolio-390": {
+  "scrollHeight": 7269,
+  "hscroll": false,
+  "body": "cms-default lireate-static-lu lireate-portfolio-body lireate-cms-page-dark lireate-theme-light-v4 lireate-portfolio-preview",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Портфолио: зарегистрированные товарные знаки клиентов",
+    "x": 40,
+    "y": 112,
+    "w": 310,
+    "h": 101,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": {
+   "y": 0,
+   "h": 844,
+   "display": "block",
+   "color": "rgb(31, 33, 44)",
+   "bg": "rgb(255, 255, 255)"
+  },
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": [],
+  "grid": {
+   ".lx-pf-case": {
+    "n": 0,
+    "overlaps": 0,
+    "minW": null,
+    "maxW": null
+   },
+   ".region_list": {
+    "n": 61,
+    "overlaps": 0,
+    "minW": 310,
+    "maxW": 310
+   }
+  }
+ },
+ "after-poshliny-390": {
+  "scrollHeight": 1257,
+  "hscroll": false,
+  "body": "lireate-svc-body lx-patent-tool lireate-theme-light-v4 l4-motion-ready",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Пошлины регистрации товарного знака",
+    "x": 16,
+    "y": 223,
+    "w": 358,
+    "h": 65,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": null,
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ },
+ "after-prodlenie-390": {
+  "scrollHeight": 8055,
+  "hscroll": false,
+  "body": "lireate-svc-body lireate-theme-light-v4 l4-motion-ready",
+  "bodyBg": "rgb(255, 255, 255)",
+  "h1": [
+   {
+    "t": "Продление товарного знака в Роспатенте",
+    "x": 16,
+    "y": 252,
+    "w": 358,
+    "h": 69,
+    "color": "rgb(31, 33, 44)"
+   }
+  ],
+  "legacyHome": null,
+  "lightV4Home": null,
+  "sidebar": null,
+  "ym": 1,
+  "noindex": false,
+  "low_contrast_count": 0,
+  "low_contrast": []
+ }
+}

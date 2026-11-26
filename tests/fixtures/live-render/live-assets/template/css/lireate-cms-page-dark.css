@@ -1,0 +1,269 @@
+/* Classic CMS pages (home/patent/mktu) — тёмный дизайн 2026-11-11 v2. body.lireate-cms-page-dark */
+html:has(body.lireate-cms-page-dark),
+html.lireate-home-dark-html,
+body.lireate-cms-page-dark,
+body.cms-default.lireate-cms-page-dark, body.cms-default.lireate-home-dark {
+  background: #0b1020 !important;
+}
+body.lireate-cms-page-dark {
+  color: #cbd5e1;
+  -webkit-font-smoothing: antialiased;
+}
+body.lireate-cms-page-dark #wrapper-ap,
+body.lireate-cms-page-dark #page-content-wrapper,
+body.lireate-cms-page-dark .wrapper,
+body.lireate-cms-page-dark .wrapper-ap,
+body.lireate-cms-page-dark .content,
+body.lireate-cms-page-dark .container.content,
+body.lireate-cms-page-dark .page_container {
+  background: #0b1020 !important;
+  background-color: #0b1020 !important;
+  color: #cbd5e1 !important;
+}
+body.lireate-cms-page-dark .page_container {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  border: 0 !important;
+}
+body.lireate-cms-page-dark .container.content .row,
+body.lireate-cms-page-dark .container.content [class*="col-"] {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+body.lireate-cms-page-dark .container.content,
+body.lireate-cms-page-dark .container.content :is(h1, h2, h3, h4, p, li, span, a, strong, div, ol, ul),
+body.lireate-cms-page-dark #modals,
+body.lireate-cms-page-dark .product {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+}
+body.lireate-cms-page-dark #leftSideBar :is(a, div, span, p, li, nav) {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+}
+body.lireate-cms-page-dark #leftSideBar :is(.fa, [class^="fa-"], [class*=" fa-"]) {
+  font-family: FontAwesome !important;
+}
+body.lireate-cms-page-dark #leftSideBar {
+  top: 0 !important;
+  bottom: 0 !important;
+  height: auto !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+body.lireate-cms-page-dark::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 12% -8%, rgba(59, 130, 246, 0.18), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 88% 2%, rgba(139, 92, 246, 0.14), transparent 50%);
+}
+body.lireate-cms-page-dark .container.content {
+  position: relative;
+  z-index: 1;
+}
+body.lireate-cms-page-dark h3.title,
+body.lireate-cms-page-dark h2.sub-title,
+body.lireate-cms-page-dark h3.sub-title {
+  color: #f1f5f9 !important;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+body.lireate-cms-page-dark .container.content p,
+body.lireate-cms-page-dark .container.content li {
+  color: #cbd5e1 !important;
+}
+body.lireate-cms-page-dark .main-screen {
+  position: relative;
+  margin: 0 !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #0b1020 !important;
+  background-size: cover !important;
+  background-position: center !important;
+  min-height: 520px;
+  padding: 88px 16px 32px;
+  contain: layout style;
+}
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4 {
+  background-image: none !important;
+  min-height: 0 !important;
+  padding-top: 48px !important;
+  padding-bottom: 32px !important;
+}
+body.lireate-cms-page-dark .main-screen > br {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  line-height: 0 !important;
+}
+body.lireate-cms-page-dark .main-screen:not(.lireate-hero-v4)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(11, 16, 32, 0.92) 0%,
+    rgba(11, 16, 32, 0.72) 45%,
+    rgba(11, 16, 32, 0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4::after {
+  display: none !important;
+  content: none !important;
+}
+body.lireate-cms-page-dark .main-screen > *:not(br) {
+  position: relative;
+  z-index: 1;
+}
+body.lireate-cms-page-dark .main-title {
+  float: none;
+  margin: 0 auto;
+  padding: 24px 22px 20px;
+  max-width: min(520px, 100%);
+  width: 100%;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 4px solid #6366f1 !important;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  color: #f8fafc !important;
+}
+body.lireate-cms-page-dark .main-title h1 {
+  font: 800 clamp(22px, 4vw, 36px) / 1.2 "Inter", sans-serif !important;
+  color: #f8fafc !important;
+  margin: 0 0 10px;
+}
+body.lireate-cms-page-dark .main-title h2 {
+  font: 600 clamp(16px, 2.5vw, 26px) / 1.35 "Inter", sans-serif !important;
+  color: #e2e8f0 !important;
+  margin: 0 0 16px;
+}
+body.lireate-cms-page-dark .main-title h3 {
+  font: 500 14px/1.45 "Inter", sans-serif !important;
+  color: #94a3b8 !important;
+  margin: 12px 0 0 !important;
+  text-align: center !important;
+}
+body.lireate-cms-page-dark .main-button.btn,
+body.lireate-cms-page-dark .content-button.btn.red {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 16px/1.2 "Inter", sans-serif !important;
+  padding: 14px 22px !important;
+  margin-top: 8px;
+  width: auto !important;
+  max-width: 100%;
+  white-space: normal;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 55%, #6366f1 100%) !important;
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.45) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+body.lireate-cms-page-dark .content-button.btn:not(.red) {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  color: #f1f5f9 !important;
+}
+body.lireate-cms-page-dark .main-button.btn:hover,
+body.lireate-cms-page-dark .content-button.btn.red:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.55) !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 55%, #6366f1 100%) !important;
+  color: #fff !important;
+}
+@media (max-width: 991px) {
+  body.lireate-cms-page-dark .product {
+    width: calc(100% - 32px);
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  body.lireate-cms-page-dark .main-screen {
+    min-height: 440px;
+    padding-top: 96px;
+  }
+}
+@media (max-width: 700px) {
+  body.lireate-cms-page-dark .main-screen.main_back {
+    aspect-ratio: unset !important;
+    min-height: 460px;
+  }
+}
+
+
+/* МКТУ listing + class pages */
+body.lireate-cms-page-dark .mktu_head {
+  background: #151b2e !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e2e8f0 !important;
+}
+body.lireate-cms-page-dark .mktu_head h4,
+body.lireate-cms-page-dark .mktu_head a {
+  color: #93c5fd !important;
+}
+body.lireate-cms-page-dark .mktu_body,
+body.lireate-cms-page-dark .conteinerY,
+body.lireate-cms-page-dark .conteinerX,
+body.lireate-cms-page-dark .txt-content.news-content {
+  background: #0b1020 !important;
+  color: #cbd5e1 !important;
+}
+body.lireate-cms-page-dark .collapse-body.in {
+  background: rgba(15, 23, 42, 0.75) !important;
+}
+body.lireate-cms-page-dark .breadcrumb-ap > li,
+body.lireate-cms-page-dark .breadcrumb-ap > li a {
+  color: #94a3b8 !important;
+}
+
+body.lireate-cms-page-dark h3.title,
+body.lireate-cms-page-dark h2.sub-title,
+body.lireate-cms-page-dark h3.sub-title,
+body.lireate-cms-page-dark .sub-title2 {
+  color: #f1f5f9 !important;
+}
+body.lireate-cms-page-dark .container.content p,
+body.lireate-cms-page-dark .sub-title2 {
+  color: #cbd5e1 !important;
+}
+body.lireate-cms-page-dark .advant {
+  background: rgba(15, 23, 42, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  color: #e2e8f0 !important;
+}
+body.lireate-cms-page-dark .advant h3 > span {
+  color: #93c5fd !important;
+}
+body.lireate-cms-page-dark .delimiter {
+  background: transparent !important;
+  box-shadow: none !important;
+  height: 0 !important;
+  margin: 16px 0 !important;
+  border: 0 !important;
+}
+body.lireate-cms-page-dark footer {
+  background-color: #151b2e !important;
+}
+body.lireate-cms-page-dark #managerMessage {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+body.lireate-cms-page-dark #floatingBlock {
+  position: fixed !important;
+  right: max(14px, env(safe-area-inset-right, 0px)) !important;
+  bottom: max(18px, env(safe-area-inset-bottom, 0px)) !important;
+}

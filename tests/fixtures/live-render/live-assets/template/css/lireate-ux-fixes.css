@@ -1,0 +1,149 @@
+/* Lireate classic CMS: CLS / mobile padding (2026-11-10 UX) + home hero (2026-11-11 design) */
+body.cms-default {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  overflow-x: clip;
+}
+@media (max-width: 700px) {
+  body.cms-default {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+}
+#floatingBlock {
+  width: 63px;
+  height: 63px;
+  min-width: 63px;
+  min-height: 63px;
+  contain: layout style;
+  will-change: transform;
+}
+#floatingBlock .floatingBlockIcon {
+  width: 63px;
+  height: 63px;
+  min-width: 63px;
+  min-height: 63px;
+}
+/* Site-wide: only avatar, no «Пишите, мы онлайн» bubble (overlap on /avtor/, cards) */
+body.cms-default #managerMessage,
+#floatingBlock #managerMessage,
+#managerMessage {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+#floatingBlock {
+  position: fixed !important;
+  right: max(14px, env(safe-area-inset-right, 0px)) !important;
+  bottom: max(24px, env(safe-area-inset-bottom, 0px)) !important;
+  left: auto !important;
+  z-index: 40;
+}
+body.lireate-cms-page-dark #floatingBlock {
+  bottom: max(24px, env(safe-area-inset-bottom, 0px)) !important;
+}
+#floatingBlock.lx-widget-dimmed {
+  opacity: 0.15;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+#floatingBlock.lx-widget-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 120%, 0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+/* Hero backgrounds: reserve height before image paints */
+body.cms-default .main_back,
+body.cms-default #main_back,
+body.cms-default .main-screen.main_back {
+  min-height: 280px;
+  aspect-ratio: 16 / 9;
+  background-color: #0b1020;
+  background-size: cover;
+  background-position: center;
+}
+body.lireate-home-dark .main-screen.main_back,
+body.lireate-cms-page-dark .main-screen.main_back {
+  aspect-ratio: unset;
+  min-height: 440px;
+}
+body.lireate-home-dark .main-screen.lireate-hero-v4,
+body.lireate-home-dark .main-screen.lireate-hero-v4#main_back,
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4,
+body.lireate-cms-page-dark .main-screen.lireate-hero-v4#main_back {
+  aspect-ratio: unset !important;
+  background-image: none !important;
+  background-color: #0b1020 !important;
+}
+@media (max-width: 700px) {
+  body.cms-default .main_back,
+  body.cms-default #main_back,
+  body.cms-default .main-screen.main_back {
+    min-height: 220px;
+  }
+  body.lireate-home-dark .main-screen.main_back,
+  body.lireate-cms-page-dark .main-screen.main_back {
+    min-height: 460px;
+  }
+  #patent_top_box,
+  .patent_top_box {
+    min-height: 200px;
+    background-color: #1a1a2e;
+  }
+}
+@supports (background-image: url("https://lireate.ru/template/images/main_back_opt_mini.webp")) {
+  @media (max-width: 700px) {
+    body.cms-default .main_back,
+    body.cms-default #main_back,
+    body.cms-default .main-screen.main_back,
+    body.lireate-home-dark .main-screen.main_back:not(.lireate-hero-v4),
+    body.lireate-cms-page-dark .main-screen.main_back:not(.lireate-hero-v4) {
+      background-image: url("https://lireate.ru/template/images/main_back_opt_mini.webp") !important;
+    }
+  }
+  @media (min-width: 701px) {
+    body.cms-default .main_back,
+    body.cms-default #main_back,
+    body.cms-default .main-screen.main_back,
+    body.lireate-home-dark .main-screen.main_back:not(.lireate-hero-v4),
+    body.lireate-cms-page-dark .main-screen.main_back:not(.lireate-hero-v4) {
+      background-image: url("https://lireate.ru/template/images/main_back_opt.webp") !important;
+    }
+  }
+}
+@media (max-width: 700px) {
+  #patent_top_box,
+  .patent_top_box {
+    background-image: url("https://lireate.ru/template/images/patent_back_opt_mini.webp") !important;
+  }
+}
+/* lireate-service-mobile-bar.css owns svc dock padding at ≤768px */
+body.lireate-svc-body:not(.lireate-service-mobile-dock) {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 769px) {
+  body.lireate-svc-body {
+    padding-bottom: 0;
+  }
+}
+@media (max-width: 768px) {
+  body.lireate-service-mobile-dock.cms-default {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Homepage: former h1.title → h2 without visual change */
+h2.title.title-as-h1,
+.row.col-xs-12 h2.title.title-as-h1 {
+  font: 700 32px/45px 'Open Sans', sans-serif;
+  margin: 22px 0 18px;
+  color: inherit;
+}
+@media (max-width: 970px) {
+  h2.title.title-as-h1 {
+    font: 700 32px/45px 'Open Sans', sans-serif;
+  }
+}

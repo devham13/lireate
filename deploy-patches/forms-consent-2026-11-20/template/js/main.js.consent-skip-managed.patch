@@ -1,0 +1,14 @@
+--- template/js/main.js
++++ template/js/main.js
+@@ -9,6 +9,12 @@
+     consentForms.each(function(index) {
+         var form = $(this);
++        if (form.attr('data-lireate-consent-managed') === '1' || form.attr('data-lireate-skip-legacy-consent') === '1') {
++            return;
++        }
++        if (form.find('input[name="consent_request"]').length) {
++            return;
++        }
+         form.find('input[type="checkbox"][checked]').each(function() {
+             var old = $(this).closest('label, p');
+             if (/соглас|private_data|персональн/i.test(old.text())) old.remove();

@@ -16,6 +16,20 @@ function lireate_blog_h($s)
 }
 }
 
+if (!function_exists('lireate_blog_media_url')) {
+function lireate_blog_media_url($url)
+{
+    $url = trim((string) $url);
+    if ($url === '') {
+        return '';
+    }
+    if (function_exists('lireate_preview_live_url')) {
+        $url = lireate_preview_live_url($url);
+    }
+    return $url;
+}
+}
+
 if (!function_exists('lireate_blog_strtolower')) {
 function lireate_blog_strtolower($text)
 {
@@ -323,6 +337,16 @@ if (!function_exists('lireate_blog_list_cover_from_row')) {
 function lireate_blog_list_cover_from_row($row)
 {
     foreach (lireate_blog_list_cover_candidate_paths($row) as $path) {
+        if ($path === '') {
+            continue;
+        }
+        $origin = lireate_blog_public_origin();
+        if ($origin !== '') {
+            $resolved = lireate_blog_resolve_cover_url($path);
+            if ($resolved !== '') {
+                return $resolved;
+            }
+        }
         if (lireate_blog_web_path_is_file($path)) {
             return lireate_blog_resolve_cover_url($path);
         }

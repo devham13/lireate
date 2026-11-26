@@ -14,6 +14,9 @@ SKIP_DIRS = {"_shared", "_template"}
 DEST_REL = Path("assets") / "lireate-shared"
 FOOTER_NAME = "lireate-service-footer.inc.php"
 LEAD_SCRIPTS_NAME = "lireate-lead-scripts.inc.php"
+CONSENT_BUNDLE_NAMES = (
+    "lireate-lead-consent-resolve.inc.php",
+)
 MESSENGER_BUNDLE_NAMES = (
     "lireate-messenger-urls.php",
     "lireate-messenger-load.php",
@@ -23,6 +26,7 @@ MESSENGER_BUNDLE_NAMES = (
     "lireate-service-assets.php",
 )
 BLOCKS_DIR = SHARED / "blocks"
+VK_CASES_NAME = "vk-cases.json"
 
 
 def _sha256(path):
@@ -39,10 +43,16 @@ def sync_service(service_dir, dry_run=False):
     for src in sorted(SHARED.glob("*")):
         if not src.is_file() or src.name.startswith("."):
             continue
-        if src.suffix.lower() not in (".css", ".js", ".json"):
+        if src.suffix.lower() not in (".css", ".js", ".json") and not src.name.endswith(".inc.php"):
             continue
         dst = dest / src.name
         if dst.is_file() and _sha256(src) == _sha256(dst):
+            continue
+        if (
+            src.name == VK_CASES_NAME
+            and dst.is_file()
+            and _sha256(src) != _sha256(dst)
+        ):
             continue
         changed.append(dst.relative_to(service_dir))
         if not dry_run:
@@ -62,7 +72,7 @@ def sync_service(service_dir, dry_run=False):
             changed.append(lead_dst.relative_to(service_dir))
             if not dry_run:
                 shutil.copy2(str(lead_scripts_src), str(lead_dst))
-    for name in MESSENGER_BUNDLE_NAMES:
+    for name in CONSENT_BUNDLE_NAMES + MESSENGER_BUNDLE_NAMES:
         src = SHARED / name
         if not src.is_file():
             continue

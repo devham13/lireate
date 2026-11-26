@@ -1,0 +1,115 @@
+commit 9df66713a57e8980dae66d1fb6ce1fe58723b539
+Author: Cursor Agent <cursoragent@cursor.com>
+Date:   Wed Nov 25 14:36:14 2026 +0000
+
+    Guard home unslop when LIREATE Light V4 is installed
+    
+    Refuse patch and cron apply if template/main.php carries Light V4 install
+    markers; add LIREATE_HOME_LIGHT_V4 env skip and document hosting behavior.
+
+diff --git a/docs/lireate-home-unslop-2026-11-22.md b/docs/lireate-home-unslop-2026-11-22.md
+index e19f256..1d24c53 100644
+--- a/docs/lireate-home-unslop-2026-11-22.md
++++ b/docs/lireate-home-unslop-2026-11-22.md
+@@ -47,6 +47,19 @@ CSS ограничен `body.lireate-home-dark #lireate-home`; другие ст
+ На 375 и 1366 px открывается форма консультации; данные не отправляются.
+ Снимки до/после и JSON-отчёт сохраняются в артефакт GitHub Actions.
+ 
++## LIREATE Light V4 (главная)
++
++Установщик главной Light V4 из `devham13/lireate` добавляет в `template/main.php`
++маркеры `lireate-home-light-v4-install`, классы `lireate-theme-light-v4` и
++`lireate-home-light-v4-install-head:v1`. При их наличии `lireate_home_unslop.py`
++**не** меняет шаблон и CSS: в stdout — `STATUS: HOME_UNSLOP_REFUSED_LIGHT_V4`,
++код выхода 0. Патч по-прежнему требует legacy-маркеры `lireate-home-hero.css` и
++`lireate-home-dark` только для старой тёмной главной.
++
++На хостинге с Light V4 без чтения шаблона достаточно в env:
++`LIREATE_HOME_LIGHT_V4=1` (или `yes` / `on`) — cron пропускает unslop с
++`STATUS: HOME_UNSLOP_SKIPPED_LIGHT_V4`.
++
+ ## Выкладка и откат
+ 
+ `lireate_hosting_cron.sh` вызывает `lireate_home_unslop.py --apply` с существующим
+diff --git a/scripts/lireate_home_unslop.py b/scripts/lireate_home_unslop.py
+index 75538e5..a0d545f 100644
+--- a/scripts/lireate_home_unslop.py
++++ b/scripts/lireate_home_unslop.py
+@@ -18,6 +18,10 @@ ASSET = 'template/css/lireate-home-unslop.css'
+ MAIN = 'template/main.php'
+ VERSION = '20261122u1'
+ MARKER = 'lireate_home_unslop_' + VERSION
++# Keep in sync with devham13/lireate scripts/lireate_home_light_v4_install_lib.py
++LIGHT_V4_HEAD_MARKER = 'lireate-home-light-v4-install-head:v1'
++LIGHT_V4_INSTALL_MARKER = 'lireate-home-light-v4-install'
++LIGHT_V4_THEME_MARKER = 'lireate-theme-light-v4'
+ LEGACY_LINK = ('<?php /* ' + MARKER + ' */ '
+         "if (isset($temp['page']) && $temp['page'] === 'home') { ?>\n"
+         '<link rel="stylesheet" href="/' + ASSET + '?v=' + VERSION + '">\n'
+@@ -31,8 +35,15 @@ LINK = ('<?php /* ' + MARKER + ' */ '
+         '<?php } ?>\n')
+ 
+ 
++def light_v4_installed(text):
++    return (LIGHT_V4_INSTALL_MARKER in text or LIGHT_V4_THEME_MARKER in text
++            or LIGHT_V4_HEAD_MARKER in text)
++
++
+ def patch_main(data):
+     text = data.decode('utf-8')
++    if light_v4_installed(text):
++        raise ValueError('LIREATE Light V4 home is installed; unslop patch refused')
+     if MARKER in text:
+         if text.count(MARKER) == 1 and text.count(LINK) == 1:
+             return data
+@@ -186,6 +197,9 @@ def main():
+     if args.apply and os.environ.get('LIREATE_HOME_UNSLOP', '').lower() in ('no', 'false', '0', 'off'):
+         print('STATUS: HOME_UNSLOP_DISABLED')
+         return 0
++    if os.environ.get('LIREATE_HOME_LIGHT_V4', '').lower() in ('yes', 'true', '1', 'on'):
++        print('STATUS: HOME_UNSLOP_SKIPPED_LIGHT_V4')
++        return 0
+     raw_root = args.docroot or os.environ.get('LIREATE_DOCROOT')
+     if not raw_root:
+         raise ValueError('LIREATE_DOCROOT is required')
+@@ -203,6 +217,11 @@ def main():
+             restore(docroot, backup)
+             print('STATUS: HOME_UNSLOP_RESTORED')
+             return 0
++        main_path = target(docroot, MAIN)
++        main_bytes = read(main_path)
++        if main_bytes is not None and light_v4_installed(main_bytes.decode('utf-8')):
++            print('STATUS: HOME_UNSLOP_REFUSED_LIGHT_V4')
++            return 0
+         plan, before = build_plan(docroot)
+         print(json.dumps({'version': VERSION, 'files': list(plan), 'apply': args.apply}))
+         if not args.apply:
+diff --git a/scripts/test_lireate_home_unslop.py b/scripts/test_lireate_home_unslop.py
+index edc6c41..b5fb339 100644
+--- a/scripts/test_lireate_home_unslop.py
++++ b/scripts/test_lireate_home_unslop.py
+@@ -126,6 +126,24 @@ class HomePolishTest(unittest.TestCase):
+             home.build_plan(self.docroot)
+         self.assertEqual(target.read_bytes(), FIXTURE)
+ 
++    def test_light_v4_marker_refuses_patch(self):
++        light = FIXTURE.replace(b'lireate-home-dark',
++                                b'lireate-home-dark lireate-theme-light-v4')
++        light += (b'<!-- ' + home.LIGHT_V4_HEAD_MARKER.encode() + b' -->')
++        with self.assertRaises(ValueError):
++            home.patch_main(light)
++
++    def test_light_v4_main_exits_without_plan(self):
++        light = FIXTURE.replace(b'</head>',
++            (b'<!-- ' + home.LIGHT_V4_INSTALL_MARKER.encode() + b':v1 --></head>'))
++        self.main.write_bytes(light)
++        env = dict(os.environ, LIREATE_DOCROOT=str(self.docroot),
++                   LIREATE_AUTOPUB_HOME=str(self.root), LIREATE_ALLOW_PUBLISH='yes')
++        proc = subprocess.run(['python3', str(Path(home.__file__))], env=env,
++                              capture_output=True, text=True, cwd=str(self.root))
++        self.assertEqual(proc.returncode, 0, proc.stderr)
++        self.assertIn('HOME_UNSLOP_REFUSED_LIGHT_V4', proc.stdout)
++
+ 
+ if __name__ == '__main__':
+     unittest.main()

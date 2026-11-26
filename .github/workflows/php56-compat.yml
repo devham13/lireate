@@ -8,6 +8,19 @@ on:
 jobs:
   php56:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: lireate_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -41,6 +54,8 @@ jobs:
         run: python3 scripts/test_deploy_patches_forms_consent.py
       - name: service index lireate_* callables
         run: python3 scripts/test_lireate_service_index_functions.py
+      - name: home Light V4 install apply rollback
+        run: python3 -m unittest scripts.test_lireate_home_light_v4_install scripts.test_lireate_home_light_v4_layout scripts.test_lireate_light_v4_shared_asset_version scripts.test_lireate_about_light_v4_page -q
       - name: patent section lint
         run: |
           python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi
@@ -51,3 +66,48 @@ jobs:
           python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-poshliny-registraciya
           python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-poshliny-prodlenie
           python3 scripts/lireate_service_lint.py --slug patentnye-zadachi-redaktor-mktu
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "5.6"
+          extensions: mysqli
+      - name: PHP syntax lint (pages + template, PHP 5.6)
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' f; do
+            php -l "$f"
+          done < <(find pages template -name '*.php' -print0)
+      - name: Install mysql client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+      - name: blog --apply on fixture docroot (PHP 5.6 CGI)
+        working-directory: scripts
+        env:
+          LIREATE_MYSQL_HOST: 127.0.0.1
+          LIREATE_MYSQL_USER: root
+          LIREATE_MYSQL_PASSWORD: root
+          LIREATE_MYSQL_DATABASE: lireate_ci
+        run: python3 lireate_blog_ci_fixture_apply.py
+      - name: Published services PHP render (no Fatal, closes html)
+        working-directory: scripts
+        run: python3 lireate_service_publish_ci_render.py
+      - name: Service publish rollback (apply → rollback md5)
+        working-directory: scripts
+        run: python3 -m unittest test_lireate_hosting_service_rollback test_lireate_hosting_publish_perf_rollback test_lireate_cms_main_body_class test_lireate_light_v4_rollout_fixture_apply test_lireate_light_v4_rollout_partial_rollback test_lireate_service_sync_vk_cases test_lireate_vk_cases_publish_preserve -q
+      - name: Hosting scripts Python 3.6 syntax guard
+        working-directory: scripts
+        run: python3 check_hosting_py36_compat.py
+      - name: Rollout under Python 3.6 (docker)
+        run: |
+          set -euo pipefail
+          mkdir -p .ci-rollout-docroot
+          docker run --rm -v "$PWD:/work" -w /work python:3.6 bash -c '
+            set -euo pipefail
+            sed -i -e "s|deb.debian.org|archive.debian.org|g" -e "s|security.debian.org|archive.debian.org|g" /etc/apt/sources.list
+            apt-get update -qq
+            DEBIAN_FRONTEND=noninteractive apt-get install -y -qq php-cli >/dev/null
+            python scripts/check_hosting_py36_compat.py
+            python scripts/lireate_light_v4_hosting_rollout.py --docroot /work/.ci-rollout-docroot
+            python -m unittest scripts.test_lireate_light_v4_rollout_fixture_apply -q
+            mkdir -p /work/.ci-blog-docroot
+            printf "LIREATE_DOCROOT=/work/.ci-blog-docroot\n" > /work/.ci-blog.env
+            python scripts/lireate_blog_install.py --env-file /work/.ci-blog.env --check
+          '

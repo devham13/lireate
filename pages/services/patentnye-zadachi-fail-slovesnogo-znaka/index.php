@@ -39,11 +39,12 @@ $schema_graph = array(
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 </head>
-<body class="lireate-svc-body lx-patent-tool">
-<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-header.inc.php'; ?>
+<body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4">
+<?php include __DIR__ . '/blocks/lireate-patent-header.inc.php'; ?>
 <main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-wordmark>
-<?php include dirname(__DIR__) . '/_shared/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
+<?php include __DIR__ . '/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
   <section class="lx-hero lx-hero--stack">
     <div>
       <p class="lx-eyebrow">Патентные задачи · изображение</p>
@@ -80,5 +81,6 @@ $schema_graph = array(
 $lx_patent_footer_mode = 'reference';
 $lx_patent_footer_ref_url = 'https://rospatent.gov.ru/ru/faq/27-kakie-trebovaniya-predyavlyayutsya-k-fajlu-izobrazheniya-zayavlyaemogo-oboznacheniya';
 $lireate_max = LIREATE_MAX_CHAT_URL;
-include dirname(__DIR__) . '/_shared/blocks/lireate-patent-tool-footer.inc.php';
 ?>
+<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
+<?php include __DIR__ . '/blocks/lireate-patent-tool-footer.inc.php'; ?>
