@@ -16,12 +16,15 @@ import tempfile
 
 REPO = Path(__file__).resolve().parents[1]
 VERSION = 'lireate-dual-nav-v3-20261126'
+NAV_ASSET_QS = '20261126r1'
 ASSETS = [Path('template/css/lireate-navigation-dual-v3.css'),
           Path('template/js/lireate-navigation-dual-v3.js')]
 MAIN = Path('template/main.php')
-HEAD = ('<!-- ' + VERSION + ' -->\n'
-        '<link rel="stylesheet" href="/template/css/lireate-navigation-dual-v3.css?v=20261126">\n'
-        '<script defer src="/template/js/lireate-navigation-dual-v3.js?v=20261126"></script>\n')
+HEAD = (
+    '<!-- ' + VERSION + ' -->\n'
+    '<link rel="stylesheet" href="/template/css/lireate-navigation-dual-v3.css?v=' + NAV_ASSET_QS + '">\n'
+    '<script defer src="/template/js/lireate-navigation-dual-v3.js?v=' + NAV_ASSET_QS + '"></script>\n'
+)
 
 
 def safe_path(docroot, rel):
