@@ -16,10 +16,13 @@
 
 Параметры: RGB WebP 800×1200, качество ~82, без rembg и без подложки.
 
-## Два фото без смены в этом PR
+## Certificate (findtz)
 
-- `specialist-certificate.webp`
-- `specialist-prolongation.webp`
+Пересборка из `originals/certificate-original.jpg` (JPEG с тёмным фоном, без вырезания): `scripts/build_certificate_webp.py` → `specialist-certificate.webp` 800×1200 RGB WebP; оригинал после сборки из репозитория удаляется.
+
+## Prolongation (prodlenie)
+
+Пересборка из `originals/prolongation-original.jpg` (с фоном): `scripts/build_prolongation_webp.py` → `specialist-prolongation.webp`; JPEG после сборки удаляется.
 
 ## `/team`
 

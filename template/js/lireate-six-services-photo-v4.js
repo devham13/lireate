@@ -12,9 +12,9 @@
     '/dogovory':{photo:'specialist-registraciya.webp',role:'Договоры в сфере интеллектуальной собственности',next:'Опишите объект прав и задачу сделки — подберём подходящий вид договора.'}
   };
   var PHOTO_FRAME={
-    'specialist-certificate.webp':{focus:'50% 30%',zoom:'1.16',origin:'50% 34%'},
+    'specialist-certificate.webp':{focus:'50% 40%',zoom:'1.18',origin:'50% 42%'},
     'specialist-registraciya.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
-    'specialist-prolongation.webp':{focus:'50% 28%',zoom:'1.28',origin:'50% 32%'},
+    'specialist-prolongation.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
     'specialist-opposition.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
     'specialist-copyright.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'}
   };

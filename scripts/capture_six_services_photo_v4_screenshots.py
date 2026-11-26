@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/screenshots/six-services-v4"
 PORT = int(__import__("os").environ.get("LIREATE_SIX_PHOTO_V4_PORT", "19140"))
 MARKER = "lireate-six-services-photo-v4-20261126"
-CACHE_VER = "20261126f"
+CACHE_VER = "20261126g"
 
 
 def live_host() -> str:
@@ -168,11 +168,16 @@ def main() -> int:
                           const m = document.querySelector('.lx-photo-v4-expert-media');
                           if (!m) return false;
                           const r = m.getBoundingClientRect();
-                          return r.height > 0 && r.height >= r.width * 0.95;
+                          const img = m.querySelector('img');
+                          return r.height > 0 && r.width > 0 && img && img.naturalWidth > 0;
                         }""",
                         timeout=20000,
                     )
-                    page.evaluate("window.scrollTo(0,0)")
+                    if tag == "390":
+                        page.locator(".lx-photo-v4-expert-card").first.scroll_into_view_if_needed()
+                        page.wait_for_timeout(250)
+                    else:
+                        page.evaluate("window.scrollTo(0,0)")
                     out = OUT / f"{route}-{tag}.png"
                     page.screenshot(path=str(out), full_page=False)
                     print("wrote", out)
