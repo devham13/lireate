@@ -71,7 +71,16 @@ class PortfolioV5Tests(unittest.TestCase):
             self.assertIn(messenger, script)
         self.assertIn('.case-hero', script)
         self.assertIn('.lx-case-hero', script)
+        self.assertIn('lx-portfolio-v5', script)
+        self.assertIn('hasCityLabel', script)
         self.assertIn('lxpf5-featured-grid', script)
+        css = (mod.REPO / mod.CSS).read_text(encoding="utf-8")
+        self.assertIn(
+            "body.lireate-cms-page-dark.lx-portfolio-v5.lxpf5-ready .page_container article.lx-case h1",
+            css,
+        )
+        head = mod.HEAD
+        self.assertIn("family=Manrope", head)
 
     def test_missing_main_is_hard_blocker(self):
         (self.docroot / mod.MAIN).unlink()

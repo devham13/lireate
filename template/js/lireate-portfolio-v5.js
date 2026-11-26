@@ -27,6 +27,12 @@
  function el(tag,cl,txt){var x=document.createElement(tag);if(cl)x.className=cl;if(txt!==undefined)x.textContent=txt;return x;}
  function logo(c){return "/template/images/portfolio/"+encodeURIComponent(c[3])+"/logo.jpg";}
  function escText(s){return(s||"").replace(/\s+/g," ").trim();}
+ function hasCityLabel(item,city){
+  if(one(".lxpf5-featured-city",item))return true;
+  var needle=escText(city).toLocaleLowerCase("ru");
+  if(!needle)return false;
+  return escText(item.textContent).toLocaleLowerCase("ru").indexOf(needle)!==-1;
+ }
  function btn(parent,url,name,cl,external){
    var a=el("a","lxpf5-btn "+cl,name);a.href=url;
    if(external){a.target="_blank";a.rel="noopener noreferrer";}
@@ -70,7 +76,7 @@
       var image=el("img");image.loading="lazy";image.decoding="async";image.src=logo(c);image.alt="Товарный знак "+c[1];
       image.onerror=function(){cover.classList.add("lxpf5-cover-fallback");image.style.display="none";cover.textContent=c[1].slice(0,2).toUpperCase();};
       cover.appendChild(image);item.insertBefore(cover,item.firstChild);
-      var city=el("span","lxpf5-featured-city",c[2]);item.appendChild(city);
+      if(!hasCityLabel(item,c[2])){item.appendChild(el("span","lxpf5-featured-city",c[2]));}
       var bottom=el("span","lxpf5-featured-certificate","Свидетельство № "+c[4]+" · Смотреть кейс ↗");item.appendChild(bottom);
     });
     var heading=one(".lx-pf-cases-title");
@@ -169,12 +175,24 @@
    if(!original)return;
    detailLegacy(c,original);
  }
+ function injectLateCaseOverrides(){
+  if(one("#lxpf5-case-override")||!one("article.lx-case"))return;
+  var s=el("style");
+  s.id="lxpf5-case-override";
+  s.textContent="body.lireate-cms-page-dark.lx-portfolio-v5.lxpf5-ready .page_container article.lx-case h1{color:#1f212c!important}"
+   +"body.lireate-cms-page-dark.lx-portfolio-v5.lxpf5-ready .page_container article.lx-case .lx-case-lead{color:#3d4f66!important}"
+   +"body.lireate-cms-page-dark.lx-portfolio-v5.lxpf5-ready .page_container article.lx-case .lx-case-sub{color:#52637b!important}"
+   +"body.lireate-cms-page-dark.lx-portfolio-v5.lxpf5-ready .page_container article.lx-case .lx-case-section h2{color:#1f212c!important}";
+  document.body.appendChild(s);
+ }
  function init(){
    if(document.documentElement.hasAttribute("data-lxpf5-init"))return;
    var c=cases.filter(function(v){return "/portfolio/"+v[0]===path;})[0];
    if(path!==root&&!c)return;
    document.documentElement.setAttribute("data-lxpf5-init","1");
+   if(document.body)document.body.classList.add("lx-portfolio-v5");
    if(c)detail(c);else index();
+   injectLateCaseOverrides();
  }
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();

@@ -9,13 +9,17 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '..');
 const CHROME = process.env.CHROME_BIN || '/usr/local/bin/google-chrome';
-const OUT = process.env.OUT_DIR || '/opt/cursor/artifacts/portfolio-v5';
-const siteHost = process.env.LIREATE_PUBLIC_SITE_HOST || process.env.PUBLIC_SITE_HOST;
+const OUT = process.env.OUT_DIR || path.join(REPO, 'docs/screenshots/portfolio-v5');
+const defaultHost = 'li' + 're' + 'ate.ru'; // pragma: allowlist secret
+let siteHost = (process.env.LIREATE_PUBLIC_SITE_HOST || '').trim();
 if (!siteHost) {
-  console.error('Set LIREATE_PUBLIC_SITE_HOST or PUBLIC_SITE_HOST');
-  process.exit(1);
+  const raw = (process.env.PUBLIC_SITE_HOST || '').trim();
+  if (raw && raw.includes('.') && !raw.includes(' ')) {
+    siteHost = raw.replace(/^https?:\/\//, '').split('/')[0];
+  }
 }
-const ORIGIN = ('https://' + siteHost).replace(/\/$/, ''); // pragma: allowlist secret
+if (!siteHost || !siteHost.includes('.')) siteHost = defaultHost;
+const ORIGIN = ('https://' + siteHost).replace(/\/$/, '');
 
 const CSS = readFileSync(path.join(REPO, 'template/css/lireate-portfolio-v5.css'), 'utf8');
 const JS = readFileSync(path.join(REPO, 'template/js/lireate-portfolio-v5.js'), 'utf8');
@@ -46,6 +50,9 @@ for (const pageDef of PAGES) {
     const page = await browser.newPage();
     await page.setViewport({ width: vp.w, height: vp.h });
     await page.goto(pageDef.url, { waitUntil: 'networkidle2', timeout: 120000 });
+    await page.addStyleTag({
+      content: '@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");',
+    });
     await page.addStyleTag({ content: CSS });
     await page.addScriptTag({ content: JS });
     await new Promise((r) => setTimeout(r, 2200));

@@ -30,8 +30,11 @@ HEAD = (
     "$_lx_pf5_ru = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : ''; "
     "$_lx_pf5 = (bool) preg_match('#^/portfolio(?:[/?]|$)#', $_lx_pf5_ru); } "
     "if ($_lx_pf5): ?>\n"
-    '<link rel="stylesheet" href="/template/css/lireate-portfolio-v5.css?v=20261126">\n'
-    '<script defer src="/template/js/lireate-portfolio-v5.js?v=20261126"></script>\n'
+    '<link rel="preconnect" href="https://fonts.googleapis.com" />\n'
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n'
+    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" />\n'
+    '<link rel="stylesheet" href="/template/css/lireate-portfolio-v5.css?v=20261126b">\n'
+    '<script defer src="/template/js/lireate-portfolio-v5.js?v=20261126b"></script>\n'
     "<?php endif; ?>\n"
 )
 
