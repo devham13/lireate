@@ -46,9 +46,14 @@ body.lsv7-managed .lsv7-mobile-toggle,body.lsv7-managed .lsv7-veil{display:none}
  body.lsv7-managed.lsv7-collapsed #leftSideBar.lsv7-sidebar a.leftSideLogo{flex:0 0 32px!important;width:50px!important;max-width:50px!important;min-width:50px!important;height:32px!important;min-height:32px!important;background-size:190px auto!important;background-position:left center!important}
  body.lsv7-managed.lsv7-collapsed #leftSideBar.lsv7-sidebar .lpc-collapse-icon:before{content:"❯"}
 }
+@media(min-width:1151px){
+ body.lsv7-managed .lx-site-footer{width:auto!important;max-width:100%!important;margin-left:0!important;margin-right:0!important}
+}
 @media(max-width:1150px){
+ body.lsv7-managed #leftSideBar.lsv7-sidebar button.lireate-public-cms-collapse{display:none!important}
+ body.lsv7-managed.lsv7-open .lsv7-mobile-toggle{left:auto;right:14px}
  html body.lsv7-managed{width:100%!important;min-width:0!important;margin-left:0!important;padding-left:0!important}
- body.lsv7-managed #leftSideBar.lsv7-sidebar{left:0!important;top:0!important;bottom:0!important;width:min(292px,88vw)!important;max-width:88vw!important;transform:translateX(-105%)!important;transition:transform .24s ease!important;box-shadow:8px 0 32px rgba(19,43,82,.12)!important;z-index:9901!important;padding-top:12px!important}
+ body.lsv7-managed #leftSideBar.lsv7-sidebar{left:0!important;top:0!important;bottom:0!important;width:min(292px,88vw)!important;max-width:88vw!important;transform:translateX(-105%)!important;transition:transform .24s ease!important;box-shadow:8px 0 32px rgba(19,43,82,.12)!important;z-index:9901!important;padding:12px 8px 88px!important}
  body.lsv7-managed.lsv7-open #leftSideBar.lsv7-sidebar{transform:translateX(0)!important}
  body.lsv7-managed #leftSideBar.lsv7-sidebar .lireate-public-cms-collapse{display:none!important}
  body.lsv7-managed .lsv7-mobile-toggle{position:fixed;display:flex!important;align-items:center;justify-content:center;left:14px;bottom:18px;z-index:9903;min-height:47px;padding:11px 16px;border:0;border-radius:13px;color:#fff;background:var(--lsv7-red);font:800 13px/1.3 Manrope,Arial,sans-serif;box-shadow:0 10px 27px rgba(25,35,60,.24);cursor:pointer}

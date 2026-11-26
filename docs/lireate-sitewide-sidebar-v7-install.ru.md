@@ -21,7 +21,7 @@
 - `template/css/lireate-sitewide-sidebar-v7.css` — светлый десктоп/mobile layout, без изменений существующих CSS на CMS-путях.
 - `template/images/logo/logo-light-v7.svg` — исходный LIREATE, адаптированный для белого фона.
 - 21 `pages/services/*/index.php` с подключением CSS/JS в head, без изменения логики услуг.
-- `scripts/lireate_sitewide_sidebar_v7_install.py` — безопасный установщик/сканер: глобальный head CMS, все опубликованные услуги по `publish.manifest.json`, плюс самостоятельные `index.php`/`index.html` в публичных директориях DOCROOT (макс. глубина 3), за исключением admin/api/uploads/vendor и пр.
+- `scripts/lireate_sitewide_sidebar_v7_install.py` — **белый список** (без обхода DOCROOT): `template/main.php`, все опубликованные услуги по `publish.manifest.json` (без `_template` / `SLUG-ЗАМЕНИТЬ`), плюс legacy `dogovory/`, `registraciya_programm_evm/`, `findtz` и 13 инструментов `patentnye-zadachi/*` (включая `poshliny-prodlenie`). Жёстко исключены: `everest`, `reg-tov-znak*`, `lireateCom`, `copy`, `sms`, `captcha`, `engine`, `mail_parse`, `lireate-analytics`, заглушка `uslugi/index.php`, корневой `index.php`, `.htaccess`, `mail.php`, `consent-gate.php`, `inc/lireate-amo-lead.php`.
 - `scripts/test_lireate_sitewide_sidebar_v7_install.py` — офлайн регрессия; `scripts/lireate_sitewide_sidebar_v7_audit.mjs` — полноценная браузерная проверка desktop+mobile по sitemap и manifest.
 
 ## Установка через Grok/Cursor, НЕ вручную поверх main
@@ -31,12 +31,12 @@
 3. Выполни `python3 scripts/test_lireate_sitewide_sidebar_v7_install.py` и `node --check template/js/lireate-sitewide-sidebar-v7.js`.
 4. Dry-run без записи:
    `python3 scripts/lireate_sitewide_sidebar_v7_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/sidebar-v7"`
-5. Просмотри полный список DRY_RUN и SKIP: изменяться могут только public head templates и новые файлы из этой ветки. Ни один admin/api/vendor/Bitrix/wp-admin/payment/analytics/DB файл не должен меняться. Если файл не найден или HEAD генерируется через include, исследуй его реальную точку входа и исправь маппинг; не называй работу завершённой.
+5. Просмотри полный список DRY_RUN и SKIP: в выборке **не должно быть** путей `everest/pages/*`, `reg-tov-znak/pages/*`, `reg-tov-znak1(test)/*` и прочих отдельных лендингов. Меняются только whitelist-файлы и новые V7-ассеты из ветки. Совместимость с **PR #132** (`lireate-qa-v6-20261126`, встроенный `#leftSideBar` на 13 patent tools): установщик вставляет блок v7 **перед** `</head>` только при отсутствии маркера v7 (идемпотентно, без сверки полного хеша файла); откат `--rollback` **вырезает** только блок `lireate-sitewide-sidebar-v7-20261126`, не возвращая файл целиком — последующие вставки (#132, perf-cron) сохраняются.
 6. Убедись, что публично доступны `/template/lireate/lireate-sidebar-v7.html`, резервный PHP endpoint, CSS, JS, SVG. Если 403/404/CSP: исправь маршрутизацию или подключи PHP sidebar непосредственно к автономному template; не отключай защиту CSP глобально.
-7. С согласованием установки: `python3 scripts/lireate_sitewide_sidebar_v7_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/sidebar-v7" --apply --php-bin php`. Установщик сверяет file hash непосредственно перед записью, делает внешнюю резервную копию и php lint; при ошибке откатывает.
-8. Сразу после — выполнить браузерный аудит (из корня репозитория):
-   `BASE=https://lireate.ru CHROME=/usr/bin/chromium LSV7_LIMIT=700 node scripts/lireate_sitewide_sidebar_v7_audit.mjs`
-   Используй правильный путь к Chrome/Chromium. Скрипт берёт публичный sitemap, плюс обязательные страницы CMS, каталог, все 14 кейсов и услуги по manifest. На 1440 и 390px проверяет `#leftSideBar` ровно один, видимость на desktop, burger на мобильном, отсутствие горизонтального overflow и JS ошибок; пишет `lireate-sidebar-v7-audit.json`.
+7. С согласованием установки: `python3 scripts/lireate_sitewide_sidebar_v7_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/sidebar-v7" --apply --php-bin php`. Перед записью head-файлов проверяется якорь `</head>` и отсутствие маркера v7; внешняя резервная копия и `php -l`; при ошибке откат вырезает v7-блок точечно.
+8. Сразу после — браузерный аудит (из корня репозитория):
+   `BASE=[REDACTED] CHROME=/usr/bin/chromium LSV7_LIMIT=700 node scripts/lireate_sitewide_sidebar_v7_audit.mjs --concurrency 4`
+   Учитывает `.lxq-mobile-nav-toggle` (PR #132), пропуск `SLUG-ЗАМЕНИТЬ`. На 1440 и 390px: один `#leftSideBar`, burger/toggle, overflow, JS; отчёт `lireate-sidebar-v7-audit.json`.
 9. Дополнительная ручная проверка: на главной и существующих страницах меню НЕ дублируется; `/findtz/`, `/patentnye-zadachi/` и каждый инструмент имеют полное меню; мобильное меню закрывается по Esc/подложке; категории раскрываются, логотип/пять соцсетей и телефоны кликабельны.
 10. Убедись, что следующий CRON (30 минут) не затрёт изменения. Включить это в основной deploy pipeline или перенести в согласованный main только после тестирования.
 11. Если ошибки — `--rollback /путь/к/каталогу-бэкапа` (с тем же `--docroot`).

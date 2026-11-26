@@ -1,19 +1,23 @@
 /* Browser QA for universal LIREATE sidebar.
- * CHROME=/usr/bin/chromium BASE=https://lireate.ru node scripts/lireate_sitewide_sidebar_v7_audit.mjs
+ * CHROME=/usr/bin/chromium BASE=[REDACTED] node scripts/lireate_sitewide_sidebar_v7_audit.mjs
+ * Optional: --concurrency 4  or  LSV7_CONCURRENCY=4
  * Requires puppeteer-core already used by project tooling.
  */
 import puppeteer from 'puppeteer-core';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const BASE=(process.env.BASE||'https://lireate.ru').replace(/\/+$/,'');
+const argConcurrency=process.argv.find((a,i)=>process.argv[i-1]==='--concurrency');
+const CONCURRENCY=Math.max(1,Math.min(16,Number(argConcurrency||process.env.LSV7_CONCURRENCY||'3')));
+const BASE=(process.env.BASE||'[REDACTED]').replace(/\/+$/,'');
 const CHROME=process.env.CHROME||'/usr/local/bin/google-chrome';
 const LIMIT=Math.max(1,Math.min(1000,Number(process.env.LSV7_LIMIT||'500')));
 const MANIFEST=path.resolve('pages/services');
+const SLUG_SKIP=/SLUG-ЗАМЕНИТЬ|SLUG-ZAMENIT/i;
 const routes=new Set([
  '/', '/findtz/', '/patent', '/patent_prom_obr', '/mktu', '/news',
  '/o_kompanii', '/team','/partners','/docs','/contacts/','/reviews','/portfolio',
- '/patentnye-zadachi/', '/dogovory/','/uslugi/',
+ '/patentnye-zadachi/', '/dogovory/','/registraciya_programm_evm/',
  '/registraciya_tovarnogo_znaka/','/prodlenie_tovarnogo_znaka/',
  '/vozrazhenie_protiv_registracii_tovarnogo_znaka/',
  '/zashchita_avtorskih_prav/'
@@ -26,7 +30,9 @@ if(fs.existsSync(MANIFEST)){
     const f=path.join(MANIFEST,slug,'publish.manifest.json');
     if(!fs.existsSync(f))continue;
     const cfg=JSON.parse(fs.readFileSync(f,'utf8'));
-    if(cfg.url_path)routes.add('/'+cfg.url_path.replace(/^\/+|\/+$/g,'')+'/');
+    const raw=(cfg.url_path||'').replace(/^\/+|\/+$/g,'');
+    if(!raw||SLUG_SKIP.test(raw))continue;
+    routes.add('/'+raw+'/');
   }
 }
 async function appendSitemap(url,depth=0){
@@ -42,6 +48,7 @@ async function appendSitemap(url,depth=0){
       if(/\.xml(?:$|\?)/i.test(u.pathname)){await appendSitemap(u.href,depth+1);continue;}
       if(/\.(pdf|png|jpe?g|webp|gif|svg|mp4|mp3|css|js|zip|docx?|xlsx?)$/i.test(u.pathname))continue;
       if(/\/(admin|api|ajax|login|wp-admin|bitrix|cron)\b/i.test(u.pathname))continue;
+      if(/\/(?:everest|reg-tov-znak|reg-tov-znak1|lireateCom|mail_parse|lireate-analytics)\b/i.test(u.pathname))continue;
       routes.add(u.pathname||'/');
       if(routes.size>=LIMIT)break;
     }
@@ -50,10 +57,11 @@ async function appendSitemap(url,depth=0){
 await appendSitemap(BASE+'/sitemap.xml');
 const all=[...routes].slice(0,LIMIT);
 const browser=await puppeteer.launch({executablePath:CHROME,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
-const results=[];
-for(let i=0;i<all.length;i++){
-  const route=all[i];const url=BASE+route;
-  const page=await browser.newPage();const jsErrors=[];
+
+async function auditRoute(route,index,total){
+  const url=BASE+route;
+  const page=await browser.newPage();
+  const jsErrors=[];
   page.on('pageerror',e=>jsErrors.push(String(e.message).slice(0,150)));
   const record={url,desktop:null,mobile:null,issues:[]};
   try{
@@ -75,7 +83,7 @@ for(let i=0;i<all.length;i++){
           display:css?.display??null,visibility:css?.visibility??null,
           injected:!!side?.getAttribute('data-lireate-sidebar-origin'),
           error:document.body.getAttribute('data-lsv7-error'),
-          hasBurger:!!document.querySelector('#lsv7-mobile-toggle,#lireatePublicCmsBurger,.hamburger'),
+          hasBurger:!!document.querySelector('#lsv7-mobile-toggle,#lireatePublicCmsBurger,.hamburger,.lxq-mobile-nav-toggle'),
           horizontalOverflow:doc.scrollWidth>innerWidth+3,
           text:side?.textContent?.slice(0,45)||''};
       });
@@ -89,13 +97,23 @@ for(let i=0;i<all.length;i++){
     }
   }catch(e){record.issues.push('browser navigation: '+e.message);}
   if(jsErrors.length)record.issues.push('JS: '+jsErrors.join(' | '));
-  results.push(record);
-  console.log((i+1)+'/'+all.length+' '+route+': '+(record.issues.length?record.issues.join('; '):'OK'));
+  console.log((index+1)+'/'+total+' '+route+': '+(record.issues.length?record.issues.join('; '):'OK'));
   await page.close();
+  return record;
 }
+
+const results=[];
+let cursor=0;
+async function worker(){
+  while(cursor<all.length){
+    const i=cursor++;
+    results[i]=await auditRoute(all[i],i,all.length);
+  }
+}
+await Promise.all(Array.from({length:Math.min(CONCURRENCY,all.length)},()=>worker()));
 await browser.close();
-const report={date:new Date().toISOString(),base:BASE,urls:all.length,failed:results.filter(x=>x.issues.length).length,results};
+const report={date:new Date().toISOString(),base:BASE,urls:all.length,concurrency:CONCURRENCY,failed:results.filter(x=>x.issues.length).length,results};
 const outfile=process.env.LSV7_REPORT||'lireate-sidebar-v7-audit.json';
 fs.writeFileSync(outfile,JSON.stringify(report,null,2));
-console.log('Saved '+outfile+' failed='+report.failed+'/'+report.urls);
+console.log('Saved '+outfile+' failed='+report.failed+'/'+report.urls+' concurrency='+CONCURRENCY);
 process.exit(report.failed?1:0);
