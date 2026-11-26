@@ -6,6 +6,7 @@
 (function(){
 "use strict";
 var FRAGMENT="/template/lireate/lireate-sidebar-v7.html";
+var FRAGMENT_PHP="/template/lireate/lireate-sidebar-v7-fragment.php";
 var SKIP=/^\/(?:admin|bitrix|wp-admin|wp-json|api|auth|login|personal|ajax|cron|vendor|upload|assets|template)\b/i;
 if(SKIP.test(location.pathname))return;
 var body=document.body;
@@ -27,19 +28,22 @@ function init(){
    }
    return;
  }
- var request;
- if(window.fetch){
-   request=fetch(FRAGMENT,{credentials:"same-origin",cache:"default"}).then(function(res){
-     if(!res.ok)throw new Error("Sidebar fragment HTTP "+res.status);
-     return res.text();
-   });
- }else{
-   request=new Promise(function(resolve,reject){
-     var xhr=new XMLHttpRequest();xhr.open("GET",FRAGMENT,true);
-     xhr.onload=function(){if(xhr.status===200)resolve(xhr.responseText);else reject(new Error("HTTP "+xhr.status));};
-     xhr.onerror=function(){reject(new Error("Network error"));};xhr.send();
+ function loadFragment(url){
+   if(window.fetch){
+     return fetch(url,{credentials:"same-origin",cache:"default"}).then(function(res){
+       if(!res.ok)throw new Error("Sidebar fragment HTTP "+res.status+" "+url);
+       return res.text();
+     });
+   }
+   return new Promise(function(resolve,reject){
+     var xhr=new XMLHttpRequest();xhr.open("GET",url,true);
+     xhr.onload=function(){if(xhr.status===200)resolve(xhr.responseText);else reject(new Error("HTTP "+xhr.status+" "+url));};
+     xhr.onerror=function(){reject(new Error("Network error "+url));};xhr.send();
    });
  }
+ var request=loadFragment(FRAGMENT).catch(function(){
+    return loadFragment(FRAGMENT_PHP);
+ });
  request.then(function(html){
    if(document.getElementById("leftSideBar"))return;
    var wrap=document.createElement("div");wrap.innerHTML=html;
