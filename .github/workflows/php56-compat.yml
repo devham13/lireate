@@ -98,9 +98,10 @@ jobs:
       - name: Rollout under Python 3.6 (docker)
         run: |
           set -euo pipefail
-          mkdir -p /tmp/lireate-rollout-docroot-ci
+          mkdir -p .ci-rollout-docroot
           docker run --rm -v "$PWD:/work" -w /work python:3.6 bash -c '
             set -euo pipefail
             python scripts/check_hosting_py36_compat.py
-            python scripts/lireate_light_v4_hosting_rollout.py --docroot /tmp/lireate-rollout-docroot-ci
+            python scripts/lireate_light_v4_hosting_rollout.py --docroot /work/.ci-rollout-docroot
+            python -m unittest scripts.test_lireate_light_v4_rollout_fixture_apply -q
           '
