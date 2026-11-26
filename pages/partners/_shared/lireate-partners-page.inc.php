@@ -35,7 +35,7 @@ $lp_footer_css = defined('LIREATE_PARTNERS_FOOTER_CSS_HREF')
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_assets); ?>/lireate-partners.css?v=<?php echo lireate_partners_h($lp_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_footer_css); ?>?v=<?php echo lireate_partners_h($lp_v); ?>">
 <link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
-<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126">
+<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126b">
 <script>
 document.documentElement.classList.add('lireate-partners-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_partners_h(LIREATE_PARTNERS_METRIKA_ID); ?>');

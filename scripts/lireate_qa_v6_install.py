@@ -24,9 +24,12 @@ from lireate_hosting_services_lib import load_manifest
 
 REPO = Path(__file__).resolve().parents[1]
 MARK = "lireate-qa-v6-20261126"
+QA_CACHE = "20261126b"
 HEAD = ('<!-- ' + MARK + ' -->\n'
-        '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126">\n'
-        '<script defer src="/template/js/lireate-qa-v6.js?v=20261126"></script>\n')
+        '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=' + QA_CACHE + '">\n'
+        '<script defer src="/template/js/lireate-qa-v6.js?v=' + QA_CACHE + '"></script>\n')
+QA_CACHE_CSS_RE = re.compile(r'/template/css/lireate-qa-v6\.css\?v=20261126b?', re.I)
+QA_CACHE_JS_RE = re.compile(r'/template/js/lireate-qa-v6\.js\?v=20261126b?', re.I)
 MAIN = Path('template/main.php')
 
 # All paths relative to actual web DOCROOT.
@@ -36,6 +39,14 @@ ASSETS = {
     'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php':'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php',
     'template/images/logo/logo-light-v5.svg':'template/images/logo/logo-light-v5.svg',
 }
+# Host state after QA V6 deploy commit a4ca4e8 (assets already on prod).
+_ASSET_DEPLOYED_BLOB = {
+    'template/css/lireate-qa-v6.css': '99b971aacf6e2b0cc2d83f41a20e294eb5156dae',
+    'template/js/lireate-qa-v6.js': 'ae8096f30e26993ea667f142c3ad00f6e7b8ac94',
+    'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php': '685055a5772c0c6bca191b253430dd30a2271be4',
+    'template/images/logo/logo-light-v5.svg': 'e62f67284d5eb62df3fe7579f3d201cd71228101',
+}
+ASSET_LIVE = frozenset(Path(p) for p in ASSETS)
 # Reviewed main-branch blobs (pre-PR #131 for company pages).
 _CMS_MAIN_BLOB = {
     'template/page/kontaktyi/lireate-contacts-page.inc.php': '2c36b465077012f5a5844811664f949d1f486c9c',
@@ -264,6 +275,49 @@ def register_possible(rel_paths):
     global _EXTRA_POSSIBLE
     _EXTRA_POSSIBLE = frozenset(_EXTRA_POSSIBLE | {Path(p) for p in rel_paths})
 
+def bump_qa_cache_query(text):
+    text = QA_CACHE_CSS_RE.sub('/template/css/lireate-qa-v6.css?v=' + QA_CACHE, text)
+    text = QA_CACHE_JS_RE.sub('/template/js/lireate-qa-v6.js?v=' + QA_CACHE, text)
+    return text
+
+def asset_target_sha(live_key):
+    source = ASSETS[live_key]
+    return blob_sha((REPO / source).read_bytes())
+
+def asset_allowed_set(live_key):
+    allowed = {asset_target_sha(live_key)}
+    deployed = _ASSET_DEPLOYED_BLOB.get(live_key)
+    if deployed:
+        allowed.add(deployed)
+    return allowed
+
+def asset_live_allowed(old, live_key):
+    allowed = asset_allowed_set(live_key)
+    if blob_sha(old) in allowed:
+        return True
+    return False
+
+def manifest_target(docroot, rel_str):
+    rel = Path(rel_str)
+    if rel.is_absolute() or '..' in rel.parts:
+        raise ValueError("BLOCKER manifest path invalid: " + rel_str)
+    docroot_res = docroot.resolve()
+    target = (docroot_res / rel).resolve()
+    try:
+        target.relative_to(docroot_res)
+    except ValueError:
+        raise ValueError("BLOCKER manifest path escapes docroot: " + rel_str)
+    if target.is_symlink():
+        raise ValueError("BLOCKER manifest symlink target: " + rel_str)
+    for parent in target.parents:
+        if parent == docroot_res:
+            break
+        if parent.is_symlink():
+            raise ValueError("BLOCKER manifest symlink in path: " + rel_str)
+    if target.exists() and not target.is_file():
+        raise ValueError("BLOCKER manifest target not a file: " + rel_str)
+    return target
+
 def live_matches_allowed(old, relative, before=None):
     allowed = BASE_ALLOWED.get(str(relative))
     if allowed is None:
@@ -301,7 +355,7 @@ def build_plan(docroot, with_tools=False, with_shared=False):
         raise ValueError("BLOCKER CMS template/main.php missing")
     current = main.read_text(encoding='utf-8')
     if MARK in current:
-        new = current
+        new = bump_qa_cache_query(current)
     else:
         if len(re.findall(r'</head\s*>', current, re.I)) != 1:
             raise ValueError("BLOCKER expected one closing head in template/main.php")
@@ -380,6 +434,9 @@ def build_plan(docroot, with_tools=False, with_shared=False):
             elif str_rel in SHARED_CMS:
                 if not live_matches_allowed(old, relative):
                     raise ValueError("BLOCKER live shared CMS drift: " + str_rel)
+            elif relative in ASSET_LIVE:
+                if not asset_live_allowed(old, str_rel):
+                    raise ValueError("BLOCKER live asset drift: " + str_rel)
             elif relative != MAIN:
                 raise ValueError("BLOCKER unexpected existing shared asset: " + str_rel)
         elif relative in expected or relative in service_footer_targets:
@@ -411,18 +468,31 @@ def save_backup(docroot, plan, backup):
     (backup/'manifest.json').write_text(json.dumps({'version':MARK,'files':entries}, indent=2, ensure_ascii=False),encoding='utf-8')
 
 def rollback(docroot, backup):
-    m=json.loads((backup/'manifest.json').read_text(encoding='utf-8'))
-    if m.get('version') != MARK: raise ValueError("BLOCKER backup version mismatch")
+    backup = backup.resolve()
+    m = json.loads((backup / 'manifest.json').read_text(encoding='utf-8'))
+    if m.get('version') != MARK:
+        raise ValueError("BLOCKER backup version mismatch")
+    ops = []
     for e in m['files']:
-        rel=Path(e['path'])
-        target=dest(docroot,rel)
-        if e['existed']:
-            archived=backup/rel
-            if not archived.is_file(): raise ValueError("BLOCKER missing backup "+str(rel))
-            write_atomic(target, archived.read_bytes())
+        rel_str = e['path']
+        target = manifest_target(docroot, rel_str)
+        archived = (backup / rel_str).resolve()
+        try:
+            archived.relative_to(backup)
+        except ValueError:
+            raise ValueError("BLOCKER backup archive escapes backup dir: " + rel_str)
+        if e.get('existed'):
+            if not archived.is_file():
+                raise ValueError("BLOCKER missing backup " + rel_str)
+            ops.append(('restore', target, archived.read_bytes()))
+        else:
+            ops.append(('delete', target, None))
+    for kind, target, payload in ops:
+        if kind == 'restore':
+            write_atomic(target, payload)
         elif target.is_file():
             target.unlink()
-    print("ROLLED_BACK",backup)
+    print("ROLLED_BACK", backup)
 
 def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__)

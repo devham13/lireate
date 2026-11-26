@@ -4,6 +4,7 @@ import base64
 import gzip
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -155,6 +156,70 @@ class QaV6Tests(unittest.TestCase):
         plan = mod.build_plan(self.docroot)
         self.assertNotIn(mod.MAIN, plan)
 
+    def test_main_qa_cache_bump_with_v7(self):
+        main = self.docroot / mod.MAIN
+        body = (
+            '<!doctype html><head><title>x</title>\n'
+            '<!-- lireate-qa-v6-20261126 -->\n'
+            '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126">\n'
+            '<script defer src="/template/js/lireate-qa-v6.js?v=20261126"></script>\n'
+            + V7_BEFORE_HEAD
+            + '</head><body></body>'
+        )
+        main.write_text(body, encoding='utf-8')
+        plan = mod.build_plan(self.docroot)
+        self.assertIn(mod.MAIN, plan)
+        out = plan[mod.MAIN].decode('utf-8')
+        self.assertIn('lireate-qa-v6.css?v=20261126b', out)
+        self.assertIn('lireate-sitewide-sidebar-v7', out)
+
+    def test_assets_prod_deployed_dry_run(self):
+        for live, source in mod.ASSETS.items():
+            path = self.docroot / live
+            path.parent.mkdir(parents=True, exist_ok=True)
+            data = subprocess.check_output(['git', 'show', 'a4ca4e8:{0}'.format(source)])
+            path.write_bytes(data)
+            self.assertTrue(mod.asset_live_allowed(data, live), live)
+        plan = mod.build_plan(self.docroot)
+        self.assertIn(Path('template/css/lireate-qa-v6.css'), plan)
+
+    def test_apply_shared_tools_rollback_standalone(self):
+        for live, source in mod.ASSETS.items():
+            path = self.docroot / live
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes((mod.REPO / source).read_bytes())
+        for live in mod.SHARED_CMS:
+            path = self.docroot / live
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(fixture_bytes(live))
+        for live in mod.CMS:
+            path = self.docroot / live
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(fixture_bytes(live))
+        footer = Path('registraciya_tovarnogo_znaka/lireate-service-footer.inc.php')
+        (self.docroot / footer).parent.mkdir(parents=True, exist_ok=True)
+        (self.docroot / footer).write_bytes(
+            (mod.REPO / 'pages/services/registraciya-tovarnogo-znaka/lireate-service-footer.inc.php').read_bytes()
+        )
+        for _src, (live_rel, before_sha) in mod.TOOLS.items():
+            live_path = self.docroot / live_rel
+            live_path.parent.mkdir(parents=True, exist_ok=True)
+            live_path.write_bytes(tool_baseline_bytes(before_sha))
+        baseline = {
+            p.relative_to(self.docroot): p.read_bytes()
+            for p in self.docroot.rglob('*')
+            if p.is_file()
+        }
+        backup_dir = Path(self.tmp.name) / 'rollback-test'
+        plan = mod.build_plan(self.docroot, with_tools=True, with_shared=True)
+        mod.save_backup(self.docroot, plan, backup_dir)
+        for rel, data in plan.items():
+            mod.write_atomic(self.docroot / rel, data)
+        mod.rollback(self.docroot, backup_dir)
+        for rel, data in baseline.items():
+            current = (self.docroot / rel).read_bytes()
+            self.assertEqual(current, data, str(rel))
+
     def test_with_shared_prod_blobs(self):
         for live in mod.SHARED_CMS:
             path = self.docroot / live
@@ -213,7 +278,7 @@ class QaV6Tests(unittest.TestCase):
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
             self.assertIn('lireate-company-pages-v5.css?v=20261126c', src)
-            self.assertIn('lireate-qa-v6.css?v=20261126', src)
+            self.assertIn('lireate-qa-v6.css?v=20261126b', src)
             self.assertNotIn('lireate-light-v4.css', src)
             self.assertNotIn('lireate-contacts-map', src)
             self.assertIn('lc5-hero-media lc5-hero-media--compact', src)
@@ -234,7 +299,7 @@ class QaV6Tests(unittest.TestCase):
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
             self.assertIn('lireate-company-pages-v5.css?v=20261126c', src)
-            self.assertIn('lireate-qa-v6.css?v=20261126', src)
+            self.assertIn('lireate-qa-v6.css?v=20261126b', src)
             self.assertNotIn('lireate-light-v4.css', src)
             self.assertIn('<details class="lireate-partners-disclosure">', src)
             self.assertIn('<summary class="lireate-partners-summary">', src)
