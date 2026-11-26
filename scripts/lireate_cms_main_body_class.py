@@ -171,6 +171,50 @@ def patch_home_light_v4_suppress_dark_body(text):
         if chunk_new != chunk:
             planned = planned[:start] + chunk_new + planned[end:]
             changed = True
+
+    ternary_cms_dark = re.compile(
+        r"<\?php\s+echo\s+((?:in_array|array_key_exists)\s*\([^\)]+\))\s*\?\s*"
+        r"'([^']*lireate-cms-page-dark[^']*)'\s*:\s*''\s*;\s*\?>",
+        re.IGNORECASE | re.DOTALL,
+    )
+
+    def _guard_ternary_cms(match):
+        cond = match.group(1).strip()
+        if "$temp['page']!='home'" in cond or marker in match.group(0):
+            return match.group(0)
+        cls = match.group(2)
+        return (
+            "<?php echo (({0}) && $temp['page']!='home' ? '{1}' : ''); /* {2} */ ?>".format(
+                cond, cls.replace("'", "\\'"), marker
+            )
+        )
+
+    nxt = ternary_cms_dark.sub(_guard_ternary_cms, planned)
+    if nxt != planned:
+        changed = True
+        planned = nxt
+
+    ternary_home_dark = re.compile(
+        r"<\?php\s+echo\s+([^\?;]+)\?\s*'([^']*lireate-home-dark[^']*)'\s*:\s*''\s*;\s*\?>",
+        re.IGNORECASE,
+    )
+
+    def _guard_ternary_home(match):
+        cond = match.group(1).strip()
+        if "$temp['page']!='home'" in cond or marker in match.group(0):
+            return match.group(0)
+        cls = match.group(2)
+        return (
+            "<?php echo (({0}) && $temp['page']!='home' ? '{1}' : ''); /* {2} */ ?>".format(
+                cond, cls.replace("'", "\\'"), marker
+            )
+        )
+
+    nxt = ternary_home_dark.sub(_guard_ternary_home, planned)
+    if nxt != planned:
+        changed = True
+        planned = nxt
+
     return planned, changed
 
 

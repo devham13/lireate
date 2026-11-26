@@ -1,8 +1,5 @@
 """Patch live template/js/main.js so legacy consent injector skips PHP-managed forms."""
 
-from __future__ import annotations
-
-import re
 import subprocess
 from pathlib import Path
 
@@ -35,8 +32,9 @@ def plan_patch(text):
 def node_check(path, node_bin="node"):
     proc = subprocess.run(
         [node_bin, "--check", str(path)],
-        capture_output=True,
-        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
     )
     if proc.returncode != 0:
         return (proc.stderr or proc.stdout or "node --check failed").strip()
@@ -55,9 +53,12 @@ def apply_patch(main_js_path, node_bin="node"):
         return False, "anchor not found in main.js"
     staging = path.parent / ".lireate-main-js-staged.js"
     staging.write_text(planned, encoding="utf-8")
-    err = node_check(staging, node_bin)
+    err = node_check(staging, node_bin=node_bin)
     if err:
-        staging.unlink(missing_ok=True)
+        try:
+            staging.unlink()
+        except OSError:
+            pass
         return False, err
     staging.replace(path)
     return True, "patched main.js consent skip"

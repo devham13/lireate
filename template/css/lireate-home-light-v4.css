@@ -696,19 +696,15 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .stat-card small {
   color: #52637b !important;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar,
-body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar a,
-body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar div {
-  background: #fff !important;
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar div,
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar p,
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar li {
+  background-color: #fff !important;
   color: #1f212c !important;
 }
-body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar a {
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar a:not(.leftSideLogo) {
+  background-color: #fff !important;
   color: #0f4db8 !important;
-}
-body.lireate-home-light-v4.lireate-theme-light-v4 a.leftSideLogo,
-body.lireate-home-light-v4.lireate-theme-light-v4 .leftSideLogo {
-  filter: brightness(0) saturate(100%) !important;
-  -webkit-filter: brightness(0) saturate(100%) !important;
-  opacity: 0.94 !important;
 }
 body.lireate-home-light-v4.lireate-cms-page-dark,
 body.lireate-home-light-v4.lireate-home-dark {

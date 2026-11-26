@@ -51,7 +51,7 @@ if (!defined('LIREATE_BLOG_READING_WPM')) {
 }
 
 if (!defined('LIREATE_BLOG_TEMPLATE_VERSION')) {
-    define('LIREATE_BLOG_TEMPLATE_VERSION', '2026-10-19n');
+    define('LIREATE_BLOG_TEMPLATE_VERSION', '20261126r17');
 }
 
 if (!defined('LIREATE_BLOG_LIST_TITLE')) {

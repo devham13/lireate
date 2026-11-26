@@ -140,7 +140,9 @@ def _replacement_block():
 
 
 def _head_snippet():
-    version = "20261125a"
+    from lireate_light_v4_asset_version import LIGHT_V4_ASSET_VERSION
+
+    version = LIGHT_V4_ASSET_VERSION
     return (
         "<?php if($temp['page']=='home' || (isset($_SERVER['REQUEST_URI']) && "
         "preg_match('#^/(?:index\\.php)?$#', parse_url((string)$_SERVER['REQUEST_URI'], PHP_URL_PATH)?:''))){ ?>\n"
@@ -336,10 +338,13 @@ def patch_body_class_conditional(text):
 
 
 def plan_home_main_content(text):
+    from lireate_main_php_cache_bust import patch_main_js_query
+
     text, _, _ = patch_home_main_content(text)
     text, _ = patch_body_class_conditional(text)
     text, _ = cms_body.patch_home_light_v4_suppress_dark_body(text)
     text, _ = patch_head_assets(text)
+    text, _ = patch_main_js_query(text)
     return text
 
 

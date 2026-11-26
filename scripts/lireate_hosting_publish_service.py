@@ -553,6 +553,12 @@ def _publish_slug(
         logging.info("backup: %s", backup_root)
 
     written_manifest = []
+    managed_dst = dest_dir / MANAGED_MARKER
+    managed_existed = managed_dst.is_file()
+    if managed_existed:
+        backup_root.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(managed_dst), str(backup_root / MANAGED_MARKER))
+
     dest_dir.mkdir(parents=True, exist_ok=True)
     for item in items_to_copy:
         src = Path(item["src"])
@@ -589,12 +595,20 @@ def _publish_slug(
         encoding="utf-8",
     )
 
+    written_manifest.append(
+        {
+            "rel": MANAGED_MARKER,
+            "scope": "service",
+            "existed_before": managed_existed,
+        }
+    )
     rollback_manifest = {
         "slug": slug,
         "url_path": url_path.strip("/"),
         "dest_dir": str(dest_dir),
         "published_at": ts,
         "written": written_manifest,
+        "managed_created": not managed_existed,
     }
     backup_root.mkdir(parents=True, exist_ok=True)
     (backup_root / "rollback-manifest.json").write_text(

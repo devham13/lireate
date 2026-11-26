@@ -64,6 +64,17 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 **Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
 
+### Круг 17 (логотип, cache-bust, reviews, rollback-порядок)
+
+| Задача | Решение |
+| --- | --- |
+| Логотип home/article | mask + `#1f212c`, `#leftSideBar a:not(.leftSideLogo)` + `background-color` |
+| Cache bust | `20261126r17`: home/blog/cms-head + `patch_main_js_query` в install |
+| /reviews тёмные карточки | `lireate-reviews-light-v4.css` overrides для `.review_box` и footer |
+| Rollback | **сначала perf**, потом publish; `.lireate-managed.json` в бэкапе; `_shared` docroot не удалять |
+| body dark на home | ternary/in_array guard в `lireate_cms_main_body_class.py` + `lireate-home-light-v4.js` снимает классы |
+| Python на REG.RU | hot-path publish/rollback/home-install — py36-scan в CI; cron/ручной запуск: `/opt/python/python-3.8.8/bin/python` (не системный 3.6.8) |
+
 ### Круг 16 (главная consent, тема, rollback услуг)
 
 | Задача | Решение |

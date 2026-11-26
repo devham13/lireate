@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Rollback published service tree from publish backup (+ optional performance patch)."""
 
-from __future__ import annotations
-
 import argparse
 import json
 import os
@@ -28,10 +26,7 @@ def cmd_rollback(args):
     manifest = rb.load_rollback_manifest(backup_dir)
     if not manifest:
         raise SystemExit("BLOCKER: rollback-manifest.json missing in {0}".format(backup_dir))
-    restored, removed = rb.restore_service_publish(docroot, backup_dir, manifest)
-    print("restored: {0}".format(len(restored)))
-    for rel in removed:
-        print("removed new: {0}".format(rel))
+
     if args.perf_backup:
         perf_dir = Path(args.perf_backup).expanduser()
         if not perf_dir.is_dir():
@@ -42,6 +37,11 @@ def cmd_rollback(args):
             print("WARN: performance rollback: {0}".format(err))
         else:
             print("performance restored: {0} files".format(len(perf_restored)))
+
+    restored, removed = rb.restore_service_publish(docroot, backup_dir, manifest)
+    print("restored: {0}".format(len(restored)))
+    for rel in removed:
+        print("removed new: {0}".format(rel))
     print("STATUS: SERVICE_ROLLBACK_OK slug={0} stamp={1}".format(args.slug, args.rollback))
     return 0
 

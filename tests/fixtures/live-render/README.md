@@ -101,12 +101,12 @@ scripts/run_live_render_fixture_screenshots.sh --sides after --pages home,articl
 export LIREATE_DOCROOT=~/www/public_html
 SLUG=prodlenie-tovarnogo-znaka
 STAMP=20261125T183000Z   # из лога publish --apply
-python3 scripts/lireate_hosting_service_rollback.py \
-  --docroot "$LIREATE_DOCROOT" --slug "$SLUG" --rollback "$STAMP"
-# опционально performance из того же rollout:
-python3 scripts/lireate_hosting_service_rollback.py \
+# сначала performance (если был rollout --apply), затем publish:
+/opt/python/python-3.8.8/bin/python scripts/lireate_hosting_service_rollback.py \
   --docroot "$LIREATE_DOCROOT" --slug "$SLUG" --rollback "$STAMP" \
   --perf-backup ~/lireate-autopub/backups/performance/<UTCSTAMP>
+/opt/python/python-3.8.8/bin/python scripts/lireate_hosting_service_rollback.py \
+  --docroot "$LIREATE_DOCROOT" --slug "$SLUG" --rollback "$STAMP"
 ```
 
 `rollback-manifest.json` в бэкапе перечисляет все записанные файлы; откат **восстанавливает** перезаписанные из бэкапа и **удаляет** файлы, появившиеся при первой публикации.

@@ -135,10 +135,29 @@ body.lireate-theme-light-v4 #list .rewiev_head,
 body.lireate-reviews-body #list .review_box,
 body.lireate-reviews-body #list .text_box,
 body.lireate-reviews-body .review_box,
-body.lireate-reviews-body .text_box {
+body.lireate-reviews-body .text_box,
+body.lireate-reviews-body.lireate-cms-page-dark .review_box,
+body.lireate-reviews-body.lireate-cms-page-dark #list .review_box,
+body.lireate-reviews-body.lireate-cms-page-dark .review_box > div,
+body.lireate-reviews-body.lireate-cms-page-dark .default_text {
   background: #fff !important;
+  background-color: #fff !important;
   color: #1f212c !important;
   border-color: #dce8f7 !important;
+}
+body.lireate-reviews-body footer,
+body.lireate-reviews-body footer:not(.lx-site-footer),
+body.lireate-reviews-body .footer,
+body.lireate-reviews-body.lireate-cms-page-dark footer,
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer {
+  background: #f7fbff !important;
+  background-color: #f7fbff !important;
+  color: #1f212c !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-reviews-body footer a,
+body.lireate-reviews-body .lx-site-footer a {
+  color: #0f4db8 !important;
 }
 body.lireate-reviews-body #list,
 body.lireate-reviews-body #list .default_text,
