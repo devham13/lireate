@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Home hero: portrait assets, picture markup; hero uses scoped cover+zoom (r24)."""
+"""Home hero: portrait assets, picture markup; hero uses scoped cover+zoom (r25 frame)."""
 
 import re
 import sys
@@ -45,6 +45,10 @@ class HomeHeroPhotoTests(unittest.TestCase):
         )
         self.assertRegex(css, r"object-position:\s*50%\s*2%")
         self.assertIn("transform:scale(1.78)", css.replace(" ", ""))
+        compact = css.replace(" ", "")
+        self.assertIn("max-height:min(58vh,520px)", compact)
+        self.assertIn("max-width:min(42vw,400px)", compact)
+        self.assertNotIn("aspect-ratio:10/13", compact)
 
     def test_head_snippet_preloads_hero_image(self):
         import lireate_home_light_v4_install_lib as home_lib

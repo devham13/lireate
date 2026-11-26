@@ -753,7 +753,7 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid{align-ite
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid > .reveal:first-child{padding-top:0;margin-top:0}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-card{align-self:start}
 }
-/* r24: портрет hero — кадр по грудь, лицо крупнее (cover + scale, макушка в кадре) */
+/* r25: портрет hero — прежний размер окна (r23), внутри cover+zoom по грудь */
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo picture{
   display:block;
   width:100%;
@@ -764,31 +764,36 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-
   object-fit:cover !important;
   object-position:50% 2% !important;
   transform:scale(1.78) !important;
-  transform-origin:50% 12% !important;
+  transform-origin:50% 10% !important;
+  width:100%;
+  height:100%;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-card:hover .expert-photo img{
+  transform:scale(1.78) !important;
 }
 @media (min-width: 861px) {
-body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right{max-width:min(34vw,340px);justify-self:end}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right{max-width:min(42vw,400px);justify-self:end}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo{
-  aspect-ratio:10/13;
-  max-height:min(44vh,400px);
+  aspect-ratio:683/1024;
+  max-height:min(58vh,520px);
   width:100%;
   height:auto;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo picture{
-  max-height:min(44vh,400px);
+  max-height:min(58vh,520px);
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo img{
-  width:100%;
-  height:100%;
-  max-height:min(44vh,400px);
+  max-height:min(58vh,520px);
 }
 }
 @media (max-width: 860px) {
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo{
-  aspect-ratio:10/13;
-  max-height:min(68vw,380px);
+  aspect-ratio:683/1024;
+  max-height:none;
+  width:100%;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo img{
-  transform:scale(1.55) !important;
+  transform:scale(1.62) !important;
+  transform-origin:50% 8% !important;
 }
 }
