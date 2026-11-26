@@ -55,6 +55,7 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <?php endif; ?>
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>"><!-- lireate_blog_light_v4 -->
+<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126">
 <script>
 document.documentElement.classList.add('lireate-blog-html');
 if (document.body) { document.body.classList.add('lireate-blog-body'); document.body.classList.add('lireate-theme-light-v4'); }
@@ -132,7 +133,7 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); document.
   <section class="lireate-blog-list-featured" aria-label="Свежая публикация">
     <div class="lireate-blog-list-wrap lireate-blog-list-featured-grid">
       <a class="lireate-blog-list-featured-cover<?php echo $fcover === '' ? ' lireate-blog-list-featured-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($lb_featured['url']); ?>"<?php echo $fcover_style !== '' ? ' style="' . $fcover_style . '"' : ''; ?>>
-        <?php if (defined('LIREATE_BLOG_LIST_COVER_IMG') && $fcover !== '') : ?>
+        <?php if ($fcover !== '') : ?>
         <img class="lireate-blog-list-cover-img" src="<?php echo lireate_blog_h($fcover); ?>" alt="" width="960" height="540" loading="eager" decoding="sync">
         <?php endif; ?>
         <span class="lireate-blog-list-featured-label">Свежий материал</span>
@@ -180,8 +181,8 @@ if (document.body) { document.body.classList.add('lireate-blog-body'); document.
             ?>
         <article class="lireate-blog-list-card">
           <a class="lireate-blog-list-card-cover<?php echo $cover === '' ? ' lireate-blog-list-card-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($card['url']); ?>"<?php echo $cover_style !== '' ? ' style="' . $cover_style . '"' : ''; ?>>
-            <?php if (defined('LIREATE_BLOG_LIST_COVER_IMG') && $cover !== '') : ?>
-            <img class="lireate-blog-list-cover-img" src="<?php echo lireate_blog_h($cover); ?>" alt="" width="640" height="360" loading="eager" decoding="sync">
+            <?php if ($cover !== '') : ?>
+            <img class="lireate-blog-list-cover-img" src="<?php echo lireate_blog_h($cover); ?>" alt="" width="640" height="360" loading="lazy" decoding="async">
             <?php endif; ?>
             <?php if (!empty($card['tag'])) : ?>
             <span class="lireate-blog-list-card-tag"><?php echo lireate_blog_h($card['tag']); ?></span>
