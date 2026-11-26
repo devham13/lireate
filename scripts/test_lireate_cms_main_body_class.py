@@ -88,8 +88,15 @@ class CmsMainBodyClassTests(unittest.TestCase):
     def test_live_main_fixture_lineage_comment(self):
         if not LIVE_MAIN_FIXTURE.is_file():
             self.skipTest("live main.php fixture missing")
-        head = LIVE_MAIN_FIXTURE.read_text(encoding="utf-8", errors="replace")[:400]
-        self.assertIn("9e2479f6", head)
+        # Byte copy of live template/main.php (md5 9e2479f6...) with only the
+        # legacy DB credentials (lines ~4822-4825) replaced by FIXTURE.
+        import hashlib
+        raw = LIVE_MAIN_FIXTURE.read_bytes()
+        self.assertEqual("17b6c1336d2b400237a42930cb5da3ef", hashlib.md5(raw).hexdigest())
+        text = raw.decode("utf-8")
+        self.assertEqual(6120, text.count("\n") + (0 if text.endswith("\n") else 1))
+        for var in ("host", "database", "user", "password"):
+            self.assertRegex(text, r"\$" + var + r"\s*=\s*'FIXTURE';")
 
 
 if __name__ == "__main__":
