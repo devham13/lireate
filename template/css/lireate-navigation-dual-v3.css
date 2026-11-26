@@ -47,3 +47,5 @@ html body:is(.lireate-theme-light-v4,.lireate-home-light-v4,.lireate-reviews-bod
 html body:is(.lireate-theme-light-v4,.lireate-home-light-v4,.lireate-reviews-body,.lireate-team-body,.lireate-portfolio-body,.lireate-about-body,.lireate-legacy-article-lu) #leftSideBar .leftSideSoc>a{color:#2155b9!important;background-color:#f8fbff!important}
 html body:is(.lireate-theme-light-v4,.lireate-home-light-v4,.lireate-reviews-body,.lireate-team-body,.lireate-portfolio-body,.lireate-about-body,.lireate-legacy-article-lu) #leftSideBar .leftSideSoc>a:hover{color:#e32020!important;background-color:#eef5ff!important}
 html body:is(.lireate-theme-light-v4,.lireate-home-light-v4,.lireate-reviews-body,.lireate-team-body,.lireate-portfolio-body,.lireate-about-body,.lireate-legacy-article-lu) #leftSideBar a.leftSideTel{color:#1f212c!important;background-color:#fff!important}
+/* Hide external «Оплата услуг» from CMS sidebar (page stays live). */
+#leftSideBar a.leftSideNaviButton[href*="tochka.com/myprofile/lireat"]{display:none!important;visibility:hidden!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;border:0!important}
