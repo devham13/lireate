@@ -3,7 +3,7 @@
 | | |
 |--|--|
 | PR | https://github.com/devham13/lireate/pull/127 |
-| SHA | `d0ae45b` |
+| SHA | `e2ec810` (основной фикс: `d0ae45b`) |
 | Ветка | `cursor/nav-v3-socials-full-b68f` |
 
 ## Исправлено
