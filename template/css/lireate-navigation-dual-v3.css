@@ -70,4 +70,11 @@ html body:is(.lireate-theme-light-v4,.lireate-home-light-v4,.lireate-reviews-bod
 #leftSideBar a.leftSideNaviButton[href*="tochka.com/myprofile/lireat"]{display:none!important;visibility:hidden!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;border:0!important}
 @media(max-width:1150px){body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .ln3-anchor-mobile-bar{display:flex!important}body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav.is-scrolled{box-shadow:none!important}}
 @media(min-width:1151px){.ln3-anchor-mobile-bar,.ln3-anchor-mobile{display:none!important}}
+@media(max-width:1150px){
+ body.lireate-home-light-v4.lireate-theme-light-v4 #topBar,body.lireate-theme-light-v4 #topBar{background:#fff!important;color:#1f212c!important;border-bottom:1px solid #dce8f7!important;box-shadow:0 4px 18px rgba(31,46,76,.06)!important}
+ body.lireate-home-light-v4 .wrapper,body.lireate-home-light-v4 .container.content,body.lireate-home-light-v4 .page_container{padding-top:0!important;margin-top:0!important}
+ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .ln3-anchor-mobile-bar{margin-top:0!important;padding-top:10px!important}
+ body.lireate-theme-light-v4 .ln3-anchor-toggle{justify-content:center;text-align:center}
+ body.lireate-public-cms-chrome:not(.lireate-home-light-v4) .lireate-public-cms-content{padding-top:0!important}
+}
 body.lireate-public-cms-chrome.side-collapsed #leftSideBar .lpc-sidebar-head{flex-direction:column;align-items:center}

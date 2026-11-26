@@ -29,7 +29,17 @@ class NavV3FullTests(unittest.TestCase):
         self.assertIn("lireate-navigation-dual-v3.css", text)
         self.assertIn("lireate-public-cms-chrome.css", text)
         self.assertIn("lireate-global-subnav-light-v4.css", text)
-        self.assertIn("20261126r5", text)
+        self.assertIn("20261126r6", text)
+
+    def test_service_cms_chrome_only_rtz(self):
+        path = ROOT / "pages/services/_shared/lireate-service-cms-chrome.inc.php"
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("registraciya-tovarnogo-znaka", text)
+        self.assertIn("LIREATE_LH4_FORCE_ANCHORS", text)
+        rtz = (ROOT / "pages/services/registraciya-tovarnogo-znaka/index.php").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("lireate_service_cms_chrome_wire_begin", rtz)
 
     def test_js_has_collapse_and_anchor_mobile(self):
         js = (ROOT / "template/js/lireate-navigation-dual-v3.js").read_text(encoding="utf-8")

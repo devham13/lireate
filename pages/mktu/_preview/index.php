@@ -16,7 +16,7 @@ $v = LIREATE_NAV_V3_ASSET_QS;
   <title>МКТУ — preview Light V4 + Nav V3</title>
   <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
 </head>
-<body class="cms-default lireate-mktu-lu-body lireate-theme-light-v4 lireate-screenshot-capture">
+<body class="cms-default lireate-mktu-lu-body lireate-theme-light-v4 lireate-public-cms-chrome lireate-screenshot-capture">
 <?php
 require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 lireate_public_cms_include_chrome();

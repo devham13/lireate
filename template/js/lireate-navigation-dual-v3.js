@@ -58,9 +58,16 @@
 (function(){
  "use strict";
  var COLLAPSE_KEY="lireateNavV3SideCollapsed";
+ function navV3ChromeActive(){
+  var body=document.body;
+  if(!body)return false;
+  if(body.classList&&body.classList.contains("lireate-public-cms-chrome"))return true;
+  if(body.className.indexOf("lireate-public-cms-chrome")!==-1)return true;
+  return !!document.getElementById("collapseSide");
+ }
  function applyCollapseFromStore(){
   var body=document.body;
-  if(!body||body.className.indexOf("lireate-public-cms-chrome")===-1)return;
+  if(!body||!navV3ChromeActive())return;
   try{
    if(window.innerWidth>=1151&&localStorage.getItem(COLLAPSE_KEY)==="1"){
     body.classList.add("side-collapsed");

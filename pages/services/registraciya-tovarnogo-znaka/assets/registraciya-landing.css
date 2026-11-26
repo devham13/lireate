@@ -304,6 +304,19 @@ body.registraciya-landing-body .lx-reviews-rail {
   color: #f9a8d4;
 }
 
+/* CMS chrome (Nav V3) на standalone-услуге: скрыть встроенный lx-nav-pill */
+body.lireate-svc-cms-chrome.lireate-public-cms-chrome .lx-nav-shell {
+  display: none !important;
+}
+body.lireate-svc-cms-chrome.lireate-public-cms-chrome .lireate-public-cms-content > .lireate-svc-page {
+  margin-left: 0 !important;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+body.lireate-svc-cms-chrome.lireate-public-cms-chrome .lireate-public-cms-content {
+  overflow-x: clip;
+}
+
 /* Футер: без 100vw — иначе ~8px горизонтального overflow (полоса прокрутки).
    Пилот v2: без overflow-x:hidden на body — см. registraciya-pilot-v2.css */
 

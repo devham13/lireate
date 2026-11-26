@@ -15,7 +15,7 @@ if (!function_exists('lireate_public_cms_chrome_require_lib')) {
         if ($doc !== '') {
             $paths[] = $doc . '/pages/_shared/lireate-public-cms-chrome-lib.php';
         }
-        $paths[] = dirname(dirname(__FILE__)) . '/_shared/lireate-public-cms-chrome-lib.php';
+        $paths[] = dirname(dirname(dirname(__FILE__))) . '/_shared/lireate-public-cms-chrome-lib.php';
         foreach ($paths as $path) {
             if ($path !== '' && is_file($path)) {
                 require_once $path;
