@@ -153,6 +153,13 @@ class BlogInstallLibTests(unittest.TestCase):
         self.assertIn("template/page/news/lireate-blog-list-legacy.inc.php", dests)
         self.assertIn("template/images/blog/author/yuriy-gorbachev.jpg", dests)
 
+    def test_copy_plan_deploys_public_chrome_shared(self):
+        pairs = lib.copy_plan(REPO_ROOT)
+        dests = {str(rel).replace("\\", "/") for _, rel in pairs}
+        self.assertIn("pages/_shared/lireate-lh4-subnav-lib.php", dests)
+        self.assertIn("pages/_shared/lireate-public-cms-chrome-lib.php", dests)
+        self.assertIn("template/css/lireate-global-subnav-light-v4.css", dests)
+
     def test_copy_plan_excludes_service_template_lireate_assets(self):
         pairs = lib.copy_plan(REPO_ROOT)
         dests = {str(rel).replace("\\", "/") for _, rel in pairs}

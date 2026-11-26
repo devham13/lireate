@@ -674,6 +674,19 @@ BLOG_SITE_FOOTER_BUNDLE = (
     "lireate-messenger-require.inc.php",
 )
 
+# LH4 subnav + public CMS chrome (blog layout и услуги после PR B).
+BLOG_PAGES_SHARED_FILES = (
+    "lireate-lh4-subnav-lib.php",
+    "lireate-lh4-subnav.inc.php",
+    "lireate-public-cms-chrome-lib.php",
+    "lireate-public-cms-chrome.inc.php",
+    "lireate-public-cms-sidebar.inc.php",
+)
+BLOG_PUBLIC_CHROME_CSS = (
+    Path("template/css/lireate-global-subnav-light-v4.css"),
+    Path("template/css/lireate-public-cms-chrome.css"),
+)
+
 
 def deploy_docroot_messenger_shared(office_repo, docroot):
     """Copy messenger bundle to docroot/_shared (live layout for blog footer + services)."""
@@ -737,6 +750,16 @@ def copy_plan(office_repo):
     list_legacy = news_dir / "lireate-blog-list-legacy.inc.php"
     if list_legacy.is_file():
         by_dest[LIST_LEGACY_REL] = list_legacy
+    pages_shared = repo / "pages" / "_shared"
+    if pages_shared.is_dir():
+        for name in BLOG_PAGES_SHARED_FILES:
+            src = pages_shared / name
+            if src.is_file():
+                by_dest[Path("pages/_shared") / name] = src
+    for rel_css in BLOG_PUBLIC_CHROME_CSS:
+        src = repo / rel_css
+        if src.is_file():
+            by_dest[rel_css] = src
     index = repo / "data" / "blog-articles-index.json"
     if index.is_file():
         by_dest[Path("data/blog-articles-index.json")] = index
@@ -1567,6 +1590,20 @@ def stage_service_diag_tree(sandbox, office_repo):
                 target = dest_root / rel
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(str(path), str(target))
+    office_pages_shared = repo / "pages" / "_shared"
+    sandbox_pages_shared = sandbox / "pages" / "_shared"
+    if office_pages_shared.is_dir():
+        sandbox_pages_shared.mkdir(parents=True, exist_ok=True)
+        for name in BLOG_PAGES_SHARED_FILES:
+            src = office_pages_shared / name
+            if src.is_file():
+                shutil.copy2(str(src), str(sandbox_pages_shared / name))
+    for rel_css in BLOG_PUBLIC_CHROME_CSS:
+        src = repo / rel_css
+        if src.is_file():
+            dst = sandbox / rel_css
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(src), str(dst))
 
 
 def resolve_service_diag_index(sandbox, office_repo):

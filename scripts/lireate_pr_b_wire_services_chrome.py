@@ -9,13 +9,11 @@ ROOT = Path(__file__).resolve().parents[1]
 SERVICES = ROOT / "pages" / "services"
 MARKER = "lireate-public-cms-chrome-wire:v1"
 INSERT = (
-    '<?php /* %s */ require_once dirname(dirname(__DIR__)) . '
-    "'/_shared/lireate-public-cms-chrome-lib.php'; "
-    "lireate_public_cms_include_chrome(); "
-    "lireate_public_cms_include_subnav(); "
-    "lireate_public_cms_content_open(); ?>\n"
+    '<?php /* %s */ require_once dirname(__DIR__) . '
+    "'/_shared/lireate-public-cms-chrome-wire.inc.php'; "
+    "lireate_public_cms_chrome_wire_open(); ?>\n"
 )
-CLOSE = '<?php /* lireate-public-cms-chrome-wire:v1 */ lireate_public_cms_content_close(); ?>'
+CLOSE = '<?php /* lireate-public-cms-chrome-wire:v1 */ lireate_public_cms_chrome_wire_close(); ?>'
 
 
 def patch_file(path: Path, dry_run: bool) -> str:
