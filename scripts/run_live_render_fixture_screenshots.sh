@@ -34,12 +34,13 @@ python3 -m http.server "$PORT" --bind 127.0.0.1 --directory "$REPO" >"$OUT/http.
 SRV=$!
 trap 'kill $SRV 2>/dev/null || true' EXIT
 for _ in $(seq 1 50); do curl -fsS -o /dev/null "http://127.0.0.1:$PORT/tests/fixtures/live-render/README.md" 2>/dev/null && break; sleep 0.1; done
-export LRF_PORT="$PORT" LRF_SIDES="$SIDES" LRF_PAGES="$PAGES" LRF_OUT="$OUT" LRF_FAIL="$FAIL_ON_CONTRAST"
+export LRF_REPO="$REPO" LRF_PORT="$PORT" LRF_SIDES="$SIDES" LRF_PAGES="$PAGES" LRF_OUT="$OUT" LRF_FAIL="$FAIL_ON_CONTRAST"
 python3 - <<'PY'
 import json, os, sys, urllib.parse
 from playwright.sync_api import sync_playwright
 
 PORT = os.environ['LRF_PORT']; OUT = os.environ['LRF_OUT']
+REPO_ROOT = os.environ.get('LRF_REPO', os.getcwd())
 SIDES = os.environ['LRF_SIDES'].split(','); PAGES = os.environ['LRF_PAGES'].split(',')
 OFFLINE = os.environ.get('LIREATE_FIXTURE_OFFLINE') == '1'
 ALLOW = ('lireate.ru', 'fonts.googleapis.com', 'fonts.gstatic.com', 'code.jquery.com', 'unpkg.com', 'cdn.jsdelivr.net')
@@ -72,6 +73,14 @@ if pu:
 def route(r):
     host = urllib.parse.urlparse(r.request.url).hostname or ''
     if host in ('127.0.0.1', 'localhost'):
+        # Root-relative live assets (e.g. url(/template/images/logo/logo.svg) in repo CSS) are not in the repo:
+        # serve them same-origin from lireate.ru so CORS-mode loads (mask-image, fonts) behave as on the live site.
+        path = urllib.parse.urlparse(r.request.url).path
+        if not OFFLINE and path.startswith('/template/images/') and not os.path.isfile(os.path.join(REPO_ROOT, path.lstrip('/'))):
+            try:
+                return r.fulfill(response=r.fetch(url='https://lireate.ru' + path))
+            except Exception:
+                return r.abort()
         return r.continue_()
     if OFFLINE or not any(host == a or host.endswith('.' + a) for a in ALLOW):
         return r.abort()
