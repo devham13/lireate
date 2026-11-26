@@ -6,7 +6,9 @@
 
 | Файл | Суть |
 |------|------|
-| `template/css/lireate-home-light-v4.css` | `hero-grid` → `align-items:start`; портрет 683×1024, `object-fit:contain`; **HOME_CSS r22** |
+| `template/css/lireate-home-light-v4.css` | `hero-grid` → `align-items:start`; портрет 683×1024, `object-fit:contain`, max-height в первый экран; **HOME_CSS r23** |
+| `template/css/lireate-cms-pages-light-v4.css` | preview: `wrapper` с отступом под `#leftSideBar` ≥1151px |
+| `pages/home/_shared/lireate-home-data.php` | портрет с диска DOCROOT (не live URL, если JPG есть) |
 | `template/images/home/gabdrakhmanova-elvira-2026-11.jpg` | Оригинал 683×1024 (байт-в-байт с `design-proposals/incoming/…`) |
 | `template/images/home/gabdrakhmanova-elvira-2026-11.webp` | Доп. WebP q92 для `<picture>` |
 | `pages/home/_shared/lireate-home-data.php` | `lireate_home_hero_expert_portrait()` |

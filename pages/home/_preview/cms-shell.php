@@ -4,7 +4,12 @@
  * php -S 127.0.0.1:19080 pages/home/_preview/router.php
  */
 $repo_root = dirname(dirname(dirname(__DIR__)));
+unset($_ENV['LIREATE_PUBLIC_SITE_URL'], $_ENV['LIREATE_PUBLIC_SITE_HOST']);
+putenv('LIREATE_PUBLIC_SITE_URL');
+putenv('LIREATE_PUBLIC_SITE_HOST');
 require_once $repo_root . '/pages/_shared/lireate-preview-bootstrap.php';
+require_once $repo_root . '/pages/home/_shared/lireate-home-config.php';
+$lh_preview_v = defined('LIREATE_HOME_CSS_VERSION') ? LIREATE_HOME_CSS_VERSION : '20261126r23';
 if (!defined('LIREATE_HOME_PREVIEW')) {
     define('LIREATE_HOME_PREVIEW', true);
 }
@@ -21,8 +26,8 @@ $metrika_id = '52622734'; // pragma: allowlist secret
   <title><?php echo htmlspecialchars($seo_title, ENT_QUOTES, 'UTF-8'); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($seo_description, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="canonical" href="/">
-  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125f">
-  <link rel="stylesheet" href="/template/css/lireate-home-light-v4.css?v=20261125f">
+  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo htmlspecialchars($lh_preview_v, ENT_QUOTES, 'UTF-8'); ?>">
+  <link rel="stylesheet" href="/template/css/lireate-home-light-v4.css?v=<?php echo htmlspecialchars($lh_preview_v, ENT_QUOTES, 'UTF-8'); ?>">
   <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125c">
   <?php require $repo_root . '/template/page/home/lireate-home-schema-live.inc.php'; ?>
   <script type="text/javascript">

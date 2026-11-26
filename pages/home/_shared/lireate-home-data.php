@@ -124,15 +124,16 @@ function lireate_home_hero_expert_portrait()
     $jpg_rel = '/template/images/home/gabdrakhmanova-elvira-2026-11.jpg';
     $webp_rel = '/template/images/home/gabdrakhmanova-elvira-2026-11.webp';
     $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+    $has_jpg = $doc !== '' && is_file($doc . $jpg_rel);
     $has_webp = $doc !== '' && is_file($doc . $webp_rel);
     $jpg = $jpg_rel;
     $webp = '';
     if ($has_webp) {
         $webp = $webp_rel;
     }
-    if (function_exists('lireate_preview_live_url')) {
+    if (!$has_jpg && function_exists('lireate_preview_live_url')) {
         $jpg = lireate_preview_live_url($jpg);
-        if ($webp !== '') {
+        if ($webp !== '' && ! $has_webp) {
             $webp = lireate_preview_live_url($webp);
         }
     }

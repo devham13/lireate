@@ -752,3 +752,19 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid{align-ite
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-grid > .reveal:first-child{padding-top:0;margin-top:0}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-card{align-self:start}
 }
+/* r23: портрет в первый экран 1440×900 — contain, ограничение высоты без обрезки */
+@media (min-width: 861px) {
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right{max-width:min(42vw,400px);justify-self:end}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-photo{
+  aspect-ratio:683/1024;
+  max-height:min(58vh,520px);
+  width:100%;
+  height:auto;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo picture,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-photo img{
+  width:100%;
+  height:100%;
+  max-height:min(58vh,520px);
+}
+}
