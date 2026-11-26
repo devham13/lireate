@@ -30,3 +30,5 @@ subnav: `lireate_lh4_include_subnav()` на публичных CMS и услуг
 | (public) | yes | yes | `/partners (Партнёры)` |
 | (public) | yes | yes | `/docs (Документы)` |
 | (public) | yes | yes | `/contacts/ (Контакты)` |
+| (public) | yes | yes | `/findtz/` → `pages/services/proverka-tovarnogo-znaka/` |
+| (public) | yes | yes | `/prodlenie_tovarnogo_znaka/` → `pages/services/prodlenie-tovarnogo-znaka/` |
