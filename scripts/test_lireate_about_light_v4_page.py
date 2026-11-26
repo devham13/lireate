@@ -80,7 +80,7 @@ class AboutLightV4PageTests(unittest.TestCase):
     def test_preview_has_no_service_dark(self):
         text = PREVIEW.read_text(encoding="utf-8")
         self.assertNotIn("lireate-service-dark", text)
-        self.assertIn("lireate-cms-page-dark", text)
+        self.assertIn("lireate-company-v5", text)
 
     def test_cms_light_v4_about_wins_over_dark_shell(self):
         css = CMS_CSS.read_text(encoding="utf-8")
