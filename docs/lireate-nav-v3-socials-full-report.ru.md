@@ -36,3 +36,17 @@
 ## Референс
 
 Ветка `design/nav-v3-socials-reference` @ `c18f1ff` — **не включена** в PR, использовалась только для чтения.
+
+### Соответствие референсу (разбор [Extract reference nav HTML patterns](bc-bea202e1-c3c4-59c8-80b2-ae12cfcedcaa))
+
+| Паттерн референса | В #127 |
+|-------------------|--------|
+| Sticky top-nav, 16–19px, разделители, `ln3-active` + подчёркивание | Да: `lh4-subnav` + `lireate-global-subnav-light-v4.css`, home — `lireate-navigation-dual-v3.css` |
+| `scroll-progress` в шапке | Да на главной Light V4 (`lireate-home-page.inc.php`); в CMS chrome — нет |
+| 5 соцсетей, inline SVG, grid | Да в `lireate-public-cms-sidebar.inc.php` + patch path в JS |
+| Mobile drawer sidebar + shade | Да: `lireate-public-cms-chrome` burger/veil, ≤1150px |
+| Desktop collapse sidebar → ~78px (`body.side-collapsed`) | **Нет** — отдельная итерация (CMS `#leftSideBar` на проде без collapse) |
+| ≤660px: скрыть top-nav, кнопка «Якоря» + `anchor-mobile` | **Частично:** subnav скрыт с ≤1150px (как у главной); отдельной полосы «Разделы»/anchor-mobile нет — якоря только через бургер или контент |
+| `is-scrolled` + усиленная тень шапки | **Нет** в chrome subnav (на home — логика в home JS) |
+
+Вывод: визуал и соцсети близки к референсу; сознательно не переносили collapse desktop и mobile-only anchor-grid, чтобы не ломать CMS-разметку и согласованность с брейкпоинтом 1150px главной.
