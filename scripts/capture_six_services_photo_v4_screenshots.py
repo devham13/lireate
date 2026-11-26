@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/screenshots/six-services-v4"
 PORT = int(__import__("os").environ.get("LIREATE_SIX_PHOTO_V4_PORT", "19140"))
 MARKER = "lireate-six-services-photo-v4-20261126"
-CACHE_VER = "20261126h"
+CACHE_VER = "20261126i"
 
 
 def live_host() -> str:
@@ -158,6 +158,15 @@ def main() -> int:
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page()
+            page.set_viewport_size({"width": 1440, "height": 900})
+            page.goto(f"{live_host()}/", wait_until="networkidle", timeout=120000)
+            home = page.locator(
+                ".lh4-root .hero-right .expert-card, .hero-right .expert-card"
+            ).first
+            home.wait_for(state="visible", timeout=30000)
+            page.evaluate("window.scrollTo(0,0)")
+            home.screenshot(path=str(OUT / "home-expert-card-1440.png"))
+            print("wrote", OUT / "home-expert-card-1440.png")
             for route in ROUTES:
                 for tag, w, h in (("1440", 1440, 900), ("390", 390, 900)):
                     page.set_viewport_size({"width": w, "height": h})
@@ -196,9 +205,9 @@ def main() -> int:
                 "main{padding:24px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}"
                 "figure{margin:0}img{width:100%;aspect-ratio:683/1024;object-fit:cover;"
                 "object-position:var(--f,50% 26%);border-radius:16px;border:1px solid #dae6f6}"
-                ".specialist-certificate{--f:50% 30%}.specialist-registraciya{--f:50% 26%}"
-                ".specialist-prolongation{--f:50% 28%}.specialist-opposition{--f:50% 26%}"
-                ".specialist-copyright{--f:50% 26%}"
+                ".specialist-certificate{--f:50% 28%}.specialist-registraciya{--f:50% 22%}"
+                ".specialist-prolongation{--f:50% 22%}.specialist-opposition{--f:50% 22%}"
+                ".specialist-copyright{--f:50% 22%}"
                 "figcaption{font-size:10px;color:#52637b;margin-top:6px}</style></head>"
                 f"<body><main>{''.join(rows)}</main></body></html>"
             )

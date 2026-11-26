@@ -11,12 +11,13 @@
     '/zashchita_avtorskih_prav':{photo:'specialist-copyright.webp',role:'Защита авторских прав',next:'Оценим доказательства авторства, нарушение и способы защиты ваших прав.'},
     '/dogovory':{photo:'specialist-registraciya.webp',role:'Договоры в сфере интеллектуальной собственности',next:'Опишите объект прав и задачу сделки — подберём подходящий вид договора.'}
   };
+  var CHEST={focus:'50% 20%',zoom:'1',origin:'50% 24%'};
   var PHOTO_FRAME={
-    'specialist-certificate.webp':{focus:'50% 40%',zoom:'1.18',origin:'50% 42%'},
-    'specialist-registraciya.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
-    'specialist-prolongation.webp':{focus:'50% 36%',zoom:'1.38',origin:'50% 38%'},
-    'specialist-opposition.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
-    'specialist-copyright.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'}
+    'specialist-certificate.webp':{focus:'50% 24%',zoom:'1',origin:'50% 28%'},
+    'specialist-registraciya.webp':CHEST,
+    'specialist-prolongation.webp':CHEST,
+    'specialist-opposition.webp':CHEST,
+    'specialist-copyright.webp':CHEST
   };
   function make(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;}
   function link(url,label){var a=make('a','',label+' ↗');a.href=url;return a;}
@@ -33,12 +34,10 @@
     var card=make('article','lx-photo-v4-expert-card');
     var media=make('div','lx-photo-v4-expert-media');
     media.setAttribute('data-photo',config.photo.replace(/\.webp$/,''));
-    var frame=PHOTO_FRAME[config.photo]||{focus:'50% 26%',zoom:'1.3',origin:'50% 30%'};
+    var frame=PHOTO_FRAME[config.photo]||CHEST;
     media.style.setProperty('--pv-photo-focus',frame.focus);
     media.style.setProperty('--pv-photo-zoom',frame.zoom);
     media.style.setProperty('--pv-photo-origin',frame.origin);
-    var zm=parseFloat(frame.zoom);
-    if(!isNaN(zm)){media.style.setProperty('--pv-photo-zoom-m',String(Math.max(1.08,zm*0.9).toFixed(2)));}
     var img=document.createElement('img');img.src=BASE+config.photo;img.alt='Фотография специалиста Лирейт';img.loading='eager';img.decoding='async';
     img.setAttribute('fetchpriority','high');
     img.onerror=function(){stack.style.display='none';};
