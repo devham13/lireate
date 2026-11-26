@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Home hero: new portrait assets, picture markup, CSS contain (no crop)."""
+"""Home hero: portrait assets, picture markup; hero uses scoped cover+zoom (r24)."""
 
 import re
 import sys
@@ -35,14 +35,16 @@ class HomeHeroPhotoTests(unittest.TestCase):
         hero_block = text[text.find("expert-photo") : text.find("expert-info")]
         self.assertNotIn("team/person/1.jpg", hero_block)
 
-    def test_css_shows_full_portrait_without_cover(self):
+    def test_css_hero_portrait_uses_scoped_cover_zoom(self):
         css = HOME_CSS.read_text(encoding="utf-8")
         self.assertIn("aspect-ratio:683/1024", css.replace(" ", ""))
         self.assertRegex(css, r"\.expert-photo img\{[^}]*object-fit:contain")
-        self.assertNotRegex(
+        self.assertRegex(
             css,
-            r"\.expert-photo img\{[^}]*object-fit:\s*cover",
+            r"\.hero-right \.expert-photo img\{[^}]*object-fit:cover",
         )
+        self.assertRegex(css, r"object-position:\s*50%\s*2%")
+        self.assertIn("transform:scale(1.78)", css.replace(" ", ""))
 
     def test_head_snippet_preloads_hero_image(self):
         import lireate_home_light_v4_install_lib as home_lib
