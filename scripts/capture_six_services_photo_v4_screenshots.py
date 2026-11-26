@@ -1,114 +1,153 @@
 #!/usr/bin/env python3
-"""Screenshots for six CMS service pages with photo-v4 overlay (1440×900, 390×900)."""
+"""Live CMS HTML + photo-v4 overlay screenshots (1440×900, 390×900)."""
 
-import os
+from __future__ import annotations
+
+import re
 import shutil
 import subprocess
 import tempfile
 import time
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/screenshots/six-services-v4"
-SHARED_CSS = ROOT / "pages/services/_shared/lireate-service-dark.css"
-PHOTO_CSS = ROOT / "template/css/lireate-six-services-photo-v4.css"
-PHOTO_JS = ROOT / "template/js/lireate-six-services-photo-v4.js"
-IMAGES = ROOT / "template/images/services-v4"
-PORT = int(os.environ.get("LIREATE_SIX_PHOTO_V4_PORT", "19140"))
+PORT = int(__import__("os").environ.get("LIREATE_SIX_PHOTO_V4_PORT", "19140"))
+MARKER = "lireate-six-services-photo-v4-20261126"
+CACHE_VER = "20261126f"
 
-PAGES = {
-    "findtz": ("Проверка товарного знака", "findtz"),
-    "registraciya_tovarnogo_znaka": ("Регистрация товарного знака", "registraciya"),
-    "prodlenie_tovarnogo_znaka": ("Продление товарного знака", "prodlenie"),
-    "vozrazhenie_protiv_registracii_tovarnogo_znaka": ("Возражение против регистрации ТЗ", "vozrazhenie"),
-    "zashchita_avtorskih_prav": ("Защита авторских прав", "copyright"),
-    "dogovory": ("Договоры в сфере интеллектуальной собственности", "dogovory"),
-}
 
-DOGOVORY_GLASS = """
-  <div class="lx-glass lx-glass-anim" aria-label="Краткий маршрут">
-    <div class="lx-panel-head"><span>Договоры · маршрут</span><span class="lx-live">LIREATE</span></div>
-    <div class="lx-kpi-row">
-      <div class="lx-kpi"><b class="lx-stat-value">лицензия</b><small>исключительная или обычная</small></div>
-      <div class="lx-kpi"><b class="lx-stat-value">п. 3.10</b><small>госрегистрация лицензии</small></div>
-      <div class="lx-kpi"><b class="lx-stat-value">п. 3.11</b><small>отчуждение права</small></div>
-    </div>
-    <div class="lx-route">
-      <span class="lx-route-label">Этапы</span>
-      <ul class="lx-route-steps">
-        <li><span class="lx-route-node lx-route-lit">бриф</span></li>
-        <li><span class="lx-route-node lx-route-lit">проект</span></li>
-        <li><span class="lx-route-node">согласование</span></li>
-        <li><span class="lx-route-node">подписание</span></li>
-        <li><span class="lx-route-node">регистрация</span></li>
-      </ul>
-    </div>
-    <ul class="lx-feed">
-      <li>Анализ объекта и сторон</li>
-      <li>Проект договора под вашу сделку</li>
-    </ul>
-  </div>
+def live_host() -> str:
+    host = __import__("os").environ.get("LIREATE_PUBLIC_SITE_URL", "").strip().rstrip("/")
+    if not host:
+        raise SystemExit("Set LIREATE_PUBLIC_SITE_URL for live HTML capture")
+    return host
+
+ROUTES = (
+    "findtz",
+    "registraciya_tovarnogo_znaka",
+    "prodlenie_tovarnogo_znaka",
+    "vozrazhenie_protiv_registracii_tovarnogo_znaka",
+    "zashchita_avtorskih_prav",
+    "dogovory",
+)
+
+INJECT = (
+    "\n<!-- {marker} -->\n"
+    '<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v={ver}">\n'
+    '<script defer src="/template/js/lireate-six-services-photo-v4.js?v={ver}"></script>\n'
+).format(marker=MARKER, ver=CACHE_VER)
+
+ROUTER_PHP = """<?php
+$root = {root!r};
+$preview = {preview!r};
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+if ($path === '/sheet.html' && is_file($preview . '/sheet.html')) {{
+    header('Content-Type: text/html; charset=utf-8');
+    readfile($preview . '/sheet.html');
+    return true;
+}}
+if (strpos($path, '/template/') === 0) {{
+    $file = $root . $path;
+    if (is_file($file)) {{
+        if (preg_match('/\\.css$/', $file)) header('Content-Type: text/css; charset=utf-8');
+        if (preg_match('/\\.(js|mjs)$/', $file)) header('Content-Type: application/javascript; charset=utf-8');
+        if (preg_match('/\\.webp$/', $file)) header('Content-Type: image/webp');
+        readfile($file);
+        return true;
+    }}
+    http_response_code(404);
+    echo 'missing';
+    return true;
+}}
+$slug = trim($path, '/');
+if ($slug !== '' && is_file($preview . '/' . $slug . '/index.html')) {{
+    header('Content-Type: text/html; charset=utf-8');
+    readfile($preview . '/' . $slug . '/index.html');
+    return true;
+}}
+return false;
 """
 
 
-def page_html(title: str, slug_key: str, route: str) -> str:
-    glass = DOGOVORY_GLASS if route == "dogovory" else ""
-    return f"""<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} — LIREATE</title>
-<link rel="stylesheet" href="/shared/lireate-service-dark.css">
-<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126d">
-<script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126d"></script>
-</head>
-<body class="lireate-svc-body">
-<div class="lx-nav-shell"><header class="lx-nav-pill"><a class="lx-logo" href="/">LIREATE</a></header></div>
-<main class="lireate-svc-page">
-<nav class="lx-breadcrumbs lx-breadcrumbs--in-page" aria-label="Хлебные крошки">
-  <ol><li><a href="/">Главная</a></li><li>Услуги</li><li aria-current="page">{title}</li></ol>
-</nav>
-<section class="lx-hero" id="top">
-  <div class="lx-hero-mascot-slot"></div>
-  <div>
-    <p class="lx-eyebrow">LIREATE · {slug_key}</p>
-    <h1>{title}</h1>
-    <p class="lx-hero-lead">Сопровождение LIREATE: консультация, подготовка документов, подача в ведомство.</p>
-    <div class="lx-hero-cta"><a class="lx-btn lx-btn-primary" href="#contact">Оставить заявку</a></div>
-    <div class="lx-hero-mini"><div class="lx-mini-stat"><strong>2015</strong><span>с опыта</span></div></div>
-  </div>
-  {glass}
-</section>
-</main>
-</body>
-</html>
-"""
+def fetch_live(route: str) -> str:
+    req = urllib.request.Request(
+        f"{live_host()}/{route}/",
+        headers={"User-Agent": "lireate-six-photo-v4-preview/1.0"},
+    )
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        return resp.read().decode("utf-8", "replace")
+
+
+def inject_overlay(html: str) -> str:
+    html = re.sub(
+        r"\n?<!--\s*" + re.escape(MARKER) + r"\s*-->\s*",
+        "\n",
+        html,
+        flags=re.I,
+    )
+    html = re.sub(
+        r"<link[^>]+lireate-six-services-photo-v4\.css[^>]*>\s*",
+        "",
+        html,
+        flags=re.I,
+    )
+    html = re.sub(
+        r"<script[^>]+lireate-six-services-photo-v4\.js[^>]*>\s*</script>\s*",
+        "",
+        html,
+        flags=re.I,
+    )
+    return re.sub(r"</head>", INJECT + "</head>", html, count=1, flags=re.I)
 
 
 def prepare_docroot(base: Path) -> None:
-    (base / "shared").mkdir(parents=True, exist_ok=True)
-    shutil.copy2(SHARED_CSS, base / "shared/lireate-service-dark.css")
-    for route in PAGES:
+    for route in ROUTES:
         (base / route).mkdir(parents=True, exist_ok=True)
-        title, _ = PAGES[route]
-        (base / route / "index.html").write_text(page_html(title, route, route), encoding="utf-8")
+        html = inject_overlay(fetch_live(route))
+        (base / route / "index.html").write_text(html, encoding="utf-8")
     tpl = base / "template"
     shutil.copytree(ROOT / "template/css", tpl / "css", dirs_exist_ok=True)
     shutil.copytree(ROOT / "template/js", tpl / "js", dirs_exist_ok=True)
-    shutil.copytree(IMAGES, tpl / "images/services-v4", dirs_exist_ok=True)
+    shutil.copytree(ROOT / "template/images", tpl / "images", dirs_exist_ok=True)
+
+
+def verify_five_photos(page, base_url: str) -> None:
+    """Sanity frames for 5 WebP at 1440 / 1280 / 768 / 390 via findtz+routes."""
+    photo_routes = {
+        "specialist-certificate": "findtz",
+        "specialist-registraciya": "registraciya_tovarnogo_znaka",
+        "specialist-prolongation": "prodlenie_tovarnogo_znaka",
+        "specialist-opposition": "vozrazhenie_protiv_registracii_tovarnogo_znaka",
+        "specialist-copyright": "zashchita_avtorskih_prav",
+    }
+  # snapshot photo crops in OUT verify subfolder
+    vdir = OUT / "verify-frames"
+    vdir.mkdir(parents=True, exist_ok=True)
+    for vp_w, tag in ((1440, "1440"), (1280, "1280"), (768, "768"), (390, "390")):
+        for photo, route in photo_routes.items():
+            page.set_viewport_size({"width": vp_w, "height": 900})
+            page.goto(f"{base_url}/{route}/", wait_until="networkidle", timeout=120000)
+            page.wait_for_selector(".lx-photo-v4-expert-media img", timeout=20000)
+            loc = page.locator(".lx-photo-v4-expert-media").first
+            loc.screenshot(path=str(vdir / f"{photo}-{tag}.png"))
 
 
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
-    docroot = Path(tempfile.mkdtemp(prefix="six-photo-v4-"))
+    docroot = Path(tempfile.mkdtemp(prefix="six-live-overlay-"))
     prepare_docroot(docroot)
+    router = docroot / "router.php"
+    router.write_text(ROUTER_PHP.format(root=str(ROOT), preview=str(docroot)), encoding="utf-8")
     proc = subprocess.Popen(
-        ["php", "-S", "127.0.0.1:{0}".format(PORT), "-t", str(docroot)],
+        ["php", "-S", f"127.0.0.1:{PORT}", str(router)],
+        cwd=str(docroot),
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
-    time.sleep(0.4)
+    time.sleep(0.5)
+    base = f"http://127.0.0.1:{PORT}"
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -119,34 +158,48 @@ def main() -> int:
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page()
-            for route in PAGES:
+            for route in ROUTES:
                 for tag, w, h in (("1440", 1440, 900), ("390", 390, 900)):
-                    url = "http://127.0.0.1:{0}/{1}/".format(PORT, route)
                     page.set_viewport_size({"width": w, "height": h})
-                    page.goto(url, wait_until="networkidle", timeout=60000)
-                    page.wait_for_selector(".lx-photo-v4-expert-card img", timeout=15000)
-                    out = OUT / "{0}-{1}.png".format(route, tag)
+                    page.goto(f"{base}/{route}/", wait_until="networkidle", timeout=120000)
+                    page.wait_for_selector(".lx-photo-v4-expert-card img", timeout=30000)
+                    page.wait_for_function(
+                        """() => {
+                          const m = document.querySelector('.lx-photo-v4-expert-media');
+                          if (!m) return false;
+                          const r = m.getBoundingClientRect();
+                          return r.height > 0 && r.height >= r.width * 0.95;
+                        }""",
+                        timeout=20000,
+                    )
+                    page.evaluate("window.scrollTo(0,0)")
+                    out = OUT / f"{route}-{tag}.png"
                     page.screenshot(path=str(out), full_page=False)
                     print("wrote", out)
-            # contact sheet: five photos on light bg
+            verify_five_photos(page, base)
+            # contact sheet
             sheet = OUT / "specialists-on-light.png"
-            page.set_viewport_size({"width": 1440, "height": 900})
             rows = []
-            for name in sorted(IMAGES.glob("specialist-*.webp")):
+            for name in sorted((ROOT / "template/images/services-v4").glob("specialist-*.webp")):
                 rows.append(
-                    '<figure><img src="/template/images/services-v4/{0}" alt=""><figcaption>{0}</figcaption></figure>'.format(
-                        name.name
-                    )
+                    f'<figure><img src="/template/images/services-v4/{name.name}" alt="">'
+                    f"<figcaption>{name.name}</figcaption></figure>"
                 )
             html = (
-                "<!DOCTYPE html><html><head><style>body{{margin:0;background:#fff;font-family:Manrope,sans-serif}}"
-                "main{{padding:24px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}}"
-                "figure{{margin:0}}img{{width:100%;aspect-ratio:683/1024;object-fit:cover;object-position:center top;border-radius:16px;border:1px solid #dae6f6}}"
-                "figcaption{{font-size:10px;color:#52637b;margin-top:6px}}</style></head>"
-                "<body><main>{0}</main></body></html>".format("".join(rows))
+                "<!DOCTYPE html><html><head><style>"
+                "body{margin:0;background:#fff;font-family:Manrope,sans-serif}"
+                "main{padding:24px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}"
+                "figure{margin:0}img{width:100%;aspect-ratio:683/1024;object-fit:cover;"
+                "object-position:var(--f,50% 26%);border-radius:16px;border:1px solid #dae6f6}"
+                ".specialist-certificate{--f:50% 30%}.specialist-registraciya{--f:50% 26%}"
+                ".specialist-prolongation{--f:50% 28%}.specialist-opposition{--f:50% 26%}"
+                ".specialist-copyright{--f:50% 26%}"
+                "figcaption{font-size:10px;color:#52637b;margin-top:6px}</style></head>"
+                f"<body><main>{''.join(rows)}</main></body></html>"
             )
             (docroot / "sheet.html").write_text(html, encoding="utf-8")
-            page.goto("http://127.0.0.1:{0}/sheet.html".format(PORT), wait_until="networkidle")
+            page.set_viewport_size({"width": 1440, "height": 900})
+            page.goto(f"{base}/sheet.html", wait_until="networkidle")
             page.screenshot(path=str(sheet), full_page=True)
             print("wrote", sheet)
             browser.close()
