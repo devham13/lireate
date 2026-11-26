@@ -140,7 +140,7 @@ def _replacement_block():
 
 
 def _head_snippet():
-    from lireate_light_v4_asset_version import LIGHT_V4_ASSET_VERSION
+    from lireate_light_v4_asset_version import HOME_CSS_VERSION, LIGHT_V4_ASSET_VERSION
 
     version = LIGHT_V4_ASSET_VERSION
     return (
@@ -152,7 +152,7 @@ def _head_snippet():
         "<script src=\"/template/js/lireate-home-light-v4.js?v=%s\" defer></script>\n"
         "<script src=\"/template/js/lireate-light-v4.js?v=%s\" defer></script>\n"
         "<?php } ?>\n"
-    ) % (version, HEAD_MARKER, version, version, version, version)
+    ) % (HOME_CSS_VERSION, HEAD_MARKER, version, version, version, version)
 
 
 def patch_head_assets(text):

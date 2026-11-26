@@ -82,6 +82,30 @@ class LightV4SharedAssetVersionTests(unittest.TestCase):
                     "{0}: hardcoded shared css v={1}".format(path, found_v),
                 )
 
+    def test_home_css_version_in_head_snippet(self):
+        """Home hero CSS has its own cache-bust token (r21+) in the main.php head snippet."""
+        import lireate_home_light_v4_install_lib as home_lib
+
+        self.assertEqual("20261126r21", ver.HOME_CSS_VERSION)
+        snippet = home_lib._head_snippet()
+        self.assertIn(
+            "/template/css/lireate-home-light-v4.css?v={0}".format(ver.HOME_CSS_VERSION), snippet
+        )
+        self.assertNotIn(
+            "/template/css/lireate-home-light-v4.css?v={0}\"".format(ver.LIGHT_V4_ASSET_VERSION), snippet
+        )
+        # other shared assets keep the shared token
+        self.assertIn("/template/css/lireate-light-v4.css?v={0}".format(ver.LIGHT_V4_ASSET_VERSION), snippet)
+
+    def test_home_hero_grid_aligns_top(self):
+        """Hero: left column (eyebrow/H1) starts at the photo top, not vertically centred."""
+        css = (ROOT / "template" / "css" / "lireate-home-light-v4.css").read_text(encoding="utf-8")
+        rule = re.search(r"\.lh4-root \.hero-grid\{([^}]*)\}", css)
+        self.assertIsNotNone(rule)
+        self.assertIn("align-items:start", rule.group(1))
+        self.assertNotIn("align-items:center", rule.group(1))
+        self.assertIn(".hero-grid > .reveal:first-child{align-self:start;margin-top:0;padding-top:0}", css)
+
 
 if __name__ == "__main__":
     unittest.main()
