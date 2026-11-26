@@ -3,14 +3,14 @@
 (function () {
   'use strict';
   var BASE='/template/images/services-v4/';
-  var ASSET_VER='20261126j';
+  var ASSET_VER='20261126k';
   var PAGES={
-    '/findtz':{photo:'specialist-certificate.webp',role:'Проверка товарных знаков',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
-    '/registraciya_tovarnogo_znaka':{photo:'specialist-registraciya.webp',role:'Регистрация товарных знаков',next:'Изучим ваш знак и товары, подскажем маршрут регистрации и перечень документов.'},
-    '/prodlenie_tovarnogo_znaka':{photo:'specialist-prolongation.webp',role:'Продление товарных знаков',next:'Проверим срок охраны и объясним, какие документы необходимы для продления.'},
-    '/vozrazhenie_protiv_registracii_tovarnogo_znaka':{photo:'specialist-opposition.webp',role:'Споры о товарных знаках',next:'Разберём основания возражения, документы и возможные варианты защиты.'},
-    '/zashchita_avtorskih_prav':{photo:'specialist-copyright.webp',role:'Защита авторских прав',next:'Оценим доказательства авторства, нарушение и способы защиты ваших прав.'},
-    '/dogovory':{photo:'specialist-registraciya.webp',role:'Договоры в сфере интеллектуальной собственности',next:'Опишите объект прав и задачу сделки — подберём подходящий вид договора.'}
+    '/findtz':{photo:'specialist-certificate.webp',role:'Проверка товарных знаков',name:null,position:null,next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
+    '/registraciya_tovarnogo_znaka':{photo:'specialist-registraciya.webp',role:'Регистрация товарных знаков',name:null,position:null,next:'Изучим ваш знак и товары, подскажем маршрут регистрации и перечень документов.'},
+    '/prodlenie_tovarnogo_znaka':{photo:'specialist-prolongation.webp',role:'Продление товарных знаков',name:null,position:null,next:'Проверим срок охраны и объясним, какие документы необходимы для продления.'},
+    '/vozrazhenie_protiv_registracii_tovarnogo_znaka':{photo:'specialist-opposition.webp',role:'Споры о товарных знаках',name:null,position:null,next:'Разберём основания возражения, документы и возможные варианты защиты.'},
+    '/zashchita_avtorskih_prav':{photo:'specialist-copyright.webp',role:'Защита авторских прав',name:null,position:null,next:'Оценим доказательства авторства, нарушение и способы защиты ваших прав.'},
+    '/dogovory':{photo:'specialist-registraciya.webp',role:'Договоры в сфере интеллектуальной собственности',name:null,position:null,next:'Опишите объект прав и задачу сделки — подберём подходящий вид договора.'}
   };
   function make(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;}
   function link(url,label){var a=make('a','',label+' ↗');a.href=url;return a;}
@@ -32,9 +32,8 @@
     img.onerror=function(){stack.style.display='none';};
     media.appendChild(img);card.appendChild(media);
     var info=make('div','lx-photo-v4-expert-info');
-    info.appendChild(make('span','lx-photo-v4-expert-role',config.role));
-    // No unsupported identity inference from portraits. Name can be added later after CMS verification.
-    info.appendChild(make('h2','lx-photo-v4-expert-name','Специалист Лирейт'));
+    info.appendChild(make('span','lx-photo-v4-expert-role',config.position||config.role));
+    info.appendChild(make('h2','lx-photo-v4-expert-name',config.name||'Специалист Лирейт'));
     info.appendChild(make('p','lx-photo-v4-expert-desc','Консультации, сопровождение заявок и защита интеллектуальной собственности.'));
     var links=make('nav','lx-photo-v4-expert-links');links.setAttribute('aria-label','Информация о команде');
     links.appendChild(link('/team','Команда Лирейт'));links.appendChild(link('/o_kompanii','О компании'));

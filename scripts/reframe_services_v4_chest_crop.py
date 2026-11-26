@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Re-crop services-v4 specialist WebP for chest-up hero (home-like frame)."""
+"""Re-crop services-v4 specialist WebP: mid-torso frame (waist), head margin, centered."""
 
 from __future__ import annotations
 
 import io
+import json
 from pathlib import Path
 
 import cv2
@@ -13,21 +14,21 @@ from PIL import Image
 REPO = Path(__file__).resolve().parent.parent
 DIR = REPO / "template/images/services-v4"
 SRC_DIR = DIR / "_chest-src"
-# Measured on live home .expert-photo @ 1440 (2026-11-26)
+META_PATH = DIR / "reframe-midbody-meta.json"
 FRAME_W, FRAME_H = 453, 378
 FRAME_RATIO = FRAME_W / FRAME_H
-TOP_MARGIN_FRAC = 0.06
+TOP_MARGIN_FRAC = 0.08
+CROWN_ABOVE_FACE = 0.14
 OUT_W = 906
 OUT_H = int(round(OUT_W / FRAME_RATIO))
-MAX_BYTES = 200 * 1024
+MAX_BYTES = 220 * 1024
 
-HAIR_ABOVE_FRAC = 0.6
-CHEST_BELOW_MULT = {
-    "specialist-certificate": 2.2,
-    "specialist-registraciya": 1.6,
-    "specialist-prolongation": 1.6,
-    "specialist-opposition": 1.6,
-    "specialist-copyright": 1.6,
+WAIST_MULT = {
+    "specialist-certificate": 3.05,
+    "specialist-registraciya": 2.85,
+    "specialist-prolongation": 2.85,
+    "specialist-opposition": 2.85,
+    "specialist-copyright": 2.85,
 }
 
 
@@ -58,41 +59,65 @@ def detect_face(gray: np.ndarray, scale: float = 1.05):
     return max(faces, key=lambda r: r[2] * r[3])
 
 
-def chest_crop(bgr: np.ndarray, stem: str) -> Image.Image:
+def midbody_crop(bgr: np.ndarray, stem: str) -> tuple[Image.Image, dict]:
     h, w = bgr.shape[:2]
+    meta: dict = {"stem": stem, "source_h": h, "source_w": w}
     gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
     face = detect_face(gray)
-    chest_mult = CHEST_BELOW_MULT.get(stem, 1.6)
+    waist_mult = WAIST_MULT.get(stem, 2.85)
+    crop_h = int(round(w / FRAME_RATIO))
+    crop_w = w
 
     if face is None:
-        ch = int(w / FRAME_RATIO)
-        y0 = max(0, (h - ch) // 5)
-        crop = bgr[y0 : y0 + ch, 0:w]
+        y0 = max(0, h - crop_h)
+        crop = bgr[y0 : y0 + crop_h, 0:w]
+        meta.update(
+            face=False,
+            waist_reached=False,
+            note="face_not_detected; crop lowered to image bottom",
+        )
     else:
         x, y, fw, fh = face
         cx = x + fw // 2
         face_bottom = y + fh
-        chest_y = min(h, int(face_bottom + chest_mult * fh))
-        # Haar box tops sit near brows; hair is a little above, not 0.6·fh of bookshelf.
-        hair_line = y - int(min(HAIR_ABOVE_FRAC, 0.18) * fh)
-        crop_h = int(round(w / FRAME_RATIO))
-        crop_w = w
-        forehead_top = max(0, int(round(y - 0.06 * fh)))
-        top = max(0, chest_y - crop_h)
-        top = min(top, forehead_top)
-        if top + crop_h > h:
-            top = max(0, h - crop_h)
+        crown = y - int(CROWN_ABOVE_FACE * fh)
+        waist_y = min(h, int(face_bottom + waist_mult * fh))
+        ideal_top = int(round(crown - TOP_MARGIN_FRAC * crop_h))
+        lowest_top = max(0, h - crop_h)
+        waist_top = int(waist_y - crop_h)
+        top = min(ideal_top, waist_top)
+        top = max(0, min(top, lowest_top))
+        if waist_y > top + crop_h + 8:
+            if lowest_top < ideal_top:
+                top = lowest_top
+            meta["waist_reached"] = False
+            meta["note"] = (
+                "source shorter than waist; frame lowered maximally without clipping crown"
+            )
+        else:
+            meta["waist_reached"] = True
+            meta["note"] = "waist aligned when source allows"
+        if top > ideal_top + 2:
+            meta["crown_margin_reduced"] = True
+        meta.update(
+            face=True,
+            fh=fh,
+            waist_y=waist_y,
+            crop_top=top,
+            crop_bottom=top + crop_h,
+            ideal_top=ideal_top,
+        )
         x0 = max(0, min(w - crop_w, cx - crop_w // 2))
         crop = bgr[top : top + crop_h, x0 : x0 + crop_w]
 
     rgb = cv2.cvtColor(crop, cv2.COLOR_BGR2RGB)
-    return Image.fromarray(rgb)
+    return Image.fromarray(rgb), meta
 
 
 def save_webp(im: Image.Image, dest: Path) -> int:
     im = im.resize((OUT_W, OUT_H), Image.Resampling.LANCZOS)
     quality = 84
-    while quality >= 68:
+    while quality >= 64:
         buf = io.BytesIO()
         im.save(buf, "WEBP", quality=quality, method=6)
         if buf.tell() <= MAX_BYTES:
@@ -112,14 +137,22 @@ def source_path(name: str) -> Path:
 
 def main() -> int:
     SRC_DIR.mkdir(parents=True, exist_ok=True)
+    all_meta: dict = {}
     for webp in sorted(DIR.glob("specialist-*.webp")):
         src = source_path(webp.name)
         bgr = load_bgr(src)
-        cropped = chest_crop(bgr, webp.stem)
+        cropped, meta = midbody_crop(bgr, webp.stem)
         nbytes = save_webp(cropped, webp)
         check = Image.open(webp)
-        print(f"OK {webp.name} from {src.name} {check.size} {nbytes // 1024} KiB")
-    print(f"FRAME_RATIO={FRAME_RATIO:.4f} ({FRAME_W}x{FRAME_H})")
+        meta["bytes"] = nbytes
+        meta["out_size"] = check.size
+        all_meta[webp.stem] = meta
+        print(f"OK {webp.name} {meta.get('note', '')} {check.size} {nbytes // 1024} KiB")
+    META_PATH.write_text(
+        json.dumps(all_meta, ensure_ascii=False, indent=2, default=int),
+        encoding="utf-8",
+    )
+    print(f"FRAME_RATIO={FRAME_RATIO:.4f} meta -> {META_PATH}")
     return 0
 
 
