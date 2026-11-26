@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/screenshots/six-services-v4"
 PORT = int(__import__("os").environ.get("LIREATE_SIX_PHOTO_V4_PORT", "19140"))
 MARKER = "lireate-six-services-photo-v4-20261126"
-CACHE_VER = "20261126g"
+CACHE_VER = "20261126h"
 
 
 def live_host() -> str:

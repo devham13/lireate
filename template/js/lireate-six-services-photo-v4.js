@@ -14,7 +14,7 @@
   var PHOTO_FRAME={
     'specialist-certificate.webp':{focus:'50% 40%',zoom:'1.18',origin:'50% 42%'},
     'specialist-registraciya.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
-    'specialist-prolongation.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
+    'specialist-prolongation.webp':{focus:'50% 36%',zoom:'1.38',origin:'50% 38%'},
     'specialist-opposition.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'},
     'specialist-copyright.webp':{focus:'50% 26%',zoom:'1.34',origin:'50% 30%'}
   };

@@ -30,8 +30,8 @@ ASSETS = (
     'specialist-opposition', 'specialist-copyright'))
 INJECTION = (
     '\n<!-- ' + MARKER + ' -->\n'
-    '<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126g">\n'
-    '<script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126g"></script>\n'
+    '<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126h">\n'
+    '<script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126h"></script>\n'
 )
 HEAD_CLOSE = re.compile(r'</head\s*>', re.IGNORECASE)
 
