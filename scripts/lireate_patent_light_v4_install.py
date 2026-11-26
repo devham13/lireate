@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Install two redesigned CMS patent views. Dry run default; --apply with backup/rollback.
 
-No data/db.php, routing, SEO meta, existing lead handlers or sidebar changes.
+Live main.php renders /patent and /patent_prom_obr in dedicated page branches (not apsw).
 """
 from __future__ import print_function
 
@@ -26,29 +26,91 @@ FILES = [
     Path('template/images/patent-v4/patent-inventions.webp'),
     Path('template/images/patent-v4/patent-industrial-design.webp'),
 ]
-PATTERN = re.compile(r'<\?php\s*(?P<prefix>\}\s*else\s*if|\}\s*elseif|if)\s*\(\s*\$temp\[\'apsw\'\]\s*\)\s*\{\s*\?>', re.I)
+INCLUDE_SNIPPET = (
+    "require $_SERVER['DOCUMENT_ROOT'].'/pages/patents/_shared/lireate-patent-page.inc.php';"
+)
+LEGACY_PATENT_OPEN = re.compile(
+    r"<\?php\s+if\s*\(\s*\$temp\['page'\]\s*==\s*'patent'\s*\)\s*:\s*\?>",
+    re.I,
+)
+LEGACY_PROM_OPEN = re.compile(
+    r"<\?php\s+if\s*\(\s*\$temp\['page'\]\s*==\s*'patent_prom_obr'\s*\)\s*:\s*\?>",
+    re.I,
+)
+LEGACY_DISABLED = re.compile(
+    r"\$temp\['page'\]\s*==\s*'(patent|patent_prom_obr)'\s*&&\s*false",
+    re.I,
+)
+APSW_PATTERN = re.compile(
+    r'<\?php\s*(?P<prefix>\}\s*else\s*if|\}\s*elseif|if)\s*\(\s*\$temp\[\'apsw\'\]\s*\)\s*\{\s*\?>',
+    re.I,
+)
+
+
+def _hook(page_key):
+    return (
+        "<?php /* " + MARKER + " */ if($temp['page']=='" + page_key + "'){ "
+        "$lireate_patent_key='" + page_key + "'; " + INCLUDE_SNIPPET + " } ?>\n"
+    )
+
+
+def _disable_legacy_open(match, page_key):
+    return "<?php if($temp['page']=='" + page_key + "' && false): /* legacy */ ?>"
+
+
+def patch_main_legacy_blocks(text):
+    out = text
+    if INCLUDE_SNIPPET in out and MARKER in out:
+        return out
+    if LEGACY_PATENT_OPEN.search(out) and not re.search(
+        r"\$temp\['page'\]\s*==\s*'patent'\s*&&\s*false", out
+    ):
+        out = LEGACY_PATENT_OPEN.sub(
+            _hook('patent') + _disable_legacy_open(None, 'patent'), out, count=1
+        )
+    if LEGACY_PROM_OPEN.search(out) and not re.search(
+        r"\$temp\['page'\]\s*==\s*'patent_prom_obr'\s*&&\s*false", out
+    ):
+        out = LEGACY_PROM_OPEN.sub(
+            _hook('patent_prom_obr') + _disable_legacy_open(None, 'patent_prom_obr'),
+            out,
+            count=1,
+        )
+    if out == text:
+        return None
+    return out
+
+
+def patch_main_apsw_fallback(text):
+    m = APSW_PATTERN.search(text)
+    if m is None:
+        return None
+    container = text.find('<div class="page_container">')
+    if container < 0 or m.start() < container:
+        return None
+    prefix = m.group('prefix').strip().lower()
+    open_cond = 'if' if prefix == 'if' else '} elseif'
+    replacement = (
+        "<?php /* " + MARKER + " */ " + open_cond +
+        "($temp['page']=='patent'||$temp['page']=='patent_prom_obr'){ "
+        "$lireate_patent_key=$temp['page']; " + INCLUDE_SNIPPET + " "
+        "} elseif ($temp['apsw']){ ?>"
+    )
+    return text[:m.start()] + replacement + text[m.end():]
 
 
 def patch_main(text):
-    if MARKER in text:
+    if MARKER in text and INCLUDE_SNIPPET in text:
         return text
-    m = PATTERN.search(text)
-    if m is None:
-        raise ValueError("BLOCKER: CMS page_container / apsw branch changed; don't overwrite live template")
-    container = text.find('<div class="page_container">')
-    if container < 0 or m.start() < container:
-        raise ValueError('BLOCKER: unable to locate page content hook')
-    prefix = m.group('prefix').strip().lower()
-    if prefix == 'if':
-        open_cond = 'if'
-    else:
-        open_cond = '} elseif'
-    replacement = ("<?php /* " + MARKER + " */ " + open_cond +
-                   "($temp['page']=='patent'||$temp['page']=='patent_prom_obr'){ " +
-                   "$lireate_patent_key=$temp['page']; " +
-                   "require $_SERVER['DOCUMENT_ROOT'].'/pages/patents/_shared/lireate-patent-page.inc.php'; " +
-                   "} elseif ($temp['apsw']){ ?>")
-    return text[:m.start()] + replacement + text[m.end():]
+    legacy = patch_main_legacy_blocks(text)
+    if legacy is not None:
+        return legacy
+    fallback = patch_main_apsw_fallback(text)
+    if fallback is not None:
+        return fallback
+    raise ValueError(
+        "BLOCKER: no patent legacy branches and no page_container/apsw hook in template/main.php"
+    )
 
 
 def safety(docroot, rel):

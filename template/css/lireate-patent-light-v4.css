@@ -98,3 +98,15 @@
 @media(max-width:740px){#lireate-patent-v4 .lp4-wrap{width:calc(100% - 36px)}#lireate-patent-v4 .lp4-hero{grid-template-columns:1fr;padding-top:42px;padding-bottom:30px}#lireate-patent-v4 .lp4-photo-card{width:min(100%,470px);margin-inline:auto}#lireate-patent-v4 .lp4-photo-frame{aspect-ratio:.87}#lireate-patent-v4 h1{font-size:clamp(39px,9vw,55px)}#lireate-patent-v4 .lp4-stats{grid-template-columns:1fr}#lireate-patent-v4 .lp4-stats>div{border-left:0;border-top:1px solid var(--lp-line);padding:16px 10px}#lireate-patent-v4 .lp4-stats>div:first-child{border-top:0}#lireate-patent-v4 .lp4-card-grid,#lireate-patent-v4 .lp4-steps,#lireate-patent-v4 .lp4-checklist,#lireate-patent-v4 .lp4-contact{grid-template-columns:1fr}#lireate-patent-v4 .lp4-checklist{gap:25px}#lireate-patent-v4 .lp4-contact{gap:25px}#lireate-patent-v4 .lp4-section{padding-block:67px}#lireate-patent-v4 .lp4-card-number{margin-bottom:25px}#lireate-patent-v4 .lp4-info-card{min-height:230px}}
 @media(max-width:420px){#lireate-patent-v4 .lp4-countries{grid-template-columns:1fr}#lireate-patent-v4 .lp4-buttons{flex-direction:column;align-items:stretch}#lireate-patent-v4 .lp4-btn{width:100%}#lireate-patent-v4 h1{font-size:39px}#lireate-patent-v4 .lp4-photo-caption{padding:45px 20px 19px}}
 @media(prefers-reduced-motion:reduce){#lireate-patent-v4 *,#lireate-patent-v4 *::after{transition:none!important;animation:none!important}}
+/* CMS shell: keep left menu + light page canvas on legacy dark body classes */
+body.lireate-patent-light-v4.lireate-theme-light-v4,
+body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4{background:#fff!important;color:#1f212c!important}
+body.lireate-patent-light-v4.lireate-theme-light-v4 .wrapper,
+body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 .wrapper,
+body.lireate-patent-light-v4.lireate-theme-light-v4 .page_container,
+body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 .page_container,
+body.lireate-patent-light-v4.lireate-theme-light-v4 .container.content{background:#fff!important;color:#1f212c!important}
+body.lireate-patent-light-v4.lireate-theme-light-v4 #lireate-patent-v4{margin-bottom:clamp(32px,5vw,72px)}
+body.lireate-patent-light-v4.lireate-theme-light-v4 #leftSideBar,
+body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 #leftSideBar{min-height:100vh!important;background:#fff!important;color:#1f212c!important;border-color:#dce8f7!important}
+body.lireate-patent-light-v4.lireate-theme-light-v4 #leftSideBar a:not(.leftSideLogo){color:#0f4db8!important}

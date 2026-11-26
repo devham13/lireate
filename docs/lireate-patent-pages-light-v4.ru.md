@@ -11,7 +11,7 @@
 
 ## Установка на REG.RU
 
-В GitHub `template/main.php` отсутствует, он на хостинге; installer использует существующую ветку `$temp['apsw']` CMS и обслуживает оба route slug, не изменяя данные БД.
+В GitHub `template/main.php` отсутствует, он на хостинге; installer вшивает Light V4 **только** в ветки `$temp['page']=='patent'` и `patent_prom_obr` в `template/main.php` (боевой шаблон отдаёт эти страницы отдельными блоками, не через `$temp['apsw']`). Старые блоки остаются в файле, но отключаются условием `&& false` для безопасного отката. Если legacy-веток нет — fallback на хук `$temp['apsw']` внутри `page_container`. БД не трогаем.
 
 **Dry-run:**
 
