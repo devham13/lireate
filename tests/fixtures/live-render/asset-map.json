@@ -796,7 +796,7 @@
   "/template/js/lireate-service-metrika-goals.js": "tests/fixtures/live-render/live-assets/template/js/lireate-service-metrika-goals.js",
   "/template/js/lireate-static-hero-lu.js": "tests/fixtures/live-render/live-assets/template/js/lireate-static-hero-lu.js",
   "/template/js/lireate-utm.js": "tests/fixtures/live-render/live-assets/template/js/lireate-utm.js",
-  "/template/js/main.js": "tests/fixtures/live-render/live-assets/template/js/main.js",
+  "/template/js/main.js": "tests/fixtures/live-render/live-assets-after/template/js/main.js",
   "/template/js/salvattore.min.js": "tests/fixtures/live-render/live-assets/template/js/salvattore.min.js",
   "/template/libs/awesome/css/font-awesome.min.css": "tests/fixtures/live-render/live-assets/template/libs/awesome/css/font-awesome.min.css",
   "/template/libs/bootstrap/css/bootstrap.css": "tests/fixtures/live-render/live-assets/template/libs/bootstrap/css/bootstrap.css",
@@ -823,10 +823,8 @@
    ]
   },
   "/template/page/news/lireate-blog-light-v4.css": {
-   "edit": "pages/blog/_shared/lireate-blog-light-v4.css",
-   "identical_copies": [
-    "template/page/news/lireate-blog-light-v4.css"
-   ]
+   "edit": "template/page/news/lireate-blog-light-v4.css",
+   "identical_copies": []
   },
   "/template/page/team/lireate-metrika-goals.js": {
    "edit": "template/page/team/lireate-metrika-goals.js",
