@@ -129,3 +129,15 @@ body .lireate-blog-list-page :is(.lireate-blog-list-card-cover,.lireate-blog-lis
 }
 body .lireate-blog-list-page .lireate-blog-list-cover-img[hidden],
 body .lireate-blog-list-page .lireate-blog-list-card__img img[hidden]{display:none!important}
+
+/* Confirmed /mktu CMS selectors from pages/mktu/_preview/index.php */
+body.lxq-mktu .mktu_head{padding:70px 24px 65px!important;margin:0!important;background:radial-gradient(circle at 88% 25%,#eaf4ff,transparent 43%),#fff!important;border-bottom:1px solid var(--lq-line)!important}
+body.lxq-mktu .mktu_head .container.content{width:min(1200px,calc(100% - 32px))!important;max-width:1200px!important;min-height:0!important;margin:0 auto!important;padding:0!important}
+body.lxq-mktu .mktu_head h1{font:900 clamp(38px,4.4vw,68px)/1.1 Manrope,Arial,sans-serif!important;letter-spacing:-.06em!important;color:var(--lq-ink)!important;max-width:890px;margin:0 0 24px!important}
+body.lxq-mktu .mktu_head .default_text{font:500 clamp(16px,1.5vw,19px)/1.65 Manrope,Arial,sans-serif!important;color:var(--lq-muted)!important;max-width:750px}
+body.lxq-mktu .mktu_body{padding:52px 24px 72px!important;background:#fff!important;color:var(--lq-ink)!important}
+body.lxq-mktu .mktu_body .container.content{width:min(1200px,calc(100% - 32px))!important;max-width:1200px!important;margin-inline:auto!important}
+body.lxq-mktu .mktu_body :is(h2,h3){border-bottom:1px solid var(--lq-line);padding-bottom:12px;margin-top:32px;color:var(--lq-ink)!important}
+body.lxq-mktu .mktu_body :is(p,li){font:500 15px/1.7 Manrope,Arial,sans-serif;color:var(--lq-muted)!important}
+body.lxq-mktu .mktu_body :is(button,.btn,.lx-btn){border-radius:11px!important}
+@media(max-width:760px){body.lxq-mktu .mktu_head{padding:42px 16px!important}body.lxq-mktu .mktu_body{padding:30px 12px!important}body.lxq-mktu .mktu_head .container.content,body.lxq-mktu .mktu_body .container.content{width:100%!important}}
