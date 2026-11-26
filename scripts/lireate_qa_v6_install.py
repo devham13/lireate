@@ -39,11 +39,11 @@ _CMS_MAIN_BLOB = {
     'template/page/news/lireate-blog-site-footer.inc.php': '437db7282bbf6e010ecfc76a87b4d6a688d1f20f',
     'template/lireate/lireate-service-footer.inc.php': '1754dff4fb54acb2c7a927ef3af2f70b636cc500',
 }
-# Live production after PR #131 (commit 15bf93c) and prod footer (3dc3dcc).
+# Live production after PR #131 (commit 15bf93c) and prod footer (d8b9d8f4).
 _CMS_PROD_BLOB = {
     'template/page/kontaktyi/lireate-contacts-page.inc.php': 'aa4691425bc8e984d017d89e216f3e5c405dbec8',
     'template/page/partners/lireate-partners-page.inc.php': 'cc1d97119752c2cccbec61c9239ec1397a2f1b76',
-    'template/lireate/lireate-service-footer.inc.php': '3dc3dccf5fd4452dd7dffcafdce827c5265b7fd7',
+    'template/lireate/lireate-service-footer.inc.php': 'd8b9d8f4d5a698ac10d1a3ef7fc3b58cadb2561d',
 }
 
 def _allowed_main_prod(path):
@@ -81,10 +81,10 @@ PERF_BLOCK = (
     '<script defer src="/template/js/lireate-performance.js?v=' + PERF_MARK + '"></script>'
 )
 PERF_BLOCK_RE = re.compile(
-    r'\n?<!-- seo-perf-20261120-v1 -->\s*'
+    r'\n{1,2}<!-- seo-perf-20261120-v1 -->\s*'
     r'<meta name="lireate-performance-patch" content="seo-perf-20261120-v1">\s*'
     r'<link rel="stylesheet" href="/template/css/lireate-performance\.css\?v=seo-perf-20261120-v1">\s*'
-    r'<script defer src="/template/js/lireate-performance\.js\?v=seo-perf-20261120-v1"></script>',
+    r'<script defer src="/template/js/lireate-performance\.js\?v=seo-perf-20261120-v1"></script>\n?',
     re.I,
 )
 
@@ -102,14 +102,23 @@ def extract_perf_block(text):
     match = PERF_BLOCK_RE.search(text)
     if not match:
         return ''
-    return match.group(0).lstrip('\n')
+    return match.group(0)
 
 def merge_perf_into_head(text_bytes, perf_block):
     if not perf_block:
         return text_bytes
     text = text_bytes.decode('utf-8')
-    if perf_block.strip() in text:
+    if PERF_MARK in text:
         return text_bytes
+    marker = '<!-- lireate_light_v4 -->'
+    if marker in text:
+        pos = text.find(marker) + len(marker)
+        block = perf_block
+        if not block.startswith('\n'):
+            block = '\n\n' + block.lstrip('\n')
+        if not block.endswith('\n'):
+            block += '\n'
+        return (text[:pos] + block + text[pos:]).encode('utf-8')
     return re.sub(
         r'</head\s*>',
         lambda m: perf_block + '\n' + m.group(0),
