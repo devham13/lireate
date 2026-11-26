@@ -43,15 +43,20 @@ def tool_baseline_bytes(blob_sha):
     return packed_bytes('tool-' + blob_sha)
 
 
+PROD_PERF_BEFORE_HEAD = (
+    '\n<!-- seo-perf-20261120-v1 -->\n'
+    '<meta name="lireate-performance-patch" content="seo-perf-20261120-v1">\n'
+    '<link rel="stylesheet" href="/template/css/lireate-performance.css?v=seo-perf-20261120-v1">\n'
+    '<script defer src="/template/js/lireate-performance.js?v=seo-perf-20261120-v1"></script>\n'
+)
+
+
 def prod_perf_live_bytes(baseline):
-    """Prod layout: after lireate_light_v4 marker, blank line, perf block, newline."""
+    """Byte-exact prod: main + perf block inserted immediately before </head>."""
     text = baseline.decode('utf-8')
-    marker = '<!-- lireate_light_v4 -->'
-    if marker not in text:
-        raise ValueError('missing lireate_light_v4 marker in baseline')
-    pos = text.find(marker) + len(marker)
-    perf = '\n\n' + mod.PERF_BLOCK + '\n'
-    return (text[:pos] + perf + text[pos:]).encode('utf-8')
+    if '</head>' not in text:
+        raise ValueError('expected </head>')
+    return text.replace('</head>', PROD_PERF_BEFORE_HEAD + '</head>', 1).encode('utf-8')
 
 
 class QaV6Tests(unittest.TestCase):
@@ -117,6 +122,7 @@ class QaV6Tests(unittest.TestCase):
             baseline = tool_baseline_bytes(before_sha)
             live = prod_perf_live_bytes(baseline)
             stripped = mod.strip_perf(live)
+            self.assertEqual(stripped, baseline)
             self.assertEqual(mod.blob_sha(stripped), before_sha)
 
     def test_tool_perf_block_preserved(self):
@@ -131,13 +137,10 @@ class QaV6Tests(unittest.TestCase):
                 live_path.write_bytes(tool_base)
         plan = mod.build_plan(self.docroot, with_tools=True)
         self.assertIn(Path(live), plan)
-        out = plan[Path(live)].decode('utf-8')
-        self.assertIn('<!-- lireate_light_v4 -->', out)
-        self.assertIn(mod.PERF_MARK, out)
-        self.assertRegex(
-            out,
-            r'lireate_light_v4 -->\n\n<!-- seo-perf-20261120-v1 -->',
-        )
+        out = plan[Path(live)]
+        self.assertIn(mod.PERF_MARK.encode('utf-8'), out)
+        self.assertIn(b'lireate-performance.css?v=seo-perf-20261120-v1', out)
+        self.assertIn(b'lireate-performance.js?v=seo-perf-20261120-v1', out)
 
     def test_tools_require_existing_published_files(self):
         with self.assertRaisesRegex(ValueError, 'expected published PHP'):
