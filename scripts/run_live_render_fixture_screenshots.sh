@@ -81,6 +81,15 @@ def route(r):
                 return r.fulfill(response=r.fetch(url='https://lireate.ru' + path))
             except Exception:
                 return r.abort()
+        if not OFFLINE and '/live-assets' in path and path.endswith('.css'):
+            # vendored live CSS has url() rewritten to https://lireate.ru/...; masks need same-origin, so point
+            # /template/images/* back to root-relative (served above from lireate.ru as same-origin).
+            try:
+                resp = r.fetch()
+                body = resp.text().replace('https://lireate.ru/template/images/', '/template/images/')
+                return r.fulfill(response=resp, body=body)
+            except Exception:
+                return r.continue_()
         return r.continue_()
     if OFFLINE or not any(host == a or host.endswith('.' + a) for a in ALLOW):
         return r.abort()
@@ -102,6 +111,10 @@ with sync_playwright() as p:
                 key = f'{side}-{name}-{w}'
                 try:
                     pg.goto(url, wait_until='load', timeout=120000)
+                    try:
+                        pg.wait_for_load_state('networkidle', timeout=15000)  # CSS masks/backgrounds are not part of 'load'
+                    except Exception:
+                        pass
                     pg.wait_for_timeout(1200)
                     pg.evaluate("document.querySelectorAll('.reveal').forEach(e=>e.classList.add('visible'))")
                     pg.screenshot(path=f'{OUT}/{key}.png')

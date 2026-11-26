@@ -713,6 +713,7 @@
   "/template/css/css/main.css": "tests/fixtures/live-render/live-assets/template/css/css/main.css",
   "/template/css/general-style.css": "tests/fixtures/live-render/live-assets/template/css/general-style.css",
   "/template/css/lireate-audit-cls.css": "tests/fixtures/live-render/live-assets/template/css/lireate-audit-cls.css",
+  "/template/css/lireate-bundle-69b152a097a7663a.css": "tests/fixtures/live-render/live-assets-after/template/css/lireate-bundle-69b152a097a7663a.css",
   "/template/css/lireate-bundle-f80a3f772af93748.css": "tests/fixtures/live-render/live-assets/template/css/lireate-bundle-f80a3f772af93748.css",
   "/template/css/lireate-bundle-fba08515cc2645cd.css": "tests/fixtures/live-render/live-assets/template/css/lireate-bundle-fba08515cc2645cd.css",
   "/template/css/lireate-cms-page-dark.css": "tests/fixtures/live-render/live-assets/template/css/lireate-cms-page-dark.css",
@@ -728,9 +729,7 @@
   "/template/css/lireate-home-unslop.css": "tests/fixtures/live-render/live-assets/template/css/lireate-home-unslop.css",
   "/template/css/lireate-light-v4.css": {
    "edit": "template/css/lireate-light-v4.css",
-   "identical_copies": [
-    "pages/services/_template/assets/lireate-shared/lireate-light-v4.css"
-   ]
+   "identical_copies": []
   },
   "/template/css/lireate-menu-redesign.css": "tests/fixtures/live-render/live-assets/template/css/lireate-menu-redesign.css",
   "/template/css/lireate-modal-contrast.css": "tests/fixtures/live-render/live-assets/template/css/lireate-modal-contrast.css",
@@ -814,6 +813,12 @@
    "edit": "pages/blog/_shared/lireate-blog-article.js",
    "identical_copies": [
     "template/page/news/lireate-blog-article.js"
+   ]
+  },
+  "/template/page/news/lireate-blog-footer-light-v4.css": {
+   "edit": "pages/blog/_shared/lireate-blog-footer-light-v4.css",
+   "identical_copies": [
+    "template/page/news/lireate-blog-footer-light-v4.css"
    ]
   },
   "/template/page/news/lireate-blog-footer.css": {
