@@ -101,19 +101,7 @@ $lx_org_jsonld = [
       <a href="/politika_konfidencialnosti">Политика конфиденциальности</a>
       <a href="/private_data">Согласие на обработку персональных данных</a>
       <a href="/news/">Блог</a>
-      <details class="lx-site-footer-requisites">
-        <summary>Реквизиты</summary>
-        <div class="lx-site-footer-requisites-panel">
-          <p>Общество с ограниченной ответственностью «ЛИРЕЙТ»</p>
-          <p>Директор: Горбачев Юрий Александрович</p>
-          <p>Юридический адрес: 422542, Татарстан Республика, Район Зеленодольский, г.&nbsp;Зеленодольск, ул.&nbsp;Королёва, 11Б, помещ.&nbsp;30-1005</p>
-          <p>Почтовый адрес: 422540, Республика Татарстан, г.&nbsp;Зеленодольск, ул.&nbsp;Карла Маркса, дом&nbsp;24, офис&nbsp;1</p>
-          <p>Р/с 40702810407500006834</p>
-          <p>к/с 30101810745374525104</p>
-          <p>БИК 044525104</p>
-          <p>Банк: Филиал Точка Публичного акционерного общества Банка «Финансовая Корпорация Открытие»</p>
-        </div>
-      </details>
+      <a class="lx-site-footer-documents-link" href="/docs">Реквизиты</a>
     </div>
     <p class="lx-site-footer-copy">© <?php echo date('Y'); ?> LIREATE</p>
   </div>
