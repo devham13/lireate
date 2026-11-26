@@ -3,7 +3,7 @@
 | | |
 |--|--|
 | PR | https://github.com/devham13/lireate/pull/127 |
-| SHA | *(после push)* |
+| SHA | `c3ff29cffa3450db020e404f9c006517680d70ee` |
 | Скрины | `docs/screenshots/nav-v3/{before,after}/<slug>/` |
 | QA | `docs/screenshots/nav-v3/capture-qa.json` |
 
