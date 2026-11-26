@@ -52,6 +52,8 @@
    var face=one("#face"),pf=one("#portfolio");
    if(!face||!pf)return;
    document.body.classList.add("lxpf5-index","lxpf5-ready");
+   var features=one(".lx-pf-cases");
+   if(features&&features.parentNode&&pf.parentNode){pf.parentNode.insertBefore(features,pf);}
    var list=one(".lx-pf-cases ul");
    if(list){
     list.classList.add("lxpf5-featured-grid");
