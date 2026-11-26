@@ -45,7 +45,7 @@
   btn(controls,"https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI","MAX ↗","lxpf5-msg",true).setAttribute("data-lx-ym-goal","perehod_v_messendzher");
   btn(controls,"https://wa.me/79600484957","WhatsApp ↗","lxpf5-msg",true).setAttribute("data-lx-ym-goal","perehod_v_messendzher");
   wrap.appendChild(controls);
-  var anchor=one("#portfolio")||one("main")||one(".page_container");
+  var anchor=one("#portfolio")||one(".register-tz")||one(".main-content")||one("main")||one(".page_container");
   if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(s,anchor.nextSibling);
  }
  function index(){
