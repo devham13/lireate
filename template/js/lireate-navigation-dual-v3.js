@@ -20,6 +20,10 @@
    });
   }
   function update(){
+   if(window.scrollY<12){
+    active(items[0]);
+    return;
+   }
    var choice=items[0],distance=Infinity,limit=window.innerHeight*.28;
    items.forEach(function(item){
     var rect=item.target.getBoundingClientRect();
