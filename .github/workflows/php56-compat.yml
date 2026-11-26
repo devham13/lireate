@@ -91,7 +91,17 @@ jobs:
         run: python3 lireate_service_publish_ci_render.py
       - name: Service publish rollback (apply → rollback md5)
         working-directory: scripts
-        run: python3 -m unittest test_lireate_hosting_service_rollback test_lireate_hosting_publish_perf_rollback test_lireate_cms_main_body_class -q
+        run: python3 -m unittest test_lireate_hosting_service_rollback test_lireate_hosting_publish_perf_rollback test_lireate_cms_main_body_class test_lireate_light_v4_rollout_fixture_apply -q
       - name: Hosting scripts Python 3.6 syntax guard
         working-directory: scripts
         run: python3 check_hosting_py36_compat.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.6"
+      - name: Rollout + perf patch under Python 3.6
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lireate-rollout-docroot-ci
+          python scripts/check_hosting_py36_compat.py
+          python scripts/lireate_light_v4_hosting_rollout.py --docroot /tmp/lireate-rollout-docroot-ci
+          python -m unittest scripts.test_lireate_light_v4_rollout_fixture_apply -q

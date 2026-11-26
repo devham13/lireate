@@ -329,5 +329,3 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
 <script src="/template/js/lireate-utm.js?v=20261117b1"></script>
 <script src="/registraciya_tovarnogo_znaka/assets/lireate-shared/lireate-lead-mail.js"></script>
 <?php endif; ?>
-<script src="<?php echo lireate_home_h(LIREATE_HOME_JS_HREF); ?>?v=<?php echo lireate_home_h($lh_v); ?>" defer></script>
-<script src="<?php echo lireate_home_h(LIREATE_HOME_LIGHT_V4_JS_HREF); ?>?v=<?php echo lireate_home_h($lh_v); ?>" defer></script>

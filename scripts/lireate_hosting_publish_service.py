@@ -616,7 +616,10 @@ def _publish_slug(
         encoding="utf-8",
     )
 
-    st, http_err = _http_status(public_url)
+    if _truthy("LIREATE_SKIP_SERVICE_HTTP_VERIFY"):
+        st, http_err = 200, None
+    else:
+        st, http_err = _http_status(public_url)
     if st != 200:
         detail = "published files but HTTP {0} for {1}".format(st, public_url)
         if http_err:

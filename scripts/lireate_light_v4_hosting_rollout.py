@@ -6,6 +6,7 @@
 """
 import argparse
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -13,9 +14,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 # Rollout: 20 slugs (s-oplatoy вне menu/publish по политике). CI render — все 21 manifest.
 EXCLUDE = frozenset({'registraciya-tovarnogo-znaka-s-oplatoy-za-rezultat'})
+BACKUP_STAMP_RE = re.compile(r"backup:\s*(\S+)")
 
 
 def service_slugs():
+    only = os.environ.get('LIREATE_ROLLOUT_SLUGS', '').strip()
+    if only:
+        return [s.strip() for s in only.split(',') if s.strip()]
     base = ROOT / 'pages' / 'services'
     slugs = []
     for path in sorted(base.iterdir()):
@@ -38,6 +43,14 @@ def publish_env(docroot, office, apply):
     return env
 
 
+def parse_backup_stamp(stdout):
+    for match in BACKUP_STAMP_RE.finditer(stdout or ''):
+        stamp = Path(match.group(1)).name
+        if stamp:
+            return stamp
+    return ''
+
+
 def run_publish(publish, slug, env, apply):
     cmd = [
         sys.executable,
@@ -56,11 +69,39 @@ def run_publish(publish, slug, env, apply):
         stderr=subprocess.PIPE,
         universal_newlines=True,
     )
+    combined = (proc.stdout or '') + '\n' + (proc.stderr or '')
     if proc.returncode != 0:
-        sys.stderr.write(proc.stdout)
-        sys.stderr.write(proc.stderr)
+        sys.stderr.write(proc.stdout or '')
+        sys.stderr.write(proc.stderr or '')
         raise subprocess.CalledProcessError(proc.returncode, cmd)
-    return proc.stdout
+    return combined
+
+
+def rollback_applied(office, docroot, autopub_home, applied):
+    rollback = office / 'scripts' / 'lireate_hosting_service_rollback.py'
+    if not rollback.is_file():
+        print('WARN: rollback script missing, cannot unwind partial rollout')
+        return
+    for slug, stamp in reversed(applied):
+        if not stamp:
+            print('WARN: no backup stamp for slug {0}, skip rollback'.format(slug))
+            continue
+        print('ROLLBACK slug={0} stamp={1}'.format(slug, stamp))
+        subprocess.run(
+            [
+                sys.executable,
+                str(rollback),
+                '--docroot',
+                str(docroot),
+                '--slug',
+                slug,
+                '--rollback',
+                stamp,
+                '--home',
+                str(autopub_home),
+            ],
+            check=False,
+        )
 
 
 def main():
@@ -79,6 +120,7 @@ def main():
     perf = office / 'scripts' / 'lireate_hosting_performance_patch.py'
     slugs = service_slugs()
     env = publish_env(docroot, office, args.apply)
+    autopub_home = Path(os.environ.get('LIREATE_AUTOPUB_HOME', str(Path.home() / 'lireate-autopub')))
 
     print('=== ORDER (hosting docroot) ===')
     print('1) lireate_cms_light_v4_overlay_install.py --check|--apply')
@@ -99,14 +141,36 @@ def main():
     print('')
     print('services: {0} (exclude: {1})'.format(len(slugs), ','.join(sorted(EXCLUDE))))
 
+    print('')
+    print('=== PREFLIGHT (all slugs, no --apply) ===')
     for slug in slugs:
-        print('')
-        print('=== {0} ==='.format(slug))
         try:
-            out = run_publish(publish, slug, env, args.apply)
-            if out.strip():
-                print(out.rstrip())
-            if args.apply:
+            run_publish(publish, slug, publish_env(docroot, office, False), False)
+        except subprocess.CalledProcessError:
+            print('BLOCKER: preflight publish plan failed for slug {0}'.format(slug))
+            return 1
+
+    if not args.apply:
+        for slug in slugs:
+            print('')
+            print('=== {0} ==='.format(slug))
+            try:
+                out = run_publish(publish, slug, env, False)
+                if out.strip():
+                    print(out.rstrip())
+            except subprocess.CalledProcessError:
+                print('BLOCKER: publish plan failed for slug {0}'.format(slug))
+                return 1
+    else:
+        applied = []
+        for slug in slugs:
+            print('')
+            print('=== APPLY {0} ==='.format(slug))
+            try:
+                out = run_publish(publish, slug, env, True)
+                if out.strip():
+                    print(out.rstrip())
+                stamp = parse_backup_stamp(out)
                 subprocess.check_call(
                     [
                         sys.executable,
@@ -119,9 +183,14 @@ def main():
                     ],
                     env=env,
                 )
-        except subprocess.CalledProcessError:
-            print('BLOCKER: publish failed for slug {0}'.format(slug))
-            return 1
+                applied.append((slug, stamp))
+            except (subprocess.CalledProcessError, OSError) as exc:
+                print('BLOCKER: publish failed for slug {0}: {1}'.format(slug, exc))
+                if applied:
+                    print('=== ROLLBACK partial rollout ({0} slugs) ==='.format(len(applied)))
+                    rollback_applied(office, docroot, autopub_home, applied)
+                return 1
+
     print('')
     print('STATUS: LIGHT_V4_SERVICES_ROLLOUT_{0}'.format('APPLIED' if args.apply else 'DRY_RUN_OK'))
     return 0

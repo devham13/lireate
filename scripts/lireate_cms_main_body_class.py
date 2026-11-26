@@ -133,37 +133,40 @@ def patch_home_light_v4_suppress_dark_body(text):
     changed = False
     planned = text
 
-    live_in_array_dark = re.compile(
-        r"<\?php\s+if\s*\(\s*in_array\s*\(\s*\$temp\['page'\]\s*,\s*array\s*\((.*?)\)\s*,\s*true\s*\)\s*\)\s*"
-        r"echo\s+'\s*lireate-cms-page-dark\s*'\s*;\s*\?>",
-        re.DOTALL,
-    )
-
-    def _patch_in_array(m):
-        items = m.group(1)
+    def _strip_home_from_array(items):
         items_new = re.sub(r"'home'\s*,?", "", items)
         items_new = re.sub(r",\s*'home'\s*", "", items_new)
         items_new = re.sub(r",\s*,", ",", items_new)
+        return items_new.strip()
+
+    inline_in_array_dark = re.compile(
+        r"if\s*\(\s*in_array\s*\(\s*\$temp\['page'\]\s*,\s*array\s*\((.*?)\)\s*,\s*true\s*\)\s*\)\s*"
+        r"echo\s+'\s*lireate-cms-page-dark\s*'\s*;",
+        re.DOTALL,
+    )
+
+    def _patch_in_array_inline(m):
+        items_new = _strip_home_from_array(m.group(1))
         return (
-            "<?php if(in_array($temp['page'], array({0}), true) && $temp['page']!='home') "
-            "echo ' lireate-cms-page-dark'; /* {1} */ ?>".format(items_new.strip(), marker)
+            "if(in_array($temp['page'], array({0}), true) && $temp['page']!='home') "
+            "echo ' lireate-cms-page-dark'; /* {1} */".format(items_new, marker)
         )
 
-    nxt = live_in_array_dark.sub(_patch_in_array, planned)
+    nxt = inline_in_array_dark.sub(_patch_in_array_inline, planned)
     if nxt != planned:
         changed = True
         planned = nxt
 
-    live_home_dark = re.compile(
-        r"<\?php\s+if\s*\(\s*\$temp\['page'\]\s*===\s*'home'\s*\)\s*"
-        r"echo\s+empty\s*\(\s*\$_lx_home_v2\s*\)\s*\?\s*'\s+lireate-home-dark\s*'\s*:\s*'\s+lireate-home-v2\s*'\s*;\s*\?>",
+    inline_home_dark = re.compile(
+        r"if\s*\(\s*\$temp\['page'\]\s*===\s*'home'\s*\)\s*echo\s+empty\s*\(\s*\$_lx_home_v2\s*\)\s*\?\s*"
+        r"'\s+lireate-home-dark\s*'\s*:\s*'\s+lireate-home-v2\s*'\s*;",
         re.IGNORECASE,
     )
-    home_dark_repl = (
-        "<?php if ($temp['page']==='home') echo !empty($_lx_home_v2) ? ' lireate-home-v2' : ''; "
-        "/* lireate-home-dark */ /* %s */ ?>" % marker
+    home_dark_repl_inline = (
+        "if ($temp['page']==='home') echo !empty($_lx_home_v2) ? ' lireate-home-v2' : ''; "
+        "/* lireate-home-dark */ /* {0} */".format(marker)
     )
-    nxt = live_home_dark.sub(home_dark_repl, planned)
+    nxt = inline_home_dark.sub(home_dark_repl_inline, planned)
     if nxt != planned:
         changed = True
         planned = nxt
