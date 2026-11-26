@@ -29,13 +29,23 @@ BUTTON_RE = re.compile(
 )
 
 
+def normalize_href(href):
+    href = href.strip()
+    if href.startswith("http"):
+        from urllib.parse import urlparse
+
+        path = urlparse(href).path or "/"
+        return path if path.startswith("/") else "/" + path
+    return href
+
+
 def sidebar_rows(html):
     rows = []
     for href, label in BUTTON_RE.findall(html):
         label = label.strip()
         if not label or label.startswith("+"):
             continue
-        rows.append((href, label))
+        rows.append((normalize_href(href), label))
     return rows
 
 

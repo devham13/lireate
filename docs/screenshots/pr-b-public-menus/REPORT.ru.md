@@ -6,10 +6,10 @@
 
 | Страница | 1440 | 390 |
 |---|---|---|
-| `/uslugi/` (hub) | `uslugi-after-1440.png` | `uslugi-after-390.png` |
-| `/mktu` | `mktu-after-1440.png` | `mktu-after-390.png` |
+| `/uslugi/` (hub) | `uslugi-before-1440.png` / `uslugi-after-1440.png` | `uslugi-before-390.png` / `uslugi-after-390.png` |
+| `/mktu` | `mktu-after-1440.png` (+ `mktu-before-note.txt` — каталог только на хостинге) | `mktu-after-390.png` |
 
-Before: состояние до PR — тёмный hub /uslugi без `lh4-subnav` и без `lireate-theme-light-v4` (см. `template/page/uslugi/lireate-uslugi.css` v2026-11-11-dark3). Отдельные before-шоты не снимались: визуальный дельта — по after + legacy CSS в репозитории.
+Before `/uslugi/`: preview на `main` @ `1133b9b` (без `lh4-subnav`, без `lireate-theme-light-v4`). After: ветка PR B, `template/page/uslugi/_preview/index.php`.
 
 Источник after: `template/page/uslugi/_preview/index.php`, `pages/mktu/_preview/index.php`, Playwright + `php -S`.
 
