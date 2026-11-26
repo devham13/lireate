@@ -30,14 +30,31 @@ ASSETS = {
     'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php':'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php',
     'template/images/logo/logo-light-v5.svg':'template/images/logo/logo-light-v5.svg',
 }
-CMS = {
-    'template/page/kontaktyi/lireate-contacts-page.inc.php':'2c36b465077012f5a5844811664f949d1f486c9c',
-    'template/page/partners/lireate-partners-page.inc.php':'5b952e2a7c1323a32f0e5307e6c663315c1e73f2',
-    'template/page/news/lireate-blog-list.inc.php':'24d0e795da24727d2b286a67c03c0e88a04c1afc',
-    'template/page/news/lireate-blog-lib.php':'4e96d8ac5221a4376a6655eb9ac4c2f7772c3dec',
-    'template/page/news/lireate-blog-site-footer.inc.php':'437db7282bbf6e010ecfc76a87b4d6a688d1f20f',
-    'template/lireate/lireate-service-footer.inc.php':'1754dff4fb54acb2c7a927ef3af2f70b636cc500',
+# Reviewed main-branch blobs (pre-PR #131 for company pages).
+_CMS_MAIN_BLOB = {
+    'template/page/kontaktyi/lireate-contacts-page.inc.php': '2c36b465077012f5a5844811664f949d1f486c9c',
+    'template/page/partners/lireate-partners-page.inc.php': '5b952e2a7c1323a32f0e5307e6c663315c1e73f2',
+    'template/page/news/lireate-blog-list.inc.php': '24d0e795da24727d2b286a67c03c0e88a04c1afc',
+    'template/page/news/lireate-blog-lib.php': '4e96d8ac5221a4376a6655eb9ac4c2f7772c3dec',
+    'template/page/news/lireate-blog-site-footer.inc.php': '437db7282bbf6e010ecfc76a87b4d6a688d1f20f',
+    'template/lireate/lireate-service-footer.inc.php': '1754dff4fb54acb2c7a927ef3af2f70b636cc500',
 }
+# Live production after PR #131 (commit 15bf93c) and prod footer (3dc3dcc).
+_CMS_PROD_BLOB = {
+    'template/page/kontaktyi/lireate-contacts-page.inc.php': 'aa4691425bc8e984d017d89e216f3e5c405dbec8',
+    'template/page/partners/lireate-partners-page.inc.php': 'cc1d97119752c2cccbec61c9239ec1397a2f1b76',
+    'template/lireate/lireate-service-footer.inc.php': '3dc3dccf5fd4452dd7dffcafdce827c5265b7fd7',
+}
+
+def _allowed_main_prod(path):
+    main = _CMS_MAIN_BLOB[path]
+    prod = _CMS_PROD_BLOB.get(path)
+    if prod:
+        return frozenset({main, prod})
+    return frozenset({main})
+
+BASE_ALLOWED = {live: _allowed_main_prod(live) for live in _CMS_MAIN_BLOB}
+CMS = dict(_CMS_MAIN_BLOB)
 # src-relative path -> (live-relative path, reviewed main blob SHA)
 TOOLS = {
  'pages/services/patentnye-zadachi/index.php':('patentnye-zadachi/index.php','f78fca98dd5b26b3b91f59e97f6909838b6602f9'),
@@ -54,10 +71,71 @@ TOOLS = {
  'pages/services/patentnye-zadachi-sokrashchenie-mktu/index.php':('patentnye-zadachi/sokrashchenie-mktu/index.php','f9e3ef197fcaecb4963228cf11df5903ae01a0fe'),
  'pages/services/patentnye-zadachi-starye-zayavki/index.php':('patentnye-zadachi/starye-zayavki/index.php','966fb107ca130c174e11fe2c8b2bf7485d1aabf4'),
 }
-POSSIBLE = {MAIN} | {Path(p) for p in ASSETS} | {Path(p) for p in CMS} | {Path(v[0]) for v in TOOLS.values()}
+TOOL_LIVE = {Path(v[0]) for v in TOOLS.values()}
+POSSIBLE = {MAIN} | {Path(p) for p in ASSETS} | {Path(p) for p in CMS} | TOOL_LIVE
+PERF_MARK = 'seo-perf-20261120-v1'
+PERF_BLOCK = (
+    '<!-- ' + PERF_MARK + ' -->\n'
+    '<meta name="lireate-performance-patch" content="' + PERF_MARK + '">\n'
+    '<link rel="stylesheet" href="/template/css/lireate-performance.css?v=' + PERF_MARK + '">\n'
+    '<script defer src="/template/js/lireate-performance.js?v=' + PERF_MARK + '"></script>'
+)
+PERF_BLOCK_RE = re.compile(
+    r'\n?<!-- seo-perf-20261120-v1 -->\s*'
+    r'<meta name="lireate-performance-patch" content="seo-perf-20261120-v1">\s*'
+    r'<link rel="stylesheet" href="/template/css/lireate-performance\.css\?v=seo-perf-20261120-v1">\s*'
+    r'<script defer src="/template/js/lireate-performance\.js\?v=seo-perf-20261120-v1"></script>',
+    re.I,
+)
 
 def blob_sha(data):
     return hashlib.sha1(b"blob " + str(len(data)).encode('ascii') + b'\0' + data).hexdigest()
+
+def strip_perf(data):
+    text = data.decode('utf-8')
+    stripped = PERF_BLOCK_RE.sub('', text, count=1)
+    if stripped == text:
+        return data
+    return stripped.encode('utf-8')
+
+def extract_perf_block(text):
+    match = PERF_BLOCK_RE.search(text)
+    if not match:
+        return ''
+    return match.group(0).lstrip('\n')
+
+def merge_perf_into_head(text_bytes, perf_block):
+    if not perf_block:
+        return text_bytes
+    text = text_bytes.decode('utf-8')
+    if perf_block.strip() in text:
+        return text_bytes
+    return re.sub(
+        r'</head\s*>',
+        lambda m: perf_block + '\n' + m.group(0),
+        text,
+        count=1,
+        flags=re.I,
+    ).encode('utf-8')
+
+def live_matches_allowed(old, relative, before=None):
+    allowed = BASE_ALLOWED.get(str(relative))
+    if allowed is None:
+        allowed = frozenset({before}) if before else frozenset()
+    digest = blob_sha(old)
+    if digest in allowed:
+        return True
+    stripped = strip_perf(old)
+    if stripped != old and blob_sha(stripped) in allowed:
+        return True
+    return False
+
+def tool_live_allowed(old, before):
+    allowed = frozenset({before})
+    if blob_sha(old) in allowed:
+        return True
+    stripped = strip_perf(old)
+    return stripped != old and blob_sha(stripped) in allowed
 
 def dest(docroot, relative):
     if relative not in POSSIBLE:
@@ -98,8 +176,16 @@ def build_plan(docroot, with_tools=False):
             src = REPO / source
             if not src.is_file():
                 raise ValueError("BLOCKER missing published tool source " + source)
-            desired[Path(live)] = src.read_bytes()
-            expected[Path(live)] = before
+            live_path = Path(live)
+            repo_data = src.read_bytes()
+            target = dest(docroot, live_path)
+            if target.is_file():
+                old_text = target.read_text(encoding='utf-8')
+                perf = extract_perf_block(old_text)
+                desired[live_path] = merge_perf_into_head(repo_data, perf)
+            else:
+                desired[live_path] = repo_data
+            expected[live_path] = before
     plan = {}
     for relative, data in desired.items():
         target = dest(docroot, relative)
@@ -107,9 +193,15 @@ def build_plan(docroot, with_tools=False):
             old = target.read_bytes()
             if old == data:
                 continue
-            if relative in expected and blob_sha(old) != expected[relative]:
-                raise ValueError("BLOCKER live PHP has newer/different modifications: " + str(relative) +
-                    "; do not overwrite; integrate patch in Cursor and re-review")
+            if relative in expected:
+                before = expected[relative]
+                if relative in TOOL_LIVE:
+                    ok = tool_live_allowed(old, before)
+                else:
+                    ok = live_matches_allowed(old, relative, before)
+                if not ok:
+                    raise ValueError("BLOCKER live PHP has newer/different modifications: " + str(relative) +
+                        "; do not overwrite; integrate patch in Cursor and re-review")
             if relative != MAIN and relative not in expected:
                 raise ValueError("BLOCKER unexpected existing shared asset: " + str(relative))
         elif relative in expected:

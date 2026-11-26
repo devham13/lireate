@@ -35,12 +35,14 @@ $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-contacts.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_footer_css); ?>?v=<?php echo lireate_contacts_h($lc_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
 <link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126">
 <script>
 document.documentElement.classList.add('lireate-contacts-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_contacts_h(LIREATE_CONTACTS_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-contacts-body'); }
 </script>
+<script>(function(){document.documentElement.classList.add('lireate-company-v5');if(document.body){document.body.classList.add('lireate-company-v5');}else{document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lireate-company-v5');},{once:true});}})();</script>
 <div class="lireate-contacts-page" data-lireate-contacts-version="<?php echo lireate_contacts_h($lc_v); ?>">
   <header class="lireate-contacts-hero">
     <div class="lireate-contacts-wrap">

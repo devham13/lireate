@@ -29,13 +29,15 @@ $lt_footer_css = defined('LIREATE_TEAM_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_team_h($lt_assets); ?>/lireate-team.css?v=<?php echo lireate_team_h($lt_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_team_h($lt_footer_css); ?>?v=<?php echo lireate_team_h($lt_v); ?>">
-<link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_team_h($lt_v); ?>"><!-- lireate_cms_light_v4 -->
+<link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_team_h($lt_v); ?>">
 <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_team_h($lt_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
 <script>
 document.documentElement.classList.add('lireate-team-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_team_h(LIREATE_TEAM_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-team-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<script>(function(){document.documentElement.classList.add('lireate-company-v5');if(document.body){document.body.classList.add('lireate-company-v5');}else{document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lireate-company-v5');},{once:true});}})();</script>
 <div class="lireate-team-page" data-lireate-team-version="<?php echo lireate_team_h($lt_v); ?>">
   <header class="lireate-team-hero">
     <div class="lireate-team-wrap">
@@ -127,5 +129,4 @@ if (document.body) { document.body.classList.add('lireate-team-body'); document.
   ?></script>
   <script src="<?php echo lireate_team_h($lt_assets); ?>/lireate-team.js?v=<?php echo lireate_team_h($lt_v); ?>"></script>
   <script src="<?php echo lireate_team_h($lt_assets); ?>/lireate-metrika-goals.js?v=<?php echo lireate_team_h($lt_v); ?>"></script>
-  <script src="/template/js/lireate-light-v4.js?v=<?php echo lireate_team_h($lt_v); ?>" defer></script><!-- lireate_cms_light_v4 -->
 </div>
