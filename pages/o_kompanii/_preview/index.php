@@ -8,10 +8,11 @@ $_SERVER['DOCUMENT_ROOT'] = $repo;
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>О компании — Light V4 preview</title>
-  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261125f">
-  <link rel="stylesheet" href="/pages/services/_shared/lireate-service-dark.css?v=20261125d">
+  <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=20261126r19">
+  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261126r19">
+  <link rel="stylesheet" href="/template/page/news/lireate-blog-footer.css?v=20261126r19">
 </head>
-<body class="cms-default lireate-about-body lireate-theme-light-v4 lireate-screenshot-capture">
+<body class="cms-default lireate-about-body lireate-theme-light-v4 lireate-cms-page-dark lireate-screenshot-capture">
 <?php require $repo . '/template/page/o_kompanii/lireate-about-cms.inc.php'; ?>
 </body>
 </html>

@@ -40,6 +40,9 @@ PHP 5.6.40 (`php -S` + router), публичные таблицы CMS в SQLite 
 pip install playwright && python3 -m playwright install chromium   # один раз
 scripts/run_live_render_fixture_screenshots.sh                      # before+after, 1440 и 390
 scripts/run_live_render_fixture_screenshots.sh --sides after --pages home,article --fail-on-contrast
+# /o_kompanii (нет статического AFTER HTML): контраст через preview + lu-shell тела
+python3 -m http.server 19390 --bind 127.0.0.1 &  # из корня репо
+# playwright: открыть http://127.0.0.1:19390/pages/o_kompanii/_preview/index.php при 1440 и 390
 ```
 
 Результат: `$RUNNER_TEMP|/tmp/live-render-shots/{side}-{page}-{1440|390}[-full].png` и `metrics.json`:

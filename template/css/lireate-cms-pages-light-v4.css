@@ -92,6 +92,71 @@ body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-tea
   background: #047857 !important;
   border-color: #047857 !important;
 }
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4,
+html.lireate-about-html body.lireate-about-body.lireate-cms-page-dark.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .wrapper,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .page_container,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .container.content,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page {
+  --la-bg: #fff;
+  --la-text: #1f212c;
+  --la-muted: #52637b;
+  --la-line: #dce8f7;
+  --la-card: #fff;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .container.content :is(p, li, span, div),
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-lead,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-text,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page p,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page li {
+  color: #2d4764 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a {
+  color: #0f4db8 !important;
+  font-weight: 700 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-h1,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-card-title,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-partner-name {
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-partner-role,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-spec-label,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-text--muted {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-accent,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-accent p {
+  color: #2d4764 !important;
+  background: #f7fbff !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-copy,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-meta {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer p,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-lead {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-pill--solid {
+  color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
 body.lireate-theme-light-v4.lireate-reviews-body #face p.titleDesc,
 body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
   color: #52637b !important;
@@ -234,6 +299,7 @@ body.lireate-theme-light-v4 #leftSideBar .sidebar,
 body.lireate-reviews-body #leftSideBar,
 body.lireate-portfolio-body #leftSideBar,
 body.lireate-team-body #leftSideBar,
+body.lireate-about-body #leftSideBar,
 body.lireate-legacy-article-lu #leftSideBar {
   background-color: #fff !important;
   color: #1f212c !important;
@@ -254,6 +320,7 @@ body.lireate-theme-light-v4 #leftSideBar a:not(.leftSideLogo),
 body.lireate-reviews-body #leftSideBar a:not(.leftSideLogo),
 body.lireate-portfolio-body #leftSideBar a:not(.leftSideLogo),
 body.lireate-team-body #leftSideBar a:not(.leftSideLogo),
+body.lireate-about-body #leftSideBar a:not(.leftSideLogo),
 body.lireate-legacy-article-lu #leftSideBar a:not(.leftSideLogo) {
   background-color: transparent !important;
   color: #0f4db8 !important;
@@ -380,9 +447,11 @@ body.lireate-theme-light-v4 a.leftSideLogo,
 html body.lireate-reviews-body.lireate-cms-page-dark,
 html body.lireate-portfolio-body.lireate-cms-page-dark,
 html body.lireate-team-body.lireate-cms-page-dark,
+html body.lireate-about-body.lireate-cms-page-dark,
 body.lireate-reviews-body,
 body.lireate-portfolio-body,
-body.lireate-team-body {
+body.lireate-team-body,
+body.lireate-about-body {
   background: #fff !important;
   color: #1f212c !important;
 }
@@ -395,7 +464,10 @@ body.lireate-portfolio-body .container,
 body.lireate-portfolio-body #portfolio,
 body.lireate-team-body .wrapper,
 body.lireate-team-body .container,
-body.lireate-team-body .page_container {
+body.lireate-team-body .page_container,
+body.lireate-about-body .wrapper,
+body.lireate-about-body .container,
+body.lireate-about-body .page_container {
   background: #fff !important;
   color: #1f212c !important;
 }
@@ -404,11 +476,13 @@ body.lireate-team-body .page_container {
 html:has(body.lireate-reviews-body.lireate-cms-page-dark),
 html:has(body.lireate-portfolio-body.lireate-cms-page-dark),
 html:has(body.lireate-team-body.lireate-cms-page-dark),
+html:has(body.lireate-about-body.lireate-cms-page-dark),
 html:has(body.lireate-theme-light-v4.lireate-cms-page-dark),
 html:has(body.lireate-home-light-v4),
 body.lireate-reviews-body.lireate-cms-page-dark,
 body.lireate-portfolio-body.lireate-cms-page-dark,
 body.lireate-team-body.lireate-cms-page-dark,
+body.lireate-about-body.lireate-cms-page-dark,
 body.lireate-theme-light-v4.lireate-cms-page-dark,
 body.lireate-theme-light-v4.lireate-home-dark,
 body.lireate-home-light-v4.lireate-cms-page-dark,
@@ -420,6 +494,7 @@ body.lireate-home-light-v4.lireate-home-dark {
 body.lireate-reviews-body.lireate-cms-page-dark::before,
 body.lireate-portfolio-body.lireate-cms-page-dark::before,
 body.lireate-team-body.lireate-cms-page-dark::before,
+body.lireate-about-body.lireate-cms-page-dark::before,
 body.lireate-theme-light-v4.lireate-cms-page-dark::before,
 body.lireate-theme-light-v4.lireate-home-dark::before,
 body.lireate-home-light-v4.lireate-cms-page-dark::before,
@@ -431,6 +506,10 @@ body.lireate-reviews-body.lireate-cms-page-dark #wrapper-ap,
 body.lireate-reviews-body.lireate-cms-page-dark .wrapper,
 body.lireate-portfolio-body.lireate-cms-page-dark .wrapper,
 body.lireate-team-body.lireate-cms-page-dark .wrapper,
+body.lireate-about-body.lireate-cms-page-dark .wrapper,
+body.lireate-about-body.lireate-cms-page-dark .page_container,
+body.lireate-about-body.lireate-cms-page-dark .container.content,
+body.lireate-about-body .lireate-about-page,
 body.lireate-theme-light-v4.lireate-cms-page-dark #wrapper-ap,
 body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper,
 body.lireate-theme-light-v4.lireate-cms-page-dark .wrapper-ap,
@@ -475,7 +554,8 @@ body.lireate-team-body #lireate-team {
   body.lireate-theme-light-v4,
   body.lireate-reviews-body,
   body.lireate-portfolio-body,
-  body.lireate-team-body {
+  body.lireate-team-body,
+  body.lireate-about-body {
     background: #fff !important;
   }
 }
