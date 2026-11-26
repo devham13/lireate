@@ -10,7 +10,7 @@
   body.style.color = "#1f212c";
   var footerCss = document.querySelector('link[href*="lireate-blog-footer.css"]');
   if (footerCss && !document.querySelector('link[href*="lireate-blog-footer-light-v4.css"]')) {
-    var ver = "20261126r18";
+    var ver = "20261126r19";
     var headV4 = document.querySelector('link[href*="lireate-light-v4.css?v="]');
     if (headV4 && headV4.href) {
       var m = headV4.href.match(/[?&]v=([^&]+)/);

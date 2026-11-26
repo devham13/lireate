@@ -64,6 +64,15 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 **Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
 
+### Круг 22 — subnav сверху, сайдбар 100vh
+
+| Задача | Решение |
+| --- | --- |
+| Меню/телефон/CTA под stats | `lh4-subnav` перенесён в начало `<main>`, до hero |
+| Сайдбар обрывается ~350px | `#leftSideBar` `min-height:100vh`; убрана белая заливка всех `div` внутри |
+| article/страницы CMS | то же в `lireate-cms-pages-light-v4.css` |
+| Телефон в subnav | `LIREATE_HOME_PHONE_*` + макет PR #117 `site-header .phone` (+7 960…) |
+
 ### Круг 21 — utm дубль, vk-cases, blog py3.6
 
 | Задача | Решение |

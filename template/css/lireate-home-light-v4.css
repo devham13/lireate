@@ -531,7 +531,7 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root main {
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-subnav {
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: 35;
   background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid #e3edf7;
   backdrop-filter: blur(10px);
@@ -695,15 +695,23 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .stat-card span,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .stat-card small {
   color: #52637b !important;
 }
-body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar,
-body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar div,
-body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar p,
-body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar li {
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar {
   background-color: #fff !important;
+  color: #1f212c !important;
+  min-height: 100vh !important;
+  height: auto !important;
+  top: 0 !important;
+  bottom: 0 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar p,
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar li,
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar span,
+body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar div:not(.submitBox) {
+  background-color: transparent !important;
   color: #1f212c !important;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 #leftSideBar a:not(.leftSideLogo) {
-  background-color: #fff !important;
+  background-color: transparent !important;
   color: #0f4db8 !important;
 }
 body.lireate-home-light-v4.lireate-cms-page-dark,
