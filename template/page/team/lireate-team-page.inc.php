@@ -31,11 +31,13 @@ $lt_footer_css = defined('LIREATE_TEAM_FOOTER_CSS_HREF')
 <link rel="stylesheet" href="<?php echo lireate_team_h($lt_footer_css); ?>?v=<?php echo lireate_team_h($lt_v); ?>">
 <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_team_h($lt_v); ?>"><!-- lireate_cms_light_v4 -->
 <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_team_h($lt_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126a">
 <script>
 document.documentElement.classList.add('lireate-team-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_team_h(LIREATE_TEAM_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-team-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<script>(function(){document.documentElement.classList.add('lireate-company-v5');if(document.body){document.body.classList.add('lireate-company-v5');}else{document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lireate-company-v5');},{once:true});}})();</script>
 <div class="lireate-team-page" data-lireate-team-version="<?php echo lireate_team_h($lt_v); ?>">
   <header class="lireate-team-hero">
     <div class="lireate-team-wrap">
@@ -55,6 +57,18 @@ if (document.body) { document.body.classList.add('lireate-team-body'); document.
         <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_team_h(LIREATE_TEAM_PHONE_DISPLAY); ?></a>
         <a class="lireate-team-pill lireate-team-pill--outline" href="<?php echo lireate_team_h(LIREATE_TEAM_PHONE2_TEL); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_team_h(LIREATE_TEAM_PHONE2_DISPLAY); ?></a>
       </div>
+
+      <aside class="lc5-hero-media lc5-hero-person" aria-label="Специалист Лирейт">
+        <div class="lc5-photo-shell">
+          <img src="/template/images/home/gabdrakhmanova-elvira-2026-11.webp" width="460" height="370" alt="Габдрахманова Эльвира Дамировна, руководитель отдела регистрации интеллектуальной собственности" fetchpriority="high" loading="eager" decoding="async">
+        </div>
+        <div class="lc5-media-body">
+          <span class="lc5-chip">Сотрудник бюро · Команда Лирейт</span>
+          <strong>Эльвира Габдрахманова</strong>
+          <p>Руководитель отдела регистрации интеллектуальной собственности</p>
+          <a href="/team">Команда Лирейт ↗</a>
+        </div>
+      </aside>
     </div>
   </header>
 
