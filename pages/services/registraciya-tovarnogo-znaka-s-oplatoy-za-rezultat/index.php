@@ -67,6 +67,9 @@ $schema_graph = [
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
+  <!-- LIREATE Sitewide Sidebar V7: no duplicate when the CMS menu exists -->
+  <link rel="stylesheet" href="/template/css/lireate-sitewide-sidebar-v7.css?v=20261126">
+  <script defer src="/template/js/lireate-sitewide-sidebar-v7.js?v=20261126"></script>
 </head>
 <body class="lireate-svc-body lx-fg-white">
 <div class="lx-bg-glow" aria-hidden="true"></div>
