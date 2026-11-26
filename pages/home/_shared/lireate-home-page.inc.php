@@ -24,9 +24,6 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo lireate_home_h(LIREATE_HOME_CSS_HREF); ?>?v=<?php echo lireate_home_h($lh_v); ?>">
-<link rel="stylesheet" href="<?php echo lireate_home_h(LIREATE_HOME_LIGHT_V4_CSS_HREF); ?>?v=<?php echo lireate_home_h($lh_v); ?>">
-
 <div id="lireate-home-light-v4" class="lh4-root">
 <div class="scroll-progress" aria-hidden="true"></div>
 

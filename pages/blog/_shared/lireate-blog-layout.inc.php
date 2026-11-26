@@ -53,6 +53,7 @@ $lb_schema_meta = array(
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-article.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>"><!-- lireate_blog_light_v4 -->
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-blog-html');
 if (document.body) {

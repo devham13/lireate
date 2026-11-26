@@ -14,6 +14,7 @@ TARGETS = [
     ROOT / "scripts" / "lireate_home_light_v4_install.py",
     ROOT / "scripts" / "lireate_home_light_v4_install_lib.py",
     ROOT / "scripts" / "lireate_main_php_cache_bust.py",
+    ROOT / "scripts" / "lireate_light_v4_hosting_rollout.py",
 ]
 
 FORBIDDEN = [

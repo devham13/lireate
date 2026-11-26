@@ -124,7 +124,7 @@ def patch_about_body_conditional(text):
 
 
 def patch_home_light_v4_suppress_dark_body(text):
-    """Ensure main.php does not emit cms dark shell on home when Light V4 is active."""
+    """Ensure live template/main.php does not emit dark body classes on home (Light V4)."""
     import re
 
     marker = "lireate-home-light-v4-install:suppress-home-dark"
@@ -132,34 +132,43 @@ def patch_home_light_v4_suppress_dark_body(text):
         return text, False
     changed = False
     planned = text
-    dark_echo = re.compile(
-        r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-cms-page-dark[^']*)'\s*;\s*\?>",
-        re.IGNORECASE,
-    )
-    home_dark_echo = re.compile(
-        r"<\?php\s+if\s*\(([^)]*)\)\s*echo\s+'([^']*lireate-home-dark[^']*)'\s*;\s*\?>",
-        re.IGNORECASE,
-    )
-    dark_marker = "lireate_design_cms_dark_pages_v2"
 
-    def _guard_echo(match):
-        cond = match.group(1).strip()
-        if "$temp['page']!='home'" in cond or '$temp["page"]!="home"' in cond:
-            return match.group(0)
+    live_in_array_dark = re.compile(
+        r"<\?php\s+if\s*\(\s*in_array\s*\(\s*\$temp\['page'\]\s*,\s*array\s*\((.*?)\)\s*,\s*true\s*\)\s*\)\s*"
+        r"echo\s+'\s*lireate-cms-page-dark\s*'\s*;\s*\?>",
+        re.DOTALL,
+    )
+
+    def _patch_in_array(m):
+        items = m.group(1)
+        items_new = re.sub(r"'home'\s*,?", "", items)
+        items_new = re.sub(r",\s*'home'\s*", "", items_new)
+        items_new = re.sub(r",\s*,", ",", items_new)
         return (
-            "<?php if(({0}) && $temp['page']!='home') echo '{1}'; /* {2} */ ?>".format(
-                cond, match.group(2).replace("'", "\\'"), marker
-            )
+            "<?php if(in_array($temp['page'], array({0}), true) && $temp['page']!='home') "
+            "echo ' lireate-cms-page-dark'; /* {1} */ ?>".format(items_new.strip(), marker)
         )
 
-    nxt = dark_echo.sub(_guard_echo, planned)
+    nxt = live_in_array_dark.sub(_patch_in_array, planned)
     if nxt != planned:
         changed = True
         planned = nxt
-    nxt = home_dark_echo.sub(_guard_echo, planned)
+
+    live_home_dark = re.compile(
+        r"<\?php\s+if\s*\(\s*\$temp\['page'\]\s*===\s*'home'\s*\)\s*"
+        r"echo\s+empty\s*\(\s*\$_lx_home_v2\s*\)\s*\?\s*'\s+lireate-home-dark\s*'\s*:\s*'\s+lireate-home-v2\s*'\s*;\s*\?>",
+        re.IGNORECASE,
+    )
+    home_dark_repl = (
+        "<?php if ($temp['page']==='home') echo !empty($_lx_home_v2) ? ' lireate-home-v2' : ''; "
+        "/* lireate-home-dark */ /* %s */ ?>" % marker
+    )
+    nxt = live_home_dark.sub(home_dark_repl, planned)
     if nxt != planned:
         changed = True
         planned = nxt
+
+    dark_marker = "lireate_design_cms_dark_pages_v2"
     if dark_marker in planned:
         start = planned.find(dark_marker)
         end = planned.find("?>", start)
@@ -171,49 +180,6 @@ def patch_home_light_v4_suppress_dark_body(text):
         if chunk_new != chunk:
             planned = planned[:start] + chunk_new + planned[end:]
             changed = True
-
-    ternary_cms_dark = re.compile(
-        r"<\?php\s+echo\s+((?:in_array|array_key_exists)\s*\([^\)]+\))\s*\?\s*"
-        r"'([^']*lireate-cms-page-dark[^']*)'\s*:\s*''\s*;\s*\?>",
-        re.IGNORECASE | re.DOTALL,
-    )
-
-    def _guard_ternary_cms(match):
-        cond = match.group(1).strip()
-        if "$temp['page']!='home'" in cond or marker in match.group(0):
-            return match.group(0)
-        cls = match.group(2)
-        return (
-            "<?php echo (({0}) && $temp['page']!='home' ? '{1}' : ''); /* {2} */ ?>".format(
-                cond, cls.replace("'", "\\'"), marker
-            )
-        )
-
-    nxt = ternary_cms_dark.sub(_guard_ternary_cms, planned)
-    if nxt != planned:
-        changed = True
-        planned = nxt
-
-    ternary_home_dark = re.compile(
-        r"<\?php\s+echo\s+([^\?;]+)\?\s*'([^']*lireate-home-dark[^']*)'\s*:\s*''\s*;\s*\?>",
-        re.IGNORECASE,
-    )
-
-    def _guard_ternary_home(match):
-        cond = match.group(1).strip()
-        if "$temp['page']!='home'" in cond or marker in match.group(0):
-            return match.group(0)
-        cls = match.group(2)
-        return (
-            "<?php echo (({0}) && $temp['page']!='home' ? '{1}' : ''); /* {2} */ ?>".format(
-                cond, cls.replace("'", "\\'"), marker
-            )
-        )
-
-    nxt = ternary_home_dark.sub(_guard_ternary_home, planned)
-    if nxt != planned:
-        changed = True
-        planned = nxt
 
     return planned, changed
 

@@ -148,10 +148,11 @@ def _head_snippet():
         "preg_match('#^/(?:index\\.php)?$#', parse_url((string)$_SERVER['REQUEST_URI'], PHP_URL_PATH)?:''))){ ?>\n"
         "<link rel=\"stylesheet\" href=\"/template/css/lireate-home-light-v4.css?v=%s\"><!-- %s -->\n"
         "<link rel=\"stylesheet\" href=\"/template/css/lireate-light-v4.css?v=%s\">\n"
+        "<link rel=\"stylesheet\" href=\"/template/page/news/lireate-blog-footer-light-v4.css?v=%s\">\n"
         "<script src=\"/template/js/lireate-home-light-v4.js?v=%s\" defer></script>\n"
         "<script src=\"/template/js/lireate-light-v4.js?v=%s\" defer></script>\n"
         "<?php } ?>\n"
-    ) % (version, HEAD_MARKER, version, version, version)
+    ) % (version, HEAD_MARKER, version, version, version, version)
 
 
 def patch_head_assets(text):

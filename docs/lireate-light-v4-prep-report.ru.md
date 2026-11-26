@@ -64,6 +64,15 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 **Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
 
+### Круг 18 — логотип в грузимых CSS, footer-light, body home, rollout py3.6
+
+| Задача | Решение |
+| --- | --- |
+| Логотип home/article | mask в `lireate-home-light-v4.css`, `lireate-light-v4.css`, `lireate-blog-light-v4.css` |
+| Cache | `20261126r18`; `lireate-blog-footer-light-v4.css`; убраны дубли CSS в `lireate-home-page.inc.php`; `LIREATE_TEAM_TEMPLATE_VERSION` |
+| body dark на home | live-патч `in_array` + ternary home-dark; тест на `cms-main-live-body-classes-round18.php` |
+| Rollout py3.6 | без `__future__ annotations`; в `check_hosting_py36_compat.py` |
+
 ### Круг 17 (`1609aad`) — логотип, cache-bust, reviews, rollback-порядок
 
 | Задача | Решение |

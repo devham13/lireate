@@ -80,7 +80,7 @@ scripts/run_live_render_fixture_screenshots.sh --sides after --pages home,articl
    Блокер 1 (главная) живёт в патче main.php, который делает `lireate_home_light_v4_install.py`:
    правьте этот установщик (и/или `template/css/lireate-home-light-v4.css`), а не main.php руками.
    **Круг 15 — патч `main.php` (`scripts/lireate_home_light_v4_install.py` + `lireate_cms_main_body_class.py`):**
-   - на `home` убирается только `lireate-cms-page-dark`; строка **`echo ' lireate-home-dark'` остаётся** (её ищет cron `lireate_home_unslop`);
+   - на `home` не выводится `lireate-cms-page-dark` / `lireate-home-dark` (тернарий с `$_lx_home_v2` → только v2 или пусто); строка **`lireate-home-dark` остаётся в исходнике** в комментарии для cron;
    - удаление `'home'` из PHP-массивов тёмных страниц — **только** внутри блока с маркером `lireate_design_cms_dark_pages_v2`, без глобального regex.
    - главная: `#lh4-lead-form` с `data-lireate-consent-managed="1"`; в `live-assets/template/js/main.js` (и `deploy-patches/.../main.js.consent-skip-managed.patch` на прод) legacy-инжектор согласий пропускает форму с этим атрибутом или с уже имеющимся `input[name=consent_request]`.
    **AFTER пересобран владельцем на `6554440` (круг 15)** — все 7 страниц с патчем main.php; `run_live_render_fixture_screenshots.sh --sides after --fail-on-contrast` → `low_contrast_count=0` на всех.

@@ -4,8 +4,6 @@
 
 Услуги: publish_service через LIREATE_DOCROOT (env), dry-run = --update без --apply.
 """
-from __future__ import annotations
-
 import argparse
 import os
 import subprocess
@@ -51,7 +49,13 @@ def run_publish(publish, slug, env, apply):
     ]
     if apply:
         cmd.append('--apply')
-    proc = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    proc = subprocess.run(
+        cmd,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
     if proc.returncode != 0:
         sys.stderr.write(proc.stdout)
         sys.stderr.write(proc.stderr)

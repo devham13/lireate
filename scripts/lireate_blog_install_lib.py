@@ -659,6 +659,7 @@ BLOG_SHARED_TO_TEMPLATE = (
     "lireate-blog-article.css",
     "lireate-blog-article.js",
     "lireate-blog-footer.css",
+    "lireate-blog-footer-light-v4.css",
     "lireate-blog-list.css",
 )
 
@@ -2555,18 +2556,23 @@ def run_php_list_diag(live_docroot, office_repo=None):
 
     footer_v = LIGHT_V4_ASSET_VERSION
     footer_href = "lireate-blog-footer.css?v={0}".format(footer_v)
+    footer_light_href = "lireate-blog-footer-light-v4.css?v={0}".format(footer_v)
     footer_link_ok = footer_href in stdout
+    footer_light_ok = footer_light_href in stdout
     print(
-        "diag_footer_css: marker={0} rule={1} html_link={2}".format(
+        "diag_footer_css: marker={0} rule={1} html_link={2} light_v4={3}".format(
             FOOTER_FIX_CSS_MARKER in footer_css_text,
             FOOTER_FIX_CSS_RULE in footer_css_text,
             footer_link_ok,
+            footer_light_ok,
         )
     )
     if not footer_fix_ok:
         fail_reasons.append("missing footer fix.css rules in deployed lireate-blog-footer.css")
     if not footer_link_ok:
         fail_reasons.append("missing {0} in list HTML".format(footer_href))
+    if not footer_light_ok:
+        fail_reasons.append("missing {0} in list HTML".format(footer_light_href))
 
     list_log_parsed = parse_php_error_log(
         error_log_path.read_text(encoding="utf-8", errors="replace")

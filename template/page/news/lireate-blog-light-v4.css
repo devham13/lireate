@@ -273,3 +273,10 @@ body.lireate-theme-light-v4 .submitBox *{color:#fff!important}
 body.lireate-legacy-article-lu div.submitBox.js-modal-form,
 body.lireate-legacy-article-lu .submitBox.js-modal-form,
 body.lireate-legacy-article-lu #leftSideBar .submitBox.js-modal-form{color:#fff!important}
+body.lireate-legacy-article-lu a.leftSideLogo,
+body.lireate-theme-light-v4 a.leftSideLogo,
+#leftSideBar a.leftSideLogo{
+ display:block!important;background-image:none!important;background-color:#1f212c!important;
+ -webkit-mask-image:url(/template/images/logo/logo.svg);mask-image:url(/template/images/logo/logo.svg);
+ -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;
+ -webkit-mask-size:contain;mask-size:contain;filter:none!important;opacity:.94!important}

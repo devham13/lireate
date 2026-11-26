@@ -52,6 +52,7 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-list.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <?php if (!defined('LIREATE_BLOG_LIGHT_V4_FOOTER') || !LIREATE_BLOG_LIGHT_V4_FOOTER) : ?>
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
+<link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <?php endif; ?>
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>"><!-- lireate_blog_light_v4 -->
 <script>

@@ -723,6 +723,25 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services a {
 body.lireate-home-light-v4.lireate-theme-light-v4 .lx-site-footer a {
   color: #0f4db8 !important;
 }
+
+/* Sidebar logo (main.php loads this sheet, not lireate-cms-pages-light-v4) */
+body.lireate-home-light-v4 a.leftSideLogo,
+body.lireate-home-light-v4.lireate-theme-light-v4 a.leftSideLogo,
+#leftSideBar a.leftSideLogo {
+  display: block !important;
+  background-image: none !important;
+  background-color: #1f212c !important;
+  -webkit-mask-image: url(/template/images/logo/logo.svg);
+  mask-image: url(/template/images/logo/logo.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  filter: none !important;
+  opacity: 0.94 !important;
+}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root {
   --blue: #0f4db8;
   --lh4-blue: #0f4db8;
