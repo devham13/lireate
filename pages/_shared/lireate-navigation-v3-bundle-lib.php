@@ -10,7 +10,7 @@ if (!function_exists('lireate_navigation_v3_asset_qs')) {
         if (defined('LIREATE_NAV_V3_ASSET_QS')) {
             return (string) LIREATE_NAV_V3_ASSET_QS;
         }
-        return '20261126r5';
+        return '20261126r6';
     }
 }
 
@@ -28,6 +28,7 @@ if (!function_exists('lireate_navigation_v3_enqueue_assets')) {
         echo '<link rel="stylesheet" href="/template/css/lireate-navigation-dual-v3.css?v=' . $v . '">' . "\n";
         echo '<link rel="stylesheet" href="/template/css/lireate-public-cms-chrome.css?v=' . $v . '">' . "\n";
         echo '<link rel="stylesheet" href="/template/css/lireate-global-subnav-light-v4.css?v=' . $v . '">' . "\n";
+        echo '<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=' . $v . '">' . "\n";
         echo '<script defer src="/template/js/lireate-navigation-dual-v3.js?v=' . $v . '"></script>' . "\n";
     }
 }

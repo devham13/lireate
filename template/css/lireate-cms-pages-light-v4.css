@@ -470,6 +470,7 @@ body.lireate-public-cms-chrome #leftSideBar a.leftSideLogo {
   mask-position: center !important;
 }
 body.lireate-theme-light-v4:not(.lireate-public-cms-chrome) a.leftSideLogo,
+body.lireate-mktu-lu-body #leftSideBar a.leftSideLogo,
 body:not(.lireate-public-cms-chrome) #leftSideBar a.leftSideLogo {
   display: block !important;
   background-image: none !important;

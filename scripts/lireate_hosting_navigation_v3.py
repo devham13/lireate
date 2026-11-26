@@ -16,11 +16,27 @@ import tempfile
 
 REPO = Path(__file__).resolve().parents[1]
 VERSION = 'lireate-dual-nav-v3-20261126'
-NAV_ASSET_QS = '20261126r5'
+NAV_ASSET_QS = '20261126r7'
+BODY_MARKER = 'lireate-nav-v3-body:v1'
+SHELL_MARKER = 'lireate-nav-v3-cms-shell:v1'
+WRAP_OPEN_MARKER = 'lireate-nav-v3-cms-shell:wrap-open'
+BODY_CLASSES = 'lireate-public-cms-chrome lireate-theme-light-v4'
+SHARED_PHP = [
+    Path('pages/_shared/lireate-public-cms-chrome-lib.php'),
+    Path('pages/_shared/lireate-public-cms-chrome.inc.php'),
+    Path('pages/_shared/lireate-public-cms-sidebar.inc.php'),
+    Path('pages/_shared/lireate-lh4-subnav-lib.php'),
+    Path('pages/_shared/lireate-lh4-subnav.inc.php'),
+    Path('pages/_shared/lireate-lh4-mobile-anchors.inc.php'),
+    Path('pages/_shared/lireate-navigation-v3-bundle-lib.php'),
+    Path('pages/_shared/lireate-cms-main-chrome-shell.inc.php'),
+]
 ASSETS = [
     Path('template/css/lireate-navigation-dual-v3.css'),
     Path('template/css/lireate-public-cms-chrome.css'),
     Path('template/css/lireate-global-subnav-light-v4.css'),
+    Path('template/css/lireate-cms-pages-light-v4.css'),
+    Path('template/css/lireate-service-cms-chrome-layout.css'),
     Path('template/js/lireate-navigation-dual-v3.js'),
 ]
 MAIN = Path('template/main.php')
@@ -29,6 +45,7 @@ HEAD = (
     '<link rel="stylesheet" href="/template/css/lireate-navigation-dual-v3.css?v=' + NAV_ASSET_QS + '">\n'
     '<link rel="stylesheet" href="/template/css/lireate-public-cms-chrome.css?v=' + NAV_ASSET_QS + '">\n'
     '<link rel="stylesheet" href="/template/css/lireate-global-subnav-light-v4.css?v=' + NAV_ASSET_QS + '">\n'
+    '<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=' + NAV_ASSET_QS + '">\n'
     '<script defer src="/template/js/lireate-navigation-dual-v3.js?v=' + NAV_ASSET_QS + '"></script>\n'
 )
 
@@ -42,19 +59,82 @@ def safe_path(docroot, rel):
     return result
 
 
+def patch_main_cms_shell(text):
+    if SHELL_MARKER in text:
+        return text
+    legacy = 'include "./template/parts/leftSideNav.php";'
+    replacement = (
+        '/* ' + SHELL_MARKER + ' */ '
+        '$_lpc_shell = $_SERVER[\'DOCUMENT_ROOT\'].\'/pages/_shared/lireate-cms-main-chrome-shell.inc.php\'; '
+        'if (is_file($_lpc_shell)) { require_once $_lpc_shell; lireate_cms_main_v3_render_sidebar(); } '
+        'else { include "./template/parts/leftSideNav.php"; }'
+    )
+    if legacy not in text:
+        return text
+    text = text.replace(legacy, replacement, 1)
+    open_needle = '<div class="page_container">'
+    if WRAP_OPEN_MARKER not in text and open_needle in text:
+        open_snip = (
+            '<?php /* ' + WRAP_OPEN_MARKER + ' */ '
+            'if (function_exists(\'lireate_cms_main_v3_content_wrap_open\')) { '
+            'lireate_cms_main_v3_content_wrap_open(); } ?>\n\t\t\t' + open_needle
+        )
+        text = text.replace('\t\t\t' + open_needle, open_snip, 1)
+    close_needle = '</div><!-- /page_container -->'
+    if (SHELL_MARKER in text and 'lireate_cms_main_v3_content_wrap_close' not in text
+            and close_needle in text):
+        close_snip = (
+            close_needle + '\n\t\t\t<?php if (function_exists(\'lireate_cms_main_v3_content_wrap_close\')) { '
+            'lireate_cms_main_v3_content_wrap_close(); } ?>'
+        )
+        text = text.replace('\t\t\t' + close_needle, close_snip, 1)
+    return text
+
+
+def patch_main_body_classes(text):
+    if BODY_MARKER in text:
+        return text
+    if 'lireate-public-cms-chrome' in text:
+        return text
+    injected = (
+        '\n<!-- ' + BODY_MARKER + ' -->\n'
+        '<script>document.addEventListener("DOMContentLoaded",function(){'
+        'if(document.body){document.body.classList.add("lireate-public-cms-chrome","lireate-theme-light-v4");}'
+        '});</script>\n'
+    )
+    if re.search(r'<body[^>]*class="[^"]*cms-default', text, flags=re.I):
+        text = re.sub(
+            r'(<body\s+class="cms-default)',
+            r'\1 ' + BODY_CLASSES,
+            text,
+            count=1,
+            flags=re.I,
+        )
+        text = text.replace('</head>', injected + '</head>', 1)
+        return text
+    text = text.replace('</head>', injected + '</head>', 1)
+    return text
+
+
 def build_plan(docroot):
     main = safe_path(docroot, MAIN)
     if not main.is_file():
         raise ValueError('BLOCKER: CMS template/main.php not found')
     original = main.read_text(encoding='utf-8')
-    if VERSION in original:
-        changed = original
-    else:
+    changed = original
+    if VERSION not in original:
         if len(re.findall(r'</head\s*>', original, flags=re.I)) != 1:
             raise ValueError('BLOCKER: expected one </head> in CMS template/main.php')
         changed = re.sub(r'</head\s*>', lambda m: HEAD + m.group(0),
                          original, count=1, flags=re.I)
+    changed = patch_main_body_classes(changed)
+    changed = patch_main_cms_shell(changed)
     plan = {MAIN: changed.encode('utf-8')}
+    for rel in SHARED_PHP:
+        src = REPO / rel
+        if not src.is_file():
+            raise ValueError('BLOCKER: missing shared php ' + str(src))
+        plan[rel] = src.read_bytes()
     for rel in ASSETS:
         src = REPO / rel
         if not src.is_file():
@@ -82,7 +162,8 @@ def rollback(docroot, backup):
     manifest = json.loads((backup / 'manifest.json').read_text(encoding='utf-8'))
     for entry in manifest['files']:
         rel = Path(entry['path'])
-        if rel not in ASSETS + [MAIN]:
+        allowed = ASSETS + [MAIN] + SHARED_PHP
+        if rel not in allowed:
             raise ValueError('BLOCKER: unexpected manifest path ' + str(rel))
         dest = safe_path(docroot, rel)
         if entry['existed']:
@@ -137,8 +218,12 @@ def main():
             args.php_bin if Path(args.php_bin).is_file() else None)
         if not php:
             raise RuntimeError('PHP binary not found; specify --php-bin')
-        result = subprocess.run([php, '-l', str(docroot / MAIN)],
-                                capture_output=True, text=True)
+        result = subprocess.run(
+            [php, '-l', str(docroot / MAIN)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        )
         if result.returncode != 0:
             raise RuntimeError('PHP lint failed: ' + result.stdout + result.stderr)
     except Exception:

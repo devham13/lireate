@@ -44,6 +44,10 @@ if (!function_exists('lireate_lh4_subnav_cta_href')) {
 if (!function_exists('lireate_lh4_subnav_items_for_request')) {
     function lireate_lh4_subnav_items_for_request()
     {
+        if (!empty($GLOBALS['lireate_lh4_force_anchors'])
+            && is_array($GLOBALS['lireate_lh4_force_anchors'])) {
+            return $GLOBALS['lireate_lh4_force_anchors'];
+        }
         if (defined('LIREATE_LH4_FORCE_ANCHORS') && is_array(LIREATE_LH4_FORCE_ANCHORS)) {
             return LIREATE_LH4_FORCE_ANCHORS;
         }

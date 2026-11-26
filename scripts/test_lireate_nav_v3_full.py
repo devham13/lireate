@@ -29,7 +29,32 @@ class NavV3FullTests(unittest.TestCase):
         self.assertIn("lireate-navigation-dual-v3.css", text)
         self.assertIn("lireate-public-cms-chrome.css", text)
         self.assertIn("lireate-global-subnav-light-v4.css", text)
-        self.assertIn("20261126r5", text)
+        self.assertIn("lireate-cms-pages-light-v4.css", text)
+
+    def test_service_cms_chrome_wired_on_priority_slugs(self):
+        path = ROOT / "pages/services/_shared/lireate-service-cms-chrome.inc.php"
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("proverka-tovarnogo-znaka", text)
+        self.assertIn("lireate_lh4_force_anchors", text)
+        findtz = (ROOT / "pages/services/proverka-tovarnogo-znaka/index.php").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("lireate_service_cms_chrome_wire_begin", findtz)
+
+    def test_hosting_nav_patches_cms_shell(self):
+        import importlib.util
+        nav_path = ROOT / "scripts/lireate_hosting_navigation_v3.py"
+        spec = importlib.util.spec_from_file_location("lireate_hosting_navigation_v3", nav_path)
+        nav = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(nav)
+        fixture = (
+            ROOT
+            / "tests/fixtures/live-render/live-assets/template/main.php"
+        ).read_text(encoding="utf-8")
+        out = nav.patch_main_cms_shell(fixture)
+        self.assertIn(nav.SHELL_MARKER, out)
+        self.assertIn("lireate_cms_main_v3_render_sidebar", out)
+        self.assertIn(nav.WRAP_OPEN_MARKER, out)
 
     def test_js_has_collapse_and_anchor_mobile(self):
         js = (ROOT / "template/js/lireate-navigation-dual-v3.js").read_text(encoding="utf-8")

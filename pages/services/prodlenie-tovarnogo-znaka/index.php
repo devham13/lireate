@@ -13,6 +13,8 @@ $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-service-cms-chrome.inc.php';
+$lx_service_slug = 'prodlenie-tovarnogo-znaka';
 require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
 $lx_service_asset_dir = __DIR__;
@@ -65,8 +67,10 @@ $schema_graph = [
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 </head>
-<body class="lireate-svc-body lireate-theme-light-v4">
+<?php $lx_cms_chrome_active = lireate_service_cms_chrome_wire_begin($lx_service_slug); ?>
+<body class="lireate-svc-body lireate-theme-light-v4"<?php echo lireate_service_cms_chrome_body_class($lx_cms_chrome_active); ?>>
 <div class="lx-bg-glow" aria-hidden="true"></div>
+<?php if (!$lx_cms_chrome_active) : ?>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
     <a class="lx-logo" href="/">LIREATE</a>
@@ -81,6 +85,7 @@ $schema_graph = [
     <a class="lx-btn lx-btn-primary" href="#contact">Консультация</a>
   </header>
 </div>
+<?php endif; ?>
 
 <main id="primary" class="lireate-svc-page prodlenie-tovarnogo-znaka-page" role="main" tabindex="-1">
 
@@ -219,6 +224,7 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 </section>
 
 </main>
+<?php lireate_service_cms_chrome_wire_end($lx_cms_chrome_active); ?>
 
 <?php include __DIR__ . '/lireate-service-footer.inc.php'; ?>
 <?php include __DIR__ . '/blocks/lireate-sticky-mobile.inc.php'; ?>
