@@ -26,6 +26,7 @@ ASSETS = (
     Path("template/js/lireate-sitewide-sidebar-v7.js"),
     Path("template/lireate/lireate-sidebar-v7-content.inc.php"),
     Path("template/lireate/lireate-sidebar-v7-fragment.php"),
+    Path("template/lireate/lireate-sidebar-v7.html"),
     Path("template/images/logo/logo-light-v7.svg"),
 )
 HEAD = (
