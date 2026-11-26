@@ -186,7 +186,7 @@ def plan(docroot, scan=True):
         raise ValueError("BLOCKER main.php has no </head>; inspect the live CMS template")
     if new_main != old_main:
         changes[MAIN] = new_main
-        before[MAIN] = "head-patch"
+        before[MAIN] = sha(old_main)
     for rel in ASSETS:
         source = ROOT / rel
         if not source.is_file():
@@ -213,8 +213,38 @@ def plan(docroot, scan=True):
         updated = patch_head(old, rel)
         if updated != old:
             changes[rel] = updated
-            before[rel] = "head-patch"
+            before[rel] = sha(old)
     return changes, before, notes
+
+def entry_mode_for(rel):
+    if rel in ASSETS:
+        return "asset-new"
+    return "head-patch"
+
+def resolve_apply_bytes(rel, dest, planned, expected_sha):
+    """Re-read target; verify or rebuild patch immediately before write."""
+    if rel in ASSETS:
+        if dest.is_file():
+            if expected_sha is not None and sha(dest.read_bytes()) != expected_sha:
+                raise ValueError("BLOCKER concurrent edit detected " + str(rel))
+            raise ValueError("BLOCKER asset already on disk: " + str(rel))
+        return planned
+    if not dest.is_file():
+        raise ValueError("BLOCKER missing patch target " + str(rel))
+    existing = dest.read_bytes()
+    current = sha(existing)
+    if current != expected_sha:
+        try:
+            rebuilt = patch_head(existing, rel)
+        except ValueError:
+            raise ValueError("BLOCKER concurrent edit detected " + str(rel))
+        if rebuilt == existing:
+            return None
+        return rebuilt
+    rebuilt = patch_head(existing, rel)
+    if rebuilt == existing:
+        return None
+    return rebuilt
 
 def atomic(dest, data):
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -235,11 +265,15 @@ def rollback(docroot, backup):
     for entry in manifest["files"]:
         rel = Path(entry["path"])
         dest = doc_file(docroot, rel, allow_assets=True)
-        mode = entry.get("mode", "")
-        if mode == "head-patch" or (entry.get("exists") and rel.suffix in {".php", ".html", ".htm"}):
+        mode = entry.get("mode") or entry_mode_for(rel)
+        if mode == "head-patch":
             if not dest.is_file():
                 raise ValueError("BLOCKER missing patched file " + str(rel))
             atomic(dest, strip_v7_head_block(dest.read_bytes()))
+            continue
+        if mode == "asset-new":
+            if dest.is_file():
+                dest.unlink()
             continue
         if entry["exists"]:
             original = backup / rel
@@ -291,39 +325,21 @@ def run(argv=None):
     for rel in changes:
         dest = doc_file(docroot, rel, allow_assets=True)
         had = dest.is_file()
-        patch_mode = before.get(rel)
-        if patch_mode == "head-patch":
-            entry_mode = "head-patch"
-        elif rel in ASSETS:
-            entry_mode = "asset-new"
-        else:
-            entry_mode = "replace"
-        entry = {"path": str(rel), "exists": had, "mode": entry_mode}
-        manifest["files"].append(entry)
-        if had and mode != "head-patch":
-            archived = backup / rel
-            archived.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(dest, archived)
-        elif had and mode == "head-patch":
+        entry_mode = entry_mode_for(rel)
+        manifest["files"].append({"path": str(rel), "exists": had, "mode": entry_mode})
+        if had:
             archived = backup / rel
             archived.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(dest, archived)
     (backup / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     try:
-        for rel, data in changes.items():
+        for rel, planned in changes.items():
             dest = doc_file(docroot, rel, allow_assets=True)
-            if before.get(rel) == "head-patch":
-                existing = dest.read_bytes()
-                if VERSION.encode() in existing or b"lireate-sitewide-sidebar-v7.js" in existing:
-                    continue
-                if b"</head>" not in existing.lower():
-                    raise ValueError("BLOCKER missing </head> before write " + str(rel))
-            elif dest.is_file():
-                existing = sha(dest.read_bytes())
-                if before[rel] is not None and existing != before[rel]:
-                    raise ValueError("BLOCKER concurrent edit detected " + str(rel))
-            atomic(dest, data)
+            payload = resolve_apply_bytes(rel, dest, planned, before[rel])
+            if payload is None:
+                continue
+            atomic(dest, payload)
         for rel in changes:
             if rel.suffix != ".php":
                 continue

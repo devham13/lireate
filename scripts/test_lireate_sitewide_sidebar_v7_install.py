@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Sitewide sidebar V7 installer regression (offline; no live writes)."""
+import io
 import pathlib
+import re
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import lireate_sitewide_sidebar_v7_install as m
@@ -79,6 +82,85 @@ class SidebarV7InstallTests(unittest.TestCase):
         self.assertIn(b"<form id=\"original\">", changes[pathlib.Path("findtz/index.php")])
         self.assertEqual(changes[pathlib.Path("findtz/index.php")].count(m.VERSION.encode()), 1)
 
+    def _php_stub_bin(self):
+        stub = pathlib.Path(self.tmp.name) / "php-stub.sh"
+        stub.write_text("#!/bin/sh\nif [ \"$1\" = \"-l\" ]; then\n  exit 0\nfi\nexit 0\n", encoding="utf-8")
+        stub.chmod(0o755)
+        return str(stub)
+
+    def test_run_apply_idempotent_rollback_cli(self):
+        main_with_inserts = (
+            b"<?php /* cms */ ?><!doctype html><html><head><title>CMS</title>\n"
+            b"<!-- lireate-qa-v6-20261126 -->\n"
+            b'<link rel="stylesheet" href="/template/css/lireate-qa-v6.css">\n'
+            b"<!-- lireate-perf-cron-20261126 -->\n"
+            b'<link rel="stylesheet" href="/template/css/lireate-perf-cron.css">\n'
+            b"</head><body><form action=\"/mail.php\"></form></body></html>"
+        )
+        self.main.write_bytes(main_with_inserts)
+        service = self.docroot / "registraciya_tovarnogo_znaka/index.php"
+        service.parent.mkdir(parents=True, exist_ok=True)
+        service_bytes = (
+            b"<!DOCTYPE html><html><head><title>Reg TZ</title>"
+            b"<!-- lireate-qa-v6-20261126 -->\n"
+            b'<link rel="stylesheet" href="/template/css/lireate-qa-v6.css">\n'
+            b"</head><body><form id=\"svc-form\"></form></body></html>"
+        )
+        service.write_bytes(service_bytes)
+        patent = self.docroot / "patentnye-zadachi/poshliny-prodlenie/index.php"
+        patent.parent.mkdir(parents=True, exist_ok=True)
+        patent_bytes = (
+            b"<!DOCTYPE html><html><head><title>Patent tool</title>"
+            b"<!-- lireate-qa-v6-20261126 -->\n"
+            b'<link rel="stylesheet" href="/template/css/lireate-qa-v6.css">\n'
+            b"</head><body>"
+            b'<div id="leftSideBar" class="lxq-sidebar"><button class="lxq-mobile-nav-toggle"></button></div>'
+            b"<form id=\"patent-form\"></form></body></html>"
+        )
+        patent.write_bytes(patent_bytes)
+        originals = {
+            m.MAIN: main_with_inserts,
+            pathlib.Path("registraciya_tovarnogo_znaka/index.php"): service_bytes,
+            pathlib.Path("patentnye-zadachi/poshliny-prodlenie/index.php"): patent_bytes,
+            pathlib.Path("findtz/index.php"): self.sample_content,
+        }
+        php_bin = self._php_stub_bin()
+        backup_root = pathlib.Path(self.tmp.name) / "v7-backups"
+        base_args = [
+            "--docroot", str(self.docroot),
+            "--backup-root", str(backup_root),
+            "--php-bin", php_bin,
+        ]
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = m.run(base_args + ["--apply"])
+        self.assertEqual(code, 0)
+        applied = buf.getvalue()
+        backup_match = re.search(r"APPLIED backup=(.+)", applied)
+        self.assertIsNotNone(backup_match)
+        backup_dir = pathlib.Path(backup_match.group(1).strip())
+        self.assertIn(m.VERSION.encode(), self.main.read_bytes())
+        self.assertIn(b"lireate-qa-v6-20261126", self.main.read_bytes())
+        self.assertIn(b"lireate-perf-cron-20261126", self.main.read_bytes())
+        for rel in m.ASSETS:
+            self.assertTrue((self.docroot / rel).is_file(), msg=str(rel))
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = m.run(base_args + ["--apply"])
+        self.assertEqual(code, 0)
+        self.assertIn("NO_CHANGES", buf.getvalue())
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = m.run(["--docroot", str(self.docroot), "--rollback", str(backup_dir)])
+        self.assertEqual(code, 0)
+        for rel, original in originals.items():
+            self.assertEqual((self.docroot / rel).read_bytes(), original, msg=str(rel))
+        for rel in m.ASSETS:
+            self.assertFalse((self.docroot / rel).exists(), msg=str(rel))
+
     def test_apply_idempotent_and_rollback_strips_block(self):
         changes, before, _ = m.plan(self.docroot)
         self.backup.mkdir()
@@ -86,12 +168,11 @@ class SidebarV7InstallTests(unittest.TestCase):
         for rel, data in changes.items():
             dest = self.docroot / rel
             present = dest.is_file()
-            mode = before.get(rel, "replace")
-            if mode == "head-patch":
-                mode = "head-patch"
-            elif rel in m.ASSETS:
-                mode = "asset-new"
-            entries.append({"path": str(rel), "exists": present, "mode": mode})
+            entries.append({
+                "path": str(rel),
+                "exists": present,
+                "mode": m.entry_mode_for(rel),
+            })
             m.atomic(dest, data)
         later_qa = (
             b"\n<!-- lireate-qa-v6-20261126 -->\n"
