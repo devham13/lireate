@@ -286,21 +286,26 @@ function lireate_blog_list_cover_candidate_paths($row)
     if ($explicit !== '') {
         $paths[] = $explicit;
     }
-    $body = lireate_blog_list_row_get($row, array('full_story', 'text', 'story'), '');
-    if ($body === '') {
-        $path = lireate_blog_list_seo_path($row);
-        if ($path !== '') {
-            $idx = lireate_blog_index_article_by_path($path);
-            if (is_array($idx)) {
+    // Prefer verified editorial artwork. An article image may live in the
+    // preview, full body, or dated metadata index; do not synthesize imagery.
+    $body = lireate_blog_list_row_get($row, array('full_story', 'text', 'story', 'body_html'), '');
+    $previewHtml = lireate_blog_list_row_get($row, array('short_story', 'description', 'intro'), '');
+    $path = lireate_blog_list_seo_path($row);
+    if ($path !== '') {
+        $idx = lireate_blog_index_article_by_path($path);
+        if (is_array($idx)) {
+            $fromIdx = lireate_blog_list_row_get($idx, array('cover', 'image', 'og_image'), '');
+            if ($fromIdx !== '') {
+                $paths[] = $fromIdx;
+            }
+            if ($body === '') {
                 $body = lireate_blog_list_row_get($idx, array('full_story', 'body_html'), '');
-                if ($explicit === '') {
-                    $fromIdx = lireate_blog_list_row_get($idx, array('cover', 'image'), '');
-                    if ($fromIdx !== '') {
-                        $paths[] = $fromIdx;
-                    }
-                }
             }
         }
+    }
+    $previewImg = lireate_blog_list_first_img_src_from_html($previewHtml);
+    if ($previewImg !== '') {
+        $paths[] = $previewImg;
     }
     $img = lireate_blog_list_first_img_src_from_html($body);
     if ($img !== '') {
@@ -316,8 +321,10 @@ function lireate_blog_list_cover_candidate_paths($row)
     $seo = lireate_blog_list_row_get($row, array('seo_url', 'url', 'slug'), '');
     $seo = trim((string) $seo, '/');
     if ($seo !== '') {
-        $paths[] = '/template/images/blog/small/' . $seo . '.jpg';
-        $paths[] = '/template/images/blog/' . $seo . '.jpg';
+        foreach (array('webp', 'jpg', 'jpeg', 'png') as $ext) {
+            $paths[] = '/template/images/blog/small/' . $seo . '.' . $ext;
+            $paths[] = '/template/images/blog/' . $seo . '.' . $ext;
+        }
     }
     $unique = array();
     foreach ($paths as $p) {
