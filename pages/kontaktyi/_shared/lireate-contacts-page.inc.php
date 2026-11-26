@@ -29,18 +29,27 @@ $lc_phone2_tel = 'tel:+79600484957';
 $lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ad7e7b32ceb16a5f6568e233bb36f3fafc873135d2f7269ff6cc1168c9892c75c&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=false';
 $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
     ? LIREATE_CONTACTS_FOOTER_CSS_HREF
-    : '/template/page/news/lireate-blog-footer.css';
+    : '/template/page/news/lireate-blog-footer-light-v4.css';
+if (!defined('LIREATE_LH4_SUBNAV_CTA_HREF')) {
+    define('LIREATE_LH4_SUBNAV_CTA_HREF', '#lireate-lead-form');
+}
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-contacts.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_footer_css); ?>?v=<?php echo lireate_contacts_h($lc_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_contacts_h($lc_v); ?>"><!-- lireate_cms_light_v4 -->
+<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-contacts-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_contacts_h(LIREATE_CONTACTS_METRIKA_ID); ?>');
-if (document.body) { document.body.classList.add('lireate-contacts-body'); }
+if (document.body) { document.body.classList.add('lireate-contacts-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<?php
+require_once dirname(__DIR__, 2) . '/_shared/lireate-lh4-subnav-lib.php';
+lireate_lh4_include_subnav();
+?>
 <div class="lireate-contacts-page" data-lireate-contacts-version="<?php echo lireate_contacts_h($lc_v); ?>">
   <header class="lireate-contacts-hero">
     <div class="lireate-contacts-wrap">
@@ -168,4 +177,5 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
   ?></script>
   <script src="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-contacts.js?v=<?php echo lireate_contacts_h($lc_v); ?>"></script>
   <script src="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-metrika-goals.js?v=<?php echo lireate_contacts_h($lc_v); ?>"></script>
+  <script src="/template/js/lireate-light-v4.js?v=<?php echo lireate_contacts_h($lc_v); ?>" defer></script><!-- lireate_cms_light_v4 -->
 </div>

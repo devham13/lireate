@@ -18,6 +18,10 @@ SINGLE_FILES = (
     Path('template/css/lireate-home-preview-chrome.css'),
     Path('template/css/lireate-portfolio-light-v4.css'),
     Path('template/css/lireate-reviews-light-v4.css'),
+    Path('template/css/lireate-global-subnav-light-v4.css'),
+    Path('template/css/lireate-mktu-light-v4.css'),
+    Path('pages/_shared/lireate-lh4-subnav-lib.php'),
+    Path('pages/_shared/lireate-lh4-subnav.inc.php'),
     Path('template/page/portfolio.php'),
     Path('template/page/reviews.php'),
     Path('template/page/lireate-portfolio-cms.inc.php'),
@@ -32,6 +36,7 @@ DIR_TREES = (
     Path('template/page/partners'),
     Path('template/page/docs'),
     Path('template/page/kontaktyi'),
+    Path('template/page/uslugi'),
 )
 
 SHARED_PAGE_SECTIONS = (

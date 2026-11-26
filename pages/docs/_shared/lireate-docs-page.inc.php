@@ -10,17 +10,24 @@ $ld_docs = lireate_docs_documents();
 $ld_req = lireate_docs_requisites();
 $ld_footer_css = defined('LIREATE_DOCS_FOOTER_CSS_HREF')
     ? LIREATE_DOCS_FOOTER_CSS_HREF
-    : '/template/page/news/lireate-blog-footer.css';
+    : '/template/page/news/lireate-blog-footer-light-v4.css';
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_docs_h($ld_assets); ?>/lireate-docs.css?v=<?php echo lireate_docs_h($ld_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_docs_h($ld_footer_css); ?>?v=<?php echo lireate_docs_h($ld_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_docs_h($ld_v); ?>"><!-- lireate_cms_light_v4 -->
+<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_docs_h($ld_v); ?>">
 <script>
 document.documentElement.classList.add('lireate-docs-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_docs_h(LIREATE_DOCS_METRIKA_ID); ?>');
+if (document.body) { document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<?php
+require_once dirname(__DIR__, 2) . '/_shared/lireate-lh4-subnav-lib.php';
+lireate_lh4_include_subnav();
+?>
 <div class="lireate-docs-page" data-lireate-docs-version="<?php echo lireate_docs_h($ld_v); ?>">
   <header class="lireate-docs-hero">
     <div class="lireate-docs-wrap">
@@ -72,3 +79,4 @@ document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lir
 </div>
 <script src="<?php echo lireate_docs_h($ld_assets); ?>/lireate-docs.js?v=<?php echo lireate_docs_h($ld_v); ?>"></script>
 <script src="<?php echo lireate_docs_h($ld_assets); ?>/lireate-metrika-goals.js?v=<?php echo lireate_docs_h($ld_v); ?>"></script>
+<script src="/template/js/lireate-light-v4.js?v=<?php echo lireate_docs_h($ld_v); ?>" defer></script><!-- lireate_cms_light_v4 -->

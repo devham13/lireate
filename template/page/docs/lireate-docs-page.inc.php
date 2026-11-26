@@ -10,7 +10,7 @@ $ld_docs = lireate_docs_documents();
 $ld_req = lireate_docs_requisites();
 $ld_footer_css = defined('LIREATE_DOCS_FOOTER_CSS_HREF')
     ? LIREATE_DOCS_FOOTER_CSS_HREF
-    : '/template/page/news/lireate-blog-footer.css';
+    : '/template/page/news/lireate-blog-footer-light-v4.css';
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,10 @@ document.documentElement.classList.add('lireate-docs-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_docs_h(LIREATE_DOCS_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<?php
+require_once dirname(__DIR__, 2) . '/_shared/lireate-lh4-subnav-lib.php';
+lireate_lh4_include_subnav();
+?>
 <div class="lireate-docs-page" data-lireate-docs-version="<?php echo lireate_docs_h($ld_v); ?>">
   <header class="lireate-docs-hero">
     <div class="lireate-docs-wrap">

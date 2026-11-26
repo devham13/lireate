@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Build markdown inventory: CMS page | sidebar label | template entry."""
+
+import argparse
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_OUT = ROOT / "docs/pr-b-public-menu-inventory.ru.md"
+SIDEBAR_FIXTURE = ROOT / "tests/fixtures/live-render/after/home.html"
+TEMPLATE_PAGE = ROOT / "template/page"
+
+PAGE_CMS = {
+    "team": "template/page/team/lireate-team-cms.inc.php",
+    "o_kompanii": "template/page/o_kompanii/lireate-about-cms.inc.php",
+    "partners": "template/page/partners/lireate-partners-cms.inc.php",
+    "docs": "template/page/docs/lireate-docs-cms.inc.php",
+    "kontaktyi": "template/page/kontaktyi/lireate-contacts-cms.inc.php",
+    "contacts": "template/page/kontaktyi/lireate-contacts-cms.inc.php",
+    "uslugi": "template/page/uslugi/lireate-uslugi-cms.inc.php",
+    "news": "template/page/news/lireate-blog-list.inc.php",
+    "reviews": "template/page/lireate-reviews-cms.inc.php",
+    "portfolio": "template/page/lireate-portfolio-cms.inc.php",
+}
+
+BUTTON_RE = re.compile(
+    r'<a\s+href="([^"]+)"\s+class="leftSideNaviButton[^"]*"\s*[^>]*>([^<]+)</a>',
+    re.IGNORECASE,
+)
+
+
+def sidebar_rows(html):
+    rows = []
+    for href, label in BUTTON_RE.findall(html):
+        label = label.strip()
+        if not label or label.startswith("+"):
+            continue
+        rows.append((href, label))
+    return rows
+
+
+def detect_pages():
+    rows = []
+    sidebar = sidebar_rows(SIDEBAR_FIXTURE.read_text(encoding="utf-8", errors="replace"))
+    slug_by_path = {}
+    for path in TEMPLATE_PAGE.rglob("*.inc.php"):
+        rel = path.relative_to(ROOT)
+        m = re.search(r"lireate-([a-z0-9_-]+)-cms\.inc\.php", path.name)
+        if m:
+            slug_by_path[m.group(1)] = str(rel).replace("\\", "/")
+
+    for key, tpl in sorted(PAGE_CMS.items()):
+        rows.append((key, "(sidebar)", tpl if (ROOT / tpl).is_file() else "—"))
+    rows.append(("—", "—", "—"))
+    for href, label in sidebar:
+        rows.append(("(public)", label, href))
+    return rows
+
+
+def render_md(rows):
+    lines = [
+        "# PR B — публичное меню и шаблоны",
+        "",
+        "Источник sidebar: фикстура live-render `after/home.html` (левое меню).",
+        "БД (`data/db.php`) не используется.",
+        "",
+        "| page / раздел | sidebar (левое меню) | template / URL |",
+        "|---|---|---|",
+    ]
+    for a, b, c in rows:
+        lines.append("| {0} | {1} | `{2}` |".format(a, b, c))
+    lines.append("")
+    return "\n".join(lines)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--out", default=str(DEFAULT_OUT))
+    args = parser.parse_args()
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(render_md(detect_pages()), encoding="utf-8")
+    print("wrote", out)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

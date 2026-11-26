@@ -1,0 +1,70 @@
+/* Global LH4 subnav for CMS pages (not home hero CSS). Requires body.lireate-theme-light-v4 */
+body.lireate-theme-light-v4 .lh4-subnav {
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #e3edf7;
+  backdrop-filter: blur(10px);
+  max-height: none;
+}
+body.lireate-theme-light-v4 .lh4-subnav-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+  max-width: 1180px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-family: Manrope, "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links a {
+  color: #1f212c;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+body.lireate-theme-light-v4 .lh4-subnav-links a:hover,
+body.lireate-theme-light-v4 .lh4-subnav-links a:focus-visible {
+  color: #0f4db8;
+}
+body.lireate-theme-light-v4 .lh4-subnav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+body.lireate-theme-light-v4 .lh4-subnav-phone {
+  font-family: Manrope, "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f4db8;
+  text-decoration: none;
+  white-space: nowrap;
+}
+body.lireate-theme-light-v4 .lh4-subnav-phone:hover,
+body.lireate-theme-light-v4 .lh4-subnav-phone:focus-visible {
+  color: #195acb;
+}
+body.lireate-theme-light-v4 .lh4-subnav-cta.btn.primary {
+  font-family: Manrope, "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 14px;
+  white-space: nowrap;
+  color: #fff !important;
+}
+@media (max-width: 1150px) {
+  body.lireate-theme-light-v4 .lh4-subnav {
+    display: none !important;
+  }
+}

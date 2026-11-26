@@ -131,12 +131,19 @@ function lireate_uslugi_icon($name) {
     return isset($icons[$name]) ? $icons[$name] : '';
 }
 
-/** Новый тёмный подвал (как в блоге и на лендингах услуг). */
+/** Подвал хаба /uslugi/ (Light V4 при lireate-theme-light-v4). */
 function lireate_uslugi_render_footer() {
     $footer = $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-site-footer.inc.php';
-    $css = $_SERVER['DOCUMENT_ROOT'] . '/template/page/news/lireate-blog-footer.css';
+    $lv4 = defined('LIREATE_LIGHT_V4_ASSET_VERSION') ? LIREATE_LIGHT_V4_ASSET_VERSION : '20261126r21';
+    $css_rel = '/template/page/news/lireate-blog-footer-light-v4.css';
+    $css = $_SERVER['DOCUMENT_ROOT'] . $css_rel;
+    if (!is_file($css)) {
+        $css_rel = '/template/page/news/lireate-blog-footer.css';
+        $css = $_SERVER['DOCUMENT_ROOT'] . $css_rel;
+    }
     if (is_file($css)) {
-        echo '<link rel="stylesheet" href="/template/page/news/lireate-blog-footer.css?v=' . lireate_uslugi_h(LIREATE_USLUGI_VERSION) . '">';
+        echo '<!-- lireate_fg:uslugi-footer -->';
+        echo '<link rel="stylesheet" href="' . $css_rel . '?v=' . lireate_uslugi_h($lv4) . '">';
     }
     if (is_file($footer)) {
         include $footer;

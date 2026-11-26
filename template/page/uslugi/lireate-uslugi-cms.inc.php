@@ -2,6 +2,7 @@
 require_once __DIR__ . '/lireate-uslugi-lib.php';
 $lu_groups = lireate_uslugi_groups();
 $lu_v = LIREATE_USLUGI_VERSION;
+$lu_lv4 = defined('LIREATE_LIGHT_V4_ASSET_VERSION') ? LIREATE_LIGHT_V4_ASSET_VERSION : '20261126r21';
 $lu_m = lireate_uslugi_messengers();
 $lu_count = 0;
 foreach ($lu_groups as $g) { $lu_count += count($g['cards']); }
@@ -10,11 +11,20 @@ foreach ($lu_groups as $g) { $lu_count += count($g['cards']); }
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/template/page/uslugi/lireate-uslugi.css?v=<?php echo lireate_uslugi_h($lu_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_uslugi_h($lu_lv4); ?>"><!-- lireate_cms_light_v4_uslugi -->
+<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_uslugi_h($lu_lv4); ?>">
 <script>
 document.documentElement.classList.add('lireate-uslugi-html');
-if (document.body) { document.body.classList.add('lireate-uslugi-body'); }
+if (document.body) { document.body.classList.add('lireate-uslugi-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
-<div class="lu-page">
+<?php
+$lu_subnav = dirname(dirname(dirname(__DIR__))) . '/pages/_shared/lireate-lh4-subnav-lib.php';
+if (is_file($lu_subnav)) {
+    require_once $lu_subnav;
+    lireate_lh4_include_subnav();
+}
+?>
+<div class="lu-page" data-lireate-uslugi-light-v4="<?php echo lireate_uslugi_h($lu_lv4); ?>">
   <div class="lu-glow" aria-hidden="true"></div>
   <div class="lu-wrap">
     <nav class="lu-crumbs" aria-label="Хлебные крошки">
@@ -58,7 +68,7 @@ if (document.body) { document.body.classList.add('lireate-uslugi-body'); }
       </div>
       <div class="lu-grid">
 <?php $i = 0; foreach ($g['cards'] as $card) : $i++; ?>
-        <a class="lu-card" href="<?php echo lireate_uslugi_h($card['href']); ?>">
+        <a class="lu-card" href="<?php echo lireate_uslugi_h($card['href']); ?>"<?php if (strpos($card['href'], 's_oplatoy_za_rezultat') !== false) : ?> data-lireate-fg="1"<?php endif; ?>>
           <span class="lu-card-top"><span class="lu-card-num"><?php echo sprintf('%02d', $i); ?></span><span class="lu-card-tag"><?php echo lireate_uslugi_h($card['tag']); ?></span></span>
           <h3 class="lu-card-title"><?php echo lireate_uslugi_h($card['title']); ?></h3>
           <p class="lu-card-text"><?php echo lireate_uslugi_h($card['text']); ?></p>
