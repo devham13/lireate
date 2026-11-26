@@ -14,7 +14,13 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
+
+_SCRIPTS = Path(__file__).resolve().parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+from lireate_hosting_services_lib import load_manifest
 
 REPO = Path(__file__).resolve().parents[1]
 MARK = "lireate-qa-v6-20261126"
@@ -39,6 +45,36 @@ _CMS_MAIN_BLOB = {
     'template/page/news/lireate-blog-site-footer.inc.php': '437db7282bbf6e010ecfc76a87b4d6a688d1f20f',
     'template/lireate/lireate-service-footer.inc.php': '1754dff4fb54acb2c7a927ef3af2f70b636cc500',
 }
+# CMS pages rendered from pages/*/_shared on REG.RU (prod commit 15bf93c).
+_SHARED_PROD_BLOB = {
+    'pages/kontaktyi/_shared/lireate-contacts-page.inc.php': 'aa4691425bc8e984d017d89e216f3e5c405dbec8',
+    'pages/partners/_shared/lireate-partners-page.inc.php': 'cc1d97119752c2cccbec61c9239ec1397a2f1b76',
+    'pages/blog/_shared/lireate-blog-list.inc.php': 'a9890f05e3a859ca8c829be139f2f9bde1c51c4f',
+    'pages/blog/_shared/lireate-blog-lib.php': '4e96d8ac5221a4376a6655eb9ac4c2f7772c3dec',
+    'pages/blog/_shared/lireate-blog-site-footer.inc.php': '437db7282bbf6e010ecfc76a87b4d6a688d1f20f',
+}
+SHARED_CMS = dict(_SHARED_PROD_BLOB)
+SERVICE_SLUG_FORBIDDEN = re.compile(
+    r'^(?:everest|reg-tov-znak|lireatecom|copy)(?:[^a-z0-9_]|$)',
+    re.I,
+)
+V7_MARK = 'lireate-sitewide-sidebar-v7-20261126'
+V7_HEAD_BLOCK_RE = re.compile(
+    r"\n<!--\s*" + re.escape(V7_MARK) + r"\s*-->\s*"
+    r'<link rel="stylesheet" href="/template/css/lireate-sitewide-sidebar-v7\.css\?v=20261126">\s*'
+    r'<script defer src="/template/js/lireate-sitewide-sidebar-v7\.js\?v=20261126"></script>\s*\n',
+    re.IGNORECASE | re.DOTALL,
+)
+REQUISITES_DETAILS_RE = re.compile(
+    r'<details\s+class="lx-site-footer-requisites"\s*>'
+    r'\s*<summary>Реквизиты</summary>\s*'
+    r'<div\s+class="lx-site-footer-requisites-panel">.*?</div>\s*'
+    r'</details>',
+    re.DOTALL | re.IGNORECASE,
+)
+REQUISITES_LINK = '<a class="lx-site-footer-documents-link" href="/docs">Реквизиты</a>'
+_EXTRA_POSSIBLE = set()
+
 # Live production after PR #131 (commit 15bf93c) and prod footer (d8b9d8f4).
 _CMS_PROD_BLOB = {
     'template/page/kontaktyi/lireate-contacts-page.inc.php': 'aa4691425bc8e984d017d89e216f3e5c405dbec8',
@@ -52,6 +88,13 @@ def _allowed_main_prod(path):
     if prod:
         return frozenset({main, prod})
     return frozenset({main})
+
+def _allowed_shared(path):
+    target = blob_sha((REPO / path).read_bytes())
+    prod = _SHARED_PROD_BLOB.get(path)
+    if prod:
+        return frozenset({target, prod})
+    return frozenset({target})
 
 BASE_ALLOWED = {live: _allowed_main_prod(live) for live in _CMS_MAIN_BLOB}
 CMS = dict(_CMS_MAIN_BLOB)
@@ -91,12 +134,24 @@ PERF_BLOCK_RE = re.compile(
 def blob_sha(data):
     return hashlib.sha1(b"blob " + str(len(data)).encode('ascii') + b'\0' + data).hexdigest()
 
+BASE_ALLOWED.update({live: _allowed_shared(live) for live in SHARED_CMS})
+
 def strip_perf(data):
     text = data.decode('utf-8')
     stripped = PERF_BLOCK_RE.sub('', text, count=1)
     if stripped == text:
         return data
     return stripped.encode('utf-8')
+
+def strip_v7(data):
+    text = data.decode('utf-8')
+    stripped = V7_HEAD_BLOCK_RE.sub('', text, count=1)
+    if stripped == text:
+        return data
+    return stripped.encode('utf-8')
+
+def strip_ephemeral(data):
+    return strip_v7(strip_perf(data))
 
 def extract_perf_block(text):
     match = PERF_BLOCK_RE.search(text)
@@ -127,6 +182,88 @@ def merge_perf_into_head(text_bytes, perf_block):
         flags=re.I,
     ).encode('utf-8')
 
+def extract_v7_block(text):
+    match = V7_HEAD_BLOCK_RE.search(text)
+    if not match:
+        return ''
+    return match.group(0)
+
+def merge_v7_before_head(text_bytes, v7_block):
+    if not v7_block:
+        return text_bytes
+    text = text_bytes.decode('utf-8')
+    if V7_MARK in text:
+        return text_bytes
+    block = v7_block
+    if not block.endswith('\n'):
+        block += '\n'
+    return re.sub(
+        r'</head\s*>',
+        lambda m: block + m.group(0),
+        text,
+        count=1,
+        flags=re.I,
+    ).encode('utf-8')
+
+def patch_service_footer_requisites(data):
+    text = data.decode('utf-8')
+    if 'href="/docs">Реквизиты</a>' in text:
+        return data
+    new_text, count = REQUISITES_DETAILS_RE.subn(REQUISITES_LINK, text, count=1)
+    if count == 0:
+        return data
+    return new_text.encode('utf-8')
+
+def service_footer_needs_patch(data):
+    text = data.decode('utf-8')
+    return 'href="/docs">Реквизиты</a>' not in text and REQUISITES_DETAILS_RE.search(text) is not None
+
+def service_footer_live_allowed(old, repo_bytes):
+    if not service_footer_needs_patch(old):
+        return True
+    allowed = {blob_sha(repo_bytes), blob_sha(patch_service_footer_requisites(repo_bytes))}
+    digest = blob_sha(old)
+    if digest in allowed:
+        return True
+    stripped = strip_ephemeral(old)
+    return stripped != old and blob_sha(stripped) in allowed
+
+def discover_service_footer_paths():
+    services_root = REPO / 'pages' / 'services'
+    if not services_root.is_dir():
+        return []
+    out = []
+    for service_dir in sorted(services_root.iterdir()):
+        if not service_dir.is_dir():
+            continue
+        slug = service_dir.name
+        if slug in {'_template', '_shared'} or slug.startswith('.'):
+            continue
+        if SERVICE_SLUG_FORBIDDEN.match(slug):
+            continue
+        if not (service_dir / 'index.php').is_file() and not (service_dir / 'index.html').is_file():
+            continue
+        manifest = load_manifest(service_dir)
+        url_path = manifest.get('url_path') or slug
+        if '..' in url_path.split('/'):
+            continue
+        candidates = (
+            service_dir / 'lireate-service-footer.inc.php',
+            service_dir / 'assets' / 'lireate-shared' / 'lireate-service-footer.inc.php',
+        )
+        for repo_file in candidates:
+            if not repo_file.is_file():
+                continue
+            repo_bytes = repo_file.read_bytes()
+            rel_suffix = repo_file.relative_to(service_dir)
+            live_rel = Path(url_path) / rel_suffix
+            out.append((live_rel, repo_bytes))
+    return out
+
+def register_possible(rel_paths):
+    global _EXTRA_POSSIBLE
+    _EXTRA_POSSIBLE = frozenset(_EXTRA_POSSIBLE | {Path(p) for p in rel_paths})
+
 def live_matches_allowed(old, relative, before=None):
     allowed = BASE_ALLOWED.get(str(relative))
     if allowed is None:
@@ -134,7 +271,7 @@ def live_matches_allowed(old, relative, before=None):
     digest = blob_sha(old)
     if digest in allowed:
         return True
-    stripped = strip_perf(old)
+    stripped = strip_ephemeral(old)
     if stripped != old and blob_sha(stripped) in allowed:
         return True
     return False
@@ -143,11 +280,12 @@ def tool_live_allowed(old, before):
     allowed = frozenset({before})
     if blob_sha(old) in allowed:
         return True
-    stripped = strip_perf(old)
+    stripped = strip_ephemeral(old)
     return stripped != old and blob_sha(stripped) in allowed
 
 def dest(docroot, relative):
-    if relative not in POSSIBLE:
+    rel = Path(relative)
+    if rel not in POSSIBLE and rel not in _EXTRA_POSSIBLE:
         raise ValueError("BLOCKER unexpected target path " + str(relative))
     result = docroot / relative
     if result.is_symlink() or any(p.is_symlink() for p in result.parents if p != docroot and docroot in p.parents):
@@ -156,7 +294,8 @@ def dest(docroot, relative):
         raise ValueError("BLOCKER target not a regular file " + str(relative))
     return result
 
-def build_plan(docroot, with_tools=False):
+def build_plan(docroot, with_tools=False, with_shared=False):
+    register_possible([])
     main = dest(docroot, MAIN)
     if not main.is_file():
         raise ValueError("BLOCKER CMS template/main.php missing")
@@ -180,6 +319,27 @@ def build_plan(docroot, with_tools=False):
             raise ValueError("BLOCKER missing CMS page in PR " + live)
         desired[Path(live)] = src.read_bytes()
         expected[Path(live)] = before
+    service_footer_targets = {}
+    if with_shared:
+        shared_paths = []
+        for live in SHARED_CMS:
+            src = REPO / live
+            if not src.is_file():
+                raise ValueError("BLOCKER missing shared CMS page in PR " + live)
+            desired[Path(live)] = src.read_bytes()
+            shared_paths.append(Path(live))
+        register_possible(shared_paths)
+        for live_rel, repo_bytes in discover_service_footer_paths():
+            register_possible([live_rel])
+            target = dest(docroot, live_rel)
+            if not target.is_file():
+                continue
+            service_footer_targets[live_rel] = repo_bytes
+            old = target.read_bytes()
+            new_bytes = patch_service_footer_requisites(old)
+            if new_bytes == old:
+                continue
+            desired[live_rel] = new_bytes
     if with_tools:
         for source, (live, before) in TOOLS.items():
             src = REPO / source
@@ -191,7 +351,9 @@ def build_plan(docroot, with_tools=False):
             if target.is_file():
                 old_text = target.read_text(encoding='utf-8')
                 perf = extract_perf_block(old_text)
-                desired[live_path] = merge_perf_into_head(repo_data, perf)
+                v7 = extract_v7_block(old_text)
+                merged = merge_perf_into_head(repo_data, perf)
+                desired[live_path] = merge_v7_before_head(merged, v7)
             else:
                 desired[live_path] = repo_data
             expected[live_path] = before
@@ -202,18 +364,25 @@ def build_plan(docroot, with_tools=False):
             old = target.read_bytes()
             if old == data:
                 continue
-            if relative in expected:
+            str_rel = str(relative)
+            if relative in service_footer_targets:
+                if not service_footer_live_allowed(old, service_footer_targets[relative]):
+                    raise ValueError("BLOCKER live service footer drift: " + str_rel)
+            elif relative in expected:
                 before = expected[relative]
                 if relative in TOOL_LIVE:
                     ok = tool_live_allowed(old, before)
                 else:
                     ok = live_matches_allowed(old, relative, before)
                 if not ok:
-                    raise ValueError("BLOCKER live PHP has newer/different modifications: " + str(relative) +
+                    raise ValueError("BLOCKER live PHP has newer/different modifications: " + str_rel +
                         "; do not overwrite; integrate patch in Cursor and re-review")
-            if relative != MAIN and relative not in expected:
-                raise ValueError("BLOCKER unexpected existing shared asset: " + str(relative))
-        elif relative in expected:
+            elif str_rel in SHARED_CMS:
+                if not live_matches_allowed(old, relative):
+                    raise ValueError("BLOCKER live shared CMS drift: " + str_rel)
+            elif relative != MAIN:
+                raise ValueError("BLOCKER unexpected existing shared asset: " + str_rel)
+        elif relative in expected or relative in service_footer_targets:
             raise ValueError("BLOCKER expected published PHP not found: " + str(relative))
         plan[relative] = data
     return plan
@@ -260,6 +429,7 @@ def main(argv=None):
     p.add_argument('--docroot',required=True)
     p.add_argument('--backup-root')
     p.add_argument('--with-tools',action='store_true',help='include 13 already published standalone tool scripts')
+    p.add_argument('--with-shared',action='store_true',help='pages/*/_shared CMS fragments and /docs service footers')
     p.add_argument('--apply',action='store_true')
     p.add_argument('--php-bin',default='php')
     p.add_argument('--rollback',metavar='BACKUP_DIR')
@@ -270,7 +440,7 @@ def main(argv=None):
     if backup_root==docroot or docroot in backup_root.parents: raise ValueError("BLOCKER backups must be outside DOCROOT")
     if args.rollback:
         rollback(docroot,Path(args.rollback).expanduser().resolve());return 0
-    plan=build_plan(docroot,args.with_tools)
+    plan=build_plan(docroot,args.with_tools,args.with_shared)
     for rel in plan:print(("APPLY" if args.apply else "DRY_RUN"),rel)
     if not plan:print("NO_CHANGES");return 0
     if not args.apply:print("DRY_RUN_ONLY");return 0

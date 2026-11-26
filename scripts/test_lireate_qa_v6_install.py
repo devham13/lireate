@@ -21,7 +21,18 @@ FIXTURE_KEYS = {
     'template/page/news/lireate-blog-list.inc.php': 'lireate-blog-list.inc',
     'template/page/news/lireate-blog-lib.php': 'lireate-blog-lib.inc',
     'template/page/news/lireate-blog-site-footer.inc.php': 'lireate-blog-site-footer.inc',
+    'pages/kontaktyi/_shared/lireate-contacts-page.inc.php': 'contacts-page.inc',
+    'pages/partners/_shared/lireate-partners-page.inc.php': 'partners-page.inc',
+    'pages/blog/_shared/lireate-blog-list.inc.php': 'shared-blog-list-prod.inc',
+    'pages/blog/_shared/lireate-blog-lib.php': 'lireate-blog-lib.inc',
+    'pages/blog/_shared/lireate-blog-site-footer.inc.php': 'lireate-blog-site-footer.inc',
 }
+
+V7_BEFORE_HEAD = (
+    '\n<!-- lireate-sitewide-sidebar-v7-20261126 -->\n'
+    '<link rel="stylesheet" href="/template/css/lireate-sitewide-sidebar-v7.css?v=20261126">\n'
+    '<script defer src="/template/js/lireate-sitewide-sidebar-v7.js?v=20261126"></script>\n'
+)
 
 
 def packed_manifest():
@@ -124,6 +135,55 @@ class QaV6Tests(unittest.TestCase):
             stripped = mod.strip_perf(live)
             self.assertEqual(stripped, baseline)
             self.assertEqual(mod.blob_sha(stripped), before_sha)
+
+    def test_strip_v7_for_hash_guard(self):
+        source, (live, before) = next(iter(mod.TOOLS.items()))
+        baseline = tool_baseline_bytes(before)
+        text = baseline.decode('utf-8').replace('</head>', V7_BEFORE_HEAD + '</head>', 1)
+        live = text.encode('utf-8')
+        stripped = mod.strip_ephemeral(live)
+        self.assertEqual(mod.blob_sha(stripped), before)
+
+    def test_main_qa_marker_idempotent(self):
+        main = self.docroot / mod.MAIN
+        main.write_text(
+            '<!doctype html><head><title>x</title>'
+            + mod.HEAD
+            + '</head><body></body>',
+            encoding='utf-8',
+        )
+        plan = mod.build_plan(self.docroot)
+        self.assertNotIn(mod.MAIN, plan)
+
+    def test_with_shared_prod_blobs(self):
+        for live in mod.SHARED_CMS:
+            path = self.docroot / live
+            path.parent.mkdir(parents=True, exist_ok=True)
+            data = fixture_bytes(live)
+            path.write_bytes(data)
+            self.assertTrue(mod.live_matches_allowed(data, Path(live)), live)
+        plan = mod.build_plan(self.docroot, with_shared=True)
+        self.assertIn(Path('pages/kontaktyi/_shared/lireate-contacts-page.inc.php'), plan)
+        footer = Path('registraciya_tovarnogo_znaka/lireate-service-footer.inc.php')
+        live_footer = self.docroot / footer
+        live_footer.parent.mkdir(parents=True, exist_ok=True)
+        live_footer.write_bytes(
+            (mod.REPO / 'pages/services/registraciya-tovarnogo-znaka/lireate-service-footer.inc.php').read_bytes()
+        )
+        plan2 = mod.build_plan(self.docroot, with_shared=True)
+        patched = plan2.get(footer, b'')
+        self.assertIn(b'href="/docs">', patched)
+        self.assertIn('Реквизиты</a>'.encode('utf-8'), patched)
+        self.assertNotIn(b'<details class="lx-site-footer-requisites">', patched)
+
+    def test_service_footer_patch_only(self):
+        raw = (
+            mod.REPO / 'pages/services/registraciya-tovarnogo-znaka/lireate-service-footer.inc.php'
+        ).read_bytes()
+        out = mod.patch_service_footer_requisites(raw)
+        self.assertNotEqual(raw, out)
+        again = mod.patch_service_footer_requisites(out)
+        self.assertEqual(out, again)
 
     def test_tool_perf_block_preserved(self):
         source, (live, before) = next(iter(mod.TOOLS.items()))

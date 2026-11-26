@@ -36,6 +36,9 @@
     python3 scripts/lireate_qa_v6_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/qa-v6"
 5. Отдельно dry-run на 13 published tools после проверки путей:
     python3 scripts/lireate_qa_v6_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/qa-v6" --with-tools
+5b. Если на проде контент идёт из pages/*/_shared (после PR #132 без shared), dry-run с:
+    python3 scripts/lireate_qa_v6_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/qa-v6" --with-shared
+    Совместим с параллельной вставкой PR #133 (блок lireate-sitewide-sidebar-v7-20261126 перед &lt;/head&gt; сохраняется при записи).
 6. Если BLOCKER live PHP has newer/different modifications, НЕ обходить: адаптируй правки под свежую CMS, заново проверь. Не отключай guard и не перезаписывай данные.
 7. Только после проверки и согласования применяй --apply с выбранным режимом и --php-bin; backup находится ВНЕ DOCROOT. При ошибках — --rollback с указанным каталогом.
 8. QA: все 13 страниц патентных задач, /mktu, /contacts, /partners, /news, /patent, /patent_prom_obr, форма, карта удалена, 5 соцсетей, телефоны, меню, редактор МКТУ, расчёты, новые обложки по URL HTTP 200, JS console, CSP, мобильные экраны, SEO/H1/canonical, Yandex Metrika.

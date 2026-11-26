@@ -16,8 +16,8 @@ BASE = "http://{0}:{1}".format(HOST, PORT)
 PAGES = (
     ("contacts", "/pages/kontaktyi/_preview/index.php"),
     ("partners", "/pages/partners/_preview/index.php"),
-    ("team", "/pages/team/_preview/index.php"),
-    ("o_kompanii", "/pages/o_kompanii/_preview/index.php"),
+    ("news", "/pages/blog/_preview/index.php"),
+    ("registraciya-tovarnogo-znaka", "/pages/services/registraciya-tovarnogo-znaka/_preview/index.php"),
     ("patentnye-zadachi", "/pages/services/patentnye-zadachi/index.php"),
 )
 WIDTHS = (1440, 390)
