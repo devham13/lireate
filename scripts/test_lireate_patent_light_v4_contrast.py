@@ -147,10 +147,13 @@ class PatentDarkExcludeInstallTests(unittest.TestCase):
         )
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        sample = "<?php $_lx = array('home','patent','patent_prom_obr','mktu'); ?>"
+        sample = (
+            "<?php $_lx_cms_dark = /* lireate_design_cms_dark_pages_v2 */ "
+            "array('patent','patent_prom_obr','mktu'); ?>"
+        )
         out = mod.patch_main_dark_exclusion(sample)
         self.assertIn(mod.DARK_EXCLUDE_MARKER, out)
-        self.assertNotIn("'patent'", out.split("'mktu'")[0])
+        self.assertIn("array('mktu')", out.replace(" ", ""))
 
 
 if __name__ == "__main__":

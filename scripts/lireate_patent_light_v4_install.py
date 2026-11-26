@@ -18,8 +18,22 @@ import tempfile
 REPO = Path(__file__).resolve().parents[1]
 MARKER = 'lireate-patent-light-v4-install:v1'
 DARK_EXCLUDE_MARKER = 'lireate-patent-light-v4-dark-exclude:v1'
-DARK_PAGES_NEEDLE = "array('home','patent','patent_prom_obr',"
-DARK_PAGES_REPL = "/* " + DARK_EXCLUDE_MARKER + " */ array('home',"
+DARK_V2_MARKER = 'lireate_design_cms_dark_pages_v2'
+_PATENT_DARK_SLUGS = ("'patent'", "'patent_prom_obr'")
+_ARRAY_INNER = re.compile(r"'(?:\\'|[^'])+'")
+_HEAD_DARK_V2 = re.compile(
+    r"(\$_lx_cms_dark\s*=\s*/\*\s*lireate_design_cms_dark_pages_v2\s*\*/\s*)"
+    r"(/\*\s*" + re.escape(DARK_EXCLUDE_MARKER) + r"\s*\*/\s*)?"
+    r"(array\s*\([^)]+\))",
+    re.DOTALL,
+)
+_BODY_DARK_V2 = re.compile(
+    r"(/\*\s*lireate_design_cms_dark_pages_v2\s+body\s*\*/\s*"
+    r"if\s*\(\s*in_array\s*\(\s*\$temp\['page'\]\s*,\s*)"
+    r"(/\*\s*" + re.escape(DARK_EXCLUDE_MARKER) + r"\s*\*/\s*)?"
+    r"(array\s*\([^)]+\))",
+    re.DOTALL,
+)
 MAIN = Path('template/main.php')
 FILES = [
     Path('pages/patents/_shared/lireate-patent-data.php'),
@@ -61,12 +75,51 @@ def _disable_legacy_open(match, page_key):
     return "<?php if($temp['page']=='" + page_key + "' && false): /* legacy */ ?>"
 
 
+def _tokens_need_patent_strip(array_src):
+    inner = re.search(r"array\s*\(([^)]*)\)", array_src)
+    if not inner:
+        return None
+    tokens = _ARRAY_INNER.findall(inner.group(1))
+    if not any(t in tokens for t in _PATENT_DARK_SLUGS):
+        return None
+    kept = [t for t in tokens if t not in _PATENT_DARK_SLUGS]
+    return "array(" + ",".join(kept) + ")"
+
+
+def _dark_v2_patent_slugs_present(text):
+    for pattern in (_HEAD_DARK_V2, _BODY_DARK_V2):
+        for match in pattern.finditer(text):
+            arr = match.group(3)
+            inner = re.search(r"array\s*\(([^)]*)\)", arr)
+            if inner:
+                tokens = _ARRAY_INNER.findall(inner.group(1))
+                if any(t in tokens for t in _PATENT_DARK_SLUGS):
+                    return True
+    return False
+
+
+def _patch_dark_regex(text, pattern):
+    def repl(match):
+        prefix = match.group(1)
+        marker = match.group(2) or ""
+        arr = match.group(3)
+        stripped = _tokens_need_patent_strip(arr)
+        if not stripped:
+            return match.group(0)
+        if marker:
+            return prefix + marker + stripped
+        return prefix + "/* " + DARK_EXCLUDE_MARKER + " */ " + stripped
+
+    return pattern.sub(repl, text)
+
+
 def patch_main_dark_exclusion(text):
-    if DARK_EXCLUDE_MARKER in text:
+    """Remove patent slugs only from lireate_design_cms_dark_pages_v2 arrays (head + body)."""
+    if not _dark_v2_patent_slugs_present(text):
         return text
-    if DARK_PAGES_NEEDLE not in text:
-        return text
-    return text.replace(DARK_PAGES_NEEDLE, DARK_PAGES_REPL)
+    out = _patch_dark_regex(text, _HEAD_DARK_V2)
+    out = _patch_dark_regex(out, _BODY_DARK_V2)
+    return out
 
 
 def patch_main_legacy_blocks(text):
@@ -111,7 +164,8 @@ def patch_main_apsw_fallback(text):
 
 
 def patch_main(text):
-    if MARKER in text and INCLUDE_SNIPPET in text and DARK_EXCLUDE_MARKER in text:
+    dark_done = MARKER in text and INCLUDE_SNIPPET in text and not _dark_v2_patent_slugs_present(text)
+    if dark_done and DARK_EXCLUDE_MARKER in text:
         return text
     if MARKER in text and INCLUDE_SNIPPET in text:
         return patch_main_dark_exclusion(text)

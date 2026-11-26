@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import importlib.util
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -9,6 +10,60 @@ import unittest
 PATH = Path(__file__).resolve().parent / 'lireate_patent_light_v4_install.py'
 REPO = PATH.parents[1]
 FIXTURE_LEGACY = PATH.parent / 'fixtures/cms-main-patent-legacy-blocks.php'
+FIXTURE_PROD_DARK = PATH.parent / 'fixtures/cms-main-prod-dark-pages-v2-snippet.php'
+_DARK_V2 = 'lireate_design_cms_dark_pages_v2'
+_ARRAY_SLUGS = re.compile(r"'(?:\\'|[^'])+'")
+
+
+def prod_dark_v2_shape(text):
+    """Drop home from dark v2 arrays only (production main.php shape)."""
+    out = text
+    pos = 0
+    while True:
+        idx = out.find(_DARK_V2, pos)
+        if idx < 0:
+            break
+        sub = out[idx : idx + 320]
+        am = re.search(r"array\s*\(([^)]*)\)", sub)
+        if am:
+            inner = am.group(1)
+            if "'home'" in inner:
+                new_inner = inner.replace("'home',", "").replace(",'home'", "")
+                a0 = idx + am.start()
+                a1 = idx + am.end()
+                out = out[:a0] + "array(" + new_inner + ")" + out[a1:]
+        pos = idx + len(_DARK_V2)
+    return out
+
+
+def dark_v2_arrays(text):
+    items = []
+    pos = 0
+    while True:
+        idx = text.find(_DARK_V2, pos)
+        if idx < 0:
+            break
+        sub = text[idx : idx + 320]
+        am = re.search(r"array\s*\(([^)]*)\)", sub)
+        if am:
+            items.append(_ARRAY_SLUGS.findall(am.group(1)))
+        pos = idx + len(_DARK_V2)
+    return items
+
+
+def hero_dock_footer_slices(text):
+    keys = (
+        "lireate_design_cms_hero_assets_v1",
+        "lireate_design_service_mobile_dock_v2 head",
+        "lireate_design_cms_lu_footer_v1",
+        "lireate_design_service_mobile_dock_v2 footer",
+    )
+    out = {}
+    for key in keys:
+        i = text.find(key)
+        if i >= 0:
+            out[key] = text[i : i + 220]
+    return out
 spec = importlib.util.spec_from_file_location('patinst', PATH)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
@@ -61,11 +116,37 @@ class TestPatentInstaller(unittest.TestCase):
             self.assertEqual(main.read_text(), orig)
             self.assertFalse((docroot / 'template/css/lireate-patent-light-v4.css').exists())
 
-    def test_dark_exclusion_patch(self):
-        src = "array('home','patent','patent_prom_obr','reviews'"
+    def test_dark_exclusion_prod_snippet_only_dark_v2(self):
+        src = FIXTURE_PROD_DARK.read_text(encoding='utf-8')
+        hero_tail = (
+            "<?php /* lireate_design_cms_hero_assets_v1 */ "
+            "if (in_array($temp['page'], array('patent','patent_prom_obr'), true)): ?>"
+        )
+        src = src + "\n" + hero_tail
+        before_hero = hero_dock_footer_slices(src)
         out = module.patch_main_dark_exclusion(src)
         self.assertIn(module.DARK_EXCLUDE_MARKER, out)
-        self.assertIn("array('home','reviews'", out.replace(" ", ""))
+        for slugs in dark_v2_arrays(out):
+            self.assertNotIn("'patent'", slugs)
+            self.assertNotIn("'patent_prom_obr'", slugs)
+            self.assertIn("'mktu'", slugs)
+            self.assertIn("'reviews'", slugs)
+        after = module.patch_main_dark_exclusion(out)
+        self.assertEqual(out, after)
+        self.assertIn("'patent'", before_hero["lireate_design_cms_hero_assets_v1"])
+
+    def test_dark_exclusion_live_main_prod_shape(self):
+        live_main = REPO / 'tests/fixtures/live-render/live-assets/template/main.php'
+        if not live_main.is_file():
+            self.skipTest('live-render main.php fixture missing')
+        src = prod_dark_v2_shape(live_main.read_text(encoding='utf-8'))
+        untouched = hero_dock_footer_slices(src)
+        out = module.patch_main_dark_exclusion(src)
+        self.assertGreaterEqual(out.count(module.DARK_EXCLUDE_MARKER), 1)
+        for slugs in dark_v2_arrays(out):
+            self.assertNotIn("'patent'", slugs)
+            self.assertNotIn("'patent_prom_obr'", slugs)
+        self.assertEqual(untouched, hero_dock_footer_slices(out))
 
     def test_legacy_fixture_apply_on_live_render_main(self):
         live_main = REPO / 'tests/fixtures/live-render/live-assets/template/main.php'
@@ -77,6 +158,9 @@ class TestPatentInstaller(unittest.TestCase):
             main = docroot / 'template/main.php'
             main.parent.mkdir(parents=True)
             shutil.copy2(live_main, main)
+            prod = prod_dark_v2_shape(main.read_text(encoding='utf-8'))
+            hero_snap = hero_dock_footer_slices(prod)
+            main.write_text(prod, encoding='utf-8')
             cmd = [
                 'python3', str(PATH),
                 '--docroot', str(docroot),
@@ -89,6 +173,9 @@ class TestPatentInstaller(unittest.TestCase):
             self.assertIn("patent' && false", patched)
             self.assertIn("patent_prom_obr' && false", patched)
             self.assertIn(module.DARK_EXCLUDE_MARKER, patched)
+            for slugs in dark_v2_arrays(patched):
+                self.assertNotIn("'patent'", slugs)
+            self.assertEqual(hero_snap, hero_dock_footer_slices(patched))
             lint = subprocess.run(['php', '-l', str(main)], capture_output=True, text=True)
             self.assertEqual(lint.returncode, 0, lint.stderr)
 
