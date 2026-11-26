@@ -101,6 +101,8 @@ jobs:
           mkdir -p .ci-rollout-docroot
           docker run --rm -v "$PWD:/work" -w /work python:3.6 bash -c '
             set -euo pipefail
+            apt-get update -qq
+            DEBIAN_FRONTEND=noninteractive apt-get install -y -qq php-cli >/dev/null
             python scripts/check_hosting_py36_compat.py
             python scripts/lireate_light_v4_hosting_rollout.py --docroot /work/.ci-rollout-docroot
             python -m unittest scripts.test_lireate_light_v4_rollout_fixture_apply -q
