@@ -745,15 +745,6 @@ body.lireate-home-light-v4.lireate-theme-light-v4 a.leftSideLogo,
   filter: none !important;
   opacity: 0.94 !important;
 }
-body.lireate-public-cms-chrome #leftSideBar a.leftSideLogo,
-body.lireate-public-cms-chrome #leftSideBar a.leftSideLogo img {
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root {
   --blue: #0f4db8;
   --lh4-blue: #0f4db8;

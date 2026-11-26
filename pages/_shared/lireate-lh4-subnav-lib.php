@@ -72,7 +72,6 @@ if (!function_exists('lireate_lh4_subnav_items_for_request')) {
         }
         if (preg_match('#^/registraciya_tovarnogo_znaka#', $path)) {
             return array(
-                array('href' => '#top', 'label' => 'Услуга'),
                 array('href' => '#journey', 'label' => 'Путь'),
                 array('href' => '#pricing', 'label' => 'Стоимость'),
                 array('href' => '#faq', 'label' => 'FAQ'),

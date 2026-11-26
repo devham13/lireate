@@ -29,7 +29,7 @@ class NavV3FullTests(unittest.TestCase):
         self.assertIn("lireate-navigation-dual-v3.css", text)
         self.assertIn("lireate-public-cms-chrome.css", text)
         self.assertIn("lireate-global-subnav-light-v4.css", text)
-        self.assertIn("20261126r4", text)
+        self.assertIn("20261126r5", text)
 
     def test_js_has_collapse_and_anchor_mobile(self):
         js = (ROOT / "template/js/lireate-navigation-dual-v3.js").read_text(encoding="utf-8")

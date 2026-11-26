@@ -457,16 +457,17 @@ body.lireate-theme-light-v4 .lireate-about-text--muted {
 }
 
 /* Sidebar logo: white SVG as mask + dark fill (not background shorthand on <a>) */
-body.lireate-home-light-v4 a.leftSideLogo,
-body.lireate-legacy-article-lu a.leftSideLogo,
-body.lireate-reviews-body a.leftSideLogo,
-body.lireate-portfolio-body a.leftSideLogo,
-body.lireate-team-body a.leftSideLogo,
 body.lireate-public-cms-chrome #leftSideBar a.leftSideLogo {
-  background-image: url(/template/images/logo/logo.svg) !important;
-  background-color: transparent !important;
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
+  background-image: none !important;
+  background-color: #1f212c !important;
+  -webkit-mask-image: url(/template/images/logo/logo.svg) !important;
+  mask-image: url(/template/images/logo/logo.svg) !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
 }
 body.lireate-theme-light-v4:not(.lireate-public-cms-chrome) a.leftSideLogo,
 body:not(.lireate-public-cms-chrome) #leftSideBar a.leftSideLogo {

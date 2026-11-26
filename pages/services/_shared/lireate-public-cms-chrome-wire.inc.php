@@ -34,8 +34,8 @@ if (!function_exists('lireate_public_cms_chrome_wire_open')) {
             return false;
         }
         lireate_public_cms_include_chrome();
-        lireate_public_cms_include_subnav();
         lireate_public_cms_content_open();
+        lireate_public_cms_include_subnav();
         return true;
     }
 }

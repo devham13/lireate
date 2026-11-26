@@ -86,6 +86,7 @@ def capture(
     qa_rows: list,
     *,
     mobile_menu: bool = False,
+    mobile_menu_scroll: str = "top",
     side_collapsed: bool = False,
     anchor_open: bool = False,
     is_after: bool = False,
@@ -130,16 +131,25 @@ def capture(
         if burger.count() and burger.is_visible():
             burger.click()
             page.wait_for_timeout(400)
-        page.evaluate(
-            """() => {
-            const bar = document.getElementById('leftSideBar');
-            if (!bar) return;
-            const logo = bar.querySelector('.leftSideLogo');
-            if (logo) logo.scrollIntoView({block: 'start'});
-            const soc = bar.querySelector('.leftSideSoc');
-            if (soc) soc.scrollIntoView({block: 'end'});
-            }"""
-        )
+        if mobile_menu_scroll == "bottom":
+            page.evaluate(
+                """() => {
+                const bar = document.getElementById('leftSideBar');
+                if (!bar) return;
+                const soc = bar.querySelector('.leftSideSoc');
+                if (soc) soc.scrollIntoView({block: 'end'});
+                else bar.scrollTop = bar.scrollHeight;
+                }"""
+            )
+        else:
+            page.evaluate(
+                """() => {
+                const bar = document.getElementById('leftSideBar');
+                if (bar) bar.scrollTop = 0;
+                const logo = bar && bar.querySelector('.leftSideLogo');
+                if (logo) logo.scrollIntoView({block: 'start'});
+                }"""
+            )
         page.wait_for_timeout(250)
 
     metrics = page.evaluate(
@@ -237,6 +247,20 @@ def main() -> int:
                                 width,
                                 qa_rows,
                                 mobile_menu=True,
+                                mobile_menu_scroll="top",
+                                is_after=True,
+                            )
+                            menu_bottom = OUT / "after" / slug / (
+                                "%d-menu-open-bottom.png" % width
+                            )
+                            capture(
+                                browser,
+                                preview_url,
+                                menu_bottom,
+                                width,
+                                qa_rows,
+                                mobile_menu=True,
+                                mobile_menu_scroll="bottom",
                                 is_after=True,
                             )
                         if width in (320, 375, 390, 768):
