@@ -569,7 +569,8 @@ def _publish_slug(
             src = Path(item["src"])
             dst = Path(item["dst"])
             rel = item["rel"]
-            scope = "docroot" if rel.startswith("_shared/") or rel.startswith("_shared\\") else "service"
+            norm = rel.replace("\\", "/")
+            scope = "docroot" if norm.startswith("_shared/") or "/_shared/" in norm else "service"
             existed_before = dst.is_file()
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(str(src), str(dst))

@@ -26,7 +26,7 @@ def load_rollback_manifest(backup_dir):
 
 def _target_for_rel(docroot, dest_dir, rel, scope):
     rel_path = Path(rel.replace("\\", "/"))
-    if scope == "docroot":
+    if scope == "docroot" or "/_shared/" in rel_path.as_posix():
         return Path(docroot) / rel_path
     return Path(dest_dir) / rel_path
 
@@ -53,7 +53,7 @@ def restore_service_publish(docroot, backup_dir, manifest):
         if not path.is_file() or path.name == "rollback-manifest.json":
             continue
         rel = path.relative_to(backup_dir).as_posix()
-        scope = "docroot" if rel.startswith("_shared/") else "service"
+        scope = "docroot" if rel.startswith("_shared/") or "/_shared/" in rel else "service"
         target = _target_for_rel(docroot, dest_dir, rel, scope)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(path), str(target))
