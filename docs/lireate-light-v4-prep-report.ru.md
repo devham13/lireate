@@ -64,6 +64,14 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 
 **Код:** патч `main.php` (без `lireate-cms-page-dark` на home; **`lireate-home-dark` на home сохраняется**), `$n` в `lireate-portfolio-cms.inc.php`, убран `LIREATE_BLOG_SKIP_PREAPPLY_GATE`, CI fixture — шаблон статьи для gate blog. См. `tests/fixtures/live-render/README.md`.
 
+### Круг 21 — utm дубль, vk-cases, blog py3.6
+
+| Задача | Решение |
+| --- | --- |
+| Дубль `lireate-utm.js` на home | убран из `lireate-home-page.inc.php` (head main.php) |
+| vk-cases перезапись | живые JSON для 2 slug; skip generic в publish |
+| blog install 3.6 | без `future annotations`; PIPE в subprocess; расширен `check_hosting_py36_compat` |
+
 ### Круг 20 — regex body без DOTALL, live main fixture, rollout rollback + perf
 
 | Задача | Решение |

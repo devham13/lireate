@@ -1,7 +1,5 @@
 """Live-faithful PHP 5.6 php-cgi gate (rsync docroot slice + same ops as --apply)."""
 
-from __future__ import annotations
-
 import os
 import shutil
 import subprocess
@@ -126,8 +124,9 @@ def run_php_cgi_get(cgi_bin, docroot, script_path, request_uri, error_log_path):
     proc = subprocess.run(
         argv,
         env=env,
-        capture_output=True,
-        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
         timeout=120,
         cwd=str(docroot),
     )
@@ -311,8 +310,9 @@ def gate_selftest_detects_2b890fb_dual_lib_redeclare(cgi_bin, docroot, office_re
     ]
     proc = subprocess.run(
         argv,
-        capture_output=True,
-        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
         timeout=120,
         cwd=str(docroot),
     )

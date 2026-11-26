@@ -197,8 +197,9 @@ def php_version_string(php_bin):
     try:
         proc = subprocess.run(
             [php_bin, "-r", "echo PHP_VERSION;"],
-            capture_output=True,
-            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
             timeout=30,
         )
     except (OSError, subprocess.SubprocessError):
@@ -520,8 +521,9 @@ def lint_deployed_php_with_bin(php_bin, office_repo):
         lint_path = _php_lint_target_path(php_bin, office_repo, path)
         proc = subprocess.run(
             [php_bin, "-l", lint_path],
-            capture_output=True,
-            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
             timeout=30,
         )
         if proc.returncode != 0:
@@ -1820,8 +1822,9 @@ def _php_run_capture(php_bin, repo, runner_path, label, docroot=None, error_log_
         build_php_diag_argv(
             php_bin, repo, runner_path, docroot=docroot, error_log_path=log_path
         ),
-        capture_output=True,
-        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
         timeout=90,
     )
     stdout = proc.stdout or ""
@@ -2490,8 +2493,9 @@ def run_php_list_diag(live_docroot, office_repo=None):
         build_php_diag_argv(
             php_bin, repo, runner, docroot=sandbox, error_log_path=error_log_path
         ),
-        capture_output=True,
-        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
         timeout=90,
     )
     stdout = proc.stdout or ""

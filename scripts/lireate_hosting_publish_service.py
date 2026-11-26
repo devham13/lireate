@@ -107,6 +107,12 @@ def _append_docroot_shared_static(plan, office_repo, url_path, docroot_path, nam
             if docroot_path:
                 dst_path = docroot_path / rel
                 if dst_path.is_file():
+                    if name == "vk-cases.json" and _preserve_custom_vk_cases(
+                        office_repo,
+                        {"rel": rel, "sha256": _sha256_file(src)},
+                        dst_path,
+                    ):
+                        continue
                     continue
             plan.append(
                 {
@@ -215,6 +221,30 @@ def _sha256_file(path):
         for chunk in iter(lambda: fh.read(65536), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+_GENERIC_VK_CASES_SHA = ""
+
+
+def _office_generic_vk_cases_sha(office_repo):
+    global _GENERIC_VK_CASES_SHA
+    if not _GENERIC_VK_CASES_SHA:
+        path = office_repo / "pages" / "services" / "_shared" / "vk-cases.json"
+        if path.is_file():
+            _GENERIC_VK_CASES_SHA = _sha256_file(path)
+    return _GENERIC_VK_CASES_SHA
+
+
+def _preserve_custom_vk_cases(office_repo, item, dst):
+    rel = item["rel"].replace("\\", "/")
+    if not rel.endswith("vk-cases.json"):
+        return False
+    if not dst.is_file():
+        return False
+    generic_sha = _office_generic_vk_cases_sha(office_repo)
+    if not generic_sha or item["sha256"] != generic_sha:
+        return False
+    return _sha256_file(dst) != generic_sha
 
 
 def _setup_logging(log_path):
@@ -570,6 +600,9 @@ def _publish_slug(
             dst = Path(item["dst"])
             rel = item["rel"]
             norm = rel.replace("\\", "/")
+            if _preserve_custom_vk_cases(office_repo, item, dst):
+                print("SKIP (custom vk-cases): {0}".format(rel))
+                continue
             scope = "docroot" if norm.startswith("_shared/") or "/_shared/" in norm else "service"
             existed_before = dst.is_file()
             dst.parent.mkdir(parents=True, exist_ok=True)

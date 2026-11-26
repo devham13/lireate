@@ -324,6 +324,5 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
 </script>
 <?php if (!$lh_preview) : ?>
 <script>window.lireateMailSpamGuard=<?php echo json_encode($lh_spam_guard); ?>;</script>
-<script src="/template/js/lireate-utm.js?v=20261117b1"></script>
 <script src="/registraciya_tovarnogo_znaka/assets/lireate-shared/lireate-lead-mail.js"></script>
 <?php endif; ?>
