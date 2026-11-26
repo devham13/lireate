@@ -8,7 +8,7 @@
 |------|----------|
 | PR | https://github.com/devham13/lireate/pull/127 |
 | Ветка | `cursor/nav-v3-socials-full-b68f` |
-| SHA | *(см. последний push в PR)* |
+| SHA | `894fd68` |
 | Asset QS | `20261126r3` |
 
 ## Обязательные пункты ТЗ (выполнено в PR)
