@@ -74,7 +74,8 @@ class PrBPublicMenusTests(unittest.TestCase):
     def test_service_wired_with_chrome(self):
         text = SERVICE_SAMPLE.read_text(encoding="utf-8")
         self.assertIn("lireate-public-cms-chrome-wire:v1", text)
-        self.assertIn("lireate_public_cms_include_chrome", text)
+        self.assertIn("lireate_public_cms_chrome_wire_open", text)
+        self.assertIn("lireate-public-cms-chrome-wire.inc.php", text)
         self.assertIn("lx-nav-pill", text)
 
 
