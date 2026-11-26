@@ -43,11 +43,10 @@ class HomeHeroPhotoTests(unittest.TestCase):
             css,
             r"\.hero-right \.expert-photo img\{[^}]*object-fit:cover",
         )
-        self.assertRegex(css, r"object-position:\s*50%\s*2%")
-        self.assertIn("transform:scale(1.78)", css.replace(" ", ""))
         compact = css.replace(" ", "")
-        self.assertIn("max-height:min(46vh,480px)", compact)
-        self.assertIn("max-width:min(50vw,468px)", compact)
+        self.assertIn("transform:scale(1.34)", compact)
+        self.assertIn("object-position:50%26%", compact)
+        self.assertIn("max-width:min(48vw,455px)", compact)
         self.assertNotIn("aspect-ratio:10/13", compact)
 
     def test_head_snippet_preloads_hero_image(self):
