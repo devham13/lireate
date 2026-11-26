@@ -13,6 +13,8 @@ $lireate_blog_description = 'Как проверить товарный знак
 $lireate_blog_canonical = '/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta/';
 $lireate_blog_body_html = file_get_contents(__DIR__ . '/sample-body.html');
 
+$repo = dirname(__DIR__, 2);
+$_SERVER['DOCUMENT_ROOT'] = $repo;
 $assets_base = '/template/page/news';
 define('LIREATE_BLOG_PUBLIC_ORIGIN', 'https://lireate.ru'); // pragma: allowlist secret
 ?>
@@ -27,12 +29,16 @@ define('LIREATE_BLOG_PUBLIC_ORIGIN', 'https://lireate.ru'); // pragma: allowlist
 </head>
 <body class="lireate-blog-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
+require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
+lireate_public_cms_include_chrome();
+lireate_public_cms_content_open();
 define('LIREATE_BLOG_ASSETS_BASE', $assets_base);
 require_once dirname(__DIR__) . '/_shared/lireate-blog-layout.inc.php';
 $footer = dirname(__DIR__, 2) . '/services/_shared/lireate-service-footer.inc.php';
 if (is_file($footer)) {
     include $footer;
 }
+lireate_public_cms_content_close();
 ?>
 </body>
 </html>

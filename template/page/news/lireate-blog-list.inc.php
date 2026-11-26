@@ -59,6 +59,13 @@ $lb_author_default = defined('LIREATE_BLOG_AUTHOR_NAME') ? LIREATE_BLOG_AUTHOR_N
 document.documentElement.classList.add('lireate-blog-html');
 if (document.body) { document.body.classList.add('lireate-blog-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<?php
+$lb_subnav = dirname(dirname(dirname(__DIR__))) . '/pages/_shared/lireate-lh4-subnav-lib.php';
+if (is_file($lb_subnav)) {
+    require_once $lb_subnav;
+    lireate_lh4_include_subnav();
+}
+?>
 <div class="lireate-blog-list-page" data-lireate-blog-list-version="<?php echo lireate_blog_h($lb_v); ?>">
   <?php
   $lb_total_items = isset($GLOBALS['lireate_blog_list_total_items']) ? (int) $GLOBALS['lireate_blog_list_total_items'] : count($lb_items);

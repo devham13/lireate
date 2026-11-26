@@ -43,6 +43,7 @@ $schema_graph = array(
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 </head>
 <body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4">
+<?php /* lireate-public-cms-chrome-wire:v1 */ require_once dirname(__DIR__) . '/_shared/lireate-public-cms-chrome-wire.inc.php'; lireate_public_cms_chrome_wire_open(); ?>
 <?php include __DIR__ . '/blocks/lireate-patent-header.inc.php'; ?>
 <main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-contacts data-lx-contacts-json="<?php echo htmlspecialchars($lx_contacts_json, ENT_QUOTES, 'UTF-8'); ?>">
 <?php include __DIR__ . '/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
@@ -70,4 +71,5 @@ $lx_patent_footer_ref_url = 'https://rospatent.gov.ru/ru/contacts';
 $lireate_max = LIREATE_MAX_CHAT_URL;
 ?>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
+<?php /* lireate-public-cms-chrome-wire:v1 */ lireate_public_cms_chrome_wire_close(); ?>
 <?php include __DIR__ . '/blocks/lireate-patent-tool-footer.inc.php'; ?>

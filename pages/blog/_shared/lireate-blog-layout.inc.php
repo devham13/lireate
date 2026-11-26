@@ -63,6 +63,10 @@ if (document.body) {
   document.body.style.color = '#1f212c';
 }
 </script>
+<?php
+require_once dirname(dirname(__DIR__)) . '/_shared/lireate-lh4-subnav-lib.php';
+lireate_lh4_include_subnav();
+?>
 <div class="lireate-blog-page" data-lireate-blog-version="<?php echo lireate_blog_h($lb_v); ?>">
   <div class="lireate-blog-grid">
     <?php if (!empty($lb_toc)) : ?>

@@ -27,7 +27,7 @@ if ($lp_photo_origin !== '') {
 }
 $lp_footer_css = defined('LIREATE_PARTNERS_FOOTER_CSS_HREF')
     ? LIREATE_PARTNERS_FOOTER_CSS_HREF
-    : '/template/page/news/lireate-blog-footer.css';
+    : '/template/page/news/lireate-blog-footer-light-v4.css';
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +41,10 @@ document.documentElement.classList.add('lireate-partners-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_partners_h(LIREATE_PARTNERS_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-partners-body'); document.body.classList.add('lireate-theme-light-v4'); }
 </script>
+<?php
+require_once dirname(dirname(__DIR__)) . '/_shared/lireate-lh4-subnav-lib.php';
+lireate_lh4_include_subnav();
+?>
 <div class="lireate-partners-page" data-lireate-partners-version="<?php echo lireate_partners_h($lp_v); ?>">
   <header class="lireate-partners-hero">
     <div class="lireate-partners-wrap">

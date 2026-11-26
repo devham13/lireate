@@ -10,6 +10,10 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 SHARED = REPO / "pages" / "services" / "_shared"
+# Публичный chrome (sidebar/subnav) для услуг — pages/_shared, не services/_shared.
+EXTRA_SHARED_PHP = (
+    REPO / "pages" / "_shared" / "lireate-public-cms-chrome-lib.php",
+)
 
 BANNED = {"lireate_service_max_channel_url"}
 
@@ -19,7 +23,9 @@ LIREATE_CALL_RE = re.compile(r"\b(lireate_[a-zA-Z0-9_]+)\s*\(")
 
 def collect_shared_functions():
     names = set()
-    for path in SHARED.rglob("*.php"):
+    for path in list(SHARED.rglob("*.php")) + list(EXTRA_SHARED_PHP):
+        if not path.is_file():
+            continue
         text = path.read_text(encoding="utf-8", errors="replace")
         for match in DEF_RE.finditer(text):
             names.add(match.group(1))

@@ -588,3 +588,73 @@ body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .wrapper {
     background: #fff !important;
   }
 }
+
+/* CMS: партнёры, документы, контакты — Light V4 + lh4-subnav */
+body.lireate-cms-page-dark.lireate-partners-body.lireate-theme-light-v4,
+body.lireate-cms-page-dark.lireate-docs-body.lireate-theme-light-v4,
+body.lireate-cms-page-dark.lireate-contacts-body.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-partners-body.lireate-theme-light-v4 .wrapper,
+body.lireate-docs-body.lireate-theme-light-v4 .wrapper,
+body.lireate-contacts-body.lireate-theme-light-v4 .wrapper,
+body.lireate-partners-body.lireate-theme-light-v4 .page_container,
+body.lireate-docs-body.lireate-theme-light-v4 .page_container,
+body.lireate-contacts-body.lireate-theme-light-v4 .page_container,
+body.lireate-partners-body .lireate-partners-page,
+body.lireate-docs-body .lireate-docs-page,
+body.lireate-contacts-body .lireate-contacts-page {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-partners-body.lireate-theme-light-v4 .lireate-partners-lead,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-lead,
+body.lireate-contacts-body.lireate-theme-light-v4 .lireate-contacts-lead,
+body.lireate-partners-body.lireate-theme-light-v4 .lireate-partners-text,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-text,
+body.lireate-contacts-body.lireate-theme-light-v4 .lireate-contacts-text {
+  color: #52637b !important;
+}
+body.lireate-partners-body.lireate-theme-light-v4 .lx-site-footer a,
+body.lireate-docs-body.lireate-theme-light-v4 .lx-site-footer a,
+body.lireate-contacts-body.lireate-theme-light-v4 .lx-site-footer a {
+  color: #0f4db8 !important;
+}
+
+/* /uslugi/ хаб — Light V4, маркер lireate_fg (карточка + footer) */
+body.lireate-uslugi-body.lireate-theme-light-v4,
+body.lireate-cms-page-dark.lireate-uslugi-body.lireate-theme-light-v4 {
+  background: #f4f8fc !important;
+  color: #1f212c !important;
+}
+body.lireate-uslugi-body.lireate-theme-light-v4 .wrapper,
+body.lireate-uslugi-body.lireate-theme-light-v4 .content,
+body.lireate-uslugi-body.lireate-theme-light-v4 .container.content,
+body.lireate-uslugi-body.lireate-theme-light-v4 #lireate-uslugi,
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page {
+  background: transparent !important;
+  color: #1f212c !important;
+}
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page .lu-h1,
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page .lu-h2,
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page .lu-card-title {
+  color: #1f212c !important;
+}
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page .lu-card-text,
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page .lu-lead {
+  color: #52637b !important;
+}
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page a.lu-card[data-lireate-fg="1"] .lu-card-tag {
+  color: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page .lx-site-footer,
+body.lireate-uslugi-body.lireate-theme-light-v4 .lu-page .lx-site-footer-inner {
+  background: #1b2740 !important;
+  color: #f8fafc !important;
+}
+body.lireate-uslugi-body.lireate-theme-light-v4 #leftSideBar .submitBox.js-modal-form {
+  background-color: #cb2136 !important;
+  color: #fff !important;
+}

@@ -57,6 +57,11 @@ if (is_file($lx_cms_light_head)) {
     }
 }
 echo '<script>if(document.body){document.body.classList.add("lireate-portfolio-preview");}</script>' . "\n";
+$lx_lh4_subnav = dirname(dirname(__DIR__)) . '/pages/_shared/lireate-lh4-subnav-lib.php';
+if (is_file($lx_lh4_subnav)) {
+    require_once $lx_lh4_subnav;
+    lireate_lh4_include_subnav();
+}
 ?>
 <?php
             if (defined('LIREATE_PORTFOLIO_PREVIEW_FIXTURE') && is_string(LIREATE_PORTFOLIO_PREVIEW_FIXTURE) && is_file(LIREATE_PORTFOLIO_PREVIEW_FIXTURE)) {

@@ -1,0 +1,56 @@
+/* LIREATE Light V4 — страницы /mktu (список и статья). */
+body.lireate-mktu-lu-body.lireate-theme-light-v4,
+body.lireate-theme-light-v4.lireate-mktu-lu-body {
+  background: #f4f8fc !important;
+  color: #1f212c !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .wrapper,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .content,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .container.content,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .page_container {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_head,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_head h1,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_head h2,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body h2,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body h3 {
+  color: #1f212c !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body p,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body li,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body .default_text {
+  color: #52637b !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body a {
+  color: #0f4db8 !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body a:hover,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .mktu_body a:focus-visible {
+  color: #195acb !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .pagination > li > a,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .pagination > li > span {
+  color: #1f212c !important;
+  background: #fff !important;
+  border-color: #dce8f7 !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .pagination > .active > a {
+  color: #fff !important;
+  background: #0f4db8 !important;
+  border-color: #0f4db8 !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 #leftSideBar .submitBox.js-modal-form {
+  background-color: #cb2136 !important;
+  color: #fff !important;
+}
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-mktu-lu-body.lireate-theme-light-v4 .lx-site-footer-inner {
+  background: #1b2740 !important;
+  color: #f8fafc !important;
+}

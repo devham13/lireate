@@ -49,6 +49,18 @@ DOCROOT_SHARED_PHP_NAMES = (
     "lireate-service-nav-links.php",
     "lireate-service-assets.php",
     "lireate-patent-breadcrumbs.php",
+    "lireate-public-cms-chrome-wire.inc.php",
+)
+DOCROOT_PAGES_SHARED_CHROME = (
+    "lireate-lh4-subnav-lib.php",
+    "lireate-lh4-subnav.inc.php",
+    "lireate-public-cms-chrome-lib.php",
+    "lireate-public-cms-chrome.inc.php",
+    "lireate-public-cms-sidebar.inc.php",
+)
+DOCROOT_CHROME_CSS = (
+    Path("template/css/lireate-global-subnav-light-v4.css"),
+    Path("template/css/lireate-public-cms-chrome.css"),
 )
 DOCROOT_SHARED_STATIC_NAMES = (
     "lireate-vk-cases.css",
@@ -135,6 +147,53 @@ def _append_docroot_shared_php(plan, office_repo, url_path, docroot_path):
     )
 
 
+def _append_docroot_pages_shared_chrome(plan, office_repo, docroot_path):
+    shared_src = office_repo / "pages" / "_shared"
+    if not shared_src.is_dir():
+        return
+    existing = {item["rel"] for item in plan}
+    for name in DOCROOT_PAGES_SHARED_CHROME:
+        src = shared_src / name
+        if not src.is_file():
+            continue
+        rel = str((Path("pages") / "_shared" / name).as_posix())
+        if rel in existing:
+            continue
+        if docroot_path and (docroot_path / rel).is_file():
+            existing.add(rel)
+            continue
+        plan.append(
+            {
+                "rel": rel,
+                "src": str(src),
+                "sha256": _sha256_file(src),
+                "size": src.stat().st_size,
+                "dst": str(docroot_path / rel) if docroot_path else "",
+            }
+        )
+        existing.add(rel)
+    for rel_css in DOCROOT_CHROME_CSS:
+        src = office_repo / rel_css
+        if not src.is_file():
+            continue
+        rel = str(rel_css.as_posix())
+        if rel in existing:
+            continue
+        if docroot_path and (docroot_path / rel).is_file():
+            existing.add(rel)
+            continue
+        plan.append(
+            {
+                "rel": rel,
+                "src": str(src),
+                "sha256": _sha256_file(src),
+                "size": src.stat().st_size,
+                "dst": str(docroot_path / rel) if docroot_path else "",
+            }
+        )
+        existing.add(rel)
+
+
 def _canonical_service_htaccess_path(office_repo):
     path = office_repo / SERVICE_DIR_HTACCESS_SHARED
     if path.is_file():
@@ -194,6 +253,7 @@ def _build_publish_plan(service_dir, office_repo):
 def _build_publish_plan_with_shared(service_dir, office_repo, url_path, docroot_path):
     plan = _build_publish_plan(service_dir, office_repo)
     _append_docroot_shared_php(plan, office_repo, url_path, docroot_path)
+    _append_docroot_pages_shared_chrome(plan, office_repo, docroot_path)
     return plan
 
 

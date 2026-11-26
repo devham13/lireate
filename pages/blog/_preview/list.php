@@ -110,10 +110,15 @@ $lireate_blog_list_filters = lireate_blog_list_filters_from_cms();
 </head>
 <body class="lireate-blog-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
+require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
+lireate_public_cms_include_chrome();
+lireate_public_cms_content_open();
+lireate_public_cms_include_subnav();
 require_once dirname(__DIR__) . '/_shared/lireate-blog-list.inc.php';
 if (function_exists('lireate_blog_render_service_footer')) {
     lireate_blog_render_service_footer();
 }
+lireate_public_cms_content_close();
 ?>
 </body>
 </html>
