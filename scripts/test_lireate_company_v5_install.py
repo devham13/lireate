@@ -55,18 +55,20 @@ class CompanyV5InstallTests(unittest.TestCase):
             inst.plan(self.docroot)
 
     def test_shared_asset_conflict_hard_blocks(self):
-        asset = self.docroot / inst.CSS
-        asset.parent.mkdir(parents=True)
+        asset = self.docroot / inst.ASSETS[0]
+        asset.parent.mkdir(parents=True, exist_ok=True)
         asset.write_text("concurrent non-matching CSS", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "existing unexpected shared asset"):
             inst.plan(self.docroot)
 
     def test_source_contains_actual_logo_art_and_five_exact_page_components(self):
-        svg = (inst.REPO / inst.ASSETS[1]).read_text(encoding="utf-8")
+        svg = (inst.REPO / inst.ASSETS[2]).read_text(encoding="utf-8")
         self.assertIn('viewBox="0 0 759.7 136.1"', svg)
         self.assertIn(".st7{fill:#1F212C;}", svg)
-        css = (inst.REPO / inst.CSS).read_text(encoding="utf-8")
+        css = (inst.REPO / inst.ASSETS[0]).read_text(encoding="utf-8")
+        chrome = (inst.REPO / inst.ASSETS[1]).read_text(encoding="utf-8")
         self.assertIn("mask-image:none!important", css)
+        self.assertIn("logo-light-v5.svg", chrome)
         for rel in inst.PHP:
             page = (inst.REPO / rel).read_text(encoding="utf-8")
             self.assertIn("lireate-company-pages-v5.css", page)

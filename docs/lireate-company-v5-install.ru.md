@@ -30,7 +30,9 @@ SVG — красные графические формы не изменены, 
 Пять исходных страниц находятся в `pages/<раздел>/_shared/*-page.inc.php`,
 а реальные развернутые PHP-templates — в `template/page/<раздел>/*-page.inc.php`.
 В PR обновлены обе группы (10 шаблонов): подключён общий CSS, body-класс и
-семантическая карточка справа в первом экране. **Не создаётся второй H1**.
+семантическая карточка справа в первом экране. На проде `*-cms.inc.php`
+читает `pages/<раздел>/_shared/*-page.inc.php` **раньше**, чем
+`template/page/…`, поэтому установщик кладёт правки в **обе** ветки. **Не создаётся второй H1**.
 Оригинальное содержимое, формы, action-URL, Метричные data-lx-ym-goal,
 информация о сотрудниках, партнёрах, документальных материалах,
 пункты меню и футер не переписаны.
@@ -38,6 +40,8 @@ SVG — красные графические формы не изменены, 
 Добавлено:
 - `template/css/lireate-company-pages-v5.css` — общие стили для 5 страниц;
 - `template/images/logo/logo-light-v5.svg` — исходный логотип для белого фона;
+- `template/css/lireate-public-cms-chrome.css` — логотип в левом меню на всех
+  страницах с Nav V3 / `lireate-public-cms-chrome` (без mask, `logo-light-v5.svg`);
 - `scripts/lireate_company_v5_install.py` — host installer, dry-run по умолчанию,
   бэкап и откат, PHP lint, защита от перезаписи более свежих live-файлов;
 - `scripts/test_lireate_company_v5_install.py` — офлайн регрессионные тесты.

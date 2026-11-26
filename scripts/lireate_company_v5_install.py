@@ -24,9 +24,15 @@ PHP = (
     Path("template/page/partners/lireate-partners-page.inc.php"),
     Path("template/page/docs/lireate-docs-page.inc.php"),
     Path("template/page/kontaktyi/lireate-contacts-page.inc.php"),
+    Path("pages/o_kompanii/_shared/lireate-about-page.inc.php"),
+    Path("pages/team/_shared/lireate-team-page.inc.php"),
+    Path("pages/partners/_shared/lireate-partners-page.inc.php"),
+    Path("pages/docs/_shared/lireate-docs-page.inc.php"),
+    Path("pages/kontaktyi/_shared/lireate-contacts-page.inc.php"),
 )
 ASSETS = (
     Path("template/css/lireate-company-pages-v5.css"),
+    Path("template/css/lireate-public-cms-chrome.css"),
     Path("template/images/logo/logo-light-v5.svg"),
 )
 FILES = PHP + ASSETS
@@ -40,6 +46,12 @@ BASE_BLOB = {
     str(PHP[2]): "5b952e2a7c1323a32f0e5307e6c663315c1e73f2",
     str(PHP[3]): "b00637c168530d0e43fb288c8c8a71489b9b15a7",
     str(PHP[4]): "2c36b465077012f5a5844811664f949d1f486c9c",
+    str(PHP[5]): "aae9678d2bb526bd9f5fd83b4cd58363396218b3",
+    str(PHP[6]): "271ba364ddad4336cbd1f5910372000032c64f18",
+    str(PHP[7]): "4c0a93a1d55f2dbd079190fbe64e417ee04e4721",
+    str(PHP[8]): "0c0353d76dbf98735fc45b41055a7406895bf718",
+    str(PHP[9]): "62baf790c44b528a6c5610aee69f50588161386a",
+    str(ASSETS[1]): "5a3242c525f22eee671b266405d2ef07644db8d4",
 }
 
 

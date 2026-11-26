@@ -103,21 +103,21 @@ body.lireate-public-cms-chrome #leftSideBar .lpc-sidebar-head {
 body.lireate-public-cms-chrome #leftSideBar .leftSideLogo {
   display: block !important;
   box-sizing: border-box;
-  width: calc(100% - 8px);
-  max-width: none;
+  width: min(196px, calc(100% - 8px));
+  max-width: 100%;
   margin: 0 auto 8px;
-  height: 54px;
+  height: 60px;
   min-height: 48px;
-  background-image: none !important;
-  background-color: #1f212c !important;
-  -webkit-mask-image: url(/template/images/logo/logo.svg);
-  mask-image: url(/template/images/logo/logo.svg);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
+  background-color: transparent !important;
+  background-image: url(/template/images/logo/logo-light-v5.svg) !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: contain !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  filter: none !important;
 }
 body.lireate-public-cms-chrome .lireate-public-cms-collapse {
   position: absolute;
@@ -345,8 +345,12 @@ body.lireate-public-cms-chrome.side-collapsed .lpc-collapse-icon {
     flex: 0 0 44px;
   }
   body.lireate-public-cms-chrome.side-collapsed .leftSideLogo {
-    width: 44px;
-    height: 44px;
-    margin: 16px auto 6px;
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    margin: 12px auto 6px !important;
+    background-size: 210px auto !important;
+    background-position: left center !important;
   }
 }
