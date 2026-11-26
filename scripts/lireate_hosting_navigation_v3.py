@@ -16,13 +16,19 @@ import tempfile
 
 REPO = Path(__file__).resolve().parents[1]
 VERSION = 'lireate-dual-nav-v3-20261126'
-NAV_ASSET_QS = '20261126r1'
-ASSETS = [Path('template/css/lireate-navigation-dual-v3.css'),
-          Path('template/js/lireate-navigation-dual-v3.js')]
+NAV_ASSET_QS = '20261126r5'
+ASSETS = [
+    Path('template/css/lireate-navigation-dual-v3.css'),
+    Path('template/css/lireate-public-cms-chrome.css'),
+    Path('template/css/lireate-global-subnav-light-v4.css'),
+    Path('template/js/lireate-navigation-dual-v3.js'),
+]
 MAIN = Path('template/main.php')
 HEAD = (
     '<!-- ' + VERSION + ' -->\n'
     '<link rel="stylesheet" href="/template/css/lireate-navigation-dual-v3.css?v=' + NAV_ASSET_QS + '">\n'
+    '<link rel="stylesheet" href="/template/css/lireate-public-cms-chrome.css?v=' + NAV_ASSET_QS + '">\n'
+    '<link rel="stylesheet" href="/template/css/lireate-global-subnav-light-v4.css?v=' + NAV_ASSET_QS + '">\n'
     '<script defer src="/template/js/lireate-navigation-dual-v3.js?v=' + NAV_ASSET_QS + '"></script>\n'
 )
 

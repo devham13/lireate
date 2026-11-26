@@ -1,14 +1,15 @@
 /* LIREATE Dual Navigation V3: mark visible homepage section. CMS menu is left intact. */
 (function(){
  "use strict";
- function init(){
-  var root=document.getElementById("lireate-home-light-v4");
-  if(!root)return;
-  var nav=root.querySelector(".lh4-subnav-links");
+ function initSpy(scope,nav){
   if(!nav)return;
+  var root=scope||document;
   var items=Array.prototype.filter.call(
    Array.prototype.map.call(nav.querySelectorAll('a[href^="#"]'),function(link){
-    return {link:link,target:root.querySelector(link.getAttribute("href"))};
+    var href=link.getAttribute("href");
+    var target=href?root.querySelector(href):null;
+    if(!target&&href){target=document.querySelector(href);}
+    return {link:link,target:target};
    }),function(item){return !!item.target;}
   );
   if(!items.length)return;
@@ -19,6 +20,10 @@
    });
   }
   function update(){
+   if(window.scrollY<12){
+    active(items[0]);
+    return;
+   }
    var choice=items[0],distance=Infinity,limit=window.innerHeight*.28;
    items.forEach(function(item){
     var rect=item.target.getBoundingClientRect();
@@ -35,8 +40,97 @@
   items.forEach(function(item){item.link.addEventListener("click",function(){active(item);});});
   update();
  }
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
- else init();
+ function boot(){
+  var home=document.getElementById("lireate-home-light-v4");
+  if(home){
+   var homeNav=home.querySelector(".lh4-subnav-links");
+   if(homeNav)initSpy(home,homeNav);
+  }
+  var pageNav=document.querySelector(".ln3-page-subnav .lh4-subnav-links");
+  if(pageNav)initSpy(document,pageNav);
+  var mobileNav=document.querySelector(".ln3-anchor-mobile-grid");
+  if(mobileNav)initSpy(document,mobileNav);
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);
+ else boot();
+})();
+
+(function(){
+ "use strict";
+ var COLLAPSE_KEY="lireateNavV3SideCollapsed";
+ function applyCollapseFromStore(){
+  var body=document.body;
+  if(!body||body.className.indexOf("lireate-public-cms-chrome")===-1)return;
+  try{
+   if(window.innerWidth>=1151&&localStorage.getItem(COLLAPSE_KEY)==="1"){
+    body.classList.add("side-collapsed");
+    var btn=document.getElementById("collapseSide");
+    if(btn)btn.setAttribute("aria-pressed","true");
+   }
+  }catch(e){}
+ }
+ function initCollapse(){
+  var btn=document.getElementById("collapseSide");
+  if(!btn)return;
+  applyCollapseFromStore();
+  btn.addEventListener("click",function(){
+   if(window.innerWidth<1151){
+    var veil=document.getElementById("veil");
+    document.body.classList.remove("lireate-public-cms-menu-open");
+    var burger=document.getElementById("lireatePublicCmsBurger");
+    if(burger){burger.setAttribute("aria-expanded","false");}
+    if(veil)veil.hidden=true;
+    document.documentElement.style.overflow="";
+    return;
+   }
+   var on=document.body.classList.toggle("side-collapsed");
+   btn.setAttribute("aria-pressed",on?"true":"false");
+   try{localStorage.setItem(COLLAPSE_KEY,on?"1":"0");}catch(e){}
+  });
+  window.addEventListener("resize",function(){
+   if(window.innerWidth<1151){document.body.classList.remove("side-collapsed");}
+   else applyCollapseFromStore();
+  },{passive:true});
+ }
+ function initAnchorMobile(){
+  var toggle=document.getElementById("anchorToggle");
+  var panel=document.getElementById("anchorMobile");
+  if(!toggle||!panel)return;
+  toggle.addEventListener("click",function(){
+   var open=toggle.getAttribute("aria-expanded")!=="true";
+   toggle.setAttribute("aria-expanded",open?"true":"false");
+   panel.hidden=!open;
+  });
+  document.addEventListener("click",function(ev){
+   if(panel.hidden)return;
+   if(panel.contains(ev.target)||toggle.contains(ev.target))return;
+   panel.hidden=true;
+   toggle.setAttribute("aria-expanded","false");
+  });
+  document.addEventListener("keydown",function(ev){
+   if(ev.key==="Escape"&&!panel.hidden){
+    panel.hidden=true;
+    toggle.setAttribute("aria-expanded","false");
+   }
+  });
+ }
+ function initScrolled(){
+  var nodes=document.querySelectorAll(".lh4-subnav, .ln3-page-subnav");
+  if(!nodes.length)return;
+  function onScroll(){
+   var scrolled=window.scrollY>36;
+   Array.prototype.forEach.call(nodes,function(n){n.classList.toggle("is-scrolled",scrolled);});
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+  onScroll();
+ }
+ function initUi(){
+  initCollapse();
+  initAnchorMobile();
+  initScrolled();
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initUi);
+ else initUi();
 })();
 
 /* Brand mark paths: Simple Icons (simple-icons/simple-icons, CC0), 24x24.
