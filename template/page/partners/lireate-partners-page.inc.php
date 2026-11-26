@@ -34,6 +34,7 @@ $lp_footer_css = defined('LIREATE_PARTNERS_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_assets); ?>/lireate-partners.css?v=<?php echo lireate_partners_h($lp_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_footer_css); ?>?v=<?php echo lireate_partners_h($lp_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126">
 <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_partners_h($lp_v); ?>"><!-- lireate_cms_light_v4 -->
 <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_partners_h($lp_v); ?>">
 <script>
@@ -59,7 +60,9 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); docum
       ?>
       <article class="lireate-partners-card">
         <div class="lireate-partners-card-body">
-          <div class="lireate-partners-head">
+          <details class="lireate-partners-disclosure">
+            <summary class="lireate-partners-summary">
+              <div class="lireate-partners-head">
             <?php if ($photo !== '') : ?>
             <div class="lireate-partners-photo-wrap">
               <img class="lireate-partners-photo" src="<?php echo lireate_partners_h($photo); ?>" alt="" loading="lazy" decoding="async">
@@ -73,7 +76,10 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); docum
               <p class="lireate-partners-city"><?php echo lireate_partners_h($partner['city']); ?></p>
               <?php endif; ?>
             </div>
-          </div>
+              </div>
+              <span class="lireate-partners-toggle" aria-hidden="true">Подробнее <span>⌄</span></span>
+            </summary>
+            <div class="lireate-partners-expanded">
           <?php if (!empty($partner['fields']) && is_array($partner['fields'])) : ?>
           <dl class="lireate-partners-fields">
             <?php foreach ($partner['fields'] as $field) :
@@ -121,6 +127,8 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); docum
             <?php endforeach; ?>
           </dl>
           <?php endif; ?>
+            </div>
+          </details>
         </div>
       </article>
       <?php endforeach; ?>
