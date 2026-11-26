@@ -26,6 +26,7 @@ MESSENGER_BUNDLE_NAMES = (
     "lireate-service-assets.php",
 )
 BLOCKS_DIR = SHARED / "blocks"
+VK_CASES_NAME = "vk-cases.json"
 
 
 def _sha256(path):
@@ -46,6 +47,12 @@ def sync_service(service_dir, dry_run=False):
             continue
         dst = dest / src.name
         if dst.is_file() and _sha256(src) == _sha256(dst):
+            continue
+        if (
+            src.name == VK_CASES_NAME
+            and dst.is_file()
+            and _sha256(src) != _sha256(dst)
+        ):
             continue
         changed.append(dst.relative_to(service_dir))
         if not dry_run:

@@ -69,7 +69,7 @@ LIREATE_FIXTURE_OFFLINE=1 scripts/run_live_render_fixture_screenshots.sh --sides
 | Задача | Решение |
 | --- | --- |
 | Дубль `lireate-utm.js` на home | убран из `lireate-home-page.inc.php` (head main.php) |
-| vk-cases перезапись | живые JSON для 2 slug; skip generic в publish |
+| vk-cases перезапись | живые JSON для 2 slug; skip в publish и в `lireate_service_sync_shared` |
 | blog install 3.6 | без `future annotations`; PIPE в subprocess; расширен `check_hosting_py36_compat` |
 
 ### Круг 20 — regex body без DOTALL, live main fixture, rollout rollback + perf
