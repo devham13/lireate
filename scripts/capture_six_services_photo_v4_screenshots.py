@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/screenshots/six-services-v4"
 PORT = int(__import__("os").environ.get("LIREATE_SIX_PHOTO_V4_PORT", "19140"))
 MARKER = "lireate-six-services-photo-v4-20261126"
-CACHE_VER = "20261126i"
+CACHE_VER = "20261126j"
 
 
 def live_host() -> str:
@@ -167,6 +167,25 @@ def main() -> int:
             page.evaluate("window.scrollTo(0,0)")
             home.screenshot(path=str(OUT / "home-expert-card-1440.png"))
             print("wrote", OUT / "home-expert-card-1440.png")
+            dims = page.evaluate(
+                """() => {
+                  const card = document.querySelector(
+                    '.lh4-root .hero-right .expert-card, .hero-right .expert-card'
+                  );
+                  const img = card?.querySelector('img');
+                  const media = img?.closest('.expert-photo, .expert-media, [class*="expert-photo"]')
+                    || img?.parentElement;
+                  const box = media?.getBoundingClientRect();
+                  return {
+                    boxW: box ? Math.round(box.width) : null,
+                    boxH: box ? Math.round(box.height) : null,
+                    ratio: box && box.height ? +(box.width / box.height).toFixed(4) : null,
+                    natW: img?.naturalWidth ?? null,
+                    natH: img?.naturalHeight ?? null,
+                  };
+                }"""
+            )
+            print("home expert media measured:", dims)
             for route in ROUTES:
                 for tag, w, h in (("1440", 1440, 900), ("390", 390, 900)):
                     page.set_viewport_size({"width": w, "height": h})
@@ -203,11 +222,8 @@ def main() -> int:
                 "<!DOCTYPE html><html><head><style>"
                 "body{margin:0;background:#fff;font-family:Manrope,sans-serif}"
                 "main{padding:24px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}"
-                "figure{margin:0}img{width:100%;aspect-ratio:683/1024;object-fit:cover;"
-                "object-position:var(--f,50% 26%);border-radius:16px;border:1px solid #dae6f6}"
-                ".specialist-certificate{--f:50% 28%}.specialist-registraciya{--f:50% 22%}"
-                ".specialist-prolongation{--f:50% 22%}.specialist-opposition{--f:50% 22%}"
-                ".specialist-copyright{--f:50% 22%}"
+                "figure{margin:0}img{width:100%;aspect-ratio:453/378;object-fit:cover;"
+                "object-position:center top;border-radius:16px;border:1px solid #dae6f6}"
                 "figcaption{font-size:10px;color:#52637b;margin-top:6px}</style></head>"
                 f"<body><main>{''.join(rows)}</main></body></html>"
             )

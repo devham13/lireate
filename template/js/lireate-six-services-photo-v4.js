@@ -3,6 +3,7 @@
 (function () {
   'use strict';
   var BASE='/template/images/services-v4/';
+  var ASSET_VER='20261126j';
   var PAGES={
     '/findtz':{photo:'specialist-certificate.webp',role:'Проверка товарных знаков',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
     '/registraciya_tovarnogo_znaka':{photo:'specialist-registraciya.webp',role:'Регистрация товарных знаков',next:'Изучим ваш знак и товары, подскажем маршрут регистрации и перечень документов.'},
@@ -10,14 +11,6 @@
     '/vozrazhenie_protiv_registracii_tovarnogo_znaka':{photo:'specialist-opposition.webp',role:'Споры о товарных знаках',next:'Разберём основания возражения, документы и возможные варианты защиты.'},
     '/zashchita_avtorskih_prav':{photo:'specialist-copyright.webp',role:'Защита авторских прав',next:'Оценим доказательства авторства, нарушение и способы защиты ваших прав.'},
     '/dogovory':{photo:'specialist-registraciya.webp',role:'Договоры в сфере интеллектуальной собственности',next:'Опишите объект прав и задачу сделки — подберём подходящий вид договора.'}
-  };
-  var CHEST={focus:'50% 16%',zoom:'1',origin:'50% 20%'};
-  var PHOTO_FRAME={
-    'specialist-certificate.webp':{focus:'50% 18%',zoom:'1',origin:'50% 22%'},
-    'specialist-registraciya.webp':CHEST,
-    'specialist-prolongation.webp':CHEST,
-    'specialist-opposition.webp':CHEST,
-    'specialist-copyright.webp':CHEST
   };
   function make(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;}
   function link(url,label){var a=make('a','',label+' ↗');a.href=url;return a;}
@@ -34,11 +27,7 @@
     var card=make('article','lx-photo-v4-expert-card');
     var media=make('div','lx-photo-v4-expert-media');
     media.setAttribute('data-photo',config.photo.replace(/\.webp$/,''));
-    var frame=PHOTO_FRAME[config.photo]||CHEST;
-    media.style.setProperty('--pv-photo-focus',frame.focus);
-    media.style.setProperty('--pv-photo-zoom',frame.zoom);
-    media.style.setProperty('--pv-photo-origin',frame.origin);
-    var img=document.createElement('img');img.src=BASE+config.photo;img.alt='Фотография специалиста Лирейт';img.loading='eager';img.decoding='async';
+    var img=document.createElement('img');img.src=BASE+config.photo+'?v='+ASSET_VER;img.alt='Фотография специалиста Лирейт';img.loading='eager';img.decoding='async';
     img.setAttribute('fetchpriority','high');
     img.onerror=function(){stack.style.display='none';};
     media.appendChild(img);card.appendChild(media);
