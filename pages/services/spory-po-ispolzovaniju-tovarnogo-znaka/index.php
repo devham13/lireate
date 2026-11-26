@@ -95,6 +95,9 @@ $lx_lead_submit_label = 'Обсудить документы и действия
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
+  <!-- LIREATE Sitewide Sidebar V7: no duplicate when the CMS menu exists -->
+  <link rel="stylesheet" href="/template/css/lireate-sitewide-sidebar-v7.css?v=20261126">
+  <script defer src="/template/js/lireate-sitewide-sidebar-v7.js?v=20261126"></script>
 </head>
 <body class="lireate-svc-body lireate-theme-light-v4">
 <div class="lx-bg-glow" aria-hidden="true"></div>
