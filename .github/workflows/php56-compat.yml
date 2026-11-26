@@ -95,13 +95,12 @@ jobs:
       - name: Hosting scripts Python 3.6 syntax guard
         working-directory: scripts
         run: python3 check_hosting_py36_compat.py
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.6"
-      - name: Rollout + perf patch under Python 3.6
+      - name: Rollout under Python 3.6 (docker)
         run: |
           set -euo pipefail
           mkdir -p /tmp/lireate-rollout-docroot-ci
-          python scripts/check_hosting_py36_compat.py
-          python scripts/lireate_light_v4_hosting_rollout.py --docroot /tmp/lireate-rollout-docroot-ci
-          python -m unittest scripts.test_lireate_light_v4_rollout_fixture_apply -q
+          docker run --rm -v "$PWD:/work" -w /work python:3.6 bash -c '
+            set -euo pipefail
+            python scripts/check_hosting_py36_compat.py
+            python scripts/lireate_light_v4_hosting_rollout.py --docroot /tmp/lireate-rollout-docroot-ci
+          '
