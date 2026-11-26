@@ -130,6 +130,17 @@ def capture(
         if burger.count() and burger.is_visible():
             burger.click()
             page.wait_for_timeout(400)
+        page.evaluate(
+            """() => {
+            const bar = document.getElementById('leftSideBar');
+            if (!bar) return;
+            const logo = bar.querySelector('.leftSideLogo');
+            if (logo) logo.scrollIntoView({block: 'start'});
+            const soc = bar.querySelector('.leftSideSoc');
+            if (soc) soc.scrollIntoView({block: 'end'});
+            }"""
+        )
+        page.wait_for_timeout(250)
 
     metrics = page.evaluate(
         """() => ({

@@ -70,6 +70,15 @@ if (!function_exists('lireate_lh4_subnav_items_for_request')) {
                 array('href' => '#mktu-search', 'label' => 'Поиск'),
             );
         }
+        if (preg_match('#^/registraciya_tovarnogo_znaka#', $path)) {
+            return array(
+                array('href' => '#top', 'label' => 'Услуга'),
+                array('href' => '#journey', 'label' => 'Путь'),
+                array('href' => '#pricing', 'label' => 'Стоимость'),
+                array('href' => '#faq', 'label' => 'FAQ'),
+                array('href' => '#contact', 'label' => 'Заявка'),
+            );
+        }
         if ($path === '/news' || $path === '/news/') {
             return array(
                 array('href' => '#lireate-blog-list-page', 'label' => 'Список'),

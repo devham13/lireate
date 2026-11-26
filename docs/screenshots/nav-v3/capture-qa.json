@@ -1,16 +1,5 @@
 [
   {
-    "file": "docs/screenshots/nav-v3/before/home/320.png",
-    "url": "(live)",
-    "width": 320,
-    "scrollY": 0,
-    "innerWidth": 320,
-    "scrollWidth": 320,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/home/320.png",
     "url": "http://127.0.0.1:19081/",
     "width": 320,
@@ -39,17 +28,6 @@
     "scrollY": 0,
     "innerWidth": 320,
     "scrollWidth": 320,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/home/375.png",
-    "url": "(live)",
-    "width": 375,
-    "scrollY": 0,
-    "innerWidth": 375,
-    "scrollWidth": 375,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -88,17 +66,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/home/390.png",
-    "url": "(live)",
-    "width": 390,
-    "scrollY": 0,
-    "innerWidth": 390,
-    "scrollWidth": 390,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/home/390.png",
     "url": "http://127.0.0.1:19081/",
     "width": 390,
@@ -127,17 +94,6 @@
     "scrollY": 0,
     "innerWidth": 390,
     "scrollWidth": 390,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/home/768.png",
-    "url": "(live)",
-    "width": 768,
-    "scrollY": 0,
-    "innerWidth": 768,
-    "scrollWidth": 768,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -176,34 +132,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/home/1280.png",
-    "url": "(live)",
-    "width": 1280,
-    "scrollY": 0,
-    "innerWidth": 1280,
-    "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/home/1280.png",
     "url": "http://127.0.0.1:19081/",
     "width": 1280,
     "scrollY": 0,
     "innerWidth": 1280,
     "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/home/1440.png",
-    "url": "(live)",
-    "width": 1440,
-    "scrollY": 0,
-    "innerWidth": 1440,
-    "scrollWidth": 1440,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -231,34 +165,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/home/1920.png",
-    "url": "(live)",
-    "width": 1920,
-    "scrollY": 0,
-    "innerWidth": 1920,
-    "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/home/1920.png",
     "url": "http://127.0.0.1:19081/",
     "width": 1920,
     "scrollY": 0,
     "innerWidth": 1920,
     "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/team/320.png",
-    "url": "(live)",
-    "width": 320,
-    "scrollY": 0,
-    "innerWidth": 320,
-    "scrollWidth": 320,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -297,17 +209,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/team/375.png",
-    "url": "(live)",
-    "width": 375,
-    "scrollY": 0,
-    "innerWidth": 375,
-    "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/team/375.png",
     "url": "http://127.0.0.1:19081/team",
     "width": 375,
@@ -336,17 +237,6 @@
     "scrollY": 0,
     "innerWidth": 375,
     "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/team/390.png",
-    "url": "(live)",
-    "width": 390,
-    "scrollY": 0,
-    "innerWidth": 390,
-    "scrollWidth": 390,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -385,17 +275,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/team/768.png",
-    "url": "(live)",
-    "width": 768,
-    "scrollY": 0,
-    "innerWidth": 768,
-    "scrollWidth": 768,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/team/768.png",
     "url": "http://127.0.0.1:19081/team",
     "width": 768,
@@ -429,34 +308,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/team/1280.png",
-    "url": "(live)",
-    "width": 1280,
-    "scrollY": 0,
-    "innerWidth": 1280,
-    "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/team/1280.png",
     "url": "http://127.0.0.1:19081/team",
     "width": 1280,
     "scrollY": 0,
     "innerWidth": 1280,
     "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/team/1440.png",
-    "url": "(live)",
-    "width": 1440,
-    "scrollY": 0,
-    "innerWidth": 1440,
-    "scrollWidth": 1440,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -484,34 +341,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/team/1920.png",
-    "url": "(live)",
-    "width": 1920,
-    "scrollY": 0,
-    "innerWidth": 1920,
-    "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/team/1920.png",
     "url": "http://127.0.0.1:19081/team",
     "width": 1920,
     "scrollY": 0,
     "innerWidth": 1920,
     "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/uslugi/320.png",
-    "url": "(live)",
-    "width": 320,
-    "scrollY": 0,
-    "innerWidth": 320,
-    "scrollWidth": 320,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -550,17 +385,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/uslugi/375.png",
-    "url": "(live)",
-    "width": 375,
-    "scrollY": 0,
-    "innerWidth": 375,
-    "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/uslugi/375.png",
     "url": "http://127.0.0.1:19081/uslugi",
     "width": 375,
@@ -589,17 +413,6 @@
     "scrollY": 0,
     "innerWidth": 375,
     "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/uslugi/390.png",
-    "url": "(live)",
-    "width": 390,
-    "scrollY": 0,
-    "innerWidth": 390,
-    "scrollWidth": 390,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -638,17 +451,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/uslugi/768.png",
-    "url": "(live)",
-    "width": 768,
-    "scrollY": 0,
-    "innerWidth": 768,
-    "scrollWidth": 768,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/uslugi/768.png",
     "url": "http://127.0.0.1:19081/uslugi",
     "width": 768,
@@ -682,34 +484,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/uslugi/1280.png",
-    "url": "(live)",
-    "width": 1280,
-    "scrollY": 0,
-    "innerWidth": 1280,
-    "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/uslugi/1280.png",
     "url": "http://127.0.0.1:19081/uslugi",
     "width": 1280,
     "scrollY": 0,
     "innerWidth": 1280,
     "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/uslugi/1440.png",
-    "url": "(live)",
-    "width": 1440,
-    "scrollY": 0,
-    "innerWidth": 1440,
-    "scrollWidth": 1440,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -737,34 +517,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/uslugi/1920.png",
-    "url": "(live)",
-    "width": 1920,
-    "scrollY": 0,
-    "innerWidth": 1920,
-    "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/uslugi/1920.png",
     "url": "http://127.0.0.1:19081/uslugi",
     "width": 1920,
     "scrollY": 0,
     "innerWidth": 1920,
     "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/mktu/320.png",
-    "url": "(live)",
-    "width": 320,
-    "scrollY": 0,
-    "innerWidth": 320,
-    "scrollWidth": 320,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -803,17 +561,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/mktu/375.png",
-    "url": "(live)",
-    "width": 375,
-    "scrollY": 0,
-    "innerWidth": 375,
-    "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/mktu/375.png",
     "url": "http://127.0.0.1:19081/mktu",
     "width": 375,
@@ -842,17 +589,6 @@
     "scrollY": 0,
     "innerWidth": 375,
     "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/mktu/390.png",
-    "url": "(live)",
-    "width": 390,
-    "scrollY": 0,
-    "innerWidth": 390,
-    "scrollWidth": 390,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -891,17 +627,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/mktu/768.png",
-    "url": "(live)",
-    "width": 768,
-    "scrollY": 0,
-    "innerWidth": 768,
-    "scrollWidth": 768,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/mktu/768.png",
     "url": "http://127.0.0.1:19081/mktu",
     "width": 768,
@@ -935,34 +660,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/mktu/1280.png",
-    "url": "(live)",
-    "width": 1280,
-    "scrollY": 0,
-    "innerWidth": 1280,
-    "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/mktu/1280.png",
     "url": "http://127.0.0.1:19081/mktu",
     "width": 1280,
     "scrollY": 0,
     "innerWidth": 1280,
     "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/mktu/1440.png",
-    "url": "(live)",
-    "width": 1440,
-    "scrollY": 0,
-    "innerWidth": 1440,
-    "scrollWidth": 1440,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -990,17 +693,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/mktu/1920.png",
-    "url": "(live)",
-    "width": 1920,
-    "scrollY": 0,
-    "innerWidth": 1920,
-    "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/mktu/1920.png",
     "url": "http://127.0.0.1:19081/mktu",
     "width": 1920,
@@ -1009,17 +701,6 @@
     "scrollWidth": 1920,
     "overflow_x": false,
     "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/service-rtz/320.png",
-    "url": "(live)",
-    "width": 320,
-    "scrollY": 0,
-    "innerWidth": 349,
-    "scrollWidth": 349,
-    "overflow_x": false,
-    "hasNavCss": false,
     "failed_css": []
   },
   {
@@ -1056,17 +737,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/service-rtz/375.png",
-    "url": "(live)",
-    "width": 375,
-    "scrollY": 0,
-    "innerWidth": 375,
-    "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": false,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/service-rtz/375.png",
     "url": "http://127.0.0.1:19081/registraciya_tovarnogo_znaka",
     "width": 375,
@@ -1097,17 +767,6 @@
     "scrollWidth": 375,
     "overflow_x": false,
     "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/service-rtz/390.png",
-    "url": "(live)",
-    "width": 390,
-    "scrollY": 0,
-    "innerWidth": 390,
-    "scrollWidth": 390,
-    "overflow_x": false,
-    "hasNavCss": false,
     "failed_css": []
   },
   {
@@ -1144,17 +803,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/service-rtz/768.png",
-    "url": "(live)",
-    "width": 768,
-    "scrollY": 0,
-    "innerWidth": 768,
-    "scrollWidth": 768,
-    "overflow_x": false,
-    "hasNavCss": false,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/service-rtz/768.png",
     "url": "http://127.0.0.1:19081/registraciya_tovarnogo_znaka",
     "width": 768,
@@ -1188,17 +836,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/service-rtz/1280.png",
-    "url": "(live)",
-    "width": 1280,
-    "scrollY": 0,
-    "innerWidth": 1280,
-    "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": false,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/service-rtz/1280.png",
     "url": "http://127.0.0.1:19081/registraciya_tovarnogo_znaka",
     "width": 1280,
@@ -1207,17 +844,6 @@
     "scrollWidth": 1280,
     "overflow_x": false,
     "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/service-rtz/1440.png",
-    "url": "(live)",
-    "width": 1440,
-    "scrollY": 0,
-    "innerWidth": 1440,
-    "scrollWidth": 1440,
-    "overflow_x": false,
-    "hasNavCss": false,
     "failed_css": []
   },
   {
@@ -1243,34 +869,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/service-rtz/1920.png",
-    "url": "(live)",
-    "width": 1920,
-    "scrollY": 0,
-    "innerWidth": 1920,
-    "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": false,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/service-rtz/1920.png",
     "url": "http://127.0.0.1:19081/registraciya_tovarnogo_znaka",
     "width": 1920,
     "scrollY": 0,
     "innerWidth": 1920,
     "scrollWidth": 1920,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/blog-article/320.png",
-    "url": "(live)",
-    "width": 320,
-    "scrollY": 0,
-    "innerWidth": 320,
-    "scrollWidth": 320,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -1309,17 +913,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/blog-article/375.png",
-    "url": "(live)",
-    "width": 375,
-    "scrollY": 0,
-    "innerWidth": 375,
-    "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/blog-article/375.png",
     "url": "http://127.0.0.1:19081/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta",
     "width": 375,
@@ -1348,17 +941,6 @@
     "scrollY": 0,
     "innerWidth": 375,
     "scrollWidth": 375,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/blog-article/390.png",
-    "url": "(live)",
-    "width": 390,
-    "scrollY": 0,
-    "innerWidth": 390,
-    "scrollWidth": 390,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -1397,17 +979,6 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/blog-article/768.png",
-    "url": "(live)",
-    "width": 768,
-    "scrollY": 0,
-    "innerWidth": 768,
-    "scrollWidth": 768,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/blog-article/768.png",
     "url": "http://127.0.0.1:19081/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta",
     "width": 768,
@@ -1441,34 +1012,12 @@
     "failed_css": []
   },
   {
-    "file": "docs/screenshots/nav-v3/before/blog-article/1280.png",
-    "url": "(live)",
-    "width": 1280,
-    "scrollY": 0,
-    "innerWidth": 1280,
-    "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
     "file": "docs/screenshots/nav-v3/after/blog-article/1280.png",
     "url": "http://127.0.0.1:19081/proverka_tovarnogo_znaka_pered_registraciey_chek_list_po_reestram_rospatenta",
     "width": 1280,
     "scrollY": 0,
     "innerWidth": 1280,
     "scrollWidth": 1280,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/blog-article/1440.png",
-    "url": "(live)",
-    "width": 1440,
-    "scrollY": 0,
-    "innerWidth": 1440,
-    "scrollWidth": 1440,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []
@@ -1491,17 +1040,6 @@
     "scrollY": 0,
     "innerWidth": 1440,
     "scrollWidth": 1440,
-    "overflow_x": false,
-    "hasNavCss": true,
-    "failed_css": []
-  },
-  {
-    "file": "docs/screenshots/nav-v3/before/blog-article/1920.png",
-    "url": "(live)",
-    "width": 1920,
-    "scrollY": 0,
-    "innerWidth": 1920,
-    "scrollWidth": 1920,
     "overflow_x": false,
     "hasNavCss": true,
     "failed_css": []

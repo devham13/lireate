@@ -1,36 +1,97 @@
 <?php
 /**
- * Nav V3 AFTER preview: CMS chrome + фрагмент услуги (без полного longread deploy).
+ * Nav V3 AFTER: CMS chrome + полный longread услуги (локальный рендер pages/services).
  */
 $repo = dirname(__DIR__, 4);
 $_SERVER['DOCUMENT_ROOT'] = $repo;
 $_SERVER['REQUEST_URI'] = '/registraciya_tovarnogo_znaka/';
+$_SERVER['HTTP_HOST'] = '127.0.0.1';
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
-    define('LIREATE_NAV_V3_ASSET_QS', '20261126r3');
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r4');
+}
+if (!defined('LIREATE_RTZ_CHROME_PREVIEW')) {
+    define('LIREATE_RTZ_CHROME_PREVIEW', true);
 }
 require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
+require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 require_once $repo . '/pages/services/_shared/lireate-public-cms-chrome-wire.inc.php';
+
+ob_start();
+$svc_dir = dirname(__DIR__);
+chdir($svc_dir);
+include $svc_dir . '/index.php';
+$full = ob_get_clean();
+
+if (!preg_match('/<head[^>]*>(.*)<\/head>/is', $full, $head_match)) {
+    http_response_code(500);
+    echo 'Preview: cannot parse service head';
+    return;
+}
+if (!preg_match('/<body[^>]*>(.*)<\/body>/is', $full, $body_match)) {
+    http_response_code(500);
+    echo 'Preview: cannot parse service body';
+    return;
+}
+
+preg_match_all('/<link[^>]+rel=["\']stylesheet["\'][^>]*>/i', $head_match[1], $link_tags);
+preg_match_all('/<script[^>]+type=["\']application\/ld\+json["\'][^>]*>.*?<\/script>/is', $head_match[1], $schema_tags);
+$title = 'Регистрация товарного знака — Nav V3 preview';
+if (preg_match('/<title[^>]*>([^<]*)<\/title>/i', $head_match[1], $tm)) {
+    $title = trim(html_entity_decode($tm[1], ENT_QUOTES, 'UTF-8'));
+}
+
+$body = $body_match[1];
+$body = preg_replace('/<div class="lx-nav-shell">.*?<\/div>\s*/is', '', $body, 1);
+$body = str_replace('href="/_shared/', 'href="/pages/services/_shared/', $body);
+$body = str_replace('src="/_shared/', 'src="/pages/services/_shared/', $body);
+
 ?><!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Регистрация товарного знака — Nav V3 preview</title>
+  <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
   <meta name="robots" content="noindex,nofollow">
+  <base href="/pages/services/registraciya-tovarnogo-znaka/">
+<?php
+foreach ($link_tags[0] as $tag) {
+    $tag = str_replace('href="/_shared/', 'href="/pages/services/_shared/', $tag);
+    echo $tag, "\n";
+}
+foreach ($schema_tags[0] as $tag) {
+    echo $tag, "\n";
+}
+?>
+  <style>
+    body.lireate-rtz-nav-v3-preview .lx-nav-shell { display: none !important; }
+    body.lireate-rtz-nav-v3-preview .lireate-public-cms-content {
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box;
+    }
+    body.lireate-rtz-nav-v3-preview .lireate-svc-page {
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box;
+    }
+    body.lireate-rtz-nav-v3-preview .lh4-subnav-right {
+      flex: 0 0 auto !important;
+      min-width: max-content;
+    }
+  </style>
 </head>
-<body class="cms-default lireate-theme-light-v4 lireate-screenshot-capture">
+<body class="lireate-rtz-nav-v3-preview lireate-svc-body registraciya-landing-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
 lireate_public_cms_chrome_wire_open();
+echo $body;
+lireate_public_cms_chrome_wire_close();
+$scripts = array();
+if (preg_match_all('/<script[^>]+src=[^>]+><\/script>/i', $body_match[1], $scr)) {
+    $scripts = $scr[0];
+}
+foreach ($scripts as $tag) {
+    echo $tag, "\n";
+}
 ?>
-<div class="lireate-public-cms-service-preview" style="padding:24px;max-width:960px">
-  <p class="default_text" style="color:#52637b;font-size:14px">Превью chrome: услуга «Регистрация товарного знака» (якоря — общие с главной).</p>
-  <h1 id="services" style="font-family:Manrope,sans-serif;margin-top:12px">Регистрация товарного знака под ключ</h1>
-  <p>Фрагмент для скриншота навигации; полный longread — в каталоге pages/services/registraciya-tovarnogo-znaka/.</p>
-  <h2 id="pricing" style="margin-top:32px">Стоимость</h2>
-  <p>Госпошлина за 1 класс — 35 000 ₽ по таблице Роспатента (ориентир).</p>
-  <h2 id="faq" style="margin-top:32px">FAQ</h2>
-  <p>Гарантий регистрации нет — решение принимает Роспатент.</p>
-</div>
-<?php lireate_public_cms_chrome_wire_close(); ?>
 </body>
 </html>

@@ -11,7 +11,7 @@ require_once $repo_root . '/pages/_shared/lireate-preview-bootstrap.php';
 require_once $repo_root . '/pages/home/_shared/lireate-home-config.php';
 $lh_preview_v = defined('LIREATE_HOME_CSS_VERSION') ? LIREATE_HOME_CSS_VERSION : '20261126r27';
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
-    define('LIREATE_NAV_V3_ASSET_QS', '20261126r3');
+    define('LIREATE_NAV_V3_ASSET_QS', '20261126r4');
 }
 if (!defined('LIREATE_HOME_PREVIEW')) {
     define('LIREATE_HOME_PREVIEW', true);

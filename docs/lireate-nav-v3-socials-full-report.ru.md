@@ -3,29 +3,23 @@
 | | |
 |--|--|
 | PR | https://github.com/devham13/lireate/pull/127 |
-| SHA | `c3ff29cffa3450db020e404f9c006517680d70ee` |
-| Скрины | `docs/screenshots/nav-v3/{before,after}/<slug>/` |
+| SHA | *(после push)* |
+| Скрины AFTER | `docs/screenshots/nav-v3/after/{home,team,service-rtz,...}/` |
 | QA | `docs/screenshots/nav-v3/capture-qa.json` |
 
-## Исправление брака скринов (CSS)
+## Что исправлено (визуальный QA)
 
-- Роутер: статика по `PHP_URL_PATH` **до** HTML-маршрутов; `php -S … -t <repo>`.
-- Снимки: только viewport, `deviceScaleFactor=1`, проверка `scrollWidth == innerWidth` (mobile), CSS 200 в network.
-- SVG соцсетей: `width="24" height="24"` в разметке sidebar.
+1. **Логотип sidebar:** `template/images/logo/logo.svg` (с live), фоновая отрисовка без mask-конфликта в `lireate-public-cms-chrome`.
+2. **Subnav 1280/1440:** растяжение на ширину колонки, `clamp(16–19px)`, один `ln3-active` при `scrollY=0`; CTA «Оставить заявку» в `lh4-subnav-right`.
+3. **Главная hero:** убран двойной `margin-left` (chrome + legacy preview), subnav `wrap` на полную ширину — H1 в 2 строки.
+4. **Collapsed:** активный пункт subnav один (spy fix).
+5. **service-rtz:** полный longread из `pages/services/registraciya-tovarnogo-znaka/index.php` + chrome, свои якоря в subnav.
+6. **Mobile drawer:** логотип в шапке, соцсети внизу (scrollIntoView в capture), бургер скрыт при открытом меню.
 
-## Проверки (capture-qa.json, AFTER home)
+## Проверки capture-qa (AFTER)
 
-| Кадр | PNG w | overflow | hasNavCss |
-|------|-------|----------|-----------|
-| home/1440 | 1440 | нет | да |
-| home/390-menu-open | 390 | нет | да |
-| service-rtz/1440-side-collapsed | 1440 | нет | да |
-
-Визуально: оформленное меню, collapse, мобильный drawer — см. файлы выше.
-
-## Соцсети / Оплата
-
-TG, WA, Max, **VK vk.ru/lireate**, **YouTube UCpg1LWotCQWwzviPDb_9Rew** — в sidebar превью.  
-Tochka «Оплата услуг»: скрытие CSS+JS на live; в превью-sidebar пункта нет.
+- `horizontalOverflow`: **0**
+- `hasNavCss`: все AFTER **true**
+- PNG width = viewport
 
 **Без merge и без выкладки.**

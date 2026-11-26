@@ -10,7 +10,7 @@ if (!function_exists('lireate_navigation_v3_asset_qs')) {
         if (defined('LIREATE_NAV_V3_ASSET_QS')) {
             return (string) LIREATE_NAV_V3_ASSET_QS;
         }
-        return '20261126r3';
+        return '20261126r4';
     }
 }
 
