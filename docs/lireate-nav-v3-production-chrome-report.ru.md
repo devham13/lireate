@@ -2,6 +2,8 @@
 
 | | |
 |--|--|
+| PR | https://github.com/devham13/lireate/pull/129 |
+| SHA | `b8fe21d` |
 | Ветка | `cursor/nav-v3-production-chrome-b68f` |
 | База | `main` (после merge PR #127 / `7f4c19b`) |
 

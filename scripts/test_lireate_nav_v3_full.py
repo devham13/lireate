@@ -35,7 +35,7 @@ class NavV3FullTests(unittest.TestCase):
         path = ROOT / "pages/services/_shared/lireate-service-cms-chrome.inc.php"
         text = path.read_text(encoding="utf-8")
         self.assertIn("registraciya-tovarnogo-znaka", text)
-        self.assertIn("LIREATE_LH4_FORCE_ANCHORS", text)
+        self.assertIn("lireate_lh4_force_anchors", text)
         rtz = (ROOT / "pages/services/registraciya-tovarnogo-znaka/index.php").read_text(
             encoding="utf-8"
         )

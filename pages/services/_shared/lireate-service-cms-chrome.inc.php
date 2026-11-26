@@ -54,13 +54,13 @@ if (!function_exists('lireate_service_cms_chrome_require_wire')) {
 if (!function_exists('lireate_service_cms_chrome_configure_rtz_subnav')) {
     function lireate_service_cms_chrome_configure_rtz_subnav()
     {
-        if (!defined('LIREATE_LH4_FORCE_ANCHORS')) {
-            define('LIREATE_LH4_FORCE_ANCHORS', array(
+        if (empty($GLOBALS['lireate_lh4_force_anchors'])) {
+            $GLOBALS['lireate_lh4_force_anchors'] = array(
                 array('href' => '#journey', 'label' => 'Путь'),
                 array('href' => '#pricing', 'label' => 'Стоимость'),
                 array('href' => '#faq', 'label' => 'FAQ'),
                 array('href' => '#contact', 'label' => 'Заявка'),
-            ));
+            );
         }
         if (!defined('LIREATE_LH4_SUBNAV_CTA_HREF')) {
             define('LIREATE_LH4_SUBNAV_CTA_HREF', '#contact');
