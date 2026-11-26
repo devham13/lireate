@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>LIREATE — навигация V2: крупные пункты и номера</title>
+<meta name="description" content="Белая главная страница Лирейт в фирменных красно-синих цветах, с каруселью команды и анимациями по мотивам mayai.ru.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;
+  --ink:#1f212c;
+  --ink-2:#292d40;
+  --blue:#3a86ff;
+  --blue-soft:#eef5ff;
+  --blue-softer:#f7fbff;
+  --line:#e1e8f3;
+  --muted:#52637b;
+  --max:1280px;
+  --radius:24px;
+  --shadow:0 18px 60px rgba(31,33,44,.09);
+  --brand-red:#e32020;--brand-red-hover:#c71313;--blue-brand:#3a86ff;--ease:cubic-bezier(.21,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+button{font:inherit;cursor:pointer}
+.wrap{width:min(var(--max), calc(100% - 48px));margin:0 auto}
+.preview{background:#f7fbff;border-bottom:1px solid var(--line);color:#52637b;font-size:11px;font-weight:700;letter-spacing:.16em;padding:10px 24px;text-transform:uppercase}
+.topbar{border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.topbar .wrap{min-height:42px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.topbar-links{display:flex;gap:18px;flex-wrap:wrap}
+.site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:86px}
+.logo{display:flex;flex-direction:column;line-height:1}
+.logo strong{font:800 30px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.08em}
+.logo span{font-size:9px;font-weight:800;letter-spacing:.24em;margin-top:7px}
+.menu{display:flex;gap:24px;align-items:center}
+.menu a{font-size:13px;font-weight:700;color:#283750}
+.nav-right{display:flex;align-items:center;gap:16px}
+.phone{font-size:13px;font-weight:800;color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:14px 24px;border-radius:14px;border:1px solid var(--ink);font-size:13px;font-weight:800;transition:.25s ease;background:#fff}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.primary:hover{background:var(--blue);border-color:var(--blue)}
+.btn.soft{background:var(--blue-soft);border-color:var(--line);color:var(--ink)}
+.btn.linkish{padding:0;min-height:auto;border:0;border-radius:0;font-weight:800;color:var(--ink);background:none;border-bottom:1px solid #a0b6d8;padding-bottom:6px}
+.mobile-toggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:#fff;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.mobile-toggle span{display:block;width:18px;height:2px;background:var(--ink);transition:.2s}
+.mobile-menu{display:none;padding:0 0 16px}
+.mobile-menu a{display:block;padding:12px 0;border-bottom:1px solid var(--line);font-weight:700}
+.hero{padding:56px 0 36px}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:38px;align-items:center}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.16em;color:#4b6081;text-transform:uppercase}
+.hero h1{font:800 clamp(42px,5vw,76px)/1.02 Inter Tight,Manrope,sans-serif;letter-spacing:-.06em;margin:18px 0 18px;max-width:760px}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero p.lead{font-size:18px;line-height:1.8;color:var(--muted);max-width:650px;margin:0 0 26px}
+.hero-bullets{display:grid;gap:12px;margin:0 0 28px;padding:0;list-style:none}
+.hero-bullets li{display:flex;gap:12px;align-items:flex-start;color:#2d4764;font-weight:600}
+.hero-bullets i{width:22px;height:22px;border-radius:50%;background:var(--blue-soft);display:grid;place-items:center;font-style:normal;color:var(--blue);font-size:13px;flex:none;margin-top:1px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.hero-note{font-size:12px;color:#52637b;font-weight:600}
+.hero-right{position:relative}
+.expert-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.expert-photo{aspect-ratio:1.03/1; background:var(--blue-softer)}
+.expert-info{padding:22px 24px 24px}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:var(--blue-softer);border:1px solid var(--line);font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.expert-info h2{margin:14px 0 6px;font:800 32px/1.02 Inter Tight,Manrope,sans-serif;letter-spacing:-.05em}
+.expert-info .role{font-size:14px;color:var(--muted);margin-bottom:16px}
+.expert-info .links{display:flex;gap:18px;flex-wrap:wrap}
+.expert-mini{position:absolute;right:-20px;bottom:32px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:18px 18px;max-width:245px}
+.expert-mini strong{display:block;font-size:15px;margin-bottom:6px}
+.expert-mini p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.stats{padding:18px 0 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{padding:28px 22px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:none;padding-left:0}
+.stat strong{display:block;font:800 44px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.06em}
+.stat span{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
+.section{padding:100px 0}
+.section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:34px}
+.section-head h2,.wide-title{margin:0;font:800 clamp(34px,4vw,58px)/1.05 Inter Tight,Manrope,sans-serif;letter-spacing:-.06em;max-width:790px}
+.section-head p{max-width:340px;color:var(--muted);margin:0;font-size:14px}
+.service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.service-card,.why-card,.case-card,.blog-card,.price-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 12px 32px rgba(16,37,61,.04)}
+.service-card:hover,.why-card:hover,.case-card:hover,.blog-card:hover,.team-card:hover{transform:translateY(-2px)}
+.service-num{font-size:12px;font-weight:800;color:#5b718f;letter-spacing:.14em;text-transform:uppercase}
+.service-card h3,.why-card h3,.case-card h3,.price-card h3{font:800 28px/1.05 Inter Tight,Manrope,sans-serif;letter-spacing:-.04em;margin:14px 0 10px}
+.service-card p,.why-card p,.case-card p,.price-card p,.blog-card p{color:var(--muted);margin:0 0 18px}
+.link-arrow{font-weight:800;color:var(--blue)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.why-card .icon{width:42px;height:42px;border-radius:14px;background:var(--blue-soft);display:grid;place-items:center;color:var(--blue);font-weight:900;font-size:18px}
+.team-shell{border:1px solid var(--line);border-radius:28px;padding:28px 24px;background:#fff;box-shadow:0 16px 40px rgba(16,37,61,.05)}
+.team-top{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:22px}
+.team-top p{margin:0;max-width:360px;color:var(--muted)}
+.team-tools{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.filters{display:flex;gap:10px;flex-wrap:wrap}
+.filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:800;color:#364b65}
+.filter.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.arrow-group{display:flex;gap:10px}
+.arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);display:grid;place-items:center;font-size:18px}
+.arrow:hover{background:var(--blue-soft)}
+.team-carousel{overflow:hidden;position:relative}
+.team-track{display:flex;gap:18px;overflow:auto;scroll-snap-type:x mandatory;padding:8px 2px 8px 2px;scrollbar-width:none;scroll-behavior:smooth}
+.team-track::-webkit-scrollbar{display:none}
+.team-card{flex:0 0 212px;scroll-snap-align:start;text-align:center;padding:10px;border-radius:22px;border:1px solid transparent;transition:.25s ease;background:#fff}
+.team-card[hidden]{display:none!important}
+.avatar{width:180px;height:180px;border-radius:50%;overflow:hidden;margin:0 auto 18px;border:1px solid var(--line);background:var(--blue-softer);box-shadow:0 12px 32px rgba(16,37,61,.08)}
+.avatar img{transition:transform .4s ease;object-position:center 18%}
+.team-card:hover .avatar img{transform:scale(1.06)}
+.team-card h3{margin:0 0 6px;font-size:16px;line-height:1.3}
+.team-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.5;min-height:36px}
+.team-tag{display:inline-block;margin-top:10px;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:var(--blue-soft);padding:7px 10px;border-radius:999px}
+.process{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.process-card{border-top:2px solid var(--ink);padding-top:18px}
+.process-card strong{display:block;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#5b718e;margin-bottom:14px}
+.process-card h3{font:800 24px/1.1 Inter Tight,Manrope,sans-serif;margin:0 0 10px}
+.process-card p{margin:0;color:var(--muted)}
+.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.case-card .pill{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--blue-softer);border:1px solid var(--line);color:var(--blue);font-size:11px;font-weight:800;margin-bottom:16px}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.price-card .price{font:800 40px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.05em;margin:14px 0;color:var(--ink)}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.blog-card .num{font-size:11px;font-weight:800;color:#5b718e;letter-spacing:.16em;text-transform:uppercase}
+.blog-card h3{font:800 24px/1.12 Inter Tight,Manrope,sans-serif;margin:20px 0 12px}
+.cta{padding:100px 0}
+.cta-box{background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:38px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+.cta-box h2{margin:0 0 14px;font:800 clamp(34px,4vw,56px)/1.05 Inter Tight,Manrope,sans-serif;letter-spacing:-.05em}
+.cta-box p{margin:0;color:var(--muted);max-width:580px}
+.cta-list{display:grid;gap:10px;margin-top:18px}
+.cta-list div{display:flex;gap:10px;color:#364b65;font-weight:600}
+.footer{border-top:1px solid var(--line);padding:34px 0 22px;color:#52637b}
+.footer-top{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.footer-bottom{margin-top:18px;font-size:12px;color:#6c7f98}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+@media (max-width:1100px){
+  .hero-grid,.cta-box,.case-grid,.why-grid,.pricing-grid,.blog-grid,.service-grid{grid-template-columns:1fr 1fr}
+  .process{grid-template-columns:1fr}
+  .expert-mini{position:static;max-width:none;margin-top:16px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--line)}
+  .stat:nth-child(3){border-left:none;padding-left:0}
+}
+@media (max-width:860px){
+  .menu,.phone,.nav-right .btn{display:none}
+  .mobile-toggle{display:flex}
+  .mobile-menu.open{display:block}
+  .hero-grid,.cta-box,.case-grid,.why-grid,.pricing-grid,.blog-grid,.service-grid{grid-template-columns:1fr}
+  .team-card{flex-basis:184px}
+  .avatar{width:156px;height:156px}
+}
+@media (max-width:640px){
+  .wrap{width:min(var(--max), calc(100% - 28px))}
+  .hero{padding-top:34px}
+  .hero p.lead{font-size:15px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat{padding:18px 12px}
+  .stat strong{font-size:34px}
+  .topbar{display:none}
+  .nav{min-height:72px}
+  .section,.cta{padding:72px 0}
+  .section-head{display:block}
+  .section-head p{margin-top:16px}
+  .cta-box{padding:26px}
+  .team-shell{padding:22px 16px}
+  .team-top{display:block}.team-top p{margin-top:12px}
+  .team-tools{display:block}.arrow-group{margin-top:12px;justify-content:flex-end}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}.reveal{opacity:1;transform:none}}
+
+/* 2026-11-25: live LIREATE palette (visually sampled). White canvas retained. */
+:root{--bg:#fff;--ink:#1f212c;--ink-2:#2a3044;--blue:#3a86ff;--blue-soft:#edf4ff;--blue-softer:#f8fbff;--line:#e0e7f4;--muted:#50617c;--brand-red:#e32020;--brand-red-hover:#c41118;--motion-ease:cubic-bezier(.21,.78,.19,1)}
+html{scroll-padding-top:92px}
+body{background:white;color:var(--ink)}
+a{transition:color .24s ease}
+a:hover{color:var(--blue)}
+.preview{background:white;color:#58708b;border-color:var(--line)}
+.preview::before{content:'●';color:var(--brand-red);margin-right:10px;font-size:9px}
+.scroll-progress{position:fixed;top:0;left:0;width:100%;height:3px;z-index:110;background:linear-gradient(90deg,var(--brand-red),var(--blue));transform-origin:left center;transform:scaleX(0);pointer-events:none;will-change:transform}
+.logo strong{color:var(--ink);font-weight:800}.logo strong .brand-r{color:var(--brand-red)}
+.logo span{color:#61718a}
+.site-header{transition:box-shadow .35s ease,border-color .35s ease}
+.site-header.is-scrolled{box-shadow:0 10px 28px rgba(16,22,48,.08);border-color:transparent}
+.menu a{position:relative;transition:color .23s}.menu a::after{content:'';position:absolute;bottom:-12px;left:0;width:100%;height:2px;background:var(--brand-red);transform:scaleX(0);transform-origin:left;transition:transform .32s var(--motion-ease)}
+.menu a:hover::after{transform:scaleX(1)}
+.eyebrow-mark{display:inline-block;width:19px;height:19px;border:3px solid var(--brand-red);border-radius:50%;position:relative;vertical-align:middle;margin-right:4px}.eyebrow-mark::after{content:'';position:absolute;inset:4px;border-radius:50%;background:var(--blue)}
+.hero{isolation:isolate;position:relative}.hero::before{content:'';position:absolute;pointer-events:none;z-index:-1;width:380px;height:380px;right:1%;top:3%;background:radial-gradient(closest-side,rgba(58,134,255,.055),transparent);border-radius:50%}
+.hero h1 em{background:linear-gradient(110deg,var(--brand-red),#df262c 55%,#b71920);background-clip:text;-webkit-background-clip:text;color:transparent;font-style:normal}
+.hero h1{letter-spacing:-.058em}
+.hero .hero-right{will-change:transform;transform:translate3d(var(--hero-x,0px),var(--hero-y,0px),0);transition:transform .45s var(--motion-ease)}
+.hero-right .expert-card{overflow:hidden;border-radius:26px;box-shadow:0 22px 64px rgba(24,35,65,.12);position:relative;border-color:#e4e7f1}
+.expert-photo{position:relative;overflow:hidden;background:var(--blue-softer)}
+.expert-photo img{object-position:top center;transform:scale(1.025);transition:transform 1.2s var(--motion-ease)}
+.expert-card:hover .expert-photo img{transform:scale(1.085)}
+.photo-shine{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1s ease}
+.expert-card:hover .photo-shine{transform:translateX(140%)}
+.expert-mini{border-top:3px solid var(--brand-red)}
+.badge{color:var(--blue);border-color:#dae6f8;background:#f4f8ff}
+.btn{overflow:hidden;position:relative;isolation:isolate;transition:transform .32s var(--motion-ease), background .28s, color .28s, box-shadow .32s}
+.btn.primary{background:var(--brand-red);border-color:var(--brand-red);color:white}
+.btn.primary:hover{background:var(--brand-red-hover);border-color:var(--brand-red-hover);box-shadow:0 13px 30px rgba(227,32,32,.17);color:white}
+.btn.soft{background:#fff;border-color:#cddcfa;color:#2456a0}
+.btn.soft:hover{background:#edf4ff;color:#2456a0}
+.btn.primary::before{content:'';position:absolute;width:42px;height:160%;top:-25%;left:-95px;transform:skewX(-25deg);background:rgba(255,255,255,.19);transition:left .58s ease;z-index:-1}
+.btn.primary:hover::before{left:115%}
+.btn:not(.linkish):hover{transform:translateY(-3px)}
+.btn.linkish:hover{color:var(--brand-red)}
+.link-arrow{display:inline-flex;align-items:center;gap:12px;color:#2569c6;transition:gap .25s,color .25s}
+.link-arrow:hover{color:var(--brand-red);gap:20px}
+.hero-note{display:flex;align-items:center;gap:8px}
+.live-pulse{width:9px;height:9px;border-radius:100%;background:var(--brand-red);box-shadow:0 0 0 0 rgba(227,32,32,.28);animation:lireate-pulse 2.5s ease-in-out infinite}
+@keyframes lireate-pulse{50%{box-shadow:0 0 0 7px rgba(227,32,32,0)}}
+.stat{position:relative;overflow:hidden}.stat:after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--brand-red);transition:width .65s var(--motion-ease)}.stat:hover:after{width:100%}
+.stat strong{color:var(--ink)}.stat .checkmark{color:var(--brand-red)}
+.motion-strip{border-block:1px solid var(--line);overflow:hidden;background:#fff;white-space:nowrap;padding:14px 0}
+.motion-strip-inner{display:flex;gap:40px;width:max-content;align-items:center;animation:motion-strip 38s linear infinite;color:#425572;font-size:11px;font-weight:800;letter-spacing:.22em}
+.motion-strip-inner i{font-style:normal;color:var(--brand-red)}
+@keyframes motion-strip{to{transform:translateX(-50%)}}
+.brand-highlight{color:var(--brand-red)}
+.service-card,.why-card,.case-card,.blog-card,.price-card{position:relative;overflow:hidden;transition:transform .42s var(--motion-ease),box-shadow .42s var(--motion-ease),border-color .3s;border-radius:23px}
+.service-card:hover,.why-card:hover,.case-card:hover,.blog-card:hover,.price-card:hover{transform:translateY(-7px);box-shadow:0 22px 56px rgba(19,25,60,.1);border-color:#b8d0f8}
+.service-card:before,.why-card:before,.case-card:before,.blog-card:before,.price-card:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(58,134,255,.055),transparent 75%);opacity:0;transition:opacity .25s}
+.service-card:hover:before,.why-card:hover:before,.case-card:hover:before,.blog-card:hover:before,.price-card:hover:before{opacity:1}
+.service-num{color:var(--brand-red)}
+.why-card .icon{background:#fff2f2;color:var(--brand-red)}
+.team-shell{border-color:#dce5f5}
+.team-track{scroll-behavior:smooth;overscroll-behavior-inline:contain;touch-action:pan-y}
+.team-track.is-dragging{scroll-snap-type:none;cursor:grabbing}
+.team-card{transition:transform .4s var(--motion-ease),opacity .35s var(--motion-ease)}
+.team-card:hover{transform:translateY(-7px)}
+.team-card .avatar{background:#fff;border:2px solid #f0edf5;transition:border-color .35s,box-shadow .4s var(--motion-ease)}
+.team-card:hover .avatar{border-color:var(--brand-red);box-shadow:0 16px 37px rgba(31,33,44,.13)}
+.team-tag{background:#f9f3f3;color:#9f2525}
+.filter.active{background:var(--ink);border-color:var(--ink)}.filter:hover:not(.active){border-color:var(--blue);color:var(--blue)}
+.team-card.filter-enter{animation:team-filter-enter .54s var(--motion-ease) both}
+@keyframes team-filter-enter{from{opacity:0;transform:translateY(15px) scale(.97)}to{opacity:1;transform:none}}
+.arrow{transition:transform .25s,background .25s}.arrow:hover{background:var(--ink);color:white;transform:scale(1.06)}
+.process-card{cursor:pointer;text-align:left;display:block;width:100%;background:#fff;border:0;border-top:2px solid #dce5f2;border-radius:0;padding-left:0;color:var(--ink);transition:border-color .3s,color .3s,transform .3s}
+.process-card:hover{transform:translateY(-4px);border-top-color:var(--blue)}
+.process-card.active{border-top-color:var(--brand-red)}
+.process-live{display:flex;gap:16px;align-items:center;margin-top:24px;padding:20px 24px;border-radius:16px;background:#f8fbff;border:1px solid #e4ebf7;transition:opacity .25s,transform .25s}
+.process-live.is-transitioning{opacity:.25;transform:translateY(9px)}
+.process-indicator{font-weight:800;color:var(--brand-red)}.process-live-name{font-weight:800}.process-live-arrow{margin-left:auto;color:var(--blue);font-size:19px}
+.faq-list{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line);padding:6px 0}
+.faq-item summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:23px 0;font-size:18px;font-weight:800;letter-spacing:-.03em}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary span{font-size:28px;font-weight:500;color:var(--blue);transition:transform .33s var(--motion-ease)}
+.faq-item[open] summary span{transform:rotate(45deg);color:var(--brand-red)}
+.faq-item .faq-answer{color:var(--muted);max-width:840px;padding:0 0 24px;animation:faq-in .34s ease both}
+.faq-item .faq-answer a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+@keyframes faq-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.cta-box{border-top:4px solid var(--brand-red)}
+.cta-list div span:first-child{color:var(--brand-red);font-weight:900}
+/* Motion patterns adapted from mayai.ru: entrance, delayed cards, counter, hover, steps, and sticky header. */
+.reveal{opacity:1;transform:none;transition:opacity .72s var(--motion-ease),transform .72s var(--motion-ease)}
+html.motion-ready .reveal:not(.visible){opacity:0;transform:translateY(30px)}
+html.motion-ready .reveal.visible{opacity:1;transform:none}
+html.motion-ready .service-grid>.reveal:nth-child(2),html.motion-ready .why-grid>.reveal:nth-child(2),html.motion-ready .case-grid>.reveal:nth-child(2),html.motion-ready .blog-grid>.reveal:nth-child(2){transition-delay:.09s}
+html.motion-ready .service-grid>.reveal:nth-child(3),html.motion-ready .why-grid>.reveal:nth-child(3),html.motion-ready .case-grid>.reveal:nth-child(3),html.motion-ready .blog-grid>.reveal:nth-child(3){transition-delay:.16s}
+html.motion-ready .why-grid>.reveal:nth-child(4),html.motion-ready .service-grid>.reveal:nth-child(4){transition-delay:.23s}
+html.motion-ready .hero .reveal:first-child{animation:lireate-hero-enter .75s .08s both}
+html.motion-ready .hero .hero-right.reveal{animation:lireate-hero-enter .95s .25s both}
+@keyframes lireate-hero-enter{from{opacity:0;transform:translateY(22px);filter:blur(3px)}to{opacity:1;transform:none;filter:blur(0)}}
+@media(max-width:860px){.hero .hero-right{transform:none!important}.motion-strip-inner{animation-duration:48s}}
+@media(max-width:640px){.motion-strip{padding:10px 0}.motion-strip-inner{font-size:10px;gap:24px}.faq-item summary{font-size:16px}.process-live{padding:16px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal,html.motion-ready .reveal:not(.visible){opacity:1!important;transform:none!important;animation:none!important;transition:none!important}.motion-strip-inner,.live-pulse{animation:none!important}.hero .hero-right{transform:none!important}.team-track{scroll-behavior:auto}}
+
+/* Graceful picture fallback for offline previews: real staff photos load online. */
+.avatar,.expert-photo{position:relative}.portrait-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#1f212c;background:radial-gradient(ellipse at 76% 12%,#edf4ff 0%,#fff 46%,#fff5f5 100%)}
+.avatar .portrait-fallback{font:700 44px/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.07em;color:#c82328}
+.expert-photo .portrait-fallback{font:800 clamp(68px,9vw,108px)/1 Inter Tight,Manrope,sans-serif;letter-spacing:-.09em;color:#d42329}
+.expert-photo .portrait-fallback:before{content:'LIREATE';position:absolute;top:32px;left:26px;font:800 12px/1 Manrope,sans-serif;letter-spacing:.23em;color:#7f95b5}
+.expert-photo .portrait-fallback:after{content:'Команда Лирейт';position:absolute;bottom:33px;left:26px;font:700 13px/1 Manrope,sans-serif;color:#6480a6}
+
+
+.demo-notice{position:fixed;z-index:200;right:25px;bottom:24px;max-width:400px;padding:16px 16px 16px 20px;border:1px solid #dce8f7;background:#fff;box-shadow:0 14px 50px rgba(31,33,44,.18);border-left:4px solid #e32020;border-radius:14px;font:700 12px/1.5 Manrope,sans-serif;color:#25344a;display:flex;align-items:center;gap:20px}
+.demo-notice[hidden]{display:none}
+.demo-notice button{border:0;background:#f3f8ff;border-radius:7px;color:#25344a;padding:6px 9px}
+
+/* MAIN MEGA MENU TEST. All styles scoped to new navigation. */
+body{--mm-ink:#202331;--mm-red:#e32020;--mm-blue:#215ac7;--mm-line:#e1e8f3;--mm-muted:#5b6f89;--mm-ease:cubic-bezier(.22,.7,.18,1)}
+.site-header{z-index:120;overflow:visible;border-bottom:1px solid #edf0f6;background:rgba(255,255,255,.98)}
+.site-header.is-scrolled{box-shadow:0 10px 35px rgba(31,33,44,.05)}
+.nav{min-height:82px;gap:20px}
+.real-logo{flex:none;display:block;width:192px;min-width:192px}
+.real-logo img{width:192px;height:auto;max-height:53px;object-fit:contain;object-position:left center}
+.mega-main-nav{display:flex;align-items:center;justify-content:center;gap:6px;flex:1;white-space:nowrap}
+.mega-main-nav a,.mega-main-nav .menu-trigger{font:700 13px/1.4 Manrope,Arial,sans-serif;background:transparent;border:0;border-radius:10px;color:#243349;padding:13px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .23s,color .23s}
+.mega-main-nav a:hover,.mega-main-nav .menu-trigger:hover,.mega-main-nav .menu-trigger[aria-expanded="true"]{background:#f3f8ff;color:#d72027}
+.menu-trigger .chev{display:inline-block;font-size:17px;transition:transform .25s;line-height:1}
+.menu-trigger[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.nav-right{gap:13px}
+.nav-right .phone{font-size:13px;letter-spacing:-.02em;color:#2155b9;white-space:nowrap}
+.nav-right .header-cta{background:#e32020;border-color:#e32020;color:#fff;font-size:12px;min-height:46px;padding:10px 17px;border-radius:12px;white-space:nowrap}
+.nav-right .header-cta:hover{background:#c71313;border-color:#c71313}
+.mega-backdrop{position:fixed;inset:0;background:rgba(18,28,48,.17);z-index:80;opacity:0;transition:opacity .25s}
+.mega-backdrop[hidden]{display:none}
+.mega-backdrop.is-open{opacity:1}
+.megamenu-shell{position:absolute;top:100%;left:0;right:0;background:#fff;z-index:125;border-bottom:1px solid #e1e8f3;box-shadow:0 28px 60px rgba(28,44,68,.14);opacity:0;visibility:hidden;transform:translateY(-9px);transition:opacity .22s var(--mm-ease),transform .3s var(--mm-ease),visibility .22s}
+.megamenu-shell.is-open{opacity:1;visibility:visible;transform:none}
+.mega-container{padding-top:24px;padding-bottom:20px}
+.mega-top{display:flex;justify-content:space-between;align-items:end;padding-bottom:21px;border-bottom:1px solid var(--mm-line)}
+.mega-top h2{font:800 29px/1.1 'Inter Tight',Manrope,sans-serif;color:#1f212c;letter-spacing:-.045em;margin:5px 0 0}
+.mega-eyebrow{font:800 10px/1.2 Manrope,sans-serif;color:#e32020;letter-spacing:.19em}
+.mega-top-actions{display:flex;gap:23px;align-items:center}
+.mega-all-link{font-size:12px;font-weight:800;color:#235dcc}
+.mega-all-link:hover{text-decoration:underline;text-underline-offset:4px}
+.mega-close{width:37px;height:37px;border-radius:10px;border:1px solid var(--mm-line);background:#fff;color:#1f212c;cursor:pointer;transition:background .2s}
+.mega-close:hover{background:#f3f8ff}
+.mega-body{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:310px;gap:0}
+.mega-categories{border-right:1px solid var(--mm-line);padding:19px 18px 16px 0;display:flex;flex-direction:column;gap:4px}
+.mega-cat{width:100%;border:0;border-radius:12px;background:#fff;color:#354864;text-align:left;font-weight:800;font-size:13px;line-height:1.35;padding:15px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;transition:background .24s,color .24s;cursor:pointer}
+.mega-cat .cat-arrow{font-size:17px;color:#8aa0bc}
+.mega-cat:hover{background:#f7faff;color:#205abf}
+.mega-cat.active{background:#f0f6ff;color:#d6232d}
+.mega-cat.active .cat-arrow{color:#e32020}
+.mega-content{padding:24px 0 14px 34px;min-width:0}
+.mega-pane{animation:mega-enter .3s var(--mm-ease) both}
+@keyframes mega-enter{from{opacity:.45;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.mega-pane-intro{display:flex;justify-content:space-between;align-items:baseline;gap:25px;margin:0 0 23px}
+.mega-pane-intro h3{font:800 22px/1.15 'Inter Tight',Manrope,sans-serif;letter-spacing:-.035em;margin:0}
+.mega-pane-intro p{font-size:12px;color:var(--mm-muted);margin:0;max-width:390px}
+.mega-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 18px}
+.mega-link{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--mm-line);padding:17px 16px;background:#fff;border-radius:12px;min-height:72px;transition:background .23s,border-color .23s,transform .23s}
+.mega-link span{font-size:13px;font-weight:700;color:#243549;line-height:1.4}
+.mega-link i{font-style:normal;font-size:17px;color:#3a86ff;transition:transform .23s}
+.mega-link:hover{background:#f7fbff;border-color:#b6d1ff;transform:translateY(-2px)}
+.mega-link:hover i{transform:translate(3px,-3px)}
+.mega-helper{display:flex;align-items:center;gap:12px;margin-top:21px;font-size:12px;color:#63738a}
+.mega-helper strong{color:#e32020}
+.mega-foot{border-top:1px solid var(--mm-line);padding-top:17px;display:flex;justify-content:space-between;gap:16px;align-items:center;font-size:12px;color:#728197}
+.mega-foot a{font-weight:800;color:#d4212b}
+.mega-foot-dot{display:inline-block;width:7px;height:7px;background:#e32020;border-radius:50%;vertical-align:middle;margin-right:7px}
+.anchor-strip{position:sticky;top:82px;background:rgba(255,255,255,.98);z-index:65;border-bottom:1px solid #eff2f8;box-shadow:0 4px 12px rgba(27,43,76,.02)}
+.anchor-strip-inner{min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:17px}
+.anchor-label{font-size:11px;font-weight:800;color:#8b9ab0;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.anchor-strip nav{display:flex;justify-content:center;align-items:center;gap:28px;flex:1;overflow:auto;scrollbar-width:none}
+.anchor-strip nav::-webkit-scrollbar{display:none}
+.anchor-strip nav a{font:700 12px/1.3 Manrope,sans-serif;color:#566c83;white-space:nowrap;padding:16px 0;transition:color .2s}
+.anchor-strip nav a:hover,.anchor-strip nav a.active{color:#e32020}
+.anchor-strip nav a.active{box-shadow:inset 0 -2px #e32020}
+.anchor-tip{color:#e32020;font-size:19px}
+.hero{padding-top:53px}
+.hero-grid{grid-template-columns:1.06fr .94fr;gap:55px}
+.hero h1{font-size:clamp(46px,4.8vw,73px);letter-spacing:-.065em}
+.expert-photo{aspect-ratio:1.08/1;background:#edf3fb}
+.expert-photo img{object-fit:cover;object-position:center 20%}
+.hero .expert-card{border-radius:24px;box-shadow:0 16px 52px rgba(22,38,70,.11)}
+.expert-mini{display:none}
+@media(max-width:1210px){.mega-main-nav{gap:0}.mega-main-nav a,.mega-main-nav .menu-trigger{font-size:12px;padding:11px 7px}.real-logo,.real-logo img{width:166px;min-width:166px}.nav-right .phone{display:none}.hero-grid{gap:28px}.anchor-strip nav{gap:19px}}
+@media(max-width:900px){.mega-main-nav,.nav-right{display:none!important}.nav{min-height:76px}.real-logo,.real-logo img{width:170px;min-width:170px}.mobile-toggle{display:flex;margin-left:auto}.megamenu-shell{display:none}.anchor-strip{top:76px}.anchor-strip-inner{gap:14px}.anchor-strip nav{justify-content:flex-start;gap:20px}.anchor-label{display:none}.anchor-tip{display:none}.hero-grid{grid-template-columns:1fr}.hero{padding-top:35px}.mega-backdrop{display:none!important}}
+.mobile-menu{display:none!important}
+@media(max-width:900px){
+ .mobile-menu.open{position:absolute;display:block!important;top:76px;left:0;right:0;width:100%;max-width:none;background:#fff;z-index:140;padding:0 18px 26px;box-shadow:0 24px 38px rgba(31,33,44,.17);border-top:1px solid #e9eef7}
+ .mobile-menu-scroll{max-height:calc(100dvh - 111px);overflow:auto}
+ .mobile-menu details{border-bottom:1px solid #e5ebf3;padding:0}
+ .mobile-menu summary{list-style:none;cursor:pointer;font-size:15px;font-weight:800;padding:16px 0;color:#1f212c}
+ .mobile-menu summary::-webkit-details-marker{display:none}
+ .mobile-menu details details{margin:0 0 0 15px}
+ .mobile-menu details details summary{font-size:13px;color:#375371;padding:13px 0}
+ .mobile-menu details a{display:block;padding:11px 0 11px 15px;border:0;color:#52637b;font-size:13px;font-weight:600}
+ .mobile-menu .mobile-strong-link,.mobile-menu .mobile-top-link{padding:16px 0;border-bottom:1px solid #e5ebf3;font-weight:800;color:#235fc7}
+ .mobile-menu .mobile-action{display:flex!important;color:#fff!important;background:#e32020;border:0;margin-top:18px}
+ .mobile-menu summary span{float:right;color:#e32020}
+}
+@media(max-width:600px){.anchor-strip nav{gap:20px}.anchor-strip nav a{font-size:11px}.hero h1{font-size:clamp(40px,11vw,55px)}.hero-grid{gap:27px}}
+@media(prefers-reduced-motion:reduce){.megamenu-shell,.mega-pane,.mega-cat,.mega-link{animation:none!important;transition:none!important}}
+
+
+/* DUAL NAVIGATION DESIGN — Left catalogue + top page anchors */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+:root{--side-width:256px;--side-line:#e8edf5;--nav-height:74px}
+body{overflow-x:hidden}
+.site-area{margin-left:var(--side-width);min-width:0;transition:margin-left .3s ease}
+body.side-collapsed{--side-width:78px}
+.site-sidebar{position:fixed;left:0;top:0;bottom:0;z-index:110;width:var(--side-width);display:flex;flex-direction:column;min-height:0;background:#fff;border-right:1px solid #dfe8f5;box-shadow:7px 0 30px rgba(22,44,77,.035);transition:width .3s ease}
+.sidebar-head{height:94px;min-height:94px;padding:20px 15px 18px 18px;display:flex;align-items:center;gap:6px;justify-content:space-between;border-bottom:1px solid #edf2f9}
+.sidebar-brand{display:block;width:179px;flex-shrink:1;overflow:hidden}
+.sidebar-brand img{display:block;width:100%;height:auto;max-height:54px;object-fit:contain;object-position:left center}
+.sidebar-collapse{width:29px;height:29px;border:1px solid #e4eaf4;border-radius:9px;background:#fff;color:#7990ae;display:grid;place-items:center;flex-shrink:0;font-size:20px;line-height:1;transition:background .25s,color .25s}
+.sidebar-collapse:hover{background:#f1f7ff;color:#e32020}
+.sidebar-scroll{min-height:0;overflow-x:hidden;overflow-y:auto;padding:0 14px 20px;scrollbar-width:thin;scrollbar-color:#c8d7ec transparent;overscroll-behavior:contain}
+.nav-group{padding:9px 0 18px;border-bottom:1px solid #edf1f8;margin-bottom:12px}
+.nav-group:last-child{border:0}
+.sidebar-kicker{padding:7px 11px 10px;color:#7c90aa;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.145em}
+.sidebar-accordion{border-radius:12px;transition:background .25s}
+.sidebar-accordion > summary{list-style:none;display:flex;align-items:center;gap:10px;cursor:pointer;border-radius:10px;padding:10px 10px;min-height:39px;color:#28364c;font-size:12px;font-weight:750;user-select:none;transition:color .22s,background .22s}
+.sidebar-accordion > summary::-webkit-details-marker{display:none}
+.sidebar-accordion > summary:hover,.sidebar-flat:hover{background:#f3f8ff;color:#d51c26}
+.sidebar-accordion[open] > summary{background:#fff7f7;color:#df222b}
+.sidebar-accordion[open] .side-ico{color:#df222b}
+.side-ico{flex:0 0 20px;width:20px;height:20px;border-radius:6px;display:inline-grid;place-items:center;font:800 14px/1 Manrope,Arial,sans-serif;color:#7992b4}
+.side-ico-red{color:#e32020;font:800 18px/1 Georgia,serif}
+.side-text{flex:1;min-width:0}
+.side-chev{font-size:19px;transform:rotate(0);color:#92a4ba;transition:transform .22s}
+.sidebar-accordion[open] .side-chev{transform:rotate(180deg)}
+.sidebar-sub{display:grid;gap:2px;margin:5px 0 7px 29px;padding:0 0 0 11px;border-left:1px solid #dbe8fa;animation:sideExpand .26s ease-out}
+.sidebar-sub a{padding:7px 6px 7px 10px;border-radius:8px;color:#526985;font-size:11.5px;line-height:1.4;font-weight:550;transition:color .2s,background .2s}
+.sidebar-sub a:hover{color:#e32020;background:#f6faff}
+.sidebar-flat{display:flex;align-items:center;gap:10px;min-height:39px;padding:10px 10px;border-radius:10px;color:#34465f;font-size:12px;font-weight:700;transition:color .2s,background .2s}
+.sidebar-flat.active{background:#fff4f4;color:#df222b}
+.side-go{font-size:14px;color:#a0b0c7}
+.sidebar-bottom{min-height:66px;padding:13px 18px;border-top:1px solid #edf1f8;display:flex;align-items:center;gap:9px;color:#52657e;font-size:10px;font-weight:650;background:#fff}
+.sidebar-bottom .avail-dot{width:7px;height:7px;flex-shrink:0;background:#0ea568;border-radius:50%;box-shadow:0 0 0 3px #e6f8ed}
+.sidebar-bottom a{margin-left:auto;font-size:18px;color:#d51c26}
+.sidebar-socials{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:8px 18px 14px;border-top:1px solid #edf1f8;background:#fff}
+.sidebar-social{height:38px;border:1px solid #e3ebf6;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;color:#2155b9;background:#f8fbff;transition:transform .2s,background .2s,border-color .2s,color .2s}
+.sidebar-social:hover{background:#eef5ff;border-color:#cbdcf7;color:#e32020;transform:translateY(-1px)}
+.sidebar-social svg{width:18px;height:18px;display:block;fill:currentColor}
+body.side-collapsed .sidebar-socials{grid-template-columns:1fr;padding:10px 8px 12px}
+body.side-collapsed .sidebar-social{width:100%}
+
+.sidebar-shade{display:none}
+@keyframes sideExpand{from{opacity:.4;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+/* Collapsed state: icons remain, expandable catalogue available when expanded. */
+body.side-collapsed .sidebar-brand{display:none}
+body.side-collapsed .sidebar-head{justify-content:center;padding-inline:8px}
+body.side-collapsed .sidebar-collapse span{display:block;transform:rotate(180deg)}
+body.side-collapsed .sidebar-scroll{padding:20px 10px}
+body.side-collapsed .sidebar-kicker,body.side-collapsed .side-text,body.side-collapsed .side-chev,body.side-collapsed .side-go,body.side-collapsed .sidebar-sub,body.side-collapsed .side-bottom-text{display:none!important}
+body.side-collapsed .sidebar-accordion>summary,body.side-collapsed .sidebar-flat{justify-content:center;padding:12px 9px}
+body.side-collapsed .sidebar-bottom{justify-content:center;padding:12px 8px}
+body.side-collapsed .sidebar-bottom a{margin-left:0}
+.site-header{position:sticky;top:0;z-index:95;border-bottom:1px solid #e9eef7;box-shadow:0 4px 24px rgba(23,45,72,.025);background:rgba(255,255,255,.965);backdrop-filter:blur(16px)}
+.site-header.is-scrolled{box-shadow:0 9px 35px rgba(18,36,62,.06)}
+.top-header-inner{height:var(--nav-height);display:flex;align-items:center;gap:18px;padding:0 clamp(18px,2.1vw,34px)}
+.top-page-nav{display:flex;flex:1;align-items:center;gap:clamp(7px,1.15vw,21px);height:100%;white-space:nowrap}
+.top-page-nav a{height:100%;display:inline-flex;align-items:center;position:relative;color:#53647d;font-size:12px;font-weight:750;transition:color .2s}
+.top-page-nav a:hover,.top-page-nav a.active{color:#1f212c}
+.top-page-nav a.active::after,.top-page-nav a:hover::after{content:"";position:absolute;height:2px;background:#e32020;bottom:0;left:0;right:0;border-radius:4px;animation:topline .25s ease}
+@keyframes topline{from{transform:scaleX(.3);opacity:.3}to{transform:scaleX(1);opacity:1}}
+.top-right{display:flex;align-items:center;gap:17px;flex:none}
+.top-phone{color:#1f304d;font-size:12px;font-weight:800;white-space:nowrap}
+.top-cta{height:42px;padding:0 17px;display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:11px;background:#e32020;color:#fff;white-space:nowrap;font-size:11px;font-weight:800;box-shadow:0 7px 15px rgba(227,32,32,.10);transition:transform .25s,box-shadow .25s,background .25s}
+.top-cta:hover{background:#c71313;transform:translateY(-2px);box-shadow:0 10px 20px rgba(227,32,32,.16)}
+.top-sidebar-button,.top-mobile-logo,.top-anchor-toggle,.anchor-mobile{display:none}
+.design-note{position:fixed;bottom:19px;right:18px;z-index:88;border:1px solid #e3eaf4;border-radius:100px;background:#fff;padding:7px 13px;font-size:9px;font-weight:800;letter-spacing:.1em;color:#8496ad;box-shadow:0 8px 35px rgba(31,33,44,.06);pointer-events:none}
+/* Main content: do not allow CSS from older nav experiments to add a second row. */
+.site-area .wrap{width:min(1230px,calc(100% - 58px))}
+.site-area .hero{padding-top:clamp(55px,7vw,104px)}
+.site-area .hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(22px,3vw,48px)}
+.site-area .hero h1{font-size:clamp(44px,4.15vw,72px)}
+.site-area .expert-photo{aspect-ratio:1.08}
+.site-area .footer{padding-bottom:75px}
+/* Desktop compact widths */
+@media (max-width:1390px){.top-phone{display:none}.top-header-inner{gap:12px}.top-page-nav{gap:clamp(8px,1vw,15px)}.site-area .hero h1{font-size:clamp(40px,4.2vw,62px)}}
+@media (max-width:1170px){:root{--side-width:224px}.site-area .wrap{width:calc(100% - 44px)}.site-area .hero-grid{grid-template-columns:1fr 1fr}.top-page-nav a{font-size:11px}.top-cta{padding:0 11px}.site-area .hero h1{font-size:44px}.expert-mini{display:none}}
+@media (max-width:930px){:root{--side-width:0px}body.side-collapsed{--side-width:0px}.site-area{margin-left:0!important}.site-sidebar{width:min(295px,88vw)!important;transform:translateX(-110%);box-shadow:10px 0 40px rgba(14,27,53,.13);transition:transform .27s ease}.sidebar-head{height:79px;min-height:79px}.sidebar-collapse{display:none}.site-sidebar.mobile-open{transform:translateX(0)}.sidebar-shade.visible{display:block;position:fixed;z-index:105;inset:0;background:rgba(13,25,47,.35)}.top-header-inner{height:70px}.top-sidebar-button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid #e2eaf5;border-radius:11px;background:#fff;color:#1f212c;font-size:18px}.top-mobile-logo{display:block;width:128px}.top-mobile-logo img{width:100%;height:auto;object-fit:contain}.top-page-nav{margin-left:auto;flex:0 1 auto;overflow-x:auto;scrollbar-width:none;gap:16px}.top-page-nav a{font-size:11px}.top-right{display:none}.top-anchor-toggle{display:none}.site-area .hero-grid{grid-template-columns:1fr 1fr}.site-area .hero h1{font-size:clamp(38px,5vw,52px)}}
+@media (max-width:660px){.top-header-inner{gap:11px}.top-page-nav{display:none}.top-anchor-toggle{margin-left:auto;height:37px;display:inline-flex;align-items:center;gap:7px;border-radius:10px;border:1px solid #e2eaf5;background:#f8fbff;padding:0 11px;color:#273b58;font-size:12px;font-weight:750}.top-anchor-toggle span{color:#e32020;font-size:16px}.anchor-mobile:not([hidden]){display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:11px 15px 15px;border-top:1px solid #edf1f8;background:#fff}.anchor-mobile a{border:1px solid #e8edf6;border-radius:9px;padding:10px 6px;text-align:center;color:#476484;font-size:11px;font-weight:800}.anchor-mobile a:hover{background:#f3f8ff;color:#e32020}.site-area .wrap{width:calc(100% - 30px)}.site-area .hero-grid{grid-template-columns:1fr}.site-area .hero{padding-top:38px}.site-area .hero h1{font-size:clamp(43px,10vw,58px)}.site-area .hero-right{max-width:530px}.design-note{font-size:8px;bottom:10px;right:10px}.site-area .section{padding:70px 0}}
+@media(prefers-reduced-motion:reduce){.site-sidebar,.site-area,.sidebar-accordion .sidebar-sub,.top-page-nav a::after,.sidebar-accordion summary,.sidebar-flat,.sidebar-social{transition:none!important;animation:none!important}}
+
+/* 26.11.2026: Version 3 of approved dual navigation. Wider top menu without numbering; branded social icons in sidebar. */
+:root{--nav-height:86px}
+.sidebar-scroll{padding-top:13px}
+body.side-collapsed .sidebar-scroll{padding-top:18px}
+.top-header-inner{gap:clamp(9px,1.3vw,20px);padding-inline:clamp(12px,1.65vw,30px)}
+.top-page-nav{
+ display:flex;flex:1 1 auto;min-width:0;align-items:stretch;gap:0;
+ justify-content:space-between;height:100%;overflow:visible;
+}
+.top-page-nav a{
+ display:flex;flex:1 1 0;min-width:0;justify-content:center;align-items:center;
+ gap:0;height:100%;padding:8px clamp(8px,.8vw,14px);position:relative;
+ text-align:center;border-left:1px solid #f0f3f9;white-space:nowrap;
+ color:#283248;font-weight:800;transition:background .25s,color .25s;
+}
+.top-page-nav a:first-child{border-left:0}
+.top-page-nav a:hover{background:#f8fbff;color:#e32020}
+.top-page-nav a.active{color:#18213a;background:#fff}
+.top-nav-text{display:block;font-size:clamp(14px,1.18vw,19px);line-height:1.15;letter-spacing:-.025em}
+.top-page-nav a::after{bottom:0!important;left:12%!important;right:12%!important}
+.top-page-nav a:focus-visible{outline:2px solid #3a86ff;outline-offset:-4px;border-radius:3px}
+.top-right{margin-left:auto;gap:10px}
+.top-cta{min-height:44px;height:44px;padding-inline:clamp(10px,.9vw,17px);font-size:12px}
+@media(min-width:1450px){.top-nav-text{font-size:19px}.top-cta{font-size:13px}}
+@media(max-width:1170px){
+ .top-header-inner{gap:9px;padding-inline:14px}
+ .top-page-nav{gap:0}
+ .top-nav-text{font-size:clamp(12px,1.17vw,15px)}
+ .top-page-nav a{padding-inline:5px}
+}
+@media(max-width:1050px) and (min-width:931px){
+ .top-page-nav{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;justify-content:flex-start;scroll-snap-type:x proximity}
+ .top-page-nav::-webkit-scrollbar{display:none}
+ .top-page-nav a{flex:0 0 102px;scroll-snap-align:start}
+ .top-nav-text{font-size:13px}
+}
+@media(max-width:930px){
+ .top-header-inner{height:70px}
+ .top-page-nav{gap:0;overflow-x:auto;overflow-y:hidden;flex:1 1 auto;justify-content:flex-start;scrollbar-width:none}
+ .top-page-nav::-webkit-scrollbar{display:none}
+ .top-page-nav a{flex:0 0 100px;min-width:100px}
+ .top-nav-text{font-size:13px}
+}
+@media(max-width:660px){
+ .top-page-nav{display:none}
+ .top-anchor-toggle{font-size:13px;min-height:42px;padding-inline:15px}
+ .anchor-mobile:not([hidden]){gap:8px;padding-block:12px 15px}
+ .anchor-mobile a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:62px;padding:9px 4px;font-size:13px}
+ .mobile-anchor-text{font-size:13px;color:#263a55;line-height:1.2;font-weight:800}
+}
+@media(prefers-reduced-motion:reduce){.top-page-nav a{transition:none!important}}
+</style>
+</head>
+<body>
+
+<aside class="site-sidebar" id="siteSidebar" aria-label="Навигация по сайту">
+  <div class="sidebar-head">
+    <a class="sidebar-brand" href="#top" aria-label="Лирейт — главная"><img src="assets/lireate-logo.jpg" width="180" height="53" alt="LIREATE"></a>
+    <button type="button" class="sidebar-collapse" id="collapseSide" title="Свернуть боковое меню" aria-label="Свернуть боковое меню" aria-expanded="true"><span aria-hidden="true">«</span></button>
+  </div>
+  <div class="sidebar-scroll">
+    <nav class="sidebar-navigation" aria-label="Разделы сайта">
+      <div class="nav-group" data-group="Услуги"><div class="sidebar-kicker">УСЛУГИ</div>
+        <details class="sidebar-accordion" open><summary><span class="side-ico side-ico-red">®</span><span class="side-text">Товарные знаки</span><span class="side-chev" aria-hidden="true">⌄</span></summary><div class="sidebar-sub">
+          <a href="https://lireate.ru/findtz" target="_blank" rel="noopener">Проверка товарного знака</a>
+          <a href="https://lireate.ru/registraciya_tovarnogo_znaka/" target="_blank" rel="noopener">Регистрация товарного знака</a>
+          <a href="https://lireate.ru/prodlenie_tovarnogo_znaka/" target="_blank" rel="noopener">Продление товарного знака</a>
+        </div></details>
+        <details class="sidebar-accordion"><summary><span class="side-ico">♧</span><span class="side-text">Патенты</span><span class="side-chev" aria-hidden="true">⌄</span></summary><div class="sidebar-sub">
+          <a href="https://lireate.ru/patent" target="_blank" rel="noopener">Патентование изобретений</a><a href="https://lireate.ru/patent" target="_blank" rel="noopener">Полезные модели</a><a href="https://lireate.ru/patent" target="_blank" rel="noopener">Промышленные образцы</a>
+        </div></details>
+        <details class="sidebar-accordion"><summary><span class="side-ico">§</span><span class="side-text">Договоры</span><span class="side-chev" aria-hidden="true">⌄</span></summary><div class="sidebar-sub">
+          <a href="https://lireate.ru/dogovory/" target="_blank" rel="noopener">Лицензионные договоры</a><a href="https://lireate.ru/dogovory/" target="_blank" rel="noopener">Отчуждение прав</a><a href="https://lireate.ru/dogovory/" target="_blank" rel="noopener">Авторский заказ</a>
+        </div></details>
+        <details class="sidebar-accordion"><summary><span class="side-ico">&lt;/&gt;</span><span class="side-text">Программы ЭВМ</span><span class="side-chev" aria-hidden="true">⌄</span></summary><div class="sidebar-sub"><a href="https://lireate.ru/registraciya_programm_evm/" target="_blank" rel="noopener">Регистрация программ</a><a href="https://lireate.ru/registraciya_programm_evm/" target="_blank" rel="noopener">Базы данных</a></div></details>
+        <a class="sidebar-flat" href="#services"><span class="side-ico">▤</span><span class="side-text">Все услуги</span><span class="side-go" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="nav-group" data-group="Портфолио"><div class="sidebar-kicker">РЕЗУЛЬТАТЫ РАБОТЫ</div>
+        <a class="sidebar-flat" href="https://lireate.ru/portfolio" target="_blank" rel="noopener"><span class="side-ico">◇</span><span class="side-text">Портфолио</span></a>
+        <a class="sidebar-flat" href="#cases"><span class="side-ico">▷</span><span class="side-text">Видеоотзывы</span></a>
+      </div>
+      <div class="nav-group" data-group="Инструменты"><div class="sidebar-kicker">ПОЛЕЗНАЯ ИНФОРМАЦИЯ</div>
+        <a class="sidebar-flat" href="#blog"><span class="side-ico">▧</span><span class="side-text">Блог</span></a>
+        <a class="sidebar-flat" href="#" data-unverified="МКТУ"><span class="side-ico">⌗</span><span class="side-text">МКТУ</span></a>
+        <a class="sidebar-flat" href="#" data-unverified="Патентные задачи"><span class="side-ico">⚙</span><span class="side-text">Патентные задачи</span></a>
+        <a class="sidebar-flat" href="#" data-unverified="Оплата услуг"><span class="side-ico">₽</span><span class="side-text">Оплата услуг</span></a>
+      </div>
+      <div class="nav-group" data-group="Компания"><div class="sidebar-kicker">О КОМПАНИИ</div>
+        <a class="sidebar-flat" href="https://lireate.ru/o_kompanii" target="_blank" rel="noopener"><span class="side-ico">ⓘ</span><span class="side-text">О компании</span></a>
+        <a class="sidebar-flat" href="#team"><span class="side-ico">♙</span><span class="side-text">Команда Лирейт</span></a>
+        <a class="sidebar-flat" href="#" data-unverified="Партнёры"><span class="side-ico">∞</span><span class="side-text">Партнёры</span></a>
+        <a class="sidebar-flat" href="#" data-unverified="Документы"><span class="side-ico">▱</span><span class="side-text">Документы</span></a>
+        <a class="sidebar-flat" href="https://lireate.ru/contacts/" target="_blank" rel="noopener"><span class="side-ico">✉</span><span class="side-text">Контакты</span></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="sidebar-socials" aria-label="Социальные сети Лирейт">
+    <a class="sidebar-social" href="https://t.me/lireate_patent" target="_blank" rel="noopener" aria-label="Telegram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.94 4.66a1.5 1.5 0 0 0-1.58-.24L3.48 11.44a1.5 1.5 0 0 0 .14 2.82l4.18 1.39 1.39 4.18a1.5 1.5 0 0 0 2.82.14l7.02-16.88a1.5 1.5 0 0 0-.09-1.43ZM9.98 14.02l-.63 3.14-.92-2.75 8.9-6.36-7.35 5.97Z"/></svg>
+    </a>
+    <a class="sidebar-social" href="https://wa.me/79600484957" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.27-.13-1.59-.78-1.84-.87-.25-.09-.43-.13-.61.14-.18.27-.7.87-.86 1.05-.16.18-.31.2-.58.07-.27-.13-1.13-.42-2.16-1.35-.8-.72-1.34-1.61-1.5-1.88-.16-.27-.02-.41.12-.54.13-.13.27-.31.4-.47.13-.16.18-.27.27-.45.09-.18.04-.34-.02-.47-.07-.13-.61-1.47-.84-2.02-.22-.53-.45-.46-.61-.47-.16-.01-.34-.01-.52-.01-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.98 2.64 1.12 2.82c.13.18 1.92 2.93 4.64 4.11.65.28 1.16.45 1.56.58.66.21 1.26.18 1.73.11.53-.08 1.59-.65 1.82-1.28.22-.63.22-1.17.16-1.28-.07-.11-.25-.18-.52-.31Z"/><path d="M20.52 3.45A11.9 11.9 0 0 0 12.07 0C5.52 0 .19 5.33.19 11.88c0 2.09.55 4.13 1.58 5.93L0 24l6.37-1.67a11.85 11.85 0 0 0 5.69 1.45h.01c6.55 0 11.88-5.33 11.88-11.88 0-3.17-1.23-6.15-3.43-8.45Zm-8.45 18.32h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.78.99 1.01-3.68-.23-.38a9.89 9.89 0 0 1-1.52-5.24C2.14 6.43 6.62 1.95 12.08 1.95c2.64 0 5.12 1.03 6.99 2.89a9.82 9.82 0 0 1 2.9 7.01c0 5.46-4.45 9.92-9.9 9.92Z"/></svg>
+    </a>
+    <a class="sidebar-social" href="https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI" target="_blank" rel="noopener" aria-label="Max">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-13Zm4.2 11.1h1.95v-5l2.18 3.3h1.08l2.19-3.32v5.02h1.95V7.4h-1.86l-2.82 4.19L9.05 7.4H7.2v9.2Z"/></svg>
+    </a>
+    <a class="sidebar-social" href="https://vk.com/lireate" target="_blank" rel="noopener" aria-label="VK">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.79 17c-5.4 0-8.48-3.7-8.61-9.85h2.7c.09 4.51 2.08 6.42 3.65 6.81V7.15h2.54v3.89c1.55-.17 3.18-1.94 3.73-3.89h2.54c-.42 2.4-2.18 4.17-3.43 4.9 1.25.59 3.25 2.14 4.01 4.95h-2.8c-.6-1.87-2.09-3.31-4.05-3.51V17h-.28Z"/></svg>
+    </a>
+    <a class="sidebar-social" href="https://www.youtube.com/@lireate" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.03 3.03 0 0 0-2.13-2.14C19.49 3.5 12 3.5 12 3.5s-7.49 0-9.37.56A3.03 3.03 0 0 0 .5 6.2 31.24 31.24 0 0 0 0 12a31.24 31.24 0 0 0 .5 5.8 3.03 3.03 0 0 0 2.13 2.14C4.51 20.5 12 20.5 12 20.5s7.49 0 9.37-.56a3.03 3.03 0 0 0 2.13-2.14A31.24 31.24 0 0 0 24 12a31.24 31.24 0 0 0-.5-5.8ZM9.6 15.55V8.45L15.85 12 9.6 15.55Z"/></svg>
+    </a>
+  </div>
+  <div class="sidebar-bottom"><span class="avail-dot"></span><span class="side-bottom-text">Поможем защитить вашу идею</span><a href="https://t.me/lireate_patent" target="_blank" rel="noopener" aria-label="Telegram Лирейт">↗</a></div>
+</aside>
+<div class="sidebar-shade" id="sidebarShade" hidden></div>
+<div class="site-area" id="siteArea">
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <header class="site-header" id="siteHeader">
+    <div class="top-header-inner">
+      <button type="button" class="top-sidebar-button" id="sidebarToggle" aria-label="Открыть меню сайта" aria-expanded="false" aria-controls="siteSidebar"><span>☰</span></button>
+      <a href="#top" class="top-mobile-logo" aria-label="LIREATE — главная"><img src="assets/lireate-logo.jpg" alt="LIREATE" width="128" height="37"></a>
+      <nav class="top-page-nav" aria-label="Разделы текущей страницы">
+        <a class="active" href="#services"><span class="top-nav-text">Услуги</span></a>
+        <a href="#team"><span class="top-nav-text">Команда</span></a>
+        <a href="#cases"><span class="top-nav-text">Кейсы</span></a>
+        <a href="#pricing"><span class="top-nav-text">Стоимость</span></a>
+        <a href="#how"><span class="top-nav-text">Этапы</span></a>
+        <a href="#faq"><span class="top-nav-text">FAQ</span></a>
+        <a href="#blog"><span class="top-nav-text">Блог</span></a>
+      </nav>
+      <div class="top-right"><a class="top-phone" href="tel:+79600484957">+7 (960) 048-49-57</a><a class="top-cta" href="#contact">Оставить заявку <span aria-hidden="true">↗</span></a></div>
+      <button class="top-anchor-toggle" type="button" id="anchorToggle" aria-label="Разделы страницы" aria-expanded="false" aria-controls="anchorMobile">Разделы <span aria-hidden="true">⌄</span></button>
+    </div>
+    <nav class="anchor-mobile" id="anchorMobile" aria-label="Разделы главной страницы" hidden>
+      <a href="#services"><span class="mobile-anchor-text">Услуги</span></a>
+      <a href="#team"><span class="mobile-anchor-text">Команда</span></a>
+      <a href="#cases"><span class="mobile-anchor-text">Кейсы</span></a>
+      <a href="#pricing"><span class="mobile-anchor-text">Стоимость</span></a>
+      <a href="#how"><span class="mobile-anchor-text">Этапы</span></a>
+      <a href="#faq"><span class="mobile-anchor-text">FAQ</span></a>
+      <a href="#blog"><span class="mobile-anchor-text">Блог</span></a>
+    </nav>
+  </header>
+  <div class="design-note" aria-hidden="true">НАВИГАЦИЯ · ТЕСТОВЫЙ МАКЕТ</div>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <div class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span> Интеллектуальная собственность · товарные знаки · патенты · авторское право</div>
+        <h1>Патентное бюро<br><em>«Лирейт»</em></h1>
+        <p class="lead">Регистрация и защита интеллектуальной собственности. Регистрация товарных знаков, патентов, программ ЭВМ и договоров. Помогаем выбрать способ защиты, говорим о реальных возможностях и сопровождаем до результата.</p>
+        <ul class="hero-bullets">
+          <li><i>✓</i><span>бесплатная консультация и понятный первый шаг для клиента</span></li>
+          <li><i>✓</i><span>работаем честно: говорим только о реальных возможностях и сроках</span></li>
+          <li><i>✓</i><span>оплата за результат и сопровождение специалистами по интеллектуальной собственности</span></li>
+        </ul>
+        <div class="hero-actions">
+          <a class="btn primary" href="https://lireate.ru/findtz" target="_blank" rel="noopener">Проверить товарный знак ↗</a>
+          <a class="btn soft" href="https://t.me/lireate_patent" target="_blank" rel="noopener">Бесплатная консультация ↗</a>
+        </div>
+        <div class="hero-note"><span class="live-pulse" aria-hidden="true"></span> Через 15 минут вы получите ответ на свой вопрос.</div>
+      </div>
+      <div class="hero-right reveal">
+        <article class="expert-card">
+          <div class="expert-photo"><div class="photo-shine" aria-hidden="true"></div><img src="assets/elvira-photo.jpg" alt="Габдрахманова Эльвира Дамировна"></div>
+          <div class="expert-info">
+            <div class="badge">Руководитель отдела регистрации интеллектуальной собственности</div>
+            <h2>Габдрахманова Эльвира</h2>
+            <div class="role">Специалист Лирейт · консультации, сопровождение заявок и защита интеллектуальной собственности</div>
+            <div class="links">
+              <a class="btn linkish" href="https://lireate.ru/team" target="_blank" rel="noopener">Команда Лирейт ↗</a>
+              <a class="btn linkish" href="https://lireate.ru/o_kompanii" target="_blank" rel="noopener">О компании ↗</a>
+            </div>
+          </div>
+        </article>
+        <div class="expert-mini">
+          <strong>Понятный первый шаг</strong>
+          <p>Оставьте заявку — специалисты свяжутся с вами, уточнят задачу и подберут следующий шаг: проверка знака, консультация по патентованию или защите авторских прав.</p>
+        </div>
+      </div>
+    </div>
+    <div class="wrap stats">
+      <div class="stats-grid reveal">
+        <div class="stat"><strong class="count" data-from="2000" data-to="2015">2015</strong><span>работаем с этого года</span></div>
+        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>специалистов в команде</span></div>
+        <div class="stat"><strong class="count" data-from="0" data-to="15">15</strong><span>минут до первого ответа</span></div>
+        <div class="stat"><strong class="checkmark">✓</strong><span>оплата за результат</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="motion-strip" aria-label="Направления работы Лирейт"><div class="motion-strip-inner" aria-hidden="true"><span>ТОВАРНЫЕ ЗНАКИ</span><i>•</i><span>ПАТЕНТЫ</span><i>•</i><span>ДОГОВОРЫ</span><i>•</i><span>ПРОГРАММЫ ЭВМ</span><i>•</i><span>ЗАЩИТА ПРАВ</span><i>•</i><span>ТОВАРНЫЕ ЗНАКИ</span><i>•</i><span>ПАТЕНТЫ</span><i>•</i><span>ДОГОВОРЫ</span><i>•</i><span>ПРОГРАММЫ ЭВМ</span><i>•</i><span>ЗАЩИТА ПРАВ</span><i>•</i></div></div>
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Выберите интересующую <span class="brand-highlight">услугу</span></h2>
+        <p>Структура секции вдохновлена понравившимся тебе сайтом: крупные карточки, чистый белый фон, быстрое понимание задачи и аккуратные CTA.</p>
+      </div>
+      <div class="service-grid">
+        <article class="service-card reveal"><div class="service-num">01 · Товарный знак</div><h3>Регистрация товарного знака</h3><p>Зарегистрируем ваш товарный знак на территории России и поможем выстроить стратегию защиты бренда.</p><a class="link-arrow" href="https://lireate.ru/registraciya_tovarnogo_znaka/" target="_blank" rel="noopener">Подробнее ↗</a></article>
+        <article class="service-card reveal"><div class="service-num">02 · Патенты</div><h3>Патентование решений</h3><p>Поможем получить патент на изобретение, промышленный образец или полезную модель, а также выбрать правильный объект защиты.</p><a class="link-arrow" href="https://lireate.ru/patent" target="_blank" rel="noopener">Подробнее ↗</a></article>
+        <article class="service-card reveal"><div class="service-num">03 · Договоры</div><h3>Договоры и передача прав</h3><p>Подготовим индивидуальный договор для охраны прав на результаты интеллектуальной деятельности и безопасной работы с партнёрами.</p><a class="link-arrow" href="https://lireate.ru/dogovory/" target="_blank" rel="noopener">Подробнее ↗</a></article>
+        <article class="service-card reveal"><div class="service-num">04 · Программы ЭВМ</div><h3>Защита программ и интерфейсов</h3><p>Защитим приложение: программный код, дизайн и интерфейс. Поможем с регистрацией и правовым оформлением.</p><a class="link-arrow" href="https://lireate.ru/registraciya_programm_evm/" target="_blank" rel="noopener">Подробнее ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Почему клиенты выбирают <span class="brand-highlight">Лирейт</span></h2>
+        <p>Здесь мы совместили тональность юридической компании и прозрачную подачу, как на понравившемся референсе.</p>
+      </div>
+      <div class="why-grid">
+        <article class="why-card reveal"><div class="icon">₽</div><h3>Бесплатная консультация</h3><p>Если у вас нет времени искать ответ на страницах сайта, оставьте заявку — специалисты свяжутся с вами и помогут выбрать следующий шаг.</p></article>
+        <article class="why-card reveal"><div class="icon">✓</div><h3>Оплата за результат</h3><p>Мы не обещаем невозможного. Обсуждая проект, говорим только о реальных возможностях и сроках работы.</p></article>
+        <article class="why-card reveal"><div class="icon">⚖</div><h3>Экспертиза команды</h3><p>В компании есть специалисты, которые занимаются защитой интеллектуальной собственности более 20 лет.</p></article>
+        <article class="why-card reveal"><div class="icon">→</div><h3>Работа под ключ</h3><p>От первой консультации и проверки до регистрации и сопровождения — клиент получает единый понятный процесс.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="team" style="padding-top:0">
+    <div class="wrap team-shell reveal">
+      <div class="team-top">
+        <div>
+          <div class="eyebrow">Карусель команды · Jiro Team 01 Pixa</div>
+          <h2 class="wide-title">Люди, которые защищают ваши идеи</h2>
+        </div>
+        <p>Круглые портреты и плавная карусель сохранены из выбранного направления. Визуальный язык адаптирован под юридическую компанию и белую структуру страницы.</p>
+      </div>
+      <div class="team-tools">
+        <div class="filters">
+          <button class="filter active" data-filter="all" aria-pressed="true">Все специалисты</button>
+          <button class="filter" data-filter="management" aria-pressed="false">Руководство</button>
+          <button class="filter" data-filter="registration" aria-pressed="false">Регистрация</button>
+          <button class="filter" data-filter="patent" aria-pressed="false">Патентный отдел</button>
+        </div>
+        <div class="arrow-group"><button class="arrow" id="prevTeam" aria-label="Предыдущие сотрудники">←</button><button class="arrow" id="nextTeam" aria-label="Следующие сотрудники">→</button></div>
+      </div>
+      <div class="team-carousel" aria-roledescription="карусель сотрудников">
+        <div class="team-track" id="teamTrack" tabindex="0" aria-label="Сотрудники Лирейт — прокрутка стрелками">
+          <article class="team-card" data-group="management"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/11.webp" alt="Горбачев Юрий Александрович"></div><h3>Горбачев Юрий Александрович</h3><p>Управляющий партнёр</p><span class="team-tag">руководство</span></article>
+          <article class="team-card" data-group="management"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/10.webp" alt="Бураков Андрей Геннадьевич"></div><h3>Бураков Андрей Геннадьевич</h3><p>Управляющий партнёр</p><span class="team-tag">руководство</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/1.webp" alt="Габдрахманова Эльвира Дамировна"></div><h3>Габдрахманова Эльвира Дамировна</h3><p>Руководитель отдела регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/5.webp" alt="Захарова Ирина Николаевна"></div><h3>Захарова Ирина Николаевна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/6.webp" alt="Прокопьева Алия Раифовна"></div><h3>Прокопьева Алия Раифовна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/9.webp" alt="Ульданова Алёна Анатольевна"></div><h3>Ульданова Алёна Анатольевна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+          <article class="team-card" data-group="patent"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/12.webp" alt="Азизова Гузель Рустамовна"></div><h3>Азизова Гузель Рустамовна</h3><p>Специалист патентного отдела</p><span class="team-tag">патенты</span></article>
+          <article class="team-card" data-group="patent"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/13.webp" alt="Хайретдинов Рустем Афузалович"></div><h3>Хайретдинов Рустем Афузалович</h3><p>Специалист патентного отдела</p><span class="team-tag">патенты</span></article>
+          <article class="team-card" data-group="patent"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/16.webp" alt="Яковлева Вероника Владиславовна"></div><h3>Яковлева Вероника Владиславовна</h3><p>Специалист патентного отдела</p><span class="team-tag">патенты</span></article>
+          <article class="team-card" data-group="registration"><div class="avatar"><img src="https://lireate.ru/template/images/team/person/17.webp" alt="Квасова Анна Андреевна"></div><h3>Квасова Анна Андреевна</h3><p>Специалист по регистрации интеллектуальной собственности</p><span class="team-tag">регистрация</span></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="cases">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Кейсы и <span class="brand-highlight">экспертный опыт</span></h2>
+        <p>Визуально эта часть ближе к понравившемуся сайту: ясные блоки, крупные заголовки и акцент на результате работы.</p>
+      </div>
+      <div class="case-grid">
+        <article class="case-card reveal"><span class="pill">Товарные знаки</span><h3>Регистрация и продление</h3><p>Сопровождаем товарные знаки, проверки, споры и работу с Роспатентом. На сайте доступны тематические материалы и практические разборы.</p><a class="link-arrow" href="https://lireate.ru/portfolio" target="_blank" rel="noopener">Портфолио бюро ↗</a></article>
+        <article class="case-card reveal"><span class="pill">Патенты</span><h3>Изобретения и полезные модели</h3><p>Помогаем выбрать объект патентной защиты, подготовить заявку и пройти процесс получения патента на технические решения.</p><a class="link-arrow" href="https://lireate.ru/patent" target="_blank" rel="noopener">Услуги по патентованию ↗</a></article>
+        <article class="case-card reveal"><span class="pill">Экспертный блог</span><h3>Полезные материалы без агрессивных продаж</h3><p>В блоге Лирейт публикуются объяснения, инструкции и обзоры. Это помогает клиенту понять тему до обращения в бюро.</p><a class="link-arrow" href="https://lireate.ru/news/" target="_blank" rel="noopener">Перейти в блог ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Понятный первый шаг и <span class="brand-highlight">стоимость</span></h2>
+        <p>Здесь использован приём с понравившегося сайта: сначала показать бесплатный или понятный старт, а уже потом основные услуги.</p>
+      </div>
+      <div class="pricing-grid">
+        <article class="price-card reveal"><div class="service-num">Первый шаг</div><h3>Бесплатная консультация</h3><div class="price">0 ₽</div><p>Если нет времени искать ответы на сайте, оставьте заявку — наши специалисты свяжутся с вами и подскажут, что делать дальше.</p><a class="link-arrow" href="https://t.me/lireate_patent" target="_blank" rel="noopener">Получить консультацию ↗</a></article>
+        <article class="price-card reveal"><div class="service-num">Товарный знак</div><h3>Регистрация с оплатой за результат</h3><div class="price">от 30 000 ₽</div><p>Регистрация товарного знака с полным сопровождением. На сайте Лирейт этот ориентир указан как стартовый тариф по услуге.</p><a class="link-arrow" href="https://lireate.ru/registraciya_tovarnogo_znaka/" target="_blank" rel="noopener">Подробнее об услуге ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" id="how">
+    <div class="wrap reveal">
+      <div class="section-head">
+        <h2>Как мы <span class="brand-highlight">работаем</span></h2>
+        <p>Процесс оставлен простым и юридически понятным: постановка задачи, подготовка, сопровождение результата.</p>
+      </div>
+      <div class="process" role="tablist" aria-label="Этапы работы">
+        <button type="button" class="process-card active" role="tab" aria-selected="true" data-step="0"><strong>Шаг 01</strong><h3>Постановка задачи</h3><p>Вы оставляете заявку, а специалисты Лирейт уточняют ситуацию и предлагают оптимальный маршрут: товарный знак, патент, договор или регистрация программы ЭВМ.</p></button>
+        <button type="button" class="process-card " role="tab" aria-selected="false" data-step="1"><strong>Шаг 02</strong><h3>Подготовка документов</h3><p>После согласования условий команда готовит необходимые материалы и выстраивает стратегию защиты интеллектуальной собственности.</p></button>
+        <button type="button" class="process-card " role="tab" aria-selected="false" data-step="2"><strong>Шаг 03</strong><h3>Сопровождение до результата</h3><p>Лирейт сопровождает проект и взаимодействует с ведомствами, а клиент получает понятную коммуникацию и ясный статус работы.</p></button>
+      </div>
+      <div class="process-live" id="processLive" aria-live="polite"><span class="process-indicator">01 / 03</span><span class="process-live-name">Постановка задачи</span><span class="process-live-arrow" aria-hidden="true">↗</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal"><h2>Частые <span class="brand-highlight">вопросы</span></h2><p>Короткие ответы и прямые переходы к соответствующим услугам. Раскрытие вопросов сделано с плавной анимацией.</p></div>
+    <div class="faq-list">
+      <details class="faq-item reveal"><summary>С чего начать регистрацию товарного знака? <span aria-hidden="true">+</span></summary><div class="faq-answer">Начните с <a href="https://lireate.ru/findtz" target="_blank" rel="noopener">проверки товарного знака</a> или консультации специалиста. Это поможет оценить возможные препятствия до подачи заявки.</div></details>
+      <details class="faq-item reveal"><summary>Можно ли защитить полезную модель или изобретение? <span aria-hidden="true">+</span></summary><div class="faq-answer">Да, Лирейт занимается патентованием технических решений. Возможный объект и состав работ определяются после изучения задачи. <a href="https://lireate.ru/patent" target="_blank" rel="noopener">Подробнее о патентах ↗</a></div></details>
+      <details class="faq-item reveal"><summary>Помогаете ли вы с программами ЭВМ? <span aria-hidden="true">+</span></summary><div class="faq-answer">Лирейт оказывает услуги по правовой защите программного кода, интерфейсов и регистрации программ ЭВМ. <a href="https://lireate.ru/registraciya_programm_evm/" target="_blank" rel="noopener">Посмотреть услугу ↗</a></div></details>
+      <details class="faq-item reveal"><summary>Как получить консультацию? <span aria-hidden="true">+</span></summary><div class="faq-answer">Свяжитесь с командой по телефону +7 (499) 938-45-95 или <a href="https://t.me/lireate_patent" target="_blank" rel="noopener">в Telegram</a>. На сайте указана бесплатная консультация.</div></details>
+    </div>
+  </div>
+</section>
+
+  <section class="section" id="blog" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Блог и <span class="brand-highlight">полезные материалы</span></h2>
+        <p>Тексты взяты по смыслу из действующей главной: Лирейт доказывает экспертность на деле, а не через навязчивые продажи.</p>
+      </div>
+      <div class="blog-grid">
+        <article class="blog-card reveal"><div class="num">Материал 01</div><h3>Иск о нарушении товарного знака: требования и доказательства</h3><p>Объяснение практических вопросов по защите товарного знака и подготовке доказательной базы.</p><a class="link-arrow" href="https://lireate.ru/isk_o_narushenii_tovarnogo_znaka_trebovaniya_i_dokazatelstva" target="_blank" rel="noopener">Открыть ↗</a></article>
+        <article class="blog-card reveal"><div class="num">Материал 02</div><h3>Компенсация за нарушение товарного знака: расчёт и доказательства</h3><p>Разбор вопросов, связанных с компенсацией и обоснованием правовой позиции.</p><a class="link-arrow" href="https://lireate.ru/kompensatsiya_za_narushenie_tovarnogo_znaka_raschet_i_dokazatelstva" target="_blank" rel="noopener">Открыть ↗</a></article>
+        <article class="blog-card reveal"><div class="num">Материал 03</div><h3>Как обжаловать решение Роспатента в Суде по интеллектуальным правам</h3><p>Понятный материал для тех, кто столкнулся с отказом и рассматривает дальнейшую защиту своих интересов.</p><a class="link-arrow" href="https://lireate.ru/kak_obzhalovat_reshenie_rospatenta_v_sude_po_intellektualnym_pravam" target="_blank" rel="noopener">Открыть ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <div class="cta-box reveal">
+        <div>
+          <div class="eyebrow">Консультация</div>
+          <h2>Нет времени искать ответ на страницах сайта?</h2>
+          <p>Оставьте заявку — специалисты Лирейт свяжутся с вами и помогут понять, какой способ защиты интеллектуальной собственности подойдёт именно в вашей ситуации.</p>
+          <div class="cta-list">
+            <div><span>✓</span><span>товарные знаки, патенты, программы ЭВМ, договоры</span></div>
+            <div><span>✓</span><span>честная оценка перспектив и понятный следующий шаг</span></div>
+            <div><span>✓</span><span>быстрый контакт через Telegram, Max и телефон</span></div>
+          </div>
+        </div>
+        <div>
+          <a class="btn primary" style="width:100%;margin-bottom:12px" href="https://t.me/lireate_patent" target="_blank" rel="noopener">Написать в Telegram ↗</a>
+          <a class="btn soft" style="width:100%;margin-bottom:12px" href="https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI" target="_blank" rel="noopener">Написать в Max ↗</a>
+          <a class="btn" style="width:100%" href="tel:+74999384595">Позвонить: +7 (499) 938-45-95</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div><strong style="display:block;color:var(--ink)">LIREATE</strong><span>Локальный HTML-макет главной страницы, без публикации</span></div>
+      <div class="footer-links"><a href="https://lireate.ru/contacts/" target="_blank" rel="noopener">Контакты ↗</a><a href="https://lireate.ru/team" target="_blank" rel="noopener">Команда ↗</a><a href="https://lireate.ru/news/" target="_blank" rel="noopener">Блог ↗</a><a href="https://lireate.ru/portfolio" target="_blank" rel="noopener">Портфолио ↗</a></div>
+    </div>
+    <div class="footer-bottom">Основа: тексты и URL фотографий lireate.ru; архитектура по мотивам tovarnyj-znak.ru; круглая команда Jiro Team 01 Pixa; анимации вдохновлены mayai.ru. Только локальный макет, без публикации. Цвета воссозданы по визуальному осмотру живого сайта, точные значения требуют сверки с его CSS.</div>
+  </div>
+</footer>
+</div><!-- /site-area -->
+
+<script>
+
+(() => {
+  // Keep offline previews legible even when live images cannot be fetched.
+  document.querySelectorAll('.expert-photo img,.avatar img').forEach(img => {
+    const fallback=()=>{
+      const parent=img.parentElement;
+      if(!parent || parent.querySelector('.portrait-fallback'))return;
+      const initials=(img.alt||'Лирейт').trim().split(/\s+/).slice(0,2).map(word=>word[0]||'').join('').toUpperCase();
+      img.hidden=true;
+      img.style.display='none';
+      const holder=document.createElement('div');
+      holder.className='portrait-fallback';
+      holder.textContent=initials||'Л';
+      holder.setAttribute('aria-hidden','true');
+      parent.append(holder);
+    };
+    img.addEventListener('error',fallback,{once:true});
+    if(img.complete && img.naturalWidth===0)fallback();
+  });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionOK = !reduceMotion.matches;
+  const html = document.documentElement;
+  const header = document.querySelector('.site-header');
+  const progress = document.querySelector('.scroll-progress');
+  const sections = [...document.querySelectorAll('.reveal')];
+  const track = document.getElementById('teamTrack');
+  const mobileToggle = document.querySelector('.mobile-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const filters = [...document.querySelectorAll('.filter')];
+
+  // No-JS and reduced-motion friendly entrance: never hide content if scripts fail.
+  if (motionOK && 'IntersectionObserver' in window) {
+    html.classList.add('motion-ready');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      });
+    }, {threshold: .08, rootMargin:'0px 0px -28px 0px'});
+    sections.forEach(el => observer.observe(el));
+  } else {
+    sections.forEach(el=>el.classList.add('visible'));
+  }
+
+  const syncScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const value = max > 0 ? Math.min(1,Math.max(0,scrollY / max)) : 0;
+    if (progress) progress.style.transform = `scaleX(${value})`;
+    header?.classList.toggle('is-scrolled',scrollY>36);
+  };
+  addEventListener('scroll',syncScroll,{passive:true});
+  addEventListener('resize',syncScroll,{passive:true});
+  syncScroll();
+
+  const closeMenu = () => {
+    mobileMenu?.classList.remove('open');
+    mobileToggle?.setAttribute('aria-expanded','false');
+  };
+  mobileToggle?.addEventListener('click',()=>{
+    const isOpen=mobileMenu?.classList.toggle('open');
+    mobileToggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+  mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+
+  // Scroll-triggered numbers. Original final text remains in HTML for SEO/accessibility.
+  const countNodes=[...document.querySelectorAll('.count')];
+  const animateCounter=(node)=>{
+    if(node.dataset.done==='1')return;
+    node.dataset.done='1';
+    const from=Number(node.dataset.from||0),to=Number(node.dataset.to||0);
+    if (!motionOK) return;
+    const duration=1250,start=performance.now();
+    const draw=now=>{
+      const u=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-u,3);
+      node.textContent=String(Math.round(from+(to-from)*eased));
+      if(u<1) requestAnimationFrame(draw);else node.textContent=String(to);
+    };
+    requestAnimationFrame(draw);
+  };
+  if ('IntersectionObserver' in window){
+    const ci=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){animateCounter(e.target);ci.unobserve(e.target)}}),{threshold:.5});
+    countNodes.forEach(node=>ci.observe(node));
+  } else countNodes.forEach(animateCounter);
+
+  // Gentle pointer parallax, never applied to reduced-motion or touch interfaces.
+  const heroRight=document.querySelector('.hero .hero-right');
+  const hero=document.querySelector('.hero');
+  if (hero && heroRight && motionOK && matchMedia('(pointer:fine)').matches){
+    hero.addEventListener('pointermove',ev=>{
+      const r=hero.getBoundingClientRect();
+      const x=(ev.clientX-r.left)/r.width-.5,y=(ev.clientY-r.top)/r.height-.5;
+      heroRight.style.setProperty('--hero-x',`${(x*9).toFixed(2)}px`);
+      heroRight.style.setProperty('--hero-y',`${(y*7).toFixed(2)}px`);
+    },{passive:true});
+    hero.addEventListener('pointerleave',()=>{heroRight.style.setProperty('--hero-x','0px');heroRight.style.setProperty('--hero-y','0px')});
+  }
+
+  // Mayai-like subtle spotlight on business cards.
+  if (motionOK && matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.service-card,.why-card,.case-card,.blog-card,.price-card').forEach(card=>{
+      card.addEventListener('pointermove',ev=>{
+        const r=card.getBoundingClientRect();
+        card.style.setProperty('--mx',`${ev.clientX-r.left}px`);
+        card.style.setProperty('--my',`${ev.clientY-r.top}px`);
+      },{passive:true});
+    });
+  }
+
+  // Team: arrows + user-controlled filtering and gently auto-advancing cards when in view.
+  const visibleCards=()=>[...track.querySelectorAll('.team-card')].filter(card=>!card.hidden);
+  const stepWidth=()=>{
+    const card=visibleCards()[0];
+    if(!card)return 224;
+    const style=getComputedStyle(track);
+    return card.getBoundingClientRect().width + (parseFloat(style.columnGap)||18);
+  };
+  const moveTeam=(direction)=>{
+    if(!track)return;
+    const step=stepWidth()*direction;
+    const end=track.scrollWidth-track.clientWidth;
+    if(direction>0 && track.scrollLeft >= end-10) track.scrollTo({left:0,behavior:motionOK?'smooth':'auto'});
+    else if(direction<0 && track.scrollLeft <= 2) track.scrollTo({left:end,behavior:motionOK?'smooth':'auto'});
+    else track.scrollBy({left:step,behavior:motionOK?'smooth':'auto'});
+  };
+  document.getElementById('prevTeam')?.addEventListener('click',()=>moveTeam(-1));
+  document.getElementById('nextTeam')?.addEventListener('click',()=>moveTeam(1));
+  track?.addEventListener('keydown',ev=>{
+    if(ev.key==='ArrowRight'){ev.preventDefault();moveTeam(1)}
+    if(ev.key==='ArrowLeft'){ev.preventDefault();moveTeam(-1)}
+  });
+  filters.forEach(btn=>btn.addEventListener('click',()=>{
+    filters.forEach(b=>{b.classList.toggle('active',b===btn);b.setAttribute('aria-pressed',String(b===btn))});
+    const group=btn.dataset.filter;
+    track.querySelectorAll('.team-card').forEach((card,i)=>{
+      const show=group==='all'||group===card.dataset.group;
+      card.hidden=!show;
+      card.classList.remove('filter-enter');
+      if(show && motionOK){void card.offsetWidth;card.style.animationDelay=`${Math.min(i,6)*35}ms`;card.classList.add('filter-enter')}
+    });
+    track.scrollTo({left:0,behavior:motionOK?'smooth':'auto'});
+  }));
+  // Only auto-scroll while visible. Pause on hover, keyboard focus, scroll drag, and tab hidden.
+  let carouselOnScreen=false,carouselPaused=false;
+  if(track && motionOK){
+    if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{carouselOnScreen=es.some(e=>e.isIntersecting)},{threshold:.35});io.observe(track)}
+    else carouselOnScreen=true;
+    track.addEventListener('mouseenter',()=>carouselPaused=true);
+    track.addEventListener('mouseleave',()=>carouselPaused=false);
+    track.addEventListener('focusin',()=>carouselPaused=true);
+    track.addEventListener('focusout',()=>carouselPaused=false);
+    track.addEventListener('pointerdown',()=>carouselPaused=true);
+    track.addEventListener('pointerup',()=>{carouselPaused=false});
+    document.querySelectorAll('#prevTeam,#nextTeam,.filter').forEach(x=>x.addEventListener('focus',()=>carouselPaused=true));
+    const auto=setInterval(()=>{
+      if(carouselOnScreen && !carouselPaused && !document.hidden && !reduceMotion.matches && track.scrollWidth>track.clientWidth+10) moveTeam(1)
+    },5800);
+    addEventListener('pagehide',()=>clearInterval(auto),{once:true});
+  }
+
+  // Interactive step selection with smooth content swap.
+  const stepButtons=[...document.querySelectorAll('.process-card[data-step]')];
+  const stepLive=document.getElementById('processLive');
+  const stepTitles=['Постановка задачи','Подготовка документов','Сопровождение до результата'];
+  const updateStep=(btn)=>{
+    stepButtons.forEach(el=>{
+      const active=el===btn;
+      el.classList.toggle('active',active);
+      el.setAttribute('aria-selected',String(active));
+    });
+    const n=Number(btn.dataset.step)||0;
+    if(!stepLive)return;
+    stepLive.classList.toggle('is-transitioning',motionOK);
+    const draw=()=>{
+      stepLive.querySelector('.process-indicator').textContent=`0${n+1} / 03`;
+      stepLive.querySelector('.process-live-name').textContent=stepTitles[n];
+      stepLive.classList.remove('is-transitioning');
+    };
+    if(motionOK) setTimeout(draw,160); else draw();
+  };
+  stepButtons.forEach(btn=>btn.addEventListener('click',()=>updateStep(btn)));
+  // FAQ maintains native keyboard-accessible <details> behavior; CSS adds motion.
+})();
+
+</script>
+
+
+<script>
+// Interactive navigation demo. Left = whole website; top = anchors within current page.
+(()=>{
+ const sidebar=document.getElementById('siteSidebar');
+ const shade=document.getElementById('sidebarShade');
+ const toggle=document.getElementById('sidebarToggle');
+ const collapse=document.getElementById('collapseSide');
+ const anchorToggle=document.getElementById('anchorToggle');
+ const anchorMobile=document.getElementById('anchorMobile');
+ const leftLinks=[...document.querySelectorAll('.sidebar-navigation a')];
+ const closeMobile=()=>{sidebar.classList.remove('mobile-open');shade.classList.remove('visible');shade.hidden=true;toggle.setAttribute('aria-expanded','false');document.body.style.overflow='';};
+ toggle.addEventListener('click',()=>{const next=!sidebar.classList.contains('mobile-open');if(next){sidebar.classList.add('mobile-open');shade.hidden=false;shade.classList.add('visible');toggle.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';}else closeMobile();});
+ shade.addEventListener('click',closeMobile);
+ collapse.addEventListener('click',()=>{
+   if(matchMedia('(max-width:930px)').matches){closeMobile();return;}
+   const next=document.body.classList.toggle('side-collapsed');
+   collapse.setAttribute('aria-expanded',String(!next));
+   collapse.setAttribute('aria-label',next?'Развернуть боковое меню':'Свернуть боковое меню');
+   collapse.title=next?'Развернуть боковое меню':'Свернуть боковое меню';
+ });
+ anchorToggle.addEventListener('click',()=>{const isOpen=anchorMobile.hidden;anchorMobile.hidden=!isOpen;anchorToggle.setAttribute('aria-expanded',String(isOpen))});
+ document.querySelectorAll('.top-page-nav a,.anchor-mobile a').forEach(a=>a.addEventListener('click',()=>{anchorMobile.hidden=true;anchorToggle.setAttribute('aria-expanded','false');closeMobile()}));
+ leftLinks.forEach(a=>a.addEventListener('click',e=>{
+   if(a.dataset.unverified){e.preventDefault();const t=document.getElementById('menuToast');t.textContent='Раздел «'+a.dataset.unverified+'»: адрес будет подключён из CMS при внедрении.';t.hidden=false;clearTimeout(window.menuToastTimer);window.menuToastTimer=setTimeout(()=>{t.hidden=true},3600);return;}
+   if(a.hash&&a.hash!=='#')closeMobile();
+ }));
+ // Contextual page-nav active state.
+ const pageLinks=[...document.querySelectorAll('.top-page-nav a')];
+ const anchors=pageLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+ if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{
+   const seen=es.filter(e=>e.isIntersecting);if(!seen.length)return;
+   const id=seen[0].target.id;pageLinks.forEach(a=>{const active=a.getAttribute('href')==='#'+id;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});
+ },{rootMargin:'-18% 0px -72% 0px',threshold:0});anchors.forEach(a=>io.observe(a))}
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMobile();anchorMobile.hidden=true;anchorToggle.setAttribute('aria-expanded','false')}});
+})();
+</script>
+<div id="menuToast" class="menu-toast" role="status" hidden></div>
+<style>.menu-toast{position:fixed;bottom:56px;right:20px;z-index:200;background:#1f212c;color:white;padding:14px 20px;font:600 12px/1.5 Manrope,Arial,sans-serif;max-width:340px;border-radius:12px;box-shadow:0 12px 30px rgba(19,35,67,.2)}</style>
+
+</body>
+</html>
