@@ -24,12 +24,12 @@ from lireate_hosting_services_lib import load_manifest
 
 REPO = Path(__file__).resolve().parents[1]
 MARK = "lireate-qa-v6-20261126"
-QA_CACHE = "20261126b"
+QA_CACHE = "20261126c"
 HEAD = ('<!-- ' + MARK + ' -->\n'
         '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=' + QA_CACHE + '">\n'
         '<script defer src="/template/js/lireate-qa-v6.js?v=' + QA_CACHE + '"></script>\n')
-QA_CACHE_CSS_RE = re.compile(r'/template/css/lireate-qa-v6\.css\?v=20261126b?', re.I)
-QA_CACHE_JS_RE = re.compile(r'/template/js/lireate-qa-v6\.js\?v=20261126b?', re.I)
+QA_CACHE_CSS_RE = re.compile(r'/template/css/lireate-qa-v6\.css\?v=20261126(?:[a-c])?', re.I)
+QA_CACHE_JS_RE = re.compile(r'/template/js/lireate-qa-v6\.js\?v=20261126(?:[a-c])?', re.I)
 MAIN = Path('template/main.php')
 
 # All paths relative to actual web DOCROOT.
@@ -45,6 +45,10 @@ _ASSET_DEPLOYED_BLOB = {
     'template/js/lireate-qa-v6.js': 'ae8096f30e26993ea667f142c3ad00f6e7b8ac94',
     'template/lireate/lireate-patent-tasks-sidebar-v6.inc.php': '685055a5772c0c6bca191b253430dd30a2271be4',
     'template/images/logo/logo-light-v5.svg': 'e62f67284d5eb62df3fe7579f3d201cd71228101',
+}
+# Host after PR #132 deploy 70d7a08 (CSS on prod may be rolled back to a4 blob above).
+_ASSET_V70_BLOB = {
+    'template/css/lireate-qa-v6.css': 'b21fe7e9544e1b12bac6750b3f83210d269651f2',
 }
 ASSET_LIVE = frozenset(Path(p) for p in ASSETS)
 # Reviewed main-branch blobs (pre-PR #131 for company pages).
@@ -326,6 +330,9 @@ def asset_allowed_set(live_key):
     deployed = _ASSET_DEPLOYED_BLOB.get(live_key)
     if deployed:
         allowed.add(deployed)
+    v70 = _ASSET_V70_BLOB.get(live_key)
+    if v70:
+        allowed.add(v70)
     return allowed
 
 def asset_live_allowed(old, live_key):

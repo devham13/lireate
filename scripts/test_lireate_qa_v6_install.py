@@ -190,7 +190,7 @@ class QaV6Tests(unittest.TestCase):
         plan = mod.build_plan(self.docroot)
         self.assertIn(mod.MAIN, plan)
         out = plan[mod.MAIN].decode('utf-8')
-        self.assertIn('lireate-qa-v6.css?v=20261126b', out)
+        self.assertIn('lireate-qa-v6.css?v=20261126c', out)
         self.assertIn('lireate-sitewide-sidebar-v7', out)
 
     def test_assets_prod_deployed_dry_run(self):
@@ -202,6 +202,16 @@ class QaV6Tests(unittest.TestCase):
             self.assertTrue(mod.asset_live_allowed(data, live), live)
         plan = mod.build_plan(self.docroot)
         self.assertIn(Path('template/css/lireate-qa-v6.css'), plan)
+
+    def test_asset_v70_css_rolled_back_a4(self):
+        css_path = self.docroot / 'template/css/lireate-qa-v6.css'
+        css_path.parent.mkdir(parents=True, exist_ok=True)
+        v70 = packed_bytes('asset-deploy-lireate-qa-v6-css-v70')
+        a4 = packed_bytes('asset-deploy-lireate-qa-v6-css')
+        css_path.write_bytes(a4)
+        self.assertTrue(mod.asset_live_allowed(a4, 'template/css/lireate-qa-v6.css'))
+        css_path.write_bytes(v70)
+        self.assertTrue(mod.asset_live_allowed(v70, 'template/css/lireate-qa-v6.css'))
 
     def test_cms_a4ca4e8_template_accepted(self):
         for rel, pack_key in (
@@ -323,7 +333,7 @@ class QaV6Tests(unittest.TestCase):
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
             self.assertIn('lireate-company-pages-v5.css?v=20261126c', src)
-            self.assertIn('lireate-qa-v6.css?v=20261126b', src)
+            self.assertIn('lireate-qa-v6.css?v=20261126c', src)
             self.assertNotIn('lireate-light-v4.css', src)
             self.assertNotIn('lireate-contacts-map', src)
             self.assertIn('lc5-hero-media lc5-hero-media--compact', src)
@@ -344,7 +354,7 @@ class QaV6Tests(unittest.TestCase):
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
             self.assertIn('lireate-company-pages-v5.css?v=20261126c', src)
-            self.assertIn('lireate-qa-v6.css?v=20261126b', src)
+            self.assertIn('lireate-qa-v6.css?v=20261126c', src)
             self.assertNotIn('lireate-light-v4.css', src)
             self.assertIn('<details class="lireate-partners-disclosure">', src)
             self.assertIn('<summary class="lireate-partners-summary">', src)

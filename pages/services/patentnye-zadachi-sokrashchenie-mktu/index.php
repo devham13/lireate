@@ -40,8 +40,8 @@ $schema_graph = array(
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
-  <link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126b">
-  <script defer src="/template/js/lireate-qa-v6.js?v=20261126b"></script>
+  <link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126c">
+  <script defer src="/template/js/lireate-qa-v6.js?v=20261126c"></script>
 </head>
 <body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4 lxq-patent-tasks">
 <?php $lxq_sidebar = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/template/lireate/lireate-patent-tasks-sidebar-v6.inc.php' : ''; if ($lxq_sidebar !== '' && is_file($lxq_sidebar)) { include $lxq_sidebar; } ?>
