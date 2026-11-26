@@ -1,5 +1,6 @@
 <?php
 $repo = dirname(dirname(dirname(__DIR__)));
+require_once $repo . '/pages/_shared/lireate-preview-bootstrap.php';
 $_SERVER['DOCUMENT_ROOT'] = $repo;
 $_SERVER['REQUEST_URI'] = '/mktu';
 if (!defined('LIREATE_NAV_V3_ASSET_QS')) {
@@ -12,12 +13,10 @@ $v = LIREATE_NAV_V3_ASSET_QS;
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>МКТУ — preview Light V4</title>
-  <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
-  <link rel="stylesheet" href="/template/css/lireate-mktu-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
-  <link rel="stylesheet" href="/template/css/lireate-global-subnav-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
+  <title>МКТУ — preview Light V4 + Nav V3</title>
+  <link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); ?>">
 </head>
-<body class="cms-default lireate-mktu-lu-body lireate-theme-light-v4 lireate-cms-page-dark lireate-screenshot-capture">
+<body class="cms-default lireate-mktu-lu-body lireate-theme-light-v4 lireate-screenshot-capture">
 <?php
 require_once $repo . '/pages/_shared/lireate-public-cms-chrome-lib.php';
 lireate_public_cms_include_chrome();
@@ -37,6 +36,8 @@ lireate_public_cms_include_subnav();
     <p>Научные и технологические услуги; разработка ПО.</p>
   </div>
 </section>
-<?php lireate_public_cms_content_close(); ?>
+<?php
+lireate_public_cms_content_close();
+?>
 </body>
 </html>

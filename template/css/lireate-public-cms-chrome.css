@@ -1,4 +1,8 @@
 /* Unified public CMS chrome: light #leftSideBar + content column (≥1151px) */
+html.lireate-public-cms-chrome,
+body.lireate-public-cms-chrome {
+  overflow-x: hidden;
+}
 body.lireate-public-cms-chrome .lireate-public-cms-veil {
   display: none;
   position: fixed;

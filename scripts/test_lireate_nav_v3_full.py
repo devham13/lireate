@@ -38,6 +38,16 @@ class NavV3FullTests(unittest.TestCase):
         self.assertIn("anchorToggle", js)
         self.assertIn("anchorMobile", js)
 
+    def test_preview_router_mentions_static_before_routes(self):
+        router = ROOT / "pages/_preview/nav-v3-router.php"
+        text = router.read_text(encoding="utf-8")
+        self.assertIn("parse_url($uri, PHP_URL_PATH)", text)
+        static_pos = text.find("is_file($static_file)")
+        routes_pos = text.find("$routes = array(")
+        self.assertGreater(static_pos, 0)
+        self.assertGreater(routes_pos, 0)
+        self.assertLess(static_pos, routes_pos)
+
     def test_mobile_anchors_partial_present(self):
         text = (SHARED / "lireate-lh4-mobile-anchors.inc.php").read_text(encoding="utf-8")
         self.assertIn("Разделы", text)
