@@ -60,8 +60,8 @@ def page_html(title: str, slug_key: str, route: str) -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} — LIREATE</title>
 <link rel="stylesheet" href="/shared/lireate-service-dark.css">
-<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126c">
-<script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126c"></script>
+<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126d">
+<script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126d"></script>
 </head>
 <body class="lireate-svc-body">
 <div class="lx-nav-shell"><header class="lx-nav-pill"><a class="lx-logo" href="/">LIREATE</a></header></div>

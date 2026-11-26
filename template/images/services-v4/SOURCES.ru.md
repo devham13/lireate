@@ -1,28 +1,26 @@
 # Источники фото services-v4
 
-## Что есть в репозитории
+## Файлы в установке (только WebP)
 
-В ветке PR #128 в git попали только файлы `specialist-*.webp` из коммита `064601e` (первично — с прозрачным фоном после автоматического вырезания).
+Установщик `scripts/lireate_six_services_photo_v4_install.py` копирует **только** пять `specialist-*.webp` в корне каталога, без `originals/`.
 
-## Чего нет в репозитории
+## Три фото с фоном (обновление 26.11.2026)
 
-- Исходных **JPEG/PNG с нативным студийным фоном** для пяти постановок (свидетельство, костюм с папкой, леопардовая блузка, чёрный пиджак, зелёный топ) — **нет** в истории `devham13/lireate`.
-- На боевом сайте `/template/images/services-v4/*.webp` — **404** (PR ещё не выложен).
+Оригиналы владельца (JPEG с полным фоном) конвертированы в:
 
-## Где искали
+- `specialist-copyright.webp`
+- `specialist-opposition.webp`
+- `specialist-registraciya.webp`
 
-| Источник | Результат |
-|---|---|
-| `git log --all -- template/images/services-v4` | только WebP в `064601e` |
-| GitHub code search `specialist-certificate` | пусто |
-| Страница `/team` (`/template/images/team/person/{n}.jpg`) | портреты 350×525 или 853×1280, **другие кадры**, не те же постановки, что в таблице услуг |
-| `design-proposals/incoming/` | только hero Эльвиры, не пять услуг |
+Скрипт: `scripts/build_services_v4_from_originals.py` (читает временно положенные `originals/*.jpg`, в git **не хранятся**).
 
-## Текущая сборка WebP
+Параметры: RGB WebP 800×1200, качество ~82, без rembg и без подложки.
 
-`scripts/build_services_v4_opaque_webp.py`:
+## Два фото без смены в этом PR
 
-1. Восстанавливает **непрозрачный** RGB-кадр (мягкая подложка `#eaf2fc` только там, где раньше была прозрачность вырезки).
-2. Лёгкое **кадрирование** по краям (без ретуши лица/одежды), чтобы hero с `object-fit: cover` показывал лицо и грудь.
+- `specialist-certificate.webp`
+- `specialist-prolongation.webp`
 
-После получения оригиналов с фоном от владельца — положить их в этот каталог как `specialist-<slug>-source.jpg`, пересобрать WebP или заменить файлы напрямую (800×1200 RGB WebP).
+## `/team`
+
+Портреты `/template/images/team/person/{n}.jpg` — другие кадры, не заменяют пять постановок услуг.
