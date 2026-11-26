@@ -16,7 +16,7 @@ if (!function_exists('lireate_lh4_subnav_version')) {
         if (defined('LIREATE_LIGHT_V4_ASSET_VERSION')) {
             return LIREATE_LIGHT_V4_ASSET_VERSION;
         }
-        return '20261126r32';
+        return '20261126r22';
     }
 }
 
