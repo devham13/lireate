@@ -55,7 +55,7 @@ jobs:
       - name: service index lireate_* callables
         run: python3 scripts/test_lireate_service_index_functions.py
       - name: home Light V4 install apply rollback
-        run: python3 -m unittest scripts.test_lireate_home_light_v4_install scripts.test_lireate_home_light_v4_layout scripts.test_lireate_light_v4_shared_asset_version scripts.test_lireate_about_light_v4_page scripts.test_lireate_home_hero_photo scripts.test_lireate_nav_v3_hide_oplata scripts.test_lireate_nav_v3_full -q
+        run: python3 -m unittest scripts.test_lireate_home_light_v4_install scripts.test_lireate_home_light_v4_layout scripts.test_lireate_light_v4_shared_asset_version scripts.test_lireate_about_light_v4_page scripts.test_lireate_home_hero_photo scripts.test_lireate_nav_v3_hide_oplata scripts.test_lireate_nav_v3_full scripts.test_lireate_portfolio_v5_install -q
       - name: patent section lint
         run: |
           python3 scripts/lireate_service_sync_shared.py --slug patentnye-zadachi

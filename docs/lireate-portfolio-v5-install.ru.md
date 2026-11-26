@@ -45,10 +45,13 @@ enhancement, действующий контент создаёт всё та ж
 ## Как внедрить через Grok / Cursor с SSH на REG.RU
 
 1. Изучи `AGENTS.md`, PR и действующий `template/main.php` и
-   `data/lireate-cases-lib.php` **только для чтения**. Проверь, что все 15 URL
-   действительно получают head из общего main.php. Если часть кейсов обслуживается
-   отдельным PHP-шаблоном, **не запускать apply**: сначала адаптировать точку подключения,
-   прислать в PR и проверить staging. Не копировать тестовую разметку вместо CMS.
+   `data/lireate-cases-lib.php` **только для чтения**. На проде (26.11.2026) все 15 URL
+   идут через общий `template/main.php`: каталог `$temp['page']==='portfolio'`,
+   кейсы `$temp['page']` вида `portfolio/<slug>` (см. `audit07 C4` в fixture
+   `tests/fixtures/live-render/live-assets/template/main.php`). Разметка кейсов —
+   `article.lx-case` / `.lx-case-hero` из `lireate_cases_render()` на хостинге;
+   установщик вставляет **условный** head (только `/portfolio` и 14 slug), не на весь сайт.
+   Если на хостинге отличается — **не apply**; сначала доработать точку подключения в PR.
 2. PR-бранч скачать в **отдельную worktree/папку**, не трогая рабочий checkout CRON.
 3. Запустить:
    `python3 scripts/test_lireate_portfolio_v5_install.py`
@@ -56,7 +59,8 @@ enhancement, действующий контент создаёт всё та ж
    проверить CSS в браузере.
 4. Выполнить **dry-run**:
    `python3 scripts/lireate_portfolio_v5_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/portfolio-v5"`
-   В плане допускаются **только** `template/main.php` и два новых ассета.
+   В плане допускаются **только** `template/main.php` (фрагмент `lireate-portfolio-v5-20261126`)
+   и два новых ассета CSS/JS.
 5. После явного подтверждения публикации:
    `python3 scripts/lireate_portfolio_v5_install.py --docroot "$LIREATE_DOCROOT" --backup-root "$HOME/lireate-autopub/backups/portfolio-v5" --apply --php-bin php`
    (если PHP CLI не в PATH, указать путь к рабочему PHP).

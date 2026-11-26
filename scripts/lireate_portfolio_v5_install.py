@@ -23,8 +23,16 @@ JS = pathlib.Path("template/js/lireate-portfolio-v5.js")
 FILES = [MAIN, CSS, JS]
 HEAD = (
     "<!-- " + VERSION + " -->\n"
+    "<?php /* " + VERSION + " portfolio head: listing + 14 case slugs only */ "
+    "$_lx_pf5 = (isset($temp['page']) && ($temp['page'] === 'portfolio' || "
+    "strpos((string) $temp['page'], 'portfolio/') === 0)); "
+    "if (!$_lx_pf5) { "
+    "$_lx_pf5_ru = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : ''; "
+    "$_lx_pf5 = (bool) preg_match('#^/portfolio(?:[/?]|$)#', $_lx_pf5_ru); } "
+    "if ($_lx_pf5): ?>\n"
     '<link rel="stylesheet" href="/template/css/lireate-portfolio-v5.css?v=20261126">\n'
     '<script defer src="/template/js/lireate-portfolio-v5.js?v=20261126"></script>\n'
+    "<?php endif; ?>\n"
 )
 
 

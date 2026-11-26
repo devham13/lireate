@@ -6,6 +6,7 @@
  var path=decodeURIComponent(window.location.pathname).replace(/\/+$/,"")||"/";
  var root="/portfolio";
  if(path!==root && path.indexOf(root+"/")!==0)return;
+ var maxUrl="https://max.ru/channel_lireate";
  var cases=[
  ["svoya-kultura","Своя Культура","г. Коломна","СвояКультура","658340"],
  ["bentax","Bentax и Shtainberg Chemy","г. Новосибирск","Bentax","739063, 739064"],
@@ -42,10 +43,10 @@
   wrap.appendChild(text);
   var controls=el("div","lxpf5-messengers");
   btn(controls,"https://t.me/lireate_patent","Telegram ↗","lxpf5-msg",true).setAttribute("data-lx-ym-goal","perehod_v_telegramm");
-  btn(controls,"https://max.ru/u/f9LHodD0cOI8jsPagjibEve2cn5_xPW0X1sf3PhbS5TMijA78DnUeDEpUAI","MAX ↗","lxpf5-msg",true).setAttribute("data-lx-ym-goal","perehod_v_messendzher");
+  btn(controls,maxUrl,"MAX ↗","lxpf5-msg",true).setAttribute("data-lx-ym-goal","perehod_v_messendzher");
   btn(controls,"https://wa.me/79600484957","WhatsApp ↗","lxpf5-msg",true).setAttribute("data-lx-ym-goal","perehod_v_messendzher");
   wrap.appendChild(controls);
-  var anchor=one("#portfolio")||one(".register-tz")||one(".main-content")||one("main")||one(".page_container");
+  var anchor=one("#portfolio")||one(".lx-case-cta")||one(".register-tz")||one(".main-content")||one("article.lx-case")||one("main")||one(".page_container");
   if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(s,anchor.nextSibling);
  }
  function index(){
@@ -96,9 +97,7 @@
    if(content)pf.insertBefore(regionHead,content);
    messengerPanel();
  }
- function detail(c){
-   var original=one(".case-hero");
-   if(!original){return;}
+ function detailLegacy(c,original){
    document.body.classList.add("lxpf5-detail","lxpf5-ready");
    var container=one(".case-hero__container",original)||original;
    var title=one(".case-hero__title",container);
@@ -122,6 +121,53 @@
    fact.appendChild(el("span",null,c[2]));
    container.appendChild(fact);
    messengerPanel();
+ }
+ function detailLxCase(c){
+   var article=one("article.lx-case");
+   var hero=article?one(".lx-case-hero",article):null;
+   if(!article||!hero)return false;
+   document.body.classList.add("lxpf5-detail","lxpf5-ready","lxpf5-lx-case-body");
+   article.classList.add("lxpf5-lx-case");
+   hero.classList.add("lxpf5-lx-case-hero");
+   var figure=one(".lx-case-logo",hero);
+   if(figure){
+     figure.classList.add("lxpf5-lx-case-logo");
+     var figTitle=el("div","lxpf5-logo-caption");
+     figTitle.appendChild(el("span","lxpf5-trademark-label","Кейс регистрации"));
+     figTitle.appendChild(el("strong",null,c[1]));
+     figTitle.appendChild(el("span",null,"Зарегистрированный товарный знак · "+c[2]));
+     figure.appendChild(figTitle);
+   }
+   var textCol=one(".lx-case-logo",hero)?hero.querySelector(".lx-case-logo + div"):one("div",hero);
+   if(textCol){
+     var kicker=one(".lxpf5-case-kicker",textCol);
+     if(!kicker){
+       kicker=el("span","lxpf5-eyebrow lxpf5-case-kicker","LIREATE · ПОРТФОЛИО · ТОВАРНЫЕ ЗНАКИ");
+       var h1=one("h1",textCol);
+       if(h1)textCol.insertBefore(kicker,h1);else textCol.insertBefore(kicker,textCol.firstChild);
+     }
+     var fact=one(".lxpf5-hero-fact",textCol);
+     if(!fact){
+       fact=el("div","lxpf5-hero-fact");
+       fact.appendChild(el("span",null,"Свидетельство ФИПС"));
+       fact.appendChild(el("strong",null,"№ "+c[4]));
+       fact.appendChild(el("span",null,c[2]));
+       var actions=one(".lx-case-actions",textCol);
+       if(actions)textCol.insertBefore(fact,actions);else textCol.appendChild(fact);
+     }
+     var actions=one(".lx-case-actions",textCol);
+     if(actions){
+       btn(actions,"https://t.me/lireate_patent","Написать в Telegram ↗","lxpf5-hero-msg",true).setAttribute("data-lx-ym-goal","perehod_v_telegramm");
+     }
+   }
+   messengerPanel();
+   return true;
+ }
+ function detail(c){
+   if(detailLxCase(c))return;
+   var original=one(".case-hero");
+   if(!original)return;
+   detailLegacy(c,original);
  }
  function init(){
    if(document.documentElement.hasAttribute("data-lxpf5-init"))return;
