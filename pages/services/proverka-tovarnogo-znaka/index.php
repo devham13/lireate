@@ -67,7 +67,7 @@ $schema_graph = [
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 </head>
 <body class="lireate-svc-body lireate-theme-light-v4">
-<?php /* lireate-public-cms-chrome-wire:v1 */ require_once dirname(__DIR__) . '/_shared/lireate-public-cms-chrome-lib.php'; lireate_public_cms_include_chrome(); lireate_public_cms_include_subnav(); lireate_public_cms_content_open(); ?>
+<?php /* lireate-public-cms-chrome-wire:v1 */ require_once dirname(dirname(__DIR__)) . '/_shared/lireate-public-cms-chrome-lib.php'; lireate_public_cms_include_chrome(); lireate_public_cms_include_subnav(); lireate_public_cms_content_open(); ?>
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">

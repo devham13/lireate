@@ -88,7 +88,7 @@ $schema_graph = [
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
 <body class="lireate-svc-body registraciya-landing-body registraciya-pilot-v2 lx-tm-white lireate-theme-light-v4">
-<?php /* lireate-public-cms-chrome-wire:v1 */ require_once dirname(__DIR__) . '/_shared/lireate-public-cms-chrome-lib.php'; lireate_public_cms_include_chrome(); lireate_public_cms_include_subnav(); lireate_public_cms_content_open(); ?>
+<?php /* lireate-public-cms-chrome-wire:v1 */ require_once dirname(dirname(__DIR__)) . '/_shared/lireate-public-cms-chrome-lib.php'; lireate_public_cms_include_chrome(); lireate_public_cms_include_subnav(); lireate_public_cms_content_open(); ?>
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">

@@ -42,7 +42,7 @@ $schema_graph = array(
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
 </head>
 <body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4">
-<?php /* lireate-public-cms-chrome-wire:v1 */ require_once dirname(__DIR__) . '/_shared/lireate-public-cms-chrome-lib.php'; lireate_public_cms_include_chrome(); lireate_public_cms_include_subnav(); lireate_public_cms_content_open(); ?>
+<?php /* lireate-public-cms-chrome-wire:v1 */ require_once dirname(dirname(__DIR__)) . '/_shared/lireate-public-cms-chrome-lib.php'; lireate_public_cms_include_chrome(); lireate_public_cms_include_subnav(); lireate_public_cms_content_open(); ?>
 <?php include __DIR__ . '/blocks/lireate-patent-header.inc.php'; ?>
 <main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-wordmark>
 <?php include __DIR__ . '/blocks/lireate-patent-breadcrumbs.inc.php'; ?>

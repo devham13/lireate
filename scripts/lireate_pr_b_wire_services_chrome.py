@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SERVICES = ROOT / "pages" / "services"
 MARKER = "lireate-public-cms-chrome-wire:v1"
 INSERT = (
-    '<?php /* %s */ require_once dirname(__DIR__) . '
+    '<?php /* %s */ require_once dirname(dirname(__DIR__)) . '
     "'/_shared/lireate-public-cms-chrome-lib.php'; "
     "lireate_public_cms_include_chrome(); "
     "lireate_public_cms_include_subnav(); "

@@ -51,6 +51,25 @@ body.lireate-public-cms-chrome #leftSideBar {
   padding-bottom: 24px;
   box-sizing: border-box;
   transition: transform 0.25s ease, left 0.25s ease;
+  background: #262c40;
+}
+body.lireate-public-cms-chrome #leftSideNav .leftSideTitle {
+  color: #6a7290;
+  font-size: 14px;
+  padding: 12px 20px 4px;
+}
+body.lireate-public-cms-chrome #leftSideNav .leftSideNaviButton,
+body.lireate-public-cms-chrome #leftSideNav .leftSideNaviInSection {
+  display: block;
+  color: #dde1ef;
+  font-size: 15px;
+  padding: 6px 20px;
+  text-decoration: none;
+}
+body.lireate-public-cms-chrome #leftSideNav .leftSideNaviInSection:hover,
+body.lireate-public-cms-chrome #leftSideNav .leftSideNaviButton:hover {
+  background: #394363;
+  color: #fff;
 }
 body.lireate-public-cms-chrome #leftSideBar .leftSideLogo {
   display: block;
@@ -101,9 +120,6 @@ body.lireate-public-cms-chrome .page_container {
   body.lireate-public-cms-chrome .page_container {
     margin-left: 280px;
   }
-  body.lireate-public-cms-chrome .lx-nav-shell {
-    margin-left: 280px;
-  }
 }
 
 @media (max-width: 1150px) {
@@ -130,8 +146,7 @@ body.lireate-public-cms-chrome .page_container {
     margin-left: 0;
     padding-top: 56px;
   }
-  body.lireate-public-cms-chrome .lx-nav-shell {
-    margin-left: 0;
+  body.lireate-public-cms-chrome .lireate-public-cms-content {
     padding-top: 48px;
   }
 }

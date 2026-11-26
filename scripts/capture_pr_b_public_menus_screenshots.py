@@ -13,10 +13,10 @@ PORT = 8894
 BASE = "http://127.0.0.1:{0}".format(PORT)
 
 SHOTS = (
-    ("registraciya-service-1440.png", "/pages/services/registraciya-tovarnogo-znaka/index.php", 1440),
-    ("registraciya-service-390.png", "/pages/services/registraciya-tovarnogo-znaka/index.php", 390),
-    ("blog-article-1440.png", "/pages/blog/_preview/index.php", 1440),
-    ("patent-poshliny-1440.png", "/pages/services/patentnye-zadachi-oplata-patentnyh-poshlin/index.php", 1440),
+    ("registraciya-service-1440.png", "/tm", 1440),
+    ("registraciya-service-390.png", "/tm", 390),
+    ("blog-article-1440.png", "/blog-article", 1440),
+    ("patent-poshliny-1440.png", "/patent", 1440),
     ("mktu-after-1440.png", "/pages/mktu/_preview/index.php", 1440),
     ("mktu-after-390.png", "/pages/mktu/_preview/index.php", 390),
     ("uslugi-after-1440.png", "/template/page/uslugi/_preview/index.php", 1440),
@@ -29,8 +29,16 @@ SHOTS = (
 
 
 def start_server(cwd):
+    router = cwd / "scripts" / "light_v4_screenshot_router.php"
+    if not router.is_file():
+        router = cwd / "pages" / "home" / "_preview" / "router.php"
     proc = subprocess.Popen(
-        ["php", "-S", "127.0.0.1:{0}".format(PORT), "-t", str(cwd)],
+        [
+            "php",
+            "-S",
+            "127.0.0.1:{0}".format(PORT),
+            str(router),
+        ],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         cwd=str(cwd),
@@ -42,7 +50,13 @@ def start_server(cwd):
 def shot(page, url, path, width, height=900):
     page.set_viewport_size({"width": width, "height": height})
     page.goto(url, wait_until="networkidle", timeout=120000)
-    page.evaluate("window.scrollTo(0, 0)")
+    page.evaluate(
+        """() => {
+        document.body.classList.add('lireate-public-cms-chrome');
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+        window.scrollTo(0, 0);
+    }"""
+    )
     page.screenshot(path=str(path), full_page=False)
 
 

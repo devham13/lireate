@@ -64,7 +64,7 @@ if (document.body) {
 }
 </script>
 <?php
-require_once dirname(__DIR__, 2) . '/_shared/lireate-lh4-subnav-lib.php';
+require_once dirname(dirname(__DIR__)) . '/_shared/lireate-lh4-subnav-lib.php';
 lireate_lh4_include_subnav();
 ?>
 <div class="lireate-blog-page" data-lireate-blog-version="<?php echo lireate_blog_h($lb_v); ?>">
