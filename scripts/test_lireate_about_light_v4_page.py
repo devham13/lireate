@@ -31,6 +31,24 @@ def linked_assets(php_text):
     return [m.group(1) for m in HREF_RE.finditer(php_text)]
 
 
+def _lum(channel):
+    c = channel / 255.0
+    return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+
+
+def contrast_ratio(fg, bg):
+    l1 = 0.2126 * _lum(fg[0]) + 0.7152 * _lum(fg[1]) + 0.0722 * _lum(fg[2])
+    l2 = 0.2126 * _lum(bg[0]) + 0.7152 * _lum(bg[1]) + 0.0722 * _lum(bg[2])
+    lighter = max(l1, l2)
+    darker = min(l1, l2)
+    return (lighter + 0.05) / (darker + 0.05)
+
+
+def _hex_to_rgb(h):
+    h = h.lstrip("#")
+    return tuple(int(h[i : i + 2], 16) for i in (0, 2, 4))
+
+
 class AboutLightV4PageTests(unittest.TestCase):
     def test_shared_inc_has_footer_and_light_v4(self):
         text = SHARED_INC.read_text(encoding="utf-8")
@@ -72,6 +90,30 @@ class AboutLightV4PageTests(unittest.TestCase):
         block = css[idx : idx + 2400]
         self.assertIn("#2d4764", block)
         self.assertIn("body.lireate-about-body.lireate-cms-page-dark", css)
+
+    def test_hero_pill_css_wcag_pairs(self):
+        css = CMS_CSS.read_text(encoding="utf-8")
+        self.assertRegex(
+            css,
+            r"a\.lireate-about-pill--solid[\s\S]{0,320}color:\s*#fff",
+        )
+        solid_fg = _hex_to_rgb("ffffff")
+        solid_bg = _hex_to_rgb("047857")
+        outline_fg = _hex_to_rgb("1f212c")
+        outline_bg = _hex_to_rgb("ffffff")
+        self.assertGreaterEqual(contrast_ratio(solid_fg, solid_bg), 4.5)
+        self.assertGreaterEqual(contrast_ratio(outline_fg, outline_bg), 4.5)
+
+    def test_lireate_about_shell_light_background(self):
+        css = CMS_CSS.read_text(encoding="utf-8")
+        self.assertIn("body.lireate-about-body #lireate-about", css)
+        idx = css.find("body.lireate-about-body #lireate-about")
+        block = css[idx : idx + 500]
+        self.assertIn("#fff", block)
+        self.assertRegex(
+            css,
+            r"body\.lireate-about-body[\s\S]{0,120}section#lireate-about[\s\S]{0,200}#fff",
+        )
 
 
 if __name__ == "__main__":

@@ -118,9 +118,23 @@ body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-ab
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page li {
   color: #2d4764 !important;
 }
-body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a {
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a:not(.lireate-about-pill) {
   color: #0f4db8 !important;
   font-weight: 700 !important;
+}
+body.lireate-about-body .lireate-about-hero-actions a.lireate-about-pill--solid,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a.lireate-about-pill--solid {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  background: #047857 !important;
+  border-color: #047857 !important;
+}
+body.lireate-about-body .lireate-about-hero-actions a.lireate-about-pill--outline,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-page a.lireate-about-pill--outline {
+  color: #1f212c !important;
+  -webkit-text-fill-color: #1f212c !important;
+  background: #fff !important;
+  border: 1px solid #c5d7ef !important;
 }
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-h1,
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-card-title,
@@ -548,6 +562,21 @@ body.lireate-team-body .page_container,
 body.lireate-team-body #lireate-team {
   background: #fff !important;
   box-shadow: none !important;
+}
+body.lireate-about-body .content,
+body.lireate-about-body .page_container,
+body.lireate-about-body section#lireate-about,
+body.lireate-about-body #lireate-about,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 section#lireate-about,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 #lireate-about {
+  background: #fff !important;
+  background-color: #fff !important;
+  box-shadow: none !important;
+}
+body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .wrapper,
+body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .wrapper {
+  background: #fff !important;
+  background-color: #fff !important;
 }
 @media (max-width: 1150px) {
   html:has(body.lireate-theme-light-v4),
