@@ -24,12 +24,12 @@ from lireate_hosting_services_lib import load_manifest
 
 REPO = Path(__file__).resolve().parents[1]
 MARK = "lireate-qa-v6-20261126"
-QA_CACHE = "20261126c"
+QA_CACHE = "20261126d"
 HEAD = ('<!-- ' + MARK + ' -->\n'
         '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=' + QA_CACHE + '">\n'
         '<script defer src="/template/js/lireate-qa-v6.js?v=' + QA_CACHE + '"></script>\n')
-QA_CACHE_CSS_RE = re.compile(r'/template/css/lireate-qa-v6\.css\?v=20261126(?:[a-c])?', re.I)
-QA_CACHE_JS_RE = re.compile(r'/template/js/lireate-qa-v6\.js\?v=20261126(?:[a-c])?', re.I)
+QA_CACHE_CSS_RE = re.compile(r'/template/css/lireate-qa-v6\.css\?v=20261126(?:[a-d])?', re.I)
+QA_CACHE_JS_RE = re.compile(r'/template/js/lireate-qa-v6\.js\?v=20261126(?:[a-d])?', re.I)
 MAIN = Path('template/main.php')
 
 # All paths relative to actual web DOCROOT.

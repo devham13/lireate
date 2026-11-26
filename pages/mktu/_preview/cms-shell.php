@@ -1,7 +1,7 @@
 <?php
 $repo = dirname(dirname(dirname(__DIR__)));
 $fixtureCss = $repo . '/tests/fixtures/live-render/live-assets/template/css/lireate-cms-page-dark.css';
-$qaCss = '/template/css/lireate-qa-v6.css?v=20261126c';
+$qaCss = '/template/css/lireate-qa-v6.css?v=20261126d';
 $darkCss = '/tests/fixtures/live-render/live-assets/template/css/lireate-cms-page-dark.css';
 if (!is_file($fixtureCss)) {
     header('HTTP/1.0 500');
@@ -21,6 +21,22 @@ if (!is_file($fixtureCss)) {
 <body class="cms-default lireate-cms-page-dark lireate-mktu-lu-body lxq-mktu">
 <div class="page_container">
   <div class="container content">
+    <section class="mktu_head">
+      <article>
+        <div>
+          <h4>Товары</h4>
+          <?php for ($i = 1; $i <= 34; $i++) : ?>
+            <a class="ssilka" href="/mktu/<?php echo (int) $i; ?>"><?php echo (int) $i; ?></a>
+          <?php endfor; ?>
+        </div>
+        <div>
+          <h4>Услуги</h4>
+          <?php for ($i = 35; $i <= 45; $i++) : ?>
+            <a class="ssilka" href="/mktu/<?php echo (int) $i; ?>"><?php echo (int) $i; ?></a>
+          <?php endfor; ?>
+        </div>
+      </article>
+    </section>
     <section class="mktu_body">
       <div class="conteinerY">
         <div class="title-ap">
@@ -31,7 +47,7 @@ if (!is_file($fixtureCss)) {
             <div class="block_contact text-left">
               <h3>Горбачев Юрий</h3>
               <p>За 10 минут подробно расскажет о любой необходимой процедуре, связанной с интеллектуальной собственностью.</p>
-              <div class="btn content-button red" style="display:inline-block;padding:10px 16px;background:#e32020;border-radius:8px;">Консультация</div>
+              <div class="btn content-button red">Консультация</div>
             </div>
           </div>
           <div class="txt-content news-content">
