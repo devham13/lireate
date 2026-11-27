@@ -1,17 +1,9 @@
 #!/usr/bin/env node
 /**
- * Load prod page; page.route() fulfills only PR-changed static assets from a git branch.
- * Usage:
- *   LIREATE_PR_BRANCH=cursor/patent-hero-no-sidebar-expert-6022 \
- *   LIREATE_OUT_DIR=/cursor/stores/self/lse10b \
- *   node scripts/capture_prod_pr_route_screenshots.mjs \
- *     patent=https://PUBLIC_SITE/patent \
- *     patent-prom-obr=https://PUBLIC_SITE/patent_prom_obr \
- *     prodlenie:https://PUBLIC_SITE/prodlenie_tovarnogo_znaka/ \
- *     mktu:https://PUBLIC_SITE/mktu
+ * Load prod page; page.route() fulfills PR-changed static assets from a git branch.
  */
 import puppeteer from 'puppeteer-core';
-import { readFileSync, mkdirSync, existsSync } from 'fs';
+import { readFileSync, mkdirSync } from 'fs';
 import { execFileSync } from 'child_process';
 import path from 'path';
 
@@ -32,7 +24,36 @@ if (!BRANCH) {
 
 const SERVICE_URL_MAP = {
   prodlenie_tovarnogo_znaka: 'pages/services/prodlenie-tovarnogo-znaka',
+  registraciya_tovarnogo_znaka: 'pages/services/registraciya-tovarnogo-znaka',
 };
+
+const SERVICE_SHARED_ASSETS = [
+  'lireate-breadcrumbs.js',
+  'lireate-light-v4.css',
+  'lireate-service-dark.css',
+];
+
+const VIEWPORTS_BY_KEY = {
+  prodlenie: [
+    [1440, 900, '1440'],
+    [390, 844, '390'],
+  ],
+  registraciya: [
+    [1440, 900, '1440'],
+    [390, 844, '390'],
+  ],
+  'patent-prom-obr': [
+    [1440, 900, '1440'],
+    [1280, 900, '1280'],
+    [390, 844, '390'],
+  ],
+  default: [
+    [1440, 900, '1440'],
+    [390, 844, '390'],
+  ],
+};
+
+const BREADCRUMB_CROP_KEYS = new Set(['prodlenie', 'registraciya']);
 
 function gitShow(repoRel) {
   return execFileSync('git', ['show', `${BRANCH}:${repoRel}`], {
@@ -48,16 +69,18 @@ function contentType(urlPath) {
   return 'text/html; charset=utf-8';
 }
 
-function pathnameToRepoRel(pathname) {
-  if (pathname.startsWith('/template/')) {
-    return pathname.slice(1);
+function hostingPathFromSlug(slug) {
+  try {
+    const indexPhp = execFileSync('git', ['show', `${BRANCH}:pages/services/${slug}/index.php`], {
+      cwd: REPO,
+      encoding: 'utf-8',
+    });
+    const pm = indexPhp.match(/\$path\s*=\s*'([^']+)'/);
+    if (pm) return pm[1].replace(/^\//, '').replace(/\/$/, '');
+  } catch {
+    /* noop */
   }
-  const m = pathname.match(/^\/([^/]+)\/assets\/lireate-shared\/(.+)$/);
-  if (m) {
-    const slugDir = SERVICE_URL_MAP[m[1]];
-    if (slugDir) return `${slugDir}/assets/lireate-shared/${m[2]}`;
-  }
-  return null;
+  return slug.replace(/-/g, '_');
 }
 
 function buildOverridesFromDiff() {
@@ -72,24 +95,7 @@ function buildOverridesFromDiff() {
       const parts = repoRel.split('/');
       const slug = parts[2];
       const file = parts.slice(4).join('/');
-      let hosting = '';
-      try {
-        const indexPhp = execFileSync('git', ['show', `${BRANCH}:pages/services/${slug}/index.php`], {
-          cwd: REPO,
-          encoding: 'utf-8',
-        });
-        const pm = indexPhp.match(/\$path\s*=\s*'([^']+)'/);
-        if (pm) hosting = pm[1].replace(/^\//, '').replace(/\/$/, '');
-      } catch {
-        /* noop */
-      }
-      if (!hosting && SERVICE_URL_MAP[slug.replace(/-/g, '_')]) {
-        hosting = slug.replace(/-/g, '_');
-      }
-      if (!hosting) {
-        const alias = slug.replace(/-/g, '_');
-        if (SERVICE_URL_MAP[alias]) hosting = alias;
-      }
+      const hosting = hostingPathFromSlug(slug);
       if (hosting) {
         overrides.set(`/${hosting}/assets/lireate-shared/${file}`, repoRel);
       }
@@ -97,8 +103,36 @@ function buildOverridesFromDiff() {
       repoRel.startsWith('template/') &&
       (repoRel.endsWith('.js') || repoRel.endsWith('.css') || repoRel.endsWith('.html') || repoRel.endsWith('.php'))
     ) {
-      const urlPath = '/' + repoRel.replace(/^template\//, 'template/');
-      overrides.set(urlPath, repoRel);
+      overrides.set(`/${repoRel}`, repoRel);
+    } else if (repoRel.startsWith('pages/services/_shared/')) {
+      const file = repoRel.replace('pages/services/_shared/', '');
+      if (SERVICE_SHARED_ASSETS.includes(file)) {
+        for (const [hosting, slugDir] of Object.entries(SERVICE_URL_MAP)) {
+          overrides.set(`/${hosting}/assets/lireate-shared/${file}`, `${slugDir}/assets/lireate-shared/${file}`);
+          try {
+            gitShow(`${slugDir}/assets/lireate-shared/${file}`);
+          } catch {
+            overrides.set(`/${hosting}/assets/lireate-shared/${file}`, repoRel);
+          }
+        }
+      }
+    }
+  }
+  for (const [hosting, slugDir] of Object.entries(SERVICE_URL_MAP)) {
+    for (const file of SERVICE_SHARED_ASSETS) {
+      const url = `/${hosting}/assets/lireate-shared/${file}`;
+      const repoRel = `${slugDir}/assets/lireate-shared/${file}`;
+      try {
+        gitShow(repoRel);
+        overrides.set(url, repoRel);
+      } catch {
+        try {
+          gitShow(`pages/services/_shared/${file}`);
+          overrides.set(url, `pages/services/_shared/${file}`);
+        } catch {
+          /* skip */
+        }
+      }
     }
   }
   const requiredTemplate = [
@@ -106,12 +140,12 @@ function buildOverridesFromDiff() {
     'template/css/lireate-sitewide-sidebar-v7.css',
     'template/lireate/lireate-sidebar-v7.html',
     'template/lireate/lireate-sidebar-v7-fragment.php',
+    'template/css/lireate-patent-light-v4.css',
   ];
   for (const repoRel of requiredTemplate) {
     try {
       gitShow(repoRel);
-      const urlPath = '/' + repoRel;
-      overrides.set(urlPath, repoRel);
+      overrides.set(`/${repoRel}`, repoRel);
     } catch {
       /* skip missing */
     }
@@ -140,6 +174,7 @@ for (const entry of entries) {
   const key = entry.slice(0, idx);
   const pageUrl = entry.slice(idx + 1);
   const fullUrl = pageUrl.startsWith('http') ? pageUrl : `${HOST}${pageUrl}`;
+  const viewports = VIEWPORTS_BY_KEY[key] || VIEWPORTS_BY_KEY.default;
 
   const page = await browser.newPage();
   await page.setRequestInterception(true);
@@ -175,10 +210,7 @@ for (const entry of entries) {
     req.continue().catch(() => {});
   });
 
-  for (const [w, h, tag] of [
-    [1440, 900, '1440'],
-    [390, 844, '390'],
-  ]) {
+  for (const [w, h, tag] of viewports) {
     await page.setViewport({ width: w, height: h });
     await page.goto(fullUrl, { waitUntil: 'networkidle2', timeout: 120000 });
     await page
@@ -190,32 +222,49 @@ for (const entry of entries) {
         { timeout: 45000 },
       )
       .catch(() => {});
-    await page
-      .waitForFunction(
-        () =>
-          !document.querySelector('.lx-breadcrumb-services-trigger') &&
-          !!document.querySelector('.lx-breadcrumbs a[href="/uslugi/"]'),
-        { timeout: 15000 },
-      )
-      .catch(() => {});
-    await new Promise((r) => setTimeout(r, 3500));
-  if (tag === '1440' && key === 'prodlenie') {
+    if (BREADCRUMB_CROP_KEYS.has(key)) {
+      await page
+        .waitForFunction(
+          () => {
+            const trigger = document.querySelector('.lx-breadcrumb-services-trigger');
+            const link = document.querySelector('.lx-breadcrumbs a[href="/uslugi/"]');
+            if (trigger) return false;
+            if (!link) return false;
+            const cs = getComputedStyle(link);
+            const after = getComputedStyle(link, '::after');
+            const borderOk = cs.borderTopWidth === '0px';
+            const bg = cs.backgroundColor;
+            const bgOk = bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent' || bg.endsWith(', 0)');
+            const arrowOk =
+              after.content === 'none' || after.content === 'normal' || after.content === '""';
+            return borderOk && bgOk && arrowOk;
+          },
+          { timeout: 20000 },
+        )
+        .catch(() => {
+          console.warn('WARN breadcrumb assert timeout', key, tag);
+        });
+    }
+    await new Promise((r) => setTimeout(r, 2500));
+    if (BREADCRUMB_CROP_KEYS.has(key) && (tag === '1440' || tag === '390')) {
       const nav = await page.$('.lx-breadcrumbs--in-page');
-      const cropFile = path.join(OUT, 'prodlenie-breadcrumbs-crop-1440.png');
+      const cropFile = path.join(OUT, `${key}-breadcrumbs-crop-${tag}.png`);
       if (nav) {
         await nav.screenshot({ path: cropFile });
         console.log('OK breadcrumb crop', cropFile, readFileSync(cropFile).length);
       }
     }
-    const file = path.join(OUT, `${key}-firstscreen-${tag}.png`);
-    await page.screenshot({ path: file, fullPage: false });
-    const sz = readFileSync(file).length;
-    if (sz < 12000) console.warn('small', file, sz);
-    const bad = await page.$$eval(
-      '#leftSideBar img[src*="person/"], #leftSideBar .lsv7-sidebar-expert',
-      (n) => n.length,
-    );
-    console.log(bad ? 'WARN sidebar person' : 'OK sidebar clean', key, tag, file, sz);
+    if (!BREADCRUMB_CROP_KEYS.has(key) || tag === '1440' || tag === '390') {
+      const file = path.join(OUT, `${key}-firstscreen-${tag}.png`);
+      await page.screenshot({ path: file, fullPage: false });
+      const sz = readFileSync(file).length;
+      if (sz < 12000) console.warn('small', file, sz);
+      const bad = await page.$$eval(
+        '#leftSideBar img[src*="person/"], #leftSideBar .lsv7-sidebar-expert',
+        (n) => n.length,
+      );
+      console.log(bad ? 'WARN sidebar person' : 'OK sidebar clean', key, tag, file, sz);
+    }
   }
   await page.close();
 }
