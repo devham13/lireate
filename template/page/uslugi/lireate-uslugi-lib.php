@@ -1,5 +1,5 @@
 <?php
-define('LIREATE_USLUGI_VERSION', '2026-11-11-dark3');
+define('LIREATE_USLUGI_VERSION', '2026-11-27-light-v4');
 define('LIREATE_USLUGI_ASSETS_BASE', '/template/page/uslugi');
 
 /** Группы карточек хаба /uslugi/ (каждая карточка ведёт на страницу услуги). */
