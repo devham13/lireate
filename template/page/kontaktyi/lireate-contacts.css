@@ -628,13 +628,36 @@ section#lireate-contacts .lireate-contacts-page button {
   width: 100%;
   margin-bottom: 12px;
 }
-.lireate-contacts-form .lx-consent,
-.lireate-contacts-consent {
-  display: block;
-  margin: 8px 0 14px;
+.lireate-contacts-form label.lx-consent,
+.lireate-contacts-consent label.lx-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0 0;
   font-size: 13px;
   line-height: 1.45;
   color: rgba(241, 245, 249, 0.8);
+  font-weight: 400;
+  cursor: pointer;
+  text-align: left;
+}
+.lireate-contacts-form label.lx-consent--marketing,
+.lireate-contacts-consent label.lx-consent--marketing {
+  margin-top: 10px;
+}
+.lireate-contacts-form label.lx-consent input[type="checkbox"],
+.lireate-contacts-consent label.lx-consent input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+  accent-color: #3a86ff;
+}
+.lireate-contacts-form label.lx-consent .lx-consent-text,
+.lireate-contacts-consent label.lx-consent .lx-consent-text {
+  flex: 1;
+  min-width: 0;
 }
 .lireate-contacts-social-grid {
   display: grid;
