@@ -1,0 +1,72 @@
+[
+  {
+    "file": "docs/screenshots/company-v5/o_kompanii-390.png",
+    "live_path": "/o_kompanii",
+    "width": 390,
+    "injected": false,
+    "hasV5Css": true,
+    "bodyFont": "Inter, Arial, \"Helvetica Neue\", Helvetica, FreeSans, sans-serif",
+    "timesFont": false,
+    "hasLc5": false
+  },
+  {
+    "file": "docs/screenshots/company-v5/o_kompanii-1440.png",
+    "live_path": "/o_kompanii",
+    "width": 1440,
+    "injected": true,
+    "hasV5Css": true,
+    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
+    "timesFont": false,
+    "hasLc5": false
+  },
+  {
+    "file": "docs/screenshots/company-v5/team-390.png",
+    "live_path": "/team/",
+    "width": 390,
+    "injected": true,
+    "hasV5Css": true,
+    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
+    "timesFont": false,
+    "hasLc5": false
+  },
+  {
+    "file": "docs/screenshots/company-v5/team-1440.png",
+    "live_path": "/team/",
+    "width": 1440,
+    "injected": true,
+    "hasV5Css": true,
+    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
+    "timesFont": false,
+    "hasLc5": false
+  },
+  {
+    "file": "docs/screenshots/company-v5/sidebar-logo-1440-expanded.png",
+    "live_path": "/o_kompanii",
+    "width": 1440,
+    "injected": true,
+    "hasV5Css": true,
+    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
+    "timesFont": false,
+    "hasLc5": false
+  },
+  {
+    "file": "docs/screenshots/company-v5/sidebar-logo-1440-collapsed.png",
+    "live_path": "/o_kompanii",
+    "width": 1440,
+    "injected": true,
+    "hasV5Css": true,
+    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
+    "timesFont": false,
+    "hasLc5": false
+  },
+  {
+    "file": "docs/screenshots/company-v5/sidebar-logo-390-menu.png",
+    "live_path": "/o_kompanii",
+    "width": 390,
+    "injected": true,
+    "hasV5Css": true,
+    "bodyFont": "Rubik, Arial, Helvetica, sans-serif",
+    "timesFont": false,
+    "hasLc5": false
+  }
+]

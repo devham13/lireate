@@ -17,16 +17,28 @@ $ld_footer_css = defined('LIREATE_DOCS_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_docs_h($ld_assets); ?>/lireate-docs.css?v=<?php echo lireate_docs_h($ld_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_docs_h($ld_footer_css); ?>?v=<?php echo lireate_docs_h($ld_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
 <script>
 document.documentElement.classList.add('lireate-docs-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_docs_h(LIREATE_DOCS_METRIKA_ID); ?>');
 </script>
+<script>(function(){document.documentElement.classList.add('lireate-company-v5');if(document.body){document.body.classList.add('lireate-company-v5');}else{document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lireate-company-v5');},{once:true});}})();</script>
 <div class="lireate-docs-page" data-lireate-docs-version="<?php echo lireate_docs_h($ld_v); ?>">
   <header class="lireate-docs-hero">
     <div class="lireate-docs-wrap">
       <p class="lireate-docs-kicker">LIREATE</p>
       <h1 class="lireate-docs-h1">Документы Лирейт</h1>
       <p class="lireate-docs-lead">Официальные документы компании и актуальные реквизиты для договоров и оплаты.</p>
+
+      <aside class="lc5-hero-media lc5-hero-media--compact" aria-label="ОФИЦИАЛЬНЫЕ МАТЕРИАЛЫ">
+        <div class="lc5-icon-shell" aria-hidden="true"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M34 16h38l18 18v67a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6V22a6 6 0 0 1 6-6Z"/><path d="M72 16v23h18M42 58h37M42 73h37M42 88h24"/><circle cx="86" cy="88" r="12" fill="#eef5ff"/></svg></div>
+        <div class="lc5-media-body">
+          <span class="lc5-chip">ОФИЦИАЛЬНЫЕ МАТЕРИАЛЫ</span>
+          <strong>Документы и реквизиты</strong>
+          <p>Свидетельства, подтверждающие документы и данные для договоров.</p>
+          <a href="#ld-docs-title">Смотреть документы ↗</a>
+        </div>
+      </aside>
     </div>
   </header>
 
