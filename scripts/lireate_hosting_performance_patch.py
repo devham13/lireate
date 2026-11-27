@@ -163,14 +163,19 @@ def uncommented(text):
 
 def fix_og_image(text):
     """Point og:image at the file that actually exists."""
-    return re.sub(
+    text = re.sub(
         r'(?<!/template)(/images/OG_image\.jpg)',
         '/template/images/OG_image.jpg',
         text)
+    return text.replace(
+        '/local/templates/lireate/images/og-default.jpg',
+        '/template/images/OG_image.jpg')
 
 
 def relax_google_fonts(text):
     """Stop legacy Google Fonts stylesheets from blocking the first paint."""
+    text = text.replace('media="print" / onload', 'media="print" onload')
+    text = text.replace("media='print' / onload", "media='print' onload")
     pattern = re.compile(
         r'<link\b[^>]*href=(["\'])([^"\']*fonts\.googleapis\.com[^"\']*)\1[^>]*>',
         re.I)
@@ -188,11 +193,15 @@ def relax_google_fonts(text):
             tag = tag.replace(match.group(2), href, 1)
         if re.search(r'\bonload\s*=', tag, re.I):
             return tag
+
+        def with_attrs(source, extra):
+            return re.sub(r'\s*/?\s*>$', '', source.rstrip()) + extra + '>'
+
         if re.search(r'\bmedia\s*=', tag, re.I):
             tag = re.sub(r'\smedia=(["\']).*?\1', ' media="print"', tag, count=1, flags=re.I)
-            tag = tag[:-1].rstrip() + ' onload="this.media=\'all\'">'
+            tag = with_attrs(tag, ' onload="this.media=\'all\'"')
         else:
-            tag = tag[:-1].rstrip() + ' media="print" onload="this.media=\'all\'">'
+            tag = with_attrs(tag, ' media="print" onload="this.media=\'all\'"')
         return tag + '<noscript><link rel="stylesheet" href=' + quote + href + quote + '></noscript>'
 
     return pattern.sub(repl, text)
@@ -350,7 +359,7 @@ def build_plan(docroot):
                 continue
             raw = path.read_bytes()
             try:
-                updated = fix_og_image(raw.decode('utf-8'))
+                updated = fix_legacy_markup(fix_og_image(raw.decode('utf-8')))
             except UnicodeError:
                 continue
             if updated.encode('utf-8') != raw:

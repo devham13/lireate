@@ -138,6 +138,11 @@ _CMS_V70_BLOB = {
     'template/page/partners/lireate-partners-page.inc.php': '90dca947049a0250b7ebb2773b063bb52afaedda',
     'template/page/news/lireate-blog-list.inc.php': '2ed0a563bccf4de333f44615ebf278f79ddd4719',
 }
+_PARTNERS_A11Y_BLOB = 'c0a0f961eaf45127a3cebff83d75688367c94cfd'
+_PARTNERS_INC_PATHS = frozenset({
+    'template/page/partners/lireate-partners-page.inc.php',
+    'pages/partners/_shared/lireate-partners-page.inc.php',
+})
 _SHARED_V70_BLOB = {
     'pages/kontaktyi/_shared/lireate-contacts-page.inc.php': 'ef1f550ea23586e894b69fd98fbcd9168cd2dcd1',
     'pages/partners/_shared/lireate-partners-page.inc.php': '90dca947049a0250b7ebb2773b063bb52afaedda',
@@ -170,6 +175,8 @@ def _allowed_main_prod(path):
     v70 = _CMS_V70_BLOB.get(path)
     if v70:
         allowed.add(v70)
+    if path in _PARTNERS_INC_PATHS:
+        allowed.add(_PARTNERS_A11Y_BLOB)
     return frozenset(allowed)
 
 def _allowed_shared(path):
@@ -184,6 +191,8 @@ def _allowed_shared(path):
     v70 = _SHARED_V70_BLOB.get(path)
     if v70:
         allowed.add(v70)
+    if path in _PARTNERS_INC_PATHS:
+        allowed.add(_PARTNERS_A11Y_BLOB)
     return frozenset(allowed)
 
 BASE_ALLOWED = {live: _allowed_main_prod(live) for live in _CMS_MAIN_BLOB}
@@ -366,6 +375,21 @@ def register_possible(rel_paths):
     global _EXTRA_POSSIBLE
     _EXTRA_POSSIBLE = frozenset(_EXTRA_POSSIBLE | {Path(p) for p in rel_paths})
 
+QA_V6_CSS_LINK_DUP_RE = re.compile(
+    r'\n?<link rel="stylesheet" href="/template/css/lireate-qa-v6\.css\?v=[^"]+">\s*',
+    re.I)
+
+
+def dedupe_qa_v6_main_head(text):
+    """Keep one QA V6 stylesheet link in template/main.php when marker is present."""
+    matches = list(QA_V6_CSS_LINK_DUP_RE.finditer(text))
+    if len(matches) <= 1:
+        return text
+    for match in reversed(matches[1:]):
+        text = text[:match.start()] + text[match.end():]
+    return text
+
+
 def bump_qa_cache_query(text):
     text = QA_CACHE_CSS_RE.sub('/template/css/lireate-qa-v6.css?v=' + QA_CACHE, text)
     text = QA_CACHE_JS_RE.sub('/template/js/lireate-qa-v6.js?v=' + QA_CACHE, text)
@@ -463,7 +487,7 @@ def build_plan(docroot, with_tools=False, with_shared=False):
         raise ValueError("BLOCKER CMS template/main.php missing")
     current = main.read_text(encoding='utf-8')
     if MARK in current:
-        new = bump_qa_cache_query(current)
+        new = bump_qa_cache_query(dedupe_qa_v6_main_head(current))
     else:
         if len(re.findall(r'</head\s*>', current, re.I)) != 1:
             raise ValueError("BLOCKER expected one closing head in template/main.php")

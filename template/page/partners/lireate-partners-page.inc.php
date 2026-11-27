@@ -87,7 +87,7 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
               <?php endif; ?>
             </div>
               </div>
-              <span class="lireate-partners-toggle" aria-hidden="true">Подробнее <span>⌄</span></span>
+              <span class="lireate-partners-toggle">Подробнее <span aria-hidden="true">⌄</span></span>
             </summary>
             <div class="lireate-partners-expanded">
           <?php if (!empty($partner['fields']) && is_array($partner['fields'])) : ?>

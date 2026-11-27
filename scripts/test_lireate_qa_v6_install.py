@@ -368,6 +368,17 @@ class QaV6Tests(unittest.TestCase):
         self.assertIn('Реквизиты</a>'.encode('utf-8'), patched)
         self.assertNotIn(b'<details class="lx-site-footer-requisites">', patched)
 
+    def test_dedupe_qa_v6_main_head_keeps_one_css_link(self):
+        snippet = (
+            '<head>\n<!-- lireate-qa-v6-20261126 -->\n'
+            '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126a">\n'
+            '<script defer src="/template/js/lireate-qa-v6.js?v=20261126a"></script>\n'
+            '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126a">\n'
+            '</head>'
+        )
+        out = mod.dedupe_qa_v6_main_head(snippet)
+        self.assertEqual(out.count('lireate-qa-v6.css'), 1)
+
     def test_service_footer_patch_only(self):
         raw = (
             mod.REPO / 'pages/services/registraciya-tovarnogo-znaka/lireate-service-footer.inc.php'
@@ -426,8 +437,9 @@ class QaV6Tests(unittest.TestCase):
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
             self.assertIn('lireate-company-pages-v5.css?v=' + COMPANY_PAGES_V5_CACHE, src)
-            self.assertIn('lireate-qa-v6.css?v=' + QA_V6_CACHE, src)
+            self.assertNotIn('lireate-qa-v6.css', src)
             self.assertNotIn('lireate-light-v4.css', src)
+            self.assertIn('lireate-partners-toggle">Подробнее <span aria-hidden="true">', src)
             self.assertIn('<details class="lireate-partners-disclosure">', src)
             self.assertIn('<summary class="lireate-partners-summary">', src)
             self.assertIn('lireate-partners-expanded', src)

@@ -190,6 +190,16 @@ class ShellTuningTests(unittest.TestCase):
         again, _ = patch.build_plan(self.root)
         self.assertNotIn(rel, again)
 
+    def test_fix_og_image_replaces_legacy_og_default_path(self):
+        cms = self.root / 'data/page/dogovory.php'
+        cms.parent.mkdir(parents=True)
+        cms.write_text(
+            '<meta property="og:image" content="https://example.test/local/templates/lireate/images/og-default.jpg">',
+            encoding='utf-8',
+        )
+        plan, _ = patch.build_plan(self.root)
+        self.assertIn('/template/images/OG_image.jpg', plan[cms.relative_to(self.root)].decode())
+
     def test_service_longread_reserves_sidebar_and_repairs_og_image(self):
         html = ('<head><link rel="preconnect" href="https://fonts.googleapis.com"></head>'
                 '<body class="lireate-svc-body">'
@@ -207,6 +217,20 @@ class ShellTuningTests(unittest.TestCase):
                               '<body class="lireate-svc-body"><?php include "lireate-patent-tasks-sidebar-v6.inc.php"; ?>')
         kept = patch.tune_service(patent)
         self.assertNotIn('lsv7-managed', kept)
+
+    def test_self_closing_font_link_stays_valid_and_legacy_heading_in_includes(self):
+        tag = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" />'
+        out = patch.relax_google_fonts(tag)
+        self.assertNotIn('/ onload', out)
+        self.assertIn('media="print" onload="this.media=\'all\'"', out)
+        broken = tag.replace('/>', 'media="print" / onload="this.media=\'all\'">')
+        self.assertNotIn('/ onload', patch.relax_google_fonts(broken))
+        rel = Path('template/page/home/lireate-home-hero.inc.php')
+        path = self.root / rel
+        path.parent.mkdir(parents=True)
+        path.write_text('<h1>Патентное бюро «Лирейт»</h1>\n', encoding='utf-8')
+        plan, _ = patch.build_plan(self.root)
+        self.assertIn('lireate-legacy-hero-title', plan[rel].decode())
 
     def test_theme_url_links_bundle_across_a_comment(self):
         css = self.root / 'template/css'
