@@ -384,3 +384,14 @@ body.lireate-theme-light-v4 li.lx-breadcrumb-services>a[href="/uslugi/"]{
 }
 body.lireate-theme-light-v4 .lx-breadcrumbs a[href="/uslugi/"]:hover{text-decoration:underline!important}
 body.lireate-theme-light-v4 li.lx-breadcrumb-services{background:transparent!important;border:0!important;padding:0!important}
+body.lireate-theme-light-v4 .lx-breadcrumb-services-trigger::after,
+body.lireate-theme-light-v4 button.lx-breadcrumb-services-trigger::after{
+  content:none!important;
+  display:none!important;
+  border:0!important;
+}
+body.lireate-theme-light-v4 .lireate-svc-page button.lx-breadcrumb-services-trigger,
+body.lireate-theme-light-v4.lireate-svc-body button.lx-breadcrumb-services-trigger{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+}
