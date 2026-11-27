@@ -426,8 +426,9 @@ class QaV6Tests(unittest.TestCase):
         ):
             src = (mod.REPO / path).read_text(encoding='utf-8')
             self.assertIn('lireate-company-pages-v5.css?v=' + COMPANY_PAGES_V5_CACHE, src)
-            self.assertIn('lireate-qa-v6.css?v=' + QA_V6_CACHE, src)
+            self.assertNotIn('lireate-qa-v6.css', src)
             self.assertNotIn('lireate-light-v4.css', src)
+            self.assertIn('lireate-partners-toggle">Подробнее <span aria-hidden="true">', src)
             self.assertIn('<details class="lireate-partners-disclosure">', src)
             self.assertIn('<summary class="lireate-partners-summary">', src)
             self.assertIn('lireate-partners-expanded', src)
