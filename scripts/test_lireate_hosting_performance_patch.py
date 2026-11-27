@@ -222,6 +222,40 @@ class ShellTuningTests(unittest.TestCase):
         self.assertNotIn(Path('findtz/index.php'), plan)
         self.assertNotIn(Path('patentnye-zadachi/index.php'), plan)
 
+    def test_protected_standalone_gets_perf_without_tune_service(self):
+        repo = Path(__file__).resolve().parents[1]
+        src = repo / 'pages/services/proverka-tovarnogo-znaka/index.php'
+        if not src.is_file():
+            self.skipTest('findtz source missing')
+        dest = self.root / 'findtz' / 'index.php'
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        raw = src.read_text(encoding='utf-8')
+        dest.write_text(raw, encoding='utf-8')
+        plan, _ = patch.build_plan(self.root)
+        rel = Path('findtz/index.php')
+        self.assertIn(rel, plan)
+        out = plan[rel].decode('utf-8')
+        self.assertIn(patch.VERSION, out)
+        self.assertIn('findtz-topnav-center', out)
+        minimal = patch.patch_standalone_service_entry(raw)
+        tuned = patch.patch_head(patch.tune_service(raw))
+        self.assertEqual(minimal, tuned)
+
+    def test_protected_patent_tool_in_perf_plan(self):
+        repo = Path(__file__).resolve().parents[1]
+        src = repo / 'pages/services/patentnye-zadachi-redaktor-mktu/index.php'
+        if not src.is_file():
+            self.skipTest('patent source missing')
+        dest = self.root / 'patentnye-zadachi' / 'redaktor-mktu' / 'index.php'
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        raw = src.read_text(encoding='utf-8')
+        dest.write_text(raw, encoding='utf-8')
+        plan, _ = patch.build_plan(self.root)
+        rel = Path('patentnye-zadachi/redaktor-mktu/index.php')
+        self.assertIn(rel, plan)
+        self.assertIn(patch.VERSION, plan[rel].decode('utf-8'))
+        self.assertIn('lireate-patent-center-v1', raw)
+
     def test_service_longread_reserves_sidebar_and_repairs_og_image(self):
         html = ('<head><link rel="preconnect" href="https://fonts.googleapis.com"></head>'
                 '<body class="lireate-svc-body">'
