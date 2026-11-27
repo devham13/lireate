@@ -12,7 +12,7 @@ git checkout -B lireate-seo-control "origin/$GIT_REF"
 
 cd "$STACK"
 python3 init-env.py
-mkdir -p vps/data/siteone vps/data/indexlift unlighthouse/reports/site logs
+mkdir -p "$SEO_ROOT/logs" vps/data/siteone vps/data/indexlift unlighthouse/reports/site
 
 if ! grep -q '^CABINET_PASSWORD_HASH=' .env; then
   CABINET_PASS="${CABINET_PASSWORD:-$(openssl rand -hex 10)}"

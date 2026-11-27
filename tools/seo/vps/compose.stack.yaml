@@ -11,12 +11,10 @@ services:
         condition: service_started
     ports:
       - "${CABINET_BIND:-127.0.0.1}:${CABINET_PORT:-19080}:80"
-      - "${CABINET_PUBLIC_BIND:-0.0.0.0}:${CABINET_PUBLIC_PORT:-18443}:443"
-    environment:
-      CABINET_USER: ${CABINET_USER:-lireate}
-      CABINET_PASSWORD_HASH: ${CABINET_PASSWORD_HASH:-}
+      - "${CABINET_PUBLIC_BIND:-0.0.0.0}:${CABINET_PUBLIC_PORT:-18443}:80"
     volumes:
       - ./vps/cabinet/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./vps/cabinet/htpasswd:/etc/caddy/htpasswd:ro
       - ./vps/cabinet/www:/srv/www:ro
       - ./unlighthouse/reports:/srv/reports:ro
       - ./vps/data/siteone:/srv/siteone:ro
