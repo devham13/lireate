@@ -55,13 +55,27 @@ if (!defined('LIREATE_BLOG_TEMPLATE_VERSION')) {
 }
 
 if (!defined('LIREATE_BLOG_LIST_TITLE')) {
-    define('LIREATE_BLOG_LIST_TITLE', 'Блог LIREATE');
+    define('LIREATE_BLOG_LIST_TITLE', 'Блог патентного бюро Лирейт');
 }
 
 if (!defined('LIREATE_BLOG_LIST_LEAD')) {
     define(
         'LIREATE_BLOG_LIST_LEAD',
-        'Практические материалы о товарных знаках, патентах, бренде и защите интеллектуальной собственности для предпринимателей и юристов.'
+        'Практические статьи и разборы дел по интеллектуальной собственности: регистрация товарных знаков, патенты, авторское право, договоры и судебные споры.'
+    );
+}
+
+if (!defined('LIREATE_BLOG_LIST_SEO_TITLE')) {
+    define(
+        'LIREATE_BLOG_LIST_SEO_TITLE',
+        'Блог Лирейт — товарные знаки, патенты и авторское право'
+    );
+}
+
+if (!defined('LIREATE_BLOG_LIST_SEO_DESCRIPTION')) {
+    define(
+        'LIREATE_BLOG_LIST_SEO_DESCRIPTION',
+        'Практические статьи и разборы дел по интеллектуальной собственности: регистрация товарных знаков, патенты, авторское право, договоры и судебные споры.'
     );
 }
 
