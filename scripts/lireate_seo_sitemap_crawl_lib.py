@@ -55,6 +55,7 @@ CSV_FIELDNAMES = (
     'perf_marker',
     'fatal_error',
     'discover_extra',
+    'problems',
 )
 
 _RETRY_STATUSES = frozenset(range(500, 600)) | frozenset((429,))
@@ -406,6 +407,20 @@ def extract_internal_links(html_text, page_url, base_netloc, limit=200):
     return found
 
 
+def _idn_request_url(url):
+    try:
+        url.encode('ascii')
+        return url
+    except UnicodeEncodeError:
+        from urllib.parse import quote
+
+        parts = urlparse(url)
+        path = quote(parts.path or '/', safe="/:@%+-._~")
+        q = parts.query or ''
+        query = quote(q, safe="=&?/%+:@") if q else ''
+        return urlunparse((parts.scheme, parts.netloc, path, parts.params, query, parts.fragment))
+
+
 def fetch_url(
     url,
     rate_limiter=None,
@@ -416,11 +431,12 @@ def fetch_url(
     """Fetch URL; return dict with body bytes, status, final_url, redirect_chain."""
     if rate_limiter:
         rate_limiter.wait()
+    req_url = _idn_request_url(url)
     last_err = ''
     for attempt in range(max_retries):
         handler = _RecordingRedirectHandler()
         opener = build_opener(handler)
-        req = Request(url, headers={'User-Agent': USER_AGENT})
+        req = Request(req_url, headers={'User-Agent': USER_AGENT})
         try:
             resp = opener.open(req, timeout=timeout)
             body = resp.read()
@@ -519,6 +535,12 @@ def crawl_url_record(
     row.update(seo)
     if not row['fatal_error'] and fetched.get('error'):
         row['fatal_error'] = fetched['error']
+    try:
+        from lireate_seo_audit_issues import issues_for_row
+
+        row['problems'] = issues_for_row(row)
+    except Exception:
+        row['problems'] = ''
     extra_links = []
     if discover_extra and status == 200 and html_text:
         base_netloc = urlparse(base_url).netloc
