@@ -70,6 +70,18 @@ def main():
     if rt.is_file() and not re.search(r"\(\^\|\&\)mode\(\$\|=\)", rt.read_text(encoding="utf-8")):
         errors.append("mode=noindex regex not hardened")
 
+    head = DATA / "lireate-seo-head.inc.php"
+    schema = DATA / "lireate-seo-schema.inc.php"
+    if head.is_file() and schema.is_file():
+        head_t = head.read_text(encoding="utf-8")
+        schema_t = schema.read_text(encoding="utf-8")
+        if "lireate_seo_render_mktu_schema_scripts" in head_t and (
+            "function lireate_seo_render_mktu_schema_scripts" not in schema_t
+        ):
+            errors.append(
+                "head.inc.php calls lireate_seo_render_mktu_schema_scripts but schema.inc.php lacks it"
+            )
+
     errors.extend(guard.validate_mktu_classes())
     errors.extend(guard.validate_cms_overrides())
 

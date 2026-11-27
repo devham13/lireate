@@ -117,7 +117,12 @@ if (!function_exists('lireate_seo_render_head_tags')) {
             $slugOne = $slug !== '' ? explode('/', $slug)[0] : '';
             $canonical = !empty($GLOBALS['lireate_canonical_url']) ? (string) $GLOBALS['lireate_canonical_url'] : '';
             $ogTitle = ($og !== null && isset($og['title'])) ? (string) $og['title'] : '';
-            if ($slugOne !== '') {
+            if ($slugOne !== '' && function_exists('lireate_seo_render_mktu_schema_scripts') && preg_match('/^(\d{1,2})$/', $slugOne, $mktuSlug)) {
+                $n = (int) $mktuSlug[1];
+                if ($n >= 1 && $n <= 45) {
+                    lireate_seo_render_mktu_schema_scripts($n, $ogTitle, $canonical);
+                }
+            } elseif ($slugOne !== '') {
                 lireate_seo_render_service_schema_scripts($slugOne, $ogTitle, $canonical);
             }
         }
