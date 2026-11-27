@@ -54,11 +54,11 @@ CANNIB_FIELDS = [
 ]
 
 _SERVICE_HINTS = (
-    (re.compile(r"товарн", re.I), "/registraciya-tovarnogo-znaka/"),
-    (re.compile(r"патент", re.I), "/patent/"),
-    (re.compile(r"авторск", re.I), "/registraciya-avtorskih-prav/"),
-    (re.compile(r"договор|лиценз", re.I), "/dogovor/"),
-    (re.compile(r"проверк", re.I), "/proverka-tovarnogo-znaka/"),
+    (re.compile(r"товарн", re.I), "/registraciya_tovarnogo_znaka/"),
+    (re.compile(r"патент", re.I), "/patent"),
+    (re.compile(r"авторск", re.I), "/zashchita_avtorskih_prav/"),
+    (re.compile(r"договор|лиценз", re.I), "/dogovory/"),
+    (re.compile(r"проверк", re.I), "/poisk_tovarnyh_znakov/"),
 )
 
 _LEGAL_PATTERNS = (
@@ -131,7 +131,24 @@ def load_csv_audit(path: Path) -> dict:
         return by_slug
     with path.open(encoding="utf-8-sig", newline="") as fh:
         for row in csv.DictReader(fh):
-            by_slug[_slug(row.get("url", ""))] = row
+            raw = (
+                row.get("url")
+                or row.get("URL")
+                or row.get("requested_url")
+                or row.get("final_url")
+                or ""
+            )
+            slug = _slug(raw)
+            if not slug or slug in ("news", ""):
+                continue
+            desc = row.get("meta_description") or row.get("description") or ""
+            by_slug[slug] = {
+                "url": slug,
+                "title": row.get("title") or row.get("Текущий Title") or "",
+                "meta_description": desc,
+                "meta_description_len": len(desc),
+                "issue_flags": row.get("problems") or row.get("issue_flags") or row.get("Проблемы") or "",
+            }
     return by_slug
 
 
