@@ -1,31 +1,13 @@
-/* Light V4 footer overrides — versioned separately from lireate-blog-footer.css */
-body.lireate-theme-light-v4 .lx-site-footer {
-  background: #fff !important;
-  border-top: 1px solid #dce8f7 !important;
+/* Light V4: only layout tweaks for lx-site-footer. Colors — lireate-blog-footer.css (/mktu #0b0b1f). */
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-inner,
+body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-inner {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
 }
-body.lireate-theme-light-v4 .lx-site-footer,
-body.lireate-theme-light-v4 .lx-site-footer p,
-body.lireate-theme-light-v4 .lx-site-footer summary {
-  color: #52637b !important;
-}
-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-title {
-  color: #1f212c !important;
-}
-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-lead,
-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-meta {
-  color: #52637b !important;
-}
-body.lireate-theme-light-v4 .lx-site-footer a,
-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-contact a,
-body.lireate-theme-light-v4 .lx-site-footer-nav > a,
-body.lireate-theme-light-v4 .lx-site-footer-requisites summary {
-  color: #0f4db8 !important;
-}
-body.lireate-theme-light-v4 .lx-site-footer-requisites {
-  background: #fff !important;
-  border: 1px solid #dce8f7 !important;
-}
-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p {
-  color: #52637b !important;
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-social-btn,
+body.lireate-theme-light-v4 .lx-site-footer-social-btn {
+  border-radius: 9px;
+  width: 34px;
+  height: 34px;
 }

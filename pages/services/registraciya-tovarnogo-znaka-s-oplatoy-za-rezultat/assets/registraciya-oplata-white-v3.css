@@ -289,24 +289,24 @@ body.lx-fg-white .lx-bottom-cta h2{color:var(--tw-ink) !important;letter-spacing
 body.lx-fg-white .lx-mid-cta p,
 body.lx-fg-white .lx-bottom-cta p{color:var(--tw-muted) !important}
 
-/* ---------- footer ---------- */
-body.lx-fg-white .lx-site-footer{background:#f5f8fc;border-top:1px solid var(--tw-line);color:var(--tw-muted)}
-body.lx-fg-white .lx-site-footer .lx-site-footer-title{color:var(--tw-ink)}
+/* ---------- footer (sitewide dark #0b0b1f) ---------- */
+body.lx-fg-white .lx-site-footer{background:#0b0b1f;border-top:1px solid rgba(255,255,255,.1);color:#94a3b8}
+body.lx-fg-white .lx-site-footer .lx-site-footer-title{color:#f8fafc}
 body.lx-fg-white .lx-site-footer .lx-site-footer-lead,
 body.lx-fg-white .lx-site-footer .lx-site-footer-contact,
 body.lx-fg-white .lx-site-footer .lx-site-footer-requisites-panel p,
 body.lx-fg-white .lx-site-footer p.lx-site-footer-meta,
-body.lx-fg-white .lx-site-footer p.lx-site-footer-copy{color:var(--tw-muted) !important}
+body.lx-fg-white .lx-site-footer p.lx-site-footer-copy{color:#94a3b8 !important}
 body.lx-fg-white .lx-site-footer a,
 body.lx-fg-white .lx-site-footer .lx-site-footer-contact a,
 body.lx-fg-white .lx-site-footer .lx-site-footer-nav > a,
-body.lx-fg-white .lx-site-footer .lx-site-footer-requisites summary{color:#283750}
+body.lx-fg-white .lx-site-footer .lx-site-footer-requisites summary{color:#f8fafc}
 body.lx-fg-white .lx-site-footer a.lx-site-footer-social-btn{color:#fff}
-body.lx-fg-white .lx-site-footer .lx-site-footer-dot{color:#56657b}
+body.lx-fg-white .lx-site-footer .lx-site-footer-dot{color:#64748b}
 body.lx-fg-white .lx-site-footer a:not(.lx-site-footer-social-btn):hover,
-body.lx-fg-white .lx-site-footer .lx-site-footer-requisites summary:hover{color:var(--tw-red)}
+body.lx-fg-white .lx-site-footer .lx-site-footer-requisites summary:hover{color:#fff;text-decoration:underline}
 body.lx-fg-white .lx-site-footer .lx-site-footer-requisites[open],
-body.lx-fg-white .lx-site-footer .lx-site-footer-requisites-panel{background:#fff;border-color:var(--tw-line)}
+body.lx-fg-white .lx-site-footer .lx-site-footer-requisites-panel{background:transparent;border-color:rgba(255,255,255,.12)}
 
 /* ---------- mobile bar / dock ---------- */
 body.lx-fg-white .lx-mobile-bar{background:rgba(255,255,255,.96);border-top:1px solid var(--tw-line);box-shadow:0 -10px 28px rgba(16,22,48,.08)}

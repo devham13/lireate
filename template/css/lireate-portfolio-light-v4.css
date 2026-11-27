@@ -156,12 +156,19 @@ body.lireate-theme-light-v4 .lx-pf-cases-title,
 body.lireate-theme-light-v4 .lx-pf-cases .lx-pf-cases-title {
   color: #1f212c !important;
 }
+body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer {
+  background: #0b0b1f !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
 body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer,
 body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer p {
-  color: #52637b !important;
+  color: #94a3b8 !important;
+}
+body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer-title {
+  color: #f8fafc !important;
 }
 body.lireate-theme-light-v4.lireate-portfolio-body .lx-site-footer a {
-  color: #0f4db8 !important;
+  color: #f8fafc !important;
 }
 body.lireate-theme-light-v4 .region_list span,
 body.lireate-theme-light-v4 #portfolio .region_list span {

@@ -133,46 +133,14 @@ body.lireate-theme-light-v4 a.leftSideLogo,
  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;
  -webkit-mask-size:contain;mask-size:contain;filter:none!important;opacity:.94!important}
 
-/* Shared white footer for LIREATE Light V4, all service pages and CMS. */
-body.lireate-theme-light-v4 footer.lx-site-footer {
-  background:#fff !important;
-  border-top:1px solid #dce8f7 !important;
-  color:#52637b !important;
-  box-shadow:none !important;
-}
+/* Sitewide footer colors: lireate-blog-footer.css (#0b0b1f, как /mktu). */
 body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-inner {
   max-width:1080px;
   margin-left:auto;
   margin-right:auto;
 }
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-title {
-  color:#1f212c !important;
-  font-weight:800;
-}
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-lead,
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-meta,
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact,
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-copy,
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites-panel,
-body.lireate-theme-light-v4 footer.lx-site-footer p {
-  color:#52637b !important;
-}
-body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn),
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-nav > a,
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites summary {
-  color:#0f4db8 !important;
-  text-decoration:none;
-}
-body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn):hover {
-  text-decoration:underline;
-}
 body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-social-btn {
-  color:#fff !important;
   border-radius:9px;
   width:34px;
   height:34px;
-}
-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites {
-  background:#fff;
-  border-color:#dce8f7;
 }

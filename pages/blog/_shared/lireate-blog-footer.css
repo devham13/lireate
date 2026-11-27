@@ -165,3 +165,22 @@
 .lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#64748b;margin:16px 0 0}
 .lireate-blog-page { overflow-x: clip; max-width: 100%; }
 .lx-site-footer { overflow-x: clip; }
+
+/* Sitewide dark footer — как /mktu; перебивает устаревшие Light V4 white overrides. */
+body.lireate-theme-light-v4 footer.lx-site-footer,
+body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-theme-light-v4 #articleBox .lx-site-footer,
+body.lireate-team-body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-team-body .lx-site-footer,
+body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-blog-body .lx-site-footer,
+body.lireate-about-body .lx-site-footer,
+body.lireate-cms-page-dark .lx-site-footer {
+  background: #0b0b1f !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+body.lx-tm-white.registraciya-pilot-v2 .lx-site-footer,
+body.lx-fg-white .lx-site-footer {
+  background: #0b0b1f !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}

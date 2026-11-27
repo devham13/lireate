@@ -741,8 +741,10 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root a.link-arrow,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root #services a {
   color: #0f4db8 !important;
 }
-body.lireate-home-light-v4.lireate-theme-light-v4 .lx-site-footer a {
-  color: #0f4db8 !important;
+body.lireate-home-light-v4.lireate-theme-light-v4 .lx-site-footer-contact a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lx-site-footer-nav > a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lx-site-footer-requisites summary {
+  color: #f8fafc !important;
 }
 
 /* Sidebar logo (main.php loads this sheet, not lireate-cms-pages-light-v4) */
@@ -960,22 +962,27 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-messenger-teleg
   body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-actions.lh4-hero-messengers {grid-template-columns:1fr;}
 }
 
-/* White footer consistency for Light V4 home and page chrome. */
+/* Dark sitewide footer (как /mktu) on Light V4 home. */
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .footer {
-  background:#fff !important;
-  color:#52637b !important;
-  border-top:1px solid #dce8f7 !important;
+  background:#0b0b1f !important;
+  color:#94a3b8 !important;
+  border-top:1px solid rgba(255,255,255,.1) !important;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer {
-  background:#fff !important;
-  border-top:1px solid #dce8f7 !important;
-  color:#52637b !important;
+  background:#0b0b1f !important;
+  border-top:1px solid rgba(255,255,255,.1) !important;
+  color:#f8fafc !important;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-title {
-  color:#1f212c !important;
+  color:#f8fafc !important;
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer p {
-  color:#52637b !important;
+  color:#94a3b8 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact a,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer-nav > a {
+  color:#f8fafc !important;
 }
 
 /* Home: CMS #leftSideBar stays visible — v7 JS does not add .lsv7-managed; inset footer beside it. */
