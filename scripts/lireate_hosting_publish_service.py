@@ -694,6 +694,26 @@ def _publish_slug(
     state_file.parent.mkdir(parents=True, exist_ok=True)
     state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    if update_mode and not dry_run and os.environ.get("LIREATE_SKIP_POST_PUBLISH_OVERLAY", "").lower() not in (
+        "1",
+        "yes",
+        "true",
+    ):
+        try:
+            from lireate_hosting_service_post_publish import apply_overlays
+
+            overlay_backup = home / "backups" / "post-publish-overlay"
+            rc = apply_overlays(
+                docroot_path,
+                overlay_backup,
+                apply=True,
+                office_repo=office_repo,
+            )
+            if rc != 0:
+                logging.warning("post_publish overlay returned %s (non-fatal)", rc)
+        except Exception as exc:
+            logging.warning("post_publish overlay failed: %s", exc)
+
     status_word = "UPDATED" if update_mode else "PUBLISHED"
     _print_status(status_word, public_url)
     return 0
