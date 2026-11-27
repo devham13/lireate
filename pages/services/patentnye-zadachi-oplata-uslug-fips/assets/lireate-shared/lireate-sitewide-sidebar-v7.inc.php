@@ -12,8 +12,8 @@ if (!function_exists('lireate_sitewide_sidebar_v7_head')) {
         }
         $done = true;
         echo "<!-- lireate-sitewide-sidebar-v7-20261126 -->\n";
-        echo '<link rel="stylesheet" href="/template/css/lireate-sitewide-sidebar-v7.css?v=20261126">' . "\n";
-        echo '<script defer src="/template/js/lireate-sitewide-sidebar-v7.js?v=20261126"></script>' . "\n";
+        echo '<link rel="stylesheet" href="/template/css/lireate-sitewide-sidebar-v7.css?v=20261127a">' . "\n";
+        echo '<script defer src="/template/js/lireate-sitewide-sidebar-v7.js?v=20261127a"></script>' . "\n";
     }
 }
 

@@ -62,26 +62,7 @@ function init(){
    if(window.console && console.warn)console.warn("[LIREATE sidebar]",err.message||err);
  });
 }
-function ensureExpertPortrait(sidebar){
- if(sidebar.querySelector(".lsv7-sidebar-expert"))return;
- var head=sidebar.querySelector(".lpc-sidebar-head");
- var logo=sidebar.querySelector("a.leftSideLogo");
- var html='<figure class="lsv7-sidebar-expert" aria-label="Эксперт LIREATE">'+
-   '<img src="/template/images/team/person/11.webp" width="120" height="120" alt="Горбачев Юрий Александрович — управляющий партнёр LIREATE" loading="lazy" decoding="async">'+
-   '<figcaption class="lsv7-sidebar-expert-caption"><strong>Горбачев Юрий Александрович</strong><span>Управляющий партнёр</span></figcaption></figure>';
- var wrap=document.createElement("div");
- wrap.innerHTML=html;
- var fig=wrap.firstChild;
- if(head&&head.parentNode){
-   head.parentNode.insertBefore(fig,head.nextSibling);
- }else if(logo&&logo.parentNode){
-   logo.parentNode.insertBefore(fig,logo.nextSibling);
- }else{
-   sidebar.insertBefore(fig,sidebar.firstChild);
- }
-}
 function bind(sidebar){
- ensureExpertPortrait(sidebar);
  var page=(location.pathname||"/").replace(/\/+$/,"")||"/";
  var questions=Array.prototype.slice.call(sidebar.querySelectorAll(".js-question"));
  var answers=Array.prototype.slice.call(sidebar.querySelectorAll(".js-answer"));

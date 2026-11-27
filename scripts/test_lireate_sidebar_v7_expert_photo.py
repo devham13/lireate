@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sidebar V7 must show Yuri Gorbachev portrait (person/11) like the home expert block."""
+"""Sidebar V7 must not show an in-sidebar expert portrait (hero-only team photos)."""
 import pathlib
 import unittest
 
@@ -9,19 +9,27 @@ JS = ROOT / "template/js/lireate-sitewide-sidebar-v7.js"
 PATENT_DATA = ROOT / "pages/patents/_shared/lireate-patent-data.php"
 
 
-class SidebarV7ExpertPhotoTests(unittest.TestCase):
-    def test_canonical_sidebar_markup_has_yuri_photo(self):
+class SidebarV7NoExpertPhotoTests(unittest.TestCase):
+    def test_v7_css_has_no_sidebar_expert_rules(self):
+        css = (ROOT / "template/css/lireate-sitewide-sidebar-v7.css").read_text(encoding="utf-8")
+        self.assertNotIn(".lsv7-sidebar-expert", css)
+
+    def test_canonical_sidebar_markup_has_no_expert_photo(self):
         for name in ("lireate-sidebar-v7-content.inc.php", "lireate-sidebar-v7.html"):
             text = (TEMPLATE / name).read_text(encoding="utf-8")
-            self.assertIn('class="lsv7-sidebar-expert"', text)
-            self.assertIn("/template/images/team/person/11.webp", text)
-            self.assertIn("Горбачев Юрий Александрович", text)
+            self.assertNotIn('class="lsv7-sidebar-expert"', text)
+            self.assertNotIn("/template/images/team/person/11.webp", text)
 
-    def test_js_injects_expert_when_legacy_sidebar_lacks_photo(self):
+    def test_js_does_not_inject_sidebar_expert(self):
         js = JS.read_text(encoding="utf-8")
-        self.assertIn("ensureExpertPortrait", js)
-        self.assertIn("lsv7-sidebar-expert", js)
-        self.assertIn("person/11.webp", js)
+        self.assertNotIn("ensureExpertPortrait", js)
+        self.assertNotIn("lsv7-sidebar-expert", js)
+
+    def test_findtz_six_services_uses_certificate_specialist(self):
+        js = (ROOT / "template/js/lireate-six-services-photo-v4.js").read_text(encoding="utf-8")
+        self.assertIn("'/findtz'", js)
+        self.assertIn("specialist-certificate.webp", js)
+        self.assertIn("Габдрахманова Эльвира", js)
 
     def test_patent_page_data_has_hero_portrait(self):
         text = PATENT_DATA.read_text(encoding="utf-8")
