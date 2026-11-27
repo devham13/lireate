@@ -122,6 +122,8 @@ if (!function_exists('lireate_seo_render_head_tags')) {
                 if ($n >= 1 && $n <= 45) {
                     lireate_seo_render_mktu_schema_scripts($n, $ogTitle, $canonical);
                 }
+            } elseif ($slugOne === 'avtor' && function_exists('lireate_seo_render_avtor_schema_scripts')) {
+                lireate_seo_render_avtor_schema_scripts($ogTitle, $canonical);
             } elseif ($slugOne !== '') {
                 lireate_seo_render_service_schema_scripts($slugOne, $ogTitle, $canonical);
             }

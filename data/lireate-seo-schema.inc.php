@@ -380,7 +380,7 @@ if (!function_exists('lireate_seo_hub_schema_slugs')) {
     {
         $hubs = array(
             'mktu', 'docs', 'team', 'news', 'portfolio', 'reviews', 'o_kompanii', 'partners',
-            'kontaktyi', 'contacts', 'uslugi',
+            'kontaktyi', 'contacts', 'uslugi', 'avtor',
             'private_data', 'politika_konfidencialnosti',
         );
         if (function_exists('lireate_seo_cms_slashless')) {
@@ -422,6 +422,7 @@ if (!function_exists('lireate_seo_hub_breadcrumb_items')) {
             'kontaktyi' => 'Контакты',
             'contacts' => 'Контакты',
             'uslugi' => 'Услуги',
+            'avtor' => 'Автор',
             'private_data' => 'Персональные данные',
             'politika_konfidencialnosti' => 'Политика конфиденциальности',
         );
@@ -434,7 +435,7 @@ if (!function_exists('lireate_seo_hub_breadcrumb_items')) {
                 return null;
             }
             $url = $base . '/' . $one;
-            if ($one === 'contacts' || $one === 'uslugi') {
+            if ($one === 'contacts' || $one === 'uslugi' || $one === 'avtor') {
                 $url = $base . '/' . $one . '/';
             }
             return array($home, array('name' => $name, 'url' => $url));
@@ -450,6 +451,90 @@ if (!function_exists('lireate_seo_hub_breadcrumb_items')) {
             );
         }
         return null;
+    }
+}
+
+if (!function_exists('lireate_seo_render_avtor_schema_scripts')) {
+    function lireate_seo_render_avtor_schema_scripts($title, $canonical)
+    {
+        if (!empty($GLOBALS['lireate_seo_avtor_schema_rendered'])) {
+            return;
+        }
+        $base = lireate_seo_schema_public_base();
+        if ($canonical === '') {
+            $canonical = $base . '/avtor/';
+        }
+        $pageTitle = $title !== '' ? $title : 'Юрий Горбачев — директор патентного бюро Лирейт';
+        $personName = 'Горбачев Юрий Александрович';
+        $image = $base . '/template/images/team/person/11.jpg';
+        $email = 'info@' . 'lireate' . '.' . 'ru';
+        $graph = array(
+            '@context' => 'https://schema.org',
+            '@graph' => array(
+                array(
+                    '@type' => 'ProfilePage',
+                    '@id' => $canonical . '#profilepage',
+                    'url' => $canonical,
+                    'name' => $pageTitle,
+                    'mainEntity' => array('@id' => $canonical . '#person'),
+                    'isPartOf' => array(
+                        '@type' => 'WebSite',
+                        '@id' => $base . '/#website',
+                        'url' => $base . '/',
+                        'name' => 'ЛИРЕЙТ',
+                    ),
+                ),
+                array(
+                    '@type' => 'Person',
+                    '@id' => $canonical . '#person',
+                    'name' => $personName,
+                    'alternateName' => 'Юрий Горбачев',
+                    'jobTitle' => 'Директор, управляющий партнёр',
+                    'url' => $canonical,
+                    'image' => $image,
+                    'worksFor' => array(
+                        '@type' => 'Organization',
+                        'name' => 'LIREATE',
+                        'legalName' => 'ООО «ЛИРЕЙТ»',
+                        'url' => $base . '/',
+                        'taxID' => '1648040894',
+                        'telephone' => '+7-960-048-49-57',
+                        'email' => $email,
+                        'sameAs' => array('https://vk.com/lireate', 'https://t.me/lireate_patent'),
+                    ),
+                    'knowsAbout' => array(
+                        'Товарные знаки',
+                        'Патентное право',
+                        'Авторское право',
+                        'Программы для ЭВМ',
+                        'Споры об интеллектуальной собственности',
+                    ),
+                    'sameAs' => array(
+                        'https://vc.ru/id694569',
+                        'https://t-j.ru/user2640218/',
+                        'https://www.klerk.ru/author/6739/',
+                        'https://tenchat.ru/gorbachev_yuriy',
+                        'https://www.cossa.ru/profile/?ID=259138',
+                    ),
+                ),
+                array(
+                    '@type' => 'BreadcrumbList',
+                    '@id' => $canonical . '#breadcrumb',
+                    'itemListElement' => array(
+                        array('@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $base . '/'),
+                        array('@type' => 'ListItem', 'position' => 2, 'name' => 'Автор', 'item' => $canonical),
+                    ),
+                ),
+            ),
+        );
+        $json = lireate_seo_jsonld_encode($graph);
+        if ($json === '') {
+            return;
+        }
+        echo '<script type="application/ld+json">' . $json . "</script>\n";
+        $GLOBALS['lireate_seo_avtor_schema_rendered'] = true;
+        $GLOBALS['lireate_seo_hub_schema_rendered'] = true;
+        $GLOBALS['lireate_seo_service_schema_rendered'] = true;
     }
 }
 
