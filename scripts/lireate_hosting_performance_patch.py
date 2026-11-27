@@ -364,12 +364,15 @@ def build_plan(docroot):
                 continue
             if updated.encode('utf-8') != raw:
                 plan[rel] = updated.encode('utf-8')
+    skip_root_slugs = frozenset({'findtz', 'patentnye-zadachi'})
     for path in sorted(docroot.glob('*/index.php')):
         if not path.is_file() or path.is_symlink():
             continue
         try:
             rel = path.resolve().relative_to(docroot.resolve())
         except ValueError:
+            continue
+        if rel.parts and rel.parts[0] in skip_root_slugs:
             continue
         if rel == main_rel or rel in plan:
             continue

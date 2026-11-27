@@ -210,6 +210,18 @@ class ShellTuningTests(unittest.TestCase):
         plan, _ = patch.build_plan(self.root)
         self.assertIn('/template/images/OG_image.jpg', plan[Path('dogovory/index.php')].decode())
 
+    def test_root_index_glob_skips_batch_agent_slugs(self):
+        for name in ('findtz', 'patentnye-zadachi'):
+            p = self.root / name / 'index.php'
+            p.parent.mkdir(parents=True)
+            p.write_text(
+                '<meta property="og:image" content="https://example.test/local/templates/lireate/images/og-default.jpg">',
+                encoding='utf-8',
+            )
+        plan, _ = patch.build_plan(self.root)
+        self.assertNotIn(Path('findtz/index.php'), plan)
+        self.assertNotIn(Path('patentnye-zadachi/index.php'), plan)
+
     def test_service_longread_reserves_sidebar_and_repairs_og_image(self):
         html = ('<head><link rel="preconnect" href="https://fonts.googleapis.com"></head>'
                 '<body class="lireate-svc-body">'
