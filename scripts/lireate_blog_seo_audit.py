@@ -6,6 +6,7 @@ from __future__ import print_function
 import argparse
 import csv
 import json
+import os
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -147,7 +148,7 @@ class _SeoMetaParser(HTMLParser):
             name = ad.get("name", "").lower()
             prop = ad.get("property", "").lower()
             content = ad.get("content", "")
-            if name == "description" and content:
+            if name == "description" and content and "description" not in self.meta:
                 self.meta["description"] = content
             if prop.startswith("og:") and content:
                 self.og[prop] = content
@@ -282,44 +283,105 @@ def has_proper_ending(text):
 
 
 def ends_mid_word_cyrillic(text):
-    """Heuristic: SERP snippet cut inside a Cyrillic word."""
+    """Heuristic: snippet cut inside a word or before a finished sentence."""
     s = (text or "").strip()
     if len(s) < 2:
         return False
     if has_proper_ending(s):
         return False
-    last = s[-1]
-    if not _CYRILLIC_LETTER.match(last):
-        return False
-    m = _LAST_WORD.search(s)
-    if not m:
-        return False
-    last_word = m.group(0)
-    if last_word.endswith("-"):
+    # CMS / legacy often caps description near 200 chars without punctuation.
+    if len(s) > 160:
         return True
-    # Typical template/CMS cut near 155–160 (description) or ~70 (title)
+    last = s[-1]
+    if _CYRILLIC_LETTER.match(last):
+        m = _LAST_WORD.search(s)
+        if m:
+            last_word = m.group(0)
+            if last_word.endswith("-"):
+                return True
+            vowels = set("аеёиоуыэюяАЕЁИОУЫЭЮЯ")
+            if len(last_word) <= 4 and last not in vowels:
+                return True
     if len(s) in range(69, 72) or len(s) in range(130, 161):
         return True
-    # Fragment after last space is short and ends on a consonant — likely cut
-    vowels = set("аеёиоуыэюяАЕЁИОУЫЭЮЯ")
-    if len(last_word) <= 4 and last not in vowels:
+    # Incomplete clause: ends on a word without sentence punctuation (e.g. mid-question).
+    if len(s) >= 80 and not has_proper_ending(s):
         return True
     return False
 
 
 def title_length_truncation_risk(title):
+    """Legacy CMS title clip around 69–71 chars or abrupt end (not the >60 SERP rule)."""
     n = len((title or "").strip())
-    if n not in (69, 70, 71):
-        return False
-    return not has_proper_ending(title)
+    if n in (69, 70, 71):
+        return not has_proper_ending(title)
+    if ends_mid_word_cyrillic(title):
+        return True
+    return False
+
+
+def description_length_issues(description):
+    """Return length / SERP-range flags for meta description."""
+    s = (description or "").strip()
+    n = len(s)
+    flags = []
+    if not s:
+        flags.append("desc_missing")
+        return flags
+    if n < 120:
+        flags.append("desc_under_120")
+    if n > 160:
+        flags.append("desc_over_160")
+    return flags
 
 
 def truncation_flags(title, description):
     flags = []
-    if ends_mid_word_cyrillic(title) or title_length_truncation_risk(title):
-        flags.append("title_truncated")
-    if ends_mid_word_cyrillic(description):
+    t = (title or "").strip()
+    d = (description or "").strip()
+    if len(t) > 60:
+        flags.append("title_over_60")
+    if title_length_truncation_risk(t):
+        if ends_mid_word_cyrillic(t):
+            flags.append("title_truncated")
+        elif not has_proper_ending(t) and len(t) >= 50:
+            flags.append("title_abrupt_end")
+    flags.extend(description_length_issues(d))
+    if ends_mid_word_cyrillic(d):
         flags.append("description_truncated")
+    elif d and not has_proper_ending(d) and len(d) >= 80:
+        flags.append("description_abrupt_end")
+    return _dedupe_preserve(flags)
+
+
+_IMG_TAG = re.compile(r"<img\b[^>]*>", re.I)
+_ALT_ATTR = re.compile(r"\balt\s*=\s*([\"'])(.*?)\1", re.I)
+
+
+def count_image_alt_issues(html):
+    """Count <img> tags with missing or empty alt in document body."""
+    body = html or ""
+    m = re.search(r"<body\b", body, re.I)
+    if m:
+        body = body[m.start() :]
+    missing = 0
+    empty = 0
+    for tag in _IMG_TAG.findall(body):
+        am = _ALT_ATTR.search(tag)
+        if not am:
+            missing += 1
+        elif not (am.group(2) or "").strip():
+            empty += 1
+    return missing, empty
+
+
+def schema_flags(json_ld_types):
+    types = [x.strip() for x in (json_ld_types or "").split(",") if x.strip()]
+    flags = []
+    if not any(t == "Article" for t in types):
+        flags.append("missing_article_schema")
+    if not any(t == "BreadcrumbList" for t in types):
+        flags.append("missing_breadcrumb_schema")
     return flags
 
 
@@ -355,18 +417,46 @@ def audit_url(url):
         "error": err,
         "title": "",
         "meta_description": "",
+        "title_len": "",
+        "meta_description_len": "",
         "canonical": "",
         "h1_count": "0",
         "h1_text": "",
         "og_tags": "",
+        "og_description": "",
         "json_ld_types": "",
+        "img_alt_missing": "",
+        "img_alt_empty": "",
         "visible_text_200": "",
         "truncation_flags": "",
+        "issue_flags": "",
     }
     if html:
         row.update(parse_page_seo(html))
-    flags = truncation_flags(row.get("title", ""), row.get("meta_description", ""))
-    row["truncation_flags"] = ", ".join(flags)
+        miss, empty = count_image_alt_issues(html)
+        row["img_alt_missing"] = str(miss)
+        row["img_alt_empty"] = str(empty)
+    t = row.get("title", "") or ""
+    d = row.get("meta_description", "") or ""
+    row["title_len"] = str(len(t.strip()))
+    row["meta_description_len"] = str(len(d.strip()))
+    og = row.get("og_tags") or ""
+    og_desc = ""
+    for part in og.split(";"):
+        part = part.strip()
+        if part.startswith("og:description="):
+            og_desc = part.split("=", 1)[-1]
+            break
+    row["og_description"] = og_desc
+    flags = truncation_flags(t, d)
+    if og_desc and d.strip() and og_desc.strip() != d.strip():
+        flags.append("og_desc_mismatch")
+    flags.extend(schema_flags(row.get("json_ld_types", "")))
+    flags = _dedupe_preserve(flags)
+    row["truncation_flags"] = ", ".join(
+        x for x in flags if x.startswith(("title_", "description_", "desc_"))
+    )
+    row["issue_flags"] = ", ".join(flags)
     return row
 
 
@@ -375,14 +465,20 @@ CSV_FIELDS = [
     "status",
     "error",
     "title",
+    "title_len",
     "meta_description",
+    "meta_description_len",
     "canonical",
     "h1_count",
     "h1_text",
     "og_tags",
+    "og_description",
     "json_ld_types",
+    "img_alt_missing",
+    "img_alt_empty",
     "visible_text_200",
     "truncation_flags",
+    "issue_flags",
 ]
 
 
@@ -400,7 +496,9 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="LIREATE blog SEO audit from sitemap")
     parser.add_argument(
         "sitemap",
-        help="sitemap.xml URL or local file path",
+        nargs="?",
+        default="",
+        help="sitemap.xml URL or local file path (optional with --url-list or --news-export)",
     )
     parser.add_argument("--out", required=True, help="output CSV path (UTF-8 BOM)")
     parser.add_argument(
@@ -420,20 +518,45 @@ def main(argv=None):
         action="store_true",
         help="skip known non-article sitemap paths (services, mktu, static)",
     )
+    parser.add_argument(
+        "--news-export",
+        type=Path,
+        default=None,
+        help="JSON from lireate_blog_seo_export_news.php (all active news URLs)",
+    )
+    parser.add_argument(
+        "--public-base",
+        default=os.environ.get("LIREATE_PUBLIC_SITE_URL", "").rstrip("/"),
+        help="origin when building URLs from --news-export (env LIREATE_PUBLIC_SITE_URL)",
+    )
     args = parser.parse_args(argv)
 
-    if args.url_list and args.url_list.is_file():
+    if args.news_export and args.news_export.is_file():
+        export = json.loads(args.news_export.read_text(encoding="utf-8"))
+        base = (args.public_base or "").rstrip("/")
+        if not base:
+            print("ERROR: --public-base or LIREATE_PUBLIC_SITE_URL required", file=sys.stderr)
+            return 2
+        urls = []
+        for row in export.get("articles", []):
+            slug = (row.get("seo_url") or "").strip().strip("/")
+            if slug:
+                urls.append("{0}/{1}/".format(base, slug))
+    elif args.url_list and args.url_list.is_file():
         urls = [
             ln.strip()
             for ln in args.url_list.read_text(encoding="utf-8").splitlines()
             if ln.strip()
         ]
-    else:
+    elif args.sitemap:
         try:
             urls = collect_sitemap_urls(args.sitemap)
         except Exception as exc:
             print("ERROR: sitemap: {0}".format(exc), file=sys.stderr)
             return 2
+    else:
+        print("ERROR: provide sitemap, --url-list, or --news-export", file=sys.stderr)
+        return 2
     if args.articles_only:
         skip_tokens = (
             "/news",
@@ -485,7 +608,55 @@ def main(argv=None):
     rows.sort(key=lambda r: r.get("url") or "")
     write_csv(rows, args.out)
     print("urls={0} wrote={1}".format(len(rows), args.out))
+    _print_audit_summary(rows)
     return 0
+
+
+def _print_audit_summary(rows):
+    """Stdout summary for honest post-crawl counts."""
+    n = len(rows)
+    if not n:
+        return
+
+    def _int(row, key):
+        try:
+            return int((row.get(key) or "0").strip() or "0")
+        except ValueError:
+            return 0
+
+    title_over = sum(1 for r in rows if _int(r, "title_len") > 60)
+    desc_over = sum(1 for r in rows if _int(r, "meta_description_len") > 160)
+    desc_under = sum(1 for r in rows if 0 < _int(r, "meta_description_len") < 120)
+    desc_range_ok = sum(
+        1
+        for r in rows
+        if 120 <= _int(r, "meta_description_len") <= 160
+    )
+    h1_bad = sum(1 for r in rows if (r.get("h1_count") or "0") != "1")
+    trunc = sum(
+        1 for r in rows if "description_truncated" in (r.get("issue_flags") or "")
+    )
+    abrupt = sum(
+        1 for r in rows if "description_abrupt_end" in (r.get("issue_flags") or "")
+    )
+    missing_article = sum(
+        1 for r in rows if "missing_article_schema" in (r.get("issue_flags") or "")
+    )
+    print(
+        "SUMMARY n={0} title>60={1} desc>160={2} desc<120={3} desc_120_160={4} "
+        "h1!=1={5} description_truncated={6} description_abrupt_end={7} "
+        "missing_article_schema={8}".format(
+            n,
+            title_over,
+            desc_over,
+            desc_under,
+            desc_range_ok,
+            h1_bad,
+            trunc,
+            abrupt,
+            missing_article,
+        )
+    )
 
 
 if __name__ == "__main__":

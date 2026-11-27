@@ -8,6 +8,7 @@ SCRIPTS = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS))
 
 from lireate_blog_seo_audit import (  # noqa: E402
+    description_length_issues,
     ends_mid_word_cyrillic,
     extract_json_ld_types,
     has_proper_ending,
@@ -98,6 +99,23 @@ class TruncationTests(unittest.TestCase):
         self.assertIn("title_truncated", flags)
         flags2 = truncation_flags("Короткий title", TRUNCATED_DESC)
         self.assertIn("description_truncated", flags2)
+
+    def test_desc_over_160_live_pattern(self):
+        live_tail = (
+            "Текст про авторское право на иллюстрации для сайта и соцсетей, "
+            "порядок фиксации и типичные ошибки при регистрации. "
+            "Ее незаконное использование влечет ответственность"
+        )
+        self.assertGreater(len(live_tail), 160)
+        issues = description_length_issues(live_tail)
+        self.assertIn("desc_over_160", issues)
+        flags = truncation_flags("Заголовок.", live_tail)
+        self.assertIn("desc_over_160", flags)
+        self.assertIn("description_truncated", flags)
+
+    def test_title_over_60(self):
+        long_title = "A" * 61
+        self.assertIn("title_over_60", truncation_flags(long_title, "Описание в норме."))
 
 
 if __name__ == "__main__":
