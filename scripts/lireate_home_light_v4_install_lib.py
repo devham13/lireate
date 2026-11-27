@@ -1,5 +1,6 @@
 """Home page Light V4 install helpers (CMS / and $temp[page]==home)."""
 
+import base64
 import difflib
 import json
 import os
@@ -37,7 +38,29 @@ MAIN_SCREEN_HERO_RE = re.compile(
     re.IGNORECASE,
 )
 HEAD_CLOSE_RE = re.compile(r"</head>", re.IGNORECASE)
+PERF_BUNDLE_COMMENT_RE = re.compile(
+    r"<!--lireate-performance-css-v1:([A-Za-z0-9+/=]+)-->",
+    re.IGNORECASE,
+)
 SECTION_MARKERS = (INSTALL_MARKER, "lireate-hero-v4", "page_container", "main-screen")
+
+
+def _decode_performance_bundle_comments(text):
+    """Expand SEO perf bundle comments (same encoding as lireate_hosting_performance_patch)."""
+
+    def repl(match):
+        try:
+            return base64.b64decode(match.group(1)).decode("utf-8")
+        except (ValueError, UnicodeDecodeError):
+            return match.group(0)
+
+    return PERF_BUNDLE_COMMENT_RE.sub(repl, text)
+
+
+def head_marker_present(text):
+    if HEAD_MARKER in text:
+        return True
+    return HEAD_MARKER in _decode_performance_bundle_comments(text)
 
 
 def unified_diff(original, planned, label):
@@ -162,7 +185,7 @@ def _head_snippet():
 
 
 def patch_head_assets(text):
-    if HEAD_MARKER in text:
+    if head_marker_present(text):
         return text, False
     m = HEAD_CLOSE_RE.search(text)
     if not m:
@@ -357,7 +380,11 @@ def plan_home_main_content(text):
 
 def home_template_patch_status(original, planned):
     if INSTALL_MARKER in original and planned == original:
-        return "no changes needed (home include already present)"
+        if head_marker_present(original):
+            return "no changes needed (home include already present)"
+        return "no changes needed (home include present; head assets already bundled)"
+    if planned == original and head_marker_present(original):
+        return "no changes needed (head assets present in performance bundle)"
     if planned == original:
         return "no changes needed or BLOCKER (see patch_home_main_content message)"
     return "would patch"
