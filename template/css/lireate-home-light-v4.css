@@ -978,19 +978,13 @@ body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer p {
   color:#52637b !important;
 }
 
-/* Home + v7: keep white footer in the content column right of the fixed sidebar (desktop). */
+/* Home + v7: footer spans full viewport on CMS; inset to match main column beside fixed sidebar. */
 @media (min-width: 1151px) {
-  html body.lireate-home-light-v4.lireate-theme-light-v4.lsv7-managed.cms-default {
-    margin-left: var(--lsv7-width, 270px) !important;
-    width: calc(100% - var(--lsv7-width, 270px)) !important;
-    box-sizing: border-box !important;
-  }
   body.lireate-home-light-v4.lireate-theme-light-v4.lsv7-managed footer.lx-site-footer {
     box-sizing: border-box;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    margin-left: var(--lsv7-width, 270px) !important;
+    width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    max-width: calc(100vw - var(--lsv7-width, 270px)) !important;
     padding-inline: clamp(20px, 3vw, 48px);
   }
   body.lireate-home-light-v4.lireate-theme-light-v4.lsv7-managed footer.lx-site-footer .lx-site-footer-inner {
