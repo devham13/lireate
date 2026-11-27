@@ -13,6 +13,7 @@ id_rsa*
 id_ed25519*
 
 # Runtime artifacts
+.cache/
 .lireate-diag-tmp/
 scripts/.lireate-php56-docker-wrap.sh
 .dev-docroot/
