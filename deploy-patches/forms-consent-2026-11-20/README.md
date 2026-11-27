@@ -32,7 +32,15 @@ patch -p0 < /path/to/repo/deploy-patches/forms-consent-2026-11-20/template/js/ma
 node --check template/js/main.js
 ```
 
-Патч: `template/js/main.js.consent.patch` (две галочки, `syncMarketingCombined` / `bindMarketingCombined`, ветка `#double-form`). **Не** вставлять `// pragma` внутрь вызовов `window.ym(...)`.
+Патчи JS (по порядку на сервере):
+
+1. `template/js/main.js.consent-skip-managed.patch` — не дублировать согласия на формах с `consent_request` / `data-lireate-consent-managed="1"`.
+2. `template/js/main.js.consent.patch` — две галочки, `syncMarketingCombined` / `bindMarketingCombined`, ветка `#double-form`.
+3. `template/js/main.js.consent-submit-unstick.patch` — `complete` / `error` на AJAX POST в `mail.php` / `mail-*`, чтобы кнопка не оставалась `disabled` при сетевой ошибке.
+
+**Не** вставлять `// pragma` внутрь вызовов `window.ym(...)`.
+
+`template/css/lireate-home-modal-lu.css`: `.lireate-consents label` — flex, чекбокс слева; marketing optional (default off в JS).
 
 ## `template/page/home/lireate-home-hero.inc.php` (исходник на сервере)
 

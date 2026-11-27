@@ -1,0 +1,58 @@
+--- template/js/main.js
++++ template/js/main.js
+@@ -133,6 +133,14 @@
+ 				type: 'POST',
+ 				url: '/mail.php',
+ 				data: m_data,
+ 				dataType: 'json',
++				complete: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
++				error: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
+ 				success: function(data)
+ 				{
+ 					$('[type="submit"]', form_this).removeAttr('disabled');
+@@ -194,6 +202,14 @@
+ 				type: 'POST',
+ 				url: '/mail-gen.php',
+ 				data: m_data,
+ 				dataType: 'json',
++				complete: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
++				error: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
+ 				success: function(data)
+ 				{
+ 					$('[type="submit"]', form_this).removeAttr('disabled');
+@@ -236,6 +252,14 @@
+ 				type: 'POST',
+ 				url: '/mail-simple.php',
+ 				data: m_data,
+ 				dataType: 'json',
++				complete: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
++				error: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
+ 				success: function(data)
+ 				{
+ 					$('[type="submit"]', form_this).removeAttr('disabled');
+@@ -272,6 +296,14 @@
+ 				type: 'POST',
+ 				url: '/mail-double.php',
+ 				data: m_data,
+ 				dataType: 'json',
++				complete: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
++				error: function () {
++					$('[type="submit"]', form_this).prop('disabled', false);
++				},
+ 				success: function(data)
+ 				{
+ 					$('[type="submit"]', form_this).removeAttr('disabled');
