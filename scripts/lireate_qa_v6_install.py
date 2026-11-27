@@ -375,6 +375,21 @@ def register_possible(rel_paths):
     global _EXTRA_POSSIBLE
     _EXTRA_POSSIBLE = frozenset(_EXTRA_POSSIBLE | {Path(p) for p in rel_paths})
 
+QA_V6_CSS_LINK_DUP_RE = re.compile(
+    r'\n?<link rel="stylesheet" href="/template/css/lireate-qa-v6\.css\?v=[^"]+">\s*',
+    re.I)
+
+
+def dedupe_qa_v6_main_head(text):
+    """Keep one QA V6 stylesheet link in template/main.php when marker is present."""
+    matches = list(QA_V6_CSS_LINK_DUP_RE.finditer(text))
+    if len(matches) <= 1:
+        return text
+    for match in reversed(matches[1:]):
+        text = text[:match.start()] + text[match.end():]
+    return text
+
+
 def bump_qa_cache_query(text):
     text = QA_CACHE_CSS_RE.sub('/template/css/lireate-qa-v6.css?v=' + QA_CACHE, text)
     text = QA_CACHE_JS_RE.sub('/template/js/lireate-qa-v6.js?v=' + QA_CACHE, text)
@@ -472,7 +487,7 @@ def build_plan(docroot, with_tools=False, with_shared=False):
         raise ValueError("BLOCKER CMS template/main.php missing")
     current = main.read_text(encoding='utf-8')
     if MARK in current:
-        new = bump_qa_cache_query(current)
+        new = bump_qa_cache_query(dedupe_qa_v6_main_head(current))
     else:
         if len(re.findall(r'</head\s*>', current, re.I)) != 1:
             raise ValueError("BLOCKER expected one closing head in template/main.php")

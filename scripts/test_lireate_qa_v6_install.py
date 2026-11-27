@@ -368,6 +368,17 @@ class QaV6Tests(unittest.TestCase):
         self.assertIn('Реквизиты</a>'.encode('utf-8'), patched)
         self.assertNotIn(b'<details class="lx-site-footer-requisites">', patched)
 
+    def test_dedupe_qa_v6_main_head_keeps_one_css_link(self):
+        snippet = (
+            '<head>\n<!-- lireate-qa-v6-20261126 -->\n'
+            '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126a">\n'
+            '<script defer src="/template/js/lireate-qa-v6.js?v=20261126a"></script>\n'
+            '<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126a">\n'
+            '</head>'
+        )
+        out = mod.dedupe_qa_v6_main_head(snippet)
+        self.assertEqual(out.count('lireate-qa-v6.css'), 1)
+
     def test_service_footer_patch_only(self):
         raw = (
             mod.REPO / 'pages/services/registraciya-tovarnogo-znaka/lireate-service-footer.inc.php'
