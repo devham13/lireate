@@ -125,6 +125,12 @@ if (!function_exists('lireate_seo_render_head_tags')) {
             } elseif ($slugOne !== '') {
                 lireate_seo_render_service_schema_scripts($slugOne, $ogTitle, $canonical);
             }
+            if (function_exists('lireate_seo_render_hub_schema_scripts')
+                && empty($GLOBALS['lireate_seo_service_schema_rendered'])
+                && empty($GLOBALS['lireate_seo_mktu_schema_rendered'])) {
+                $pathForHub = trim($slug, '/');
+                lireate_seo_render_hub_schema_scripts($pathForHub, $ogTitle, $canonical);
+            }
         }
 
     }

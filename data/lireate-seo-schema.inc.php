@@ -375,6 +375,144 @@ if (!function_exists('lireate_seo_render_service_schema_scripts')) {
     }
 }
 
+if (!function_exists('lireate_seo_hub_schema_slugs')) {
+    function lireate_seo_hub_schema_slugs()
+    {
+        $hubs = array(
+            'mktu', 'docs', 'team', 'news', 'portfolio', 'reviews', 'o_kompanii', 'partners',
+            'kontaktyi', 'contacts', 'uslugi',
+            'private_data', 'politika_konfidencialnosti',
+        );
+        if (function_exists('lireate_seo_cms_slashless')) {
+            foreach (lireate_seo_cms_slashless() as $slug) {
+                if (!in_array($slug, $hubs, true)) {
+                    $hubs[] = $slug;
+                }
+            }
+        }
+        return $hubs;
+    }
+}
+
+if (!function_exists('lireate_seo_hub_breadcrumb_items')) {
+    /**
+     * @param string $pathSlug trimmed path without leading/trailing slash
+     * @param string $pageTitle
+     * @return array|null list of array(name, url)
+     */
+    function lireate_seo_hub_breadcrumb_items($pathSlug, $pageTitle)
+    {
+        $base = lireate_seo_schema_public_base();
+        $home = array('name' => 'Главная', 'url' => $base . '/');
+        $pathSlug = trim((string) $pathSlug, '/');
+        if ($pathSlug === '') {
+            return null;
+        }
+        $parts = explode('/', $pathSlug);
+        $one = $parts[0];
+        $labels = array(
+            'mktu' => 'МКТУ',
+            'docs' => 'Документы',
+            'team' => 'Команда',
+            'news' => 'Блог',
+            'portfolio' => 'Портфолио',
+            'reviews' => 'Отзывы',
+            'o_kompanii' => 'О компании',
+            'partners' => 'Партнёры',
+            'kontaktyi' => 'Контакты',
+            'contacts' => 'Контакты',
+            'uslugi' => 'Услуги',
+            'private_data' => 'Персональные данные',
+            'politika_konfidencialnosti' => 'Политика конфиденциальности',
+        );
+        if (count($parts) === 1) {
+            if (!in_array($one, lireate_seo_hub_schema_slugs(), true)) {
+                return null;
+            }
+            $name = isset($labels[$one]) ? $labels[$one] : ($pageTitle !== '' ? $pageTitle : $one);
+            if (function_exists('lireate_seo_service_with_slash') && in_array($one, lireate_seo_service_with_slash(), true)) {
+                return null;
+            }
+            $url = $base . '/' . $one;
+            if ($one === 'contacts' || $one === 'uslugi') {
+                $url = $base . '/' . $one . '/';
+            }
+            return array($home, array('name' => $name, 'url' => $url));
+        }
+        if ($one === 'portfolio' && count($parts) >= 2) {
+            $caseTitle = $pageTitle !== '' ? $pageTitle : $parts[1];
+            $portfolioUrl = $base . '/portfolio';
+            $caseUrl = $base . '/portfolio/' . $parts[1] . '/';
+            return array(
+                $home,
+                array('name' => 'Портфолио', 'url' => $portfolioUrl),
+                array('name' => $caseTitle, 'url' => $caseUrl),
+            );
+        }
+        return null;
+    }
+}
+
+if (!function_exists('lireate_seo_render_hub_schema_scripts')) {
+    function lireate_seo_render_hub_schema_scripts($pathSlug, $title, $canonical)
+    {
+        if (!empty($GLOBALS['lireate_seo_hub_schema_rendered'])
+            || !empty($GLOBALS['lireate_seo_service_schema_rendered'])
+            || !empty($GLOBALS['lireate_seo_mktu_schema_rendered'])) {
+            return;
+        }
+        $items = lireate_seo_hub_breadcrumb_items($pathSlug, $title);
+        if ($items === null || count($items) < 1) {
+            return;
+        }
+        $base = lireate_seo_schema_public_base();
+        $canonical = $canonical !== '' ? $canonical : $base . '/' . trim($pathSlug, '/') . '/';
+        if (substr($canonical, -1) !== '/' && strpos($pathSlug, 'portfolio/') === 0) {
+            $canonical = rtrim($canonical, '/') . '/';
+        }
+        $name = $title !== '' ? $title : $items[count($items) - 1]['name'];
+        $crumbs = array();
+        $pos = 1;
+        foreach ($items as $it) {
+            $crumbs[] = array(
+                '@type' => 'ListItem',
+                'position' => $pos,
+                'name' => $it['name'],
+                'item' => $it['url'],
+            );
+            $pos++;
+        }
+        $graph = array(
+            '@context' => 'https://schema.org',
+            '@graph' => array(
+                array(
+                    '@type' => 'WebPage',
+                    '@id' => $canonical . '#webpage',
+                    'url' => $canonical,
+                    'name' => $name,
+                    'isPartOf' => array(
+                        '@type' => 'WebSite',
+                        '@id' => $base . '/#website',
+                        'url' => $base . '/',
+                        'name' => 'ЛИРЕЙТ',
+                    ),
+                ),
+                array(
+                    '@type' => 'BreadcrumbList',
+                    '@id' => $canonical . '#breadcrumb',
+                    'itemListElement' => $crumbs,
+                ),
+            ),
+        );
+        $json = lireate_seo_jsonld_encode($graph);
+        if ($json === '') {
+            return;
+        }
+        echo '<script type="application/ld+json">' . $json . "</script>\n";
+        $GLOBALS['lireate_seo_hub_schema_rendered'] = true;
+    }
+}
+
 $_lireate_seo_page_meta_inc = dirname(__FILE__) . '/lireate-seo-page-meta.inc.php';
 if (is_file($_lireate_seo_page_meta_inc)) {
     require_once $_lireate_seo_page_meta_inc;
