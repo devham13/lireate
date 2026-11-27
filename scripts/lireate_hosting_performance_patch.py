@@ -19,11 +19,31 @@ from datetime import datetime, timezone
 from lireate_blog_install_lib import resolve_site_php_bin
 
 REPO = Path(__file__).resolve().parents[1]
-VERSION = 'seo-perf-20261120-v1'
+VERSION = 'seo-perf-20261127-v2'
 HEAD = ('\n<!-- ' + VERSION + ' -->\n'
         '<meta name="lireate-performance-patch" content="' + VERSION + '">\n'
         '<link rel="stylesheet" href="/template/css/lireate-performance.css?v=' + VERSION + '">\n'
         '<script defer src="/template/js/lireate-performance.js?v=' + VERSION + '"></script>\n')
+MARKER_BLOCK = re.compile(
+    r'\n?<!-- (?P<ver>seo-perf-\d{8}-v\d+) -->\s*'
+    r'<meta name="lireate-performance-patch" content="(?P=ver)">\s*'
+    r'<link rel="stylesheet" href="/template/css/lireate-performance\.css\?v=(?P=ver)">\s*'
+    r'<script defer src="/template/js/lireate-performance\.js\?v=(?P=ver)"></script>\n?',
+    re.I)
+EARLY_MARK = VERSION + '-early'
+HERO_WEBP = 'template/images/home/gabdrakhmanova-elvira-2026-11.webp'
+EARLY = ('\n<!-- ' + EARLY_MARK + ' -->\n'
+         "<?php if (isset($temp['page']) && $temp['page'] === 'home') { ?>\n"
+         '<link rel="preload" as="image" href="/' + HERO_WEBP + '" type="image/webp" fetchpriority="high">\n'
+         "<?php } ?>\n")
+HOME_FONT = (
+    '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800'
+    '&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">'
+)
+HOME_FONT_PATHS = (
+    Path('template/page/home/lireate-home-page.inc.php'),
+    Path('pages/home/_shared/lireate-home-page.inc.php'),
+)
 VK_PAIR = re.compile(
     r'(<script\b[^>]*\bsrc=["\'](?:https?:)?//vk\.com/js/api/openapi\.js\?\d+["\'][^>]*>\s*</script>)'
     r'\s*<script\b[^>]*>\s*(VK\.init\(\s*\{[^}]*\}\s*\)\s*;)\s*</script>', re.I)
@@ -52,6 +72,8 @@ def bundle_styles(text, docroot):
         if set(attrs) - {'rel', 'href', 'type', 'media'} or re.search(r'\sdisabled\b', tag, re.I):
             return None
         href = attrs.get('href', '')
+        if href.startswith('{theme_url}/'):
+            href = '/template/' + href[len('{theme_url}/'):]
         parsed = urlsplit(href)
         if parsed.netloc and parsed.netloc not in ['lireate.ru', 'www.lireate.ru']:
             return None
@@ -84,7 +106,8 @@ def bundle_styles(text, docroot):
     current = []
     for match in matches:
         css = stylesheet(match.group(0))
-        if current and (css is None or text[current[-1][0].end():match.start()].strip()):
+        gap = text[current[-1][0].end():match.start()] if current else ''
+        if current and (css is None or re.sub(r'<!--.*?-->', '', gap, flags=re.S).strip()):
             groups.append(current)
             current = []
         if css is not None:
@@ -120,11 +143,152 @@ def patch_head(text, defer_vk=False):
             return (tag + '\n<script>document.addEventListener("DOMContentLoaded", function () {'
                     ' if (window.VK && window.VK.init) { ' + init + ' } });</script>')
         text = VK_PAIR.sub(pair, text)
+
+    def keep_current(match):
+        if match.group('ver') == VERSION:
+            return match.group(0)
+        return ''
+
+    text = MARKER_BLOCK.sub(keep_current, text)
     if VERSION not in text:
         if not re.search(r'</head\s*>', text, re.I):
             raise ValueError('Expected closing head tag is missing')
         text = re.sub(r'</head\s*>', lambda m: HEAD + m.group(0), text, count=1, flags=re.I)
     return text
+
+
+def uncommented(text):
+    return re.sub(r'<!--.*?-->', '', text, flags=re.S)
+
+
+def fix_og_image(text):
+    """Point og:image at the file that actually exists."""
+    return re.sub(
+        r'(?<!/template)(/images/OG_image\.jpg)',
+        '/template/images/OG_image.jpg',
+        text)
+
+
+def relax_google_fonts(text):
+    """Stop legacy Google Fonts stylesheets from blocking the first paint."""
+    pattern = re.compile(
+        r'<link\b[^>]*href=(["\'])([^"\']*fonts\.googleapis\.com[^"\']*)\1[^>]*>',
+        re.I)
+
+    def repl(match):
+        if text.rfind('<noscript>', 0, match.start()) > text.rfind('</noscript>', 0, match.start()):
+            return match.group(0)
+        tag = match.group(0)
+        quote = match.group(1)
+        href = match.group(2)
+        if '/css' not in href or re.search(r'\brel\s*=\s*["\']preconnect["\']', tag, re.I):
+            return match.group(0)
+        if 'display=' not in href:
+            href = href + ('&' if '?' in href else '?') + 'display=swap'
+            tag = tag.replace(match.group(2), href, 1)
+        if re.search(r'\bonload\s*=', tag, re.I):
+            return tag
+        if re.search(r'\bmedia\s*=', tag, re.I):
+            tag = re.sub(r'\smedia=(["\']).*?\1', ' media="print"', tag, count=1, flags=re.I)
+            tag = tag[:-1].rstrip() + ' onload="this.media=\'all\'">'
+        else:
+            tag = tag[:-1].rstrip() + ' media="print" onload="this.media=\'all\'">'
+        return tag + '<noscript><link rel="stylesheet" href=' + quote + href + quote + '></noscript>'
+
+    return pattern.sub(repl, text)
+
+
+def remove_unused_styles(text):
+    visible = uncommented(text)
+    without_swiper_link = re.sub(r'<link\b[^>]*swiper-bundle\.min\.css[^>]*>', '', visible, flags=re.I)
+    if 'swiper-bundle.min.css' in text and 'swiper' not in without_swiper_link.lower():
+        text = re.sub(
+            r'\n?[ \t]*<link\b[^>]*href=["\']https://unpkg\.com/swiper/swiper-bundle\.min\.css["\'][^>]*>\n?',
+            '\n', text, count=1)
+    if 'cdn.callbackkiller.com/widget/cbk.css' in text and 'cbk.js' not in uncommented(text):
+        text = re.sub(
+            r'\n?[ \t]*<link\b[^>]*href=["\']https://cdn\.callbackkiller\.com/widget/cbk\.css["\'][^>]*>\n?',
+            '\n', text, count=1)
+    return text
+
+
+def fix_legacy_markup(text):
+    text = text.replace(
+        'Регистрация товарного знака с оплатой за результат</h>',
+        'Регистрация товарного знака с оплатой за результат</h3>',
+        1)
+    text = text.replace(
+        '<h1>Патентное бюро «Лирейт»</h1>',
+        '<p class="lireate-legacy-hero-title">Патентное бюро «Лирейт»</p>',
+        1)
+    return text
+
+
+def inject_early(text, docroot):
+    if EARLY_MARK in text:
+        return text
+    hero = safe_path(docroot, HERO_WEBP)
+    if not hero.is_file():
+        return text
+    viewport = re.search(r'<meta\b[^>]*name=["\']viewport["\'][^>]*>', text, re.I)
+    if viewport:
+        at = viewport.end()
+    else:
+        head = re.search(r'<head\b[^>]*>', text, re.I)
+        if not head:
+            return text
+        at = head.end()
+    return text[:at] + EARLY + text[at:]
+
+
+def relax_home_font(text):
+    if HOME_FONT not in text:
+        return text
+    href = HOME_FONT.split('href="', 1)[1].split('"', 1)[0]
+    return text.replace(
+        HOME_FONT,
+        '<link href="' + href + '" rel="stylesheet" media="print" onload="this.media=\'all\'">'
+        '<noscript><link rel="stylesheet" href="' + href + '" media="all"></noscript>',
+        1)
+
+
+def fix_og_protocol(text):
+    return re.sub(
+        r'(<meta\b[^>]*\bproperty=["\']og:image["\'][^>]*\bcontent=["\'])http://',
+        r'\1https://',
+        text,
+        flags=re.I)
+
+
+def tune_service(text):
+    """Fixes confirmed on published longreads: a 404 social image and a desktop
+    shift when the shared sidebar is inserted after the first paint.
+    Patent tools already print their sidebar in the HTML, so they keep their layout.
+    """
+    text = text.replace(
+        '/local/templates/lireate/images/og-default.jpg',
+        '/template/images/OG_image.jpg')
+    text = relax_google_fonts(text)
+    if ('lsv7-managed' in text or 'leftSideBar' in text
+            or 'lireate-patent-tasks-sidebar' in text or 'screenshot-capture' in text):
+        return text
+
+    def add(match):
+        tag = match.group(0)
+        if re.search(r'\bclass\s*=', tag, re.I):
+            return re.sub(r'(\bclass\s*=\s*["\'])', r'\1lsv7-managed ', tag, count=1, flags=re.I)
+        return tag[:-1] + ' class="lsv7-managed">'
+
+    return re.sub(r'<body\b[^>]*>', add, text, count=1, flags=re.I)
+
+
+def tune_shell(text, docroot):
+    text = fix_og_protocol(fix_og_image(text))
+    text = relax_google_fonts(text)
+    text = remove_unused_styles(text)
+    text = fix_legacy_markup(text)
+    text = text.replace('console.log(topBarButtonsDiv);', '')
+    return inject_early(text, docroot)
 
 
 def patch_cover_layout(text):
@@ -172,8 +336,33 @@ def build_plan(docroot):
     original = main.read_text(encoding='utf-8')
     bundled, assets = bundle_styles(original, docroot)
     plan.update(assets)
-    changed = patch_head(bundled, defer_vk=not widgets)
+    changed = tune_shell(patch_head(bundled, defer_vk=not widgets), docroot)
     plan[main_rel] = changed.encode('utf-8')
+    for root_name in ('data', 'template'):
+        folder = docroot / root_name
+        if not folder.is_dir():
+            continue
+        for path in folder.rglob('*.php'):
+            if not path.is_file() or path.is_symlink():
+                continue
+            rel = path.resolve().relative_to(docroot.resolve())
+            if rel == main_rel or rel in plan:
+                continue
+            raw = path.read_bytes()
+            try:
+                updated = fix_og_image(raw.decode('utf-8'))
+            except UnicodeError:
+                continue
+            if updated.encode('utf-8') != raw:
+                plan[rel] = updated.encode('utf-8')
+    for rel in HOME_FONT_PATHS:
+        home_inc = safe_path(docroot, rel)
+        if not home_inc.is_file() and rel not in plan:
+            continue
+        raw = plan[rel] if rel in plan else home_inc.read_bytes()
+        updated = relax_home_font(raw.decode('utf-8'))
+        if updated.encode('utf-8') != raw:
+            plan[rel] = updated.encode('utf-8')
     layouts_found = 0
     for layout_rel in [Path('pages/blog/_shared/lireate-blog-layout.inc.php'),
                        Path('template/page/news/lireate-blog-layout.inc.php')]:
@@ -196,10 +385,10 @@ def build_plan(docroot):
             continue
         rel = Path(url) / 'index.php'
         path = safe_path(docroot, rel)
-        if path.is_file():
-            text = path.read_text(encoding='utf-8')
+        if path.is_file() or rel in plan:
+            text = plan[rel].decode('utf-8') if rel in plan else path.read_text(encoding='utf-8')
             if 'lireate-service-dark.css' in text and re.search(r'</head\s*>', text, re.I):
-                plan[rel] = patch_head(text).encode('utf-8')
+                plan[rel] = patch_head(tune_service(text)).encode('utf-8')
     return {rel: data for rel, data in plan.items()
             if not safe_path(docroot, rel).is_file() or safe_path(docroot, rel).read_bytes() != data}, notes
 

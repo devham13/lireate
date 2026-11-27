@@ -10,7 +10,7 @@ $canonical = $site_root . $path;
 $seo_title = 'Регистрация товарного знака с финансовой гарантией — LIREATE';
 $seo_description = 'Вознаграждение бюро — после регистрации знака. Госпошлины Роспатента оплачиваются отдельно, за 1 класс — 35 000 ₽. Условия при отказе — на странице.';
 $og_type = 'website';
-$og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
+$og_image = $site_root . '/template/images/OG_image.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
 $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
@@ -65,10 +65,10 @@ $schema_graph = [
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/registraciya-oplata-white-v3.css', $lx_service_asset_dir); ?>"><!-- lireate_fg_white_v3 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"></noscript>
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
-<body class="lireate-svc-body lx-fg-white">
+<body class="lsv7-managed lireate-svc-body lx-fg-white">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">

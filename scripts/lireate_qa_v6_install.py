@@ -214,10 +214,10 @@ PERF_BLOCK = (
     '<script defer src="/template/js/lireate-performance.js?v=' + PERF_MARK + '"></script>'
 )
 PERF_BLOCK_RE = re.compile(
-    r'\n?<!-- seo-perf-20261120-v1 -->\s*'
-    r'<meta name="lireate-performance-patch" content="seo-perf-20261120-v1">\s*'
-    r'<link rel="stylesheet" href="/template/css/lireate-performance\.css\?v=seo-perf-20261120-v1">\s*'
-    r'<script defer src="/template/js/lireate-performance\.js\?v=seo-perf-20261120-v1"></script>\n?',
+    r'\n?<!-- (?P<ver>seo-perf-\d{8}-v\d+) -->\s*'
+    r'<meta name="lireate-performance-patch" content="(?P=ver)">\s*'
+    r'<link rel="stylesheet" href="/template/css/lireate-performance\.css\?v=(?P=ver)">\s*'
+    r'<script defer src="/template/js/lireate-performance\.js\?v=(?P=ver)"></script>\n?',
     re.I,
 )
 

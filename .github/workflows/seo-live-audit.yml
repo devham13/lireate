@@ -30,7 +30,7 @@ jobs:
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
       PUPPETEER_SKIP_DOWNLOAD: 'true'
       SEO_CHROME_NO_SANDBOX: '1'
-      SEO_EXPECT_PATCH: seo-perf-20261120-v1
+      SEO_EXPECT_PATCH: seo-perf-20261127-v2
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

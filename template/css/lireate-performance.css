@@ -12,3 +12,17 @@ body .lireate-blog-author-block a.lireate-blog-author-link {
   width: 63px;
   height: 63px;
 }
+/* Light pages paint white even when the legacy shell sets a dark canvas. */
+html:has(body.lireate-theme-light-v4),
+body.lireate-theme-light-v4 {
+  background-color: #ffffff;
+}
+/* The hero used to start at opacity 0, so Lighthouse treated the floating icon as LCP. */
+body.lireate-home-light-v4.lireate-theme-light-v4.motion-ready .hero .reveal,
+body.lireate-home-light-v4.lireate-theme-light-v4.motion-ready .hero .reveal:first-child,
+body.lireate-home-light-v4.lireate-theme-light-v4.motion-ready .hero .hero-right.reveal {
+  opacity: 1 !important;
+  animation: none !important;
+  filter: none !important;
+  transform: none !important;
+}

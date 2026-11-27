@@ -160,7 +160,8 @@ OFFICE="$LIREATE_AUTOPUB_HOME/office-repo"
 ```
 
 Результат виден в исходном HTML: meta `lireate-performance-patch` со значением
-`seo-perf-20261120-v1`. `LIREATE live SEO audit` ждёт этот маркер до 35 минут,
+`seo-perf-20261127-v2` (предыдущий маркер `seo-perf-20261120-v1` заменяется тем же CRON).
+`LIREATE live SEO audit` ждёт актуальный маркер до 35 минут,
 затем повторяет замеры. Если маркера нет, это ошибка доставки, а не оценка сайта.
 
 - CRON: `$HOME/lireate-autopub/logs/services-cron.log`

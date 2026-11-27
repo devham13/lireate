@@ -128,5 +128,100 @@ class PerformancePatchTests(unittest.TestCase):
             patch.apply_plan(self.root, plan, self.backups)
 
 
+class ShellTuningTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name) / 'docroot'
+        (self.root / 'template').mkdir(parents=True)
+        self.main = self.root / 'template/main.php'
+        self.main.write_text('<!doctype html><html><head></head><body></body></html>')
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_confirmed_shell_fixes_are_idempotent(self):
+        hero = self.root / patch.HERO_WEBP
+        hero.parent.mkdir(parents=True)
+        hero.write_bytes(b'webp')
+        self.main.write_text('''<!doctype html><html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:image" content="https://example.test/images/OG_image.jpg" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:400&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<!-- seo-perf-20261120-v1 -->
+<meta name="lireate-performance-patch" content="seo-perf-20261120-v1">
+<link rel="stylesheet" href="/template/css/lireate-performance.css?v=seo-perf-20261120-v1">
+<script defer src="/template/js/lireate-performance.js?v=seo-perf-20261120-v1"></script>
+<link rel="stylesheet" href="https://cdn.callbackkiller.com/widget/cbk.css">
+<!--<script src="https://cdn.callbackkiller.com/widget/cbk.js?wcb_code=1"></script>-->
+</head><body>
+<h1>Патентное бюро «Лирейт»</h1>
+<h1 class="lh4-seo-h1">Патентное бюро «<span>Лирейт</span>»</h1>
+<h3 style="margin-bottom: 0px;">Регистрация товарного знака с оплатой за результат</h>
+</body></html>''')
+        plan, _ = patch.build_plan(self.root)
+        text = plan[Path('template/main.php')].decode()
+        self.assertIn('https://example.test/template/images/OG_image.jpg', text)
+        self.assertNotIn('https://example.test/images/OG_image.jpg', text)
+        self.assertIn('display=swap', text)
+        self.assertIn('media="print"', text)
+        self.assertNotIn('swiper-bundle', text)
+        self.assertNotIn('cbk.css', text)
+        self.assertIn('оплатой за результат</h3>', text)
+        self.assertIn('lireate-legacy-hero-title', text)
+        self.assertIn('lh4-seo-h1', text)
+        self.assertIn(patch.VERSION, text)
+        self.assertNotIn('seo-perf-20261120-v1', text)
+        self.assertIn('fetchpriority="high"', text)
+        self.main.write_bytes(plan[Path('template/main.php')])
+        again, _ = patch.build_plan(self.root)
+        self.assertNotIn(Path('template/main.php'), again)
+
+    def test_home_font_stylesheet_does_not_block_repeat_runs(self):
+        rel = Path('template/page/home/lireate-home-page.inc.php')
+        path = self.root / rel
+        path.parent.mkdir(parents=True)
+        path.write_text('<?php\n' + patch.HOME_FONT + '\n', encoding='utf-8')
+        plan, _ = patch.build_plan(self.root)
+        text = plan[rel].decode()
+        self.assertIn('onload="this.media=\'all\'"', text)
+        self.assertIn('<noscript>', text)
+        path.write_bytes(plan[rel])
+        again, _ = patch.build_plan(self.root)
+        self.assertNotIn(rel, again)
+
+    def test_service_longread_reserves_sidebar_and_repairs_og_image(self):
+        html = ('<head><link rel="preconnect" href="https://fonts.googleapis.com"></head>'
+                '<body class="lireate-svc-body">'
+                '<meta property="og:image" content="https://example.test/local/templates/lireate/images/og-default.jpg">'
+                '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">'
+                '</body>')
+        out = patch.tune_service(html)
+        self.assertIn('class="lsv7-managed lireate-svc-body"', out)
+        self.assertIn('/template/images/OG_image.jpg', out)
+        self.assertNotIn('og-default.jpg', out)
+        self.assertIn("media='all'", out)
+        self.assertIn('<link rel="preconnect" href="https://fonts.googleapis.com">', out)
+        self.assertEqual(patch.tune_service(out), out)
+        patent = html.replace('<body class="lireate-svc-body">',
+                              '<body class="lireate-svc-body"><?php include "lireate-patent-tasks-sidebar-v6.inc.php"; ?>')
+        kept = patch.tune_service(patent)
+        self.assertNotIn('lsv7-managed', kept)
+
+    def test_theme_url_links_bundle_across_a_comment(self):
+        css = self.root / 'template/css'
+        css.mkdir()
+        (css / 'a.css').write_text('a { color: red; }')
+        (css / 'b.css').write_text('b { color: blue; }')
+        original = ('<head><link rel="stylesheet" href="{theme_url}/css/a.css">'
+                    '<!-- legacy -->'
+                    '<link rel="stylesheet" href="{theme_url}/css/b.css"></head>')
+        html, assets = patch.bundle_styles(original, self.root)
+        self.assertEqual(len(assets), 1)
+        combined = next(iter(assets.values())).decode()
+        self.assertLess(combined.index('color: red'), combined.index('color: blue'))
+        self.assertIn('data-lireate-css-bundle="1"', html)
+
+
 if __name__ == '__main__':
     unittest.main()
