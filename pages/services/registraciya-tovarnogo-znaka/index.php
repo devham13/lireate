@@ -517,7 +517,6 @@ include __DIR__ . '/blocks/lireate-reviews.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-extras.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-timeline.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 <script src="assets/registraciya-landing.js"></script>
 <script src="assets/registraciya-pilot-v2.js"></script>
