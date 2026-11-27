@@ -231,7 +231,7 @@ if (!function_exists('lireate_seo_audit_meta_config')) {
 if (!function_exists('lireate_seo_service_landings')) {
     function lireate_seo_service_landings()
     {
-        return array(
+        $labels = array(
             'poisk_tovarnyh_znakov' => 'Поиск товарных знаков',
             'ekspertiza_tovarnogo_znaka' => 'Экспертиза товарного знака',
             'mezhdunarodnaja_registracija_tovarnogo_znaka' => 'Международная регистрация товарного знака',
@@ -239,6 +239,14 @@ if (!function_exists('lireate_seo_service_landings')) {
             'patent' => 'Патентование изобретений',
             'patent_prom_obr' => 'Промышленные образцы',
         );
+        if (function_exists('lireate_seo_service_with_slash')) {
+            foreach (lireate_seo_service_with_slash() as $slug) {
+                if (!isset($labels[$slug])) {
+                    $labels[$slug] = $slug;
+                }
+            }
+        }
+        return $labels;
     }
 }
 
@@ -305,17 +313,39 @@ if (!function_exists('lireate_seo_render_service_schema_scripts')) {
             return;
         }
         $landings = lireate_seo_service_landings();
-        if (!isset($landings[$slug])) {
+        $knownService = function_exists('lireate_seo_service_with_slash')
+            && in_array($slug, lireate_seo_service_with_slash(), true);
+        if (!$knownService && !isset($landings[$slug])) {
             return;
         }
         $base = lireate_seo_schema_public_base();
-        $name = $title !== '' ? $title : $landings[$slug];
+        $name = $title !== '' ? $title : (isset($landings[$slug]) ? $landings[$slug] : $slug);
+        if ($name === $slug && function_exists('lireate_seo_static_page_meta')) {
+            $meta = lireate_seo_static_page_meta($slug);
+            if (is_array($meta) && !empty($meta['title'])) {
+                $name = (string) $meta['title'];
+            }
+        }
         $canonical = $canonical !== '' ? $canonical : ($base . '/' . $slug . '/');
+        $webPageId = $canonical;
         $graph = array(
             '@context' => 'https://schema.org',
             '@graph' => array(
                 array(
+                    '@type' => 'WebPage',
+                    '@id' => $webPageId . '#webpage',
+                    'url' => $canonical,
+                    'name' => $name,
+                    'isPartOf' => array(
+                        '@type' => 'WebSite',
+                        '@id' => $base . '/#website',
+                        'url' => $base . '/',
+                        'name' => 'ЛИРЕЙТ',
+                    ),
+                ),
+                array(
                     '@type' => 'BreadcrumbList',
+                    '@id' => $canonical . '#breadcrumb',
                     'itemListElement' => array(
                         array('@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $base . '/'),
                         array('@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $base . '/uslugi/'),
@@ -324,6 +354,7 @@ if (!function_exists('lireate_seo_render_service_schema_scripts')) {
                 ),
                 array(
                     '@type' => 'Service',
+                    '@id' => $canonical . '#service',
                     'name' => $name,
                     'url' => $canonical,
                     'provider' => array(

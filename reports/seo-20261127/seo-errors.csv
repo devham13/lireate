@@ -1,0 +1,82 @@
+﻿phase,url,issue_type,status,title
+after,https://lireate.ru/mktu/,no_breadcrumb_jsonld,200,МКТУ — классификатор 45 классов товаров и услуг
+after,https://lireate.ru/docs/,no_breadcrumb_jsonld,200,Документы и реквизиты ООО «ЛИРЕЙТ»
+after,https://lireate.ru/team/,no_breadcrumb_jsonld,200,Команда Лирейт — специалисты по интеллектуальным правам
+after,https://lireate.ru/contacts/,no_breadcrumb_jsonld,200,Контакты патентного бюро Лирейт — телефоны и адрес
+after,https://lireate.ru/news/,no_breadcrumb_jsonld,200,"Блог Лирейт — товарные знаки, патенты и защита прав"
+after,https://lireate.ru/avtor/,no_breadcrumb_jsonld,200,Юрий Горбачев — директор патентного бюро Лирейт
+after,https://lireate.ru/uslugi/,no_breadcrumb_jsonld,200,Услуги по интеллектуальной собственности — Лирейт
+after,https://lireate.ru/portfolio/,no_jsonld,200,Портфолио Лирейт — кейсы регистрации товарных знаков
+after,https://lireate.ru/portfolio/,no_breadcrumb_jsonld,200,Портфолио Лирейт — кейсы регистрации товарных знаков
+after,https://lireate.ru/portfolio/bentax/,title_long,200,Товарные знаки «Bentax» и «Shtainberg Chemy» — кейс и видеоотзыв | Лирейт
+after,https://lireate.ru/reviews/,no_jsonld,200,Видеоотзывы клиентов о регистрации товарных знаков — Лирейт
+after,https://lireate.ru/reviews/,no_breadcrumb_jsonld,200,Видеоотзывы клиентов о регистрации товарных знаков — Лирейт
+after,https://lireate.ru/o_kompanii/,no_breadcrumb_jsonld,200,О патентном бюро Лирейт — опыт и специализация
+after,https://lireate.ru/partners/,no_breadcrumb_jsonld,200,Партнёры патентного бюро Лирейт
+after,https://lireate.ru/prekrashhenie_pravovoj_ohrany/,no_jsonld,200,Прекращение охраны товарного знака — Лирейт
+after,https://lireate.ru/prekrashhenie_pravovoj_ohrany/,no_breadcrumb_jsonld,200,Прекращение охраны товарного знака — Лирейт
+after,https://lireate.ru/priznanie_tovarnogo_znaka_obshheizvestnym/,no_jsonld,200,Признание товарного знака общеизвестным — Лирейт
+after,https://lireate.ru/priznanie_tovarnogo_znaka_obshheizvestnym/,no_breadcrumb_jsonld,200,Признание товарного знака общеизвестным — Лирейт
+after,https://lireate.ru/registracija_naimenovanija_mesta_proishozhdenija_tovarov/,no_jsonld,200,Регистрация НМПТ и защита наименования происхождения
+after,https://lireate.ru/registracija_naimenovanija_mesta_proishozhdenija_tovarov/,no_breadcrumb_jsonld,200,Регистрация НМПТ и защита наименования происхождения
+after,https://lireate.ru/tovarnyi_znak_info/,no_jsonld,200,Что такое товарный знак и какие права он даёт
+after,https://lireate.ru/tovarnyi_znak_info/,no_breadcrumb_jsonld,200,Что такое товарный знак и какие права он даёт
+after,https://lireate.ru/zashhita_firmennogo_naimenovanija/,no_jsonld,200,Защита фирменного наименования компании — Лирейт
+after,https://lireate.ru/zashhita_firmennogo_naimenovanija/,no_breadcrumb_jsonld,200,Защита фирменного наименования компании — Лирейт
+after,https://lireate.ru/offshoryi_i_nouxau/,title_short,200,Оффшоры и ноу-хау
+after,https://lireate.ru/private_data/,missing_description,200,Соглашение на обработку персональных данных
+after,https://lireate.ru/private_data/,no_jsonld,200,Соглашение на обработку персональных данных
+after,https://lireate.ru/private_data/,no_breadcrumb_jsonld,200,Соглашение на обработку персональных данных
+after,https://lireate.ru/politika_konfidencialnosti/,missing_description,200,Политика конфиденциальности
+after,https://lireate.ru/politika_konfidencialnosti/,no_jsonld,200,Политика конфиденциальности
+after,https://lireate.ru/politika_konfidencialnosti/,no_breadcrumb_jsonld,200,Политика конфиденциальности
+after,https://lireate.ru/marketing-data-consent.html,missing_description,200,Согласие на обработку персональных данных для рекламы — ЛИРЕЙТ
+after,https://lireate.ru/marketing-data-consent.html,missing_canonical,200,Согласие на обработку персональных данных для рекламы — ЛИРЕЙТ
+after,https://lireate.ru/marketing-data-consent.html,no_jsonld,200,Согласие на обработку персональных данных для рекламы — ЛИРЕЙТ
+after,https://lireate.ru/marketing-data-consent.html,no_breadcrumb_jsonld,200,Согласие на обработку персональных данных для рекламы — ЛИРЕЙТ
+after,https://lireate.ru/advertising-consent.html,missing_description,200,Согласие на получение рекламы — ЛИРЕЙТ
+after,https://lireate.ru/advertising-consent.html,missing_canonical,200,Согласие на получение рекламы — ЛИРЕЙТ
+after,https://lireate.ru/advertising-consent.html,no_jsonld,200,Согласие на получение рекламы — ЛИРЕЙТ
+after,https://lireate.ru/advertising-consent.html,no_breadcrumb_jsonld,200,Согласие на получение рекламы — ЛИРЕЙТ
+after,http://lireate.ru/private_data/,missing_description,200,Соглашение на обработку персональных данных
+after,http://lireate.ru/private_data/,no_jsonld,200,Соглашение на обработку персональных данных
+after,http://lireate.ru/private_data/,no_breadcrumb_jsonld,200,Соглашение на обработку персональных данных
+after,http://lireate.ru/politika_konfidencialnosti/,missing_description,200,Политика конфиденциальности
+after,http://lireate.ru/politika_konfidencialnosti/,no_jsonld,200,Политика конфиденциальности
+after,http://lireate.ru/politika_konfidencialnosti/,no_breadcrumb_jsonld,200,Политика конфиденциальности
+after,https://lireate.ru/template/page/docs/documents/Инн.pdf,missing_h1,200,
+after,https://lireate.ru/template/page/docs/documents/Инн.pdf,missing_title,200,
+after,https://lireate.ru/template/page/docs/documents/Инн.pdf,missing_description,200,
+after,https://lireate.ru/template/page/docs/documents/Инн.pdf,missing_canonical,200,
+after,https://lireate.ru/template/page/docs/documents/Инн.pdf,no_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Инн.pdf,no_breadcrumb_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного.jpg,missing_h1,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного.jpg,missing_title,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного.jpg,missing_description,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного.jpg,missing_canonical,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного.jpg,no_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного.jpg,no_breadcrumb_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного - Хайретдинов Рустем Афузалович.PDF,missing_h1,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного - Хайретдинов Рустем Афузалович.PDF,missing_title,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного - Хайретдинов Рустем Афузалович.PDF,missing_description,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного - Хайретдинов Рустем Афузалович.PDF,missing_canonical,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного - Хайретдинов Рустем Афузалович.PDF,no_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство патентноповеренного - Хайретдинов Рустем Афузалович.PDF,no_breadcrumb_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство на товарный знак Лирейт.jpg,missing_h1,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство на товарный знак Лирейт.jpg,missing_title,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство на товарный знак Лирейт.jpg,missing_description,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство на товарный знак Лирейт.jpg,missing_canonical,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство на товарный знак Лирейт.jpg,no_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство на товарный знак Лирейт.jpg,no_breadcrumb_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Реквизиты компании Лирейт 2023.doc,missing_h1,200,
+after,https://lireate.ru/template/page/docs/documents/Реквизиты компании Лирейт 2023.doc,missing_title,200,
+after,https://lireate.ru/template/page/docs/documents/Реквизиты компании Лирейт 2023.doc,missing_description,200,
+after,https://lireate.ru/template/page/docs/documents/Реквизиты компании Лирейт 2023.doc,missing_canonical,200,
+after,https://lireate.ru/template/page/docs/documents/Реквизиты компании Лирейт 2023.doc,no_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Реквизиты компании Лирейт 2023.doc,no_breadcrumb_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство о принятии на учёт и депонирование объекта авторских прав (Книга Как использовать товарный знак в своём бизнесе).jpg,missing_h1,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство о принятии на учёт и депонирование объекта авторских прав (Книга Как использовать товарный знак в своём бизнесе).jpg,missing_title,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство о принятии на учёт и депонирование объекта авторских прав (Книга Как использовать товарный знак в своём бизнесе).jpg,missing_description,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство о принятии на учёт и депонирование объекта авторских прав (Книга Как использовать товарный знак в своём бизнесе).jpg,missing_canonical,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство о принятии на учёт и депонирование объекта авторских прав (Книга Как использовать товарный знак в своём бизнесе).jpg,no_jsonld,200,
+after,https://lireate.ru/template/page/docs/documents/Свидетельство о принятии на учёт и депонирование объекта авторских прав (Книга Как использовать товарный знак в своём бизнесе).jpg,no_breadcrumb_jsonld,200,

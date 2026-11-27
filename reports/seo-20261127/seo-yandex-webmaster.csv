@@ -1,0 +1,7 @@
+metric,value,source_ts,notes
+host,https://lireate.ru,2026-11-27T14:12:00+03:00,verified owner API
+searchable_pages,374,2026-11-27T14:12:00+03:00,
+excluded_pages,4,2026-11-27T14:12:00+03:00,
+sqi,50,2026-11-27T14:12:00+03:00,ИКС
+search_queries_rows_30d,0,2026-11-27T14:12:00+03:00,частота/позиция: нет данных
+sitemap_urls_sitemapservice,429,2026-11-27,владелец шлёт recrawl; агент не дублирует

@@ -470,6 +470,19 @@ def fetch_url(
                 'body': body,
                 'error': 'HTTP {0}'.format(status),
             }
+        except TimeoutError as e:
+            last_err = 'timeout: {0}'.format(e)
+            if attempt + 1 < max_retries:
+                sleep_fn(min(8.0, 0.5 * (2 ** attempt)))
+                continue
+            return {
+                'ok': False,
+                'status': 0,
+                'final_url': url,
+                'redirect_chain': list(handler.chain),
+                'body': b'',
+                'error': last_err,
+            }
         except URLError as e:
             last_err = str(e.reason) if hasattr(e, 'reason') else str(e)
             if attempt + 1 < max_retries:

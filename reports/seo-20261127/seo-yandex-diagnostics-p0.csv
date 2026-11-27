@@ -1,0 +1,6 @@
+yandex_problem_id,severity,priority,p0_action,owner_lock,notes
+DOCUMENTS_MISSING_DESCRIPTION,POSSIBLE_PROBLEM,P0,Дотянуть meta description через data-layer + cms-overrides; сверка с crawl missing_description,no,Связано с внутренним crawl; не путать с юр. текстами статей блога
+ERROR_IN_ROBOTS_TXT,POSSIBLE_PROBLEM,P0,"Убрать Disallow с query/«/*?»; добавить Clean-param: mode&test&nc /; файл shared/robots.txt.yandex-recommended",deploy_robots_sep_pr,См. scripts/lireate_seo_robots_yandex_check.py
+TOO_MANY_DOMAINS_ON_SEARCH,POSSIBLE_PROBLEM,P0,Анализ lireate.online/sam.* → docs/lireate-yandex-domains-analysis.ru.md,yes,Без изменения чужих доменов без владельца
+DUPLICATE_CONTENT_ATTRS,POSSIBLE_PROBLEM,P0,"Уникализировать title/description по кластерам (cms-overrides, услуги); контакты/contacts",no,Без рерайта full_story блога
+DUPLICATE_PAGES,POSSIBLE_PROBLEM,P0,Канон + Clean-param utm/mode/nc; слэш по типу URL; без массовых 301 до карты дублей,no,Согласовано с DUPLICATE_* в Вебмастере
