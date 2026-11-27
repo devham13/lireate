@@ -33,6 +33,20 @@ UTC: 2026-11-27T14:17:54.639684+00:00
 
 Запросы/позиции 30д: **нет данных**. Частота Wordstat: **нет данных** (API).
 
+## Blog SEO final (2026-11-27)
+
+| Метрика | Значение |
+| --- | --- |
+| Паспорт статей (`seo-blog-audit.csv`) | **329** строк, частотность = «нет данных» |
+| Экспорт MySQL active | **330** (`lireate_blog_seo_export_news.php`) |
+| Обложки `/news/` (curl list cards) | **328** img, **0** не-200 |
+| `covers_missing` в live HTML-диаге | **0** на всех 28 стр. |
+| Hub/related после hotfix #171 | **0×301**, **0×404** (329 статей) |
+| Legal review | **370** флагов; spot `rospatent` fees **43**; **327** → specialist |
+| Cron `~/lireate-autopub/repo` | **a4b1f69** (`validate_article_meta` в publish) |
+
+Артефакты: `blog-seo-final-report.json`, `/opt/cursor/artifacts/blog-list-covers-verify.json`, `blog-legal-spot-verify.json`, `blog-hub-links-post-touch.json`.
+
 ## Issue counts (problems column)
 
 **Примечание по «after»:** рост `missing_h1`, `missing_canonical`, `missing_description` и части `no_jsonld` — **не регрессии meta/schema**, а **новые URL** в after-крауле с `--discover-extra`: файлы в `/template/page/docs/documents/` (PDF/JPG/DOC) и статические consent `.html`. Их не сравнивать 1:1 с before (429 URL).

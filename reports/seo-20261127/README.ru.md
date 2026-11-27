@@ -17,3 +17,5 @@
 
 **Meta на проде:** editorial wave `blog-seo-wave2-editorial.json` (apply 2026-11-27).  
 Тексты `full_story` — только в `seo-legal-review.csv`; правки текста — отдельный пакет по решению владельца.
+
+**Сводка 2026-11-27 (финал):** `blog-seo-final-report.json` — обложки /news (curl 328×200), паспорт 329 строк, legal spot-check, cron SHA `a4b1f69`.

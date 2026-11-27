@@ -1,0 +1,66 @@
+{
+  "generated_at_utc": "2026-11-27T17:45:00Z",
+  "covers": {
+    "list_pages_crawled": 30,
+    "unique_cover_images": 328,
+    "cover_img_http_200": 328,
+    "cover_img_not_200": 0,
+    "diag_covers_missing_per_page_max": 0,
+    "note": "Ранее install-diag показывал covers_missing=12 до sync blog/small; live /news/ сейчас 0 missing, все превью отдают 200."
+  },
+  "seo_passport": {
+    "export_active_articles": 330,
+    "audit_rows": 329,
+    "frequency_column": "нет данных",
+    "editorial_plan": "lireate-news/data/blog-seo-wave2-editorial.json",
+    "artifact_csv": "reports/seo-20261127/seo-blog-audit.csv",
+    "columns": [
+      "URL",
+      "Дата",
+      "Текущий Title",
+      "Новый Title",
+      "Текущий Description",
+      "Новый Description",
+      "Основной ключ",
+      "Частотность основного",
+      "Дополнительные ключи",
+      "H1",
+      "Интент",
+      "Проблемы",
+      "Исправления",
+      "Целевая услуга",
+      "Приоритет",
+      "Статус"
+    ]
+  },
+  "legal_review": {
+    "rows_total": 370,
+    "spot_reference_ok": 43,
+    "unverified_specialist": 327,
+    "official_rospatent_fees_page": "ok",
+    "official_pravo_gk_fetch_from_cloud": "timeout",
+    "artifact_csv": "reports/seo-20261127/seo-legal-review.csv",
+    "prod_full_story_edits": false
+  },
+  "hub_links_post_hotfix": {
+    "articles_crawled": 329,
+    "hub_related_301": 0,
+    "hub_related_404": 0,
+    "artifact_json": "/opt/cursor/artifacts/blog-hub-links-post-touch.json"
+  },
+  "autopublish_cron": {
+    "repo_path": "~/lireate-autopub/repo",
+    "git_sha": "a4b1f69",
+    "cron": "*/30 * * * * lireate_hosting_cron.sh",
+    "seo_gate": "lireate_hosting_publish.py + validate_article_meta (+ collage gate L07+)",
+    "last_log_status_samples": [
+      "NO_NEW_ARTICLE",
+      "ALREADY_PUBLISHED"
+    ]
+  },
+  "artifacts": [
+    "/opt/cursor/artifacts/blog-list-covers-verify.json",
+    "/opt/cursor/artifacts/blog-legal-spot-verify.json",
+    "/opt/cursor/artifacts/blog-hub-links-post-touch.json"
+  ]
+}
