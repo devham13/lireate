@@ -5,7 +5,7 @@ $host = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^a-zA-Z0-9.\-:]/', '', $_
 $site_root = ($host !== '' ? 'https://' . $host : '');
 $canonical = $site_root . $path;
 $seo_title = 'Проверка товарного знака перед регистрацией — Лирейт';
-$seo_description = 'Проверим название и логотип по реестрам Роспатента, оценим сходство и риски отказа. Закажите экспертную проверку перед подачей заявки.';
+$seo_description = 'Проверим название и логотип по реестрам Роспатента, оценим сходство и риски отказа. Закажите экспертную проверку перед подачей заявки в Роспатент.';
 $og_type = 'website';
 $og_image = $site_root . '/template/images/OG_image.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
