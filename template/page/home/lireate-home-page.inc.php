@@ -26,8 +26,6 @@ $lh_preview = defined('LIREATE_HOME_PREVIEW') && LIREATE_HOME_PREVIEW;
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&display=swap" media="all"></noscript>
-<link rel="stylesheet" href="<?php echo lireate_home_h(LIREATE_HOME_LIGHT_V4_CSS_HREF); ?>?v=<?php echo lireate_home_h($lh_v); ?>">
-
 <div id="lireate-home-light-v4" class="lh4-root">
 <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -69,9 +67,19 @@ lireate_lh4_render_mobile_anchors($lh4_home_anchors);
           <li><i>✓</i><span>говорим только о реальных возможностях и сроках — никаких ложных обещаний</span></li>
           <li><i>✓</i><span>работаем с финансовой гарантией</span></li>
         </ul>
-        <div class="hero-actions">
-          <a class="btn primary" href="/findtz">Проверить товарный знак</a>
-          <a class="btn soft" href="<?php echo lireate_home_h(LIREATE_HOME_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_telegramm">Бесплатная консультация ↗</a>
+        <div class="hero-actions lh4-hero-messengers" aria-label="Написать нам в мессенджере">
+          <a class="btn lh4-messenger-btn lh4-messenger-whatsapp" href="<?php echo lireate_home_h(LIREATE_HOME_WHATSAPP_URL); ?>" target="_blank" rel="noopener noreferrer" aria-label="Написать в WhatsApp" data-lx-ym-goal="perehod_v_messendzher">
+            <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2C6.5 2 2 6.2 2 11.4c0 1.9.5 3.7 1.5 5.3L2 22l5.6-1.5c1.5.8 3.2 1.3 4.9 1.3 5.5 0 10-4.2 10-9.4S17.5 2 12 2zm5.8 13.5c-.2.6-1.2 1.1-1.7 1.1-.4 0-1.1.2-3.6-.9-3-1.3-5-4.4-5.1-4.6-.2-.3-1.2-1.6-1.2-3.1 0-1.5.8-2.2 1.1-2.5.3-.3.6-.4.8-.4.2 0 .4 0 .6.1.2 0 .4.2.5.5.2.5.6 1.7.7 1.8.1.1.1.3 0 .4 0 .1-.1.2-.2.3l-.3.3c-.1.1-.2.2-.1.4.1.2.5 1 1.1 1.6.8.7 1.5 1 1.7 1.1.2.1.3 0 .4-.1l.6-.7c.1-.2.3-.2.5-.1.8.3 2.8 1.3 3.2 1.5.3.2.5.3.6.4.1.2.1.7-.1 1.3z"/></svg>
+            <span>WhatsApp</span>
+          </a>
+          <a class="btn lh4-messenger-btn lh4-messenger-max" href="<?php echo lireate_home_h(LIREATE_HOME_MAX_CHAT_URL); ?>" target="_blank" rel="noopener noreferrer" aria-label="Написать в MAX" data-lx-ym-goal="perehod_v_messendzher">
+            <svg viewBox="0 0 100 100" width="21" height="21" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50.76 0.26c27.54 0 49.13 22.34 49.13 49.89S77.61 99.49 51.02 99.49c-9.44 0-14.01-1.33-21.37-6.54-.51-.36-1.2-.27-1.63.19-5.66 6.04-20.17 10.28-20.83 2.03 0-14.39-7.19-23.73-7.19-45.3C0 21.55 23.22 0.26 50.76 0.26zm.77 24.55c-13.06-.69-23.26 8.39-25.51 22.57-1.86 11.75 1.44 26.07 4.27 26.79 1.2.31 4.08-1.88 6.18-3.86.39-.37 1-.44 1.46-.15 3.27 2 6.97 3.5 11.05 3.71 13.41.7 25.3-9.8 26.01-23.21.7-13.41-10.02-25.14-23.43-25.84z"/></svg>
+            <span>MAX</span>
+          </a>
+          <a class="btn lh4-messenger-btn lh4-messenger-telegram" href="<?php echo lireate_home_h(LIREATE_HOME_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram" data-lx-ym-goal="perehod_v_telegramm">
+            <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+            <span>Telegram</span>
+          </a>
         </div>
         <div class="hero-note"><span class="live-pulse" aria-hidden="true"></span> Через 15 минут вы получите ответ на свой вопрос.</div>
       </div>
@@ -300,7 +308,7 @@ lireate_lh4_render_mobile_anchors($lh4_home_anchors);
           </div>
         </div>
         <div>
-          <form id="lh4-lead-form" class="ajax_form form-unit pb30" method="POST" action="<?php echo lireate_home_h($lh_mail_action); ?>" data-lead-topic="Заявка с главной LIREATE Light V4" data-lireate-consent-managed="1" novalidate>
+          <form id="lh4-lead-form" class="ajax_form form-unit pb30" method="POST" action="<?php echo lireate_home_h($lh_mail_action); ?>" data-lead-topic="Заявка с главной LIREATE Light V4" novalidate>
             <input type="hidden" name="mail_token" value="503066424d5f7b5ad2097703ef3404d2">
             <input type="hidden" name="fuck_spamers" value="<?php echo lireate_home_h($lh_spam_guard); ?>">
             <input type="hidden" name="mail" value="mailorder">

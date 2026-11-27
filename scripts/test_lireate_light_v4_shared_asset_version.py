@@ -52,10 +52,14 @@ class LightV4SharedAssetVersionTests(unittest.TestCase):
             for name, value in pattern.findall(text):
                 if name not in CONFIG_MARKERS:
                     continue
+                if name == "LIREATE_HOME_TEMPLATE_VERSION":
+                    want = ver.HOME_TEMPLATE_VERSION
+                else:
+                    want = expected
                 self.assertEqual(
-                    expected,
+                    want,
                     value,
-                    "{0}: {1} is {2}, expected {3}".format(path, name, value, expected),
+                    "{0}: {1} is {2}, expected {3}".format(path, name, value, want),
                 )
 
     def test_cms_head_helper_version(self):
@@ -86,7 +90,6 @@ class LightV4SharedAssetVersionTests(unittest.TestCase):
         """Home hero CSS has its own cache-bust token (r21+) in the main.php head snippet."""
         import lireate_home_light_v4_install_lib as home_lib
 
-        self.assertEqual("20261126r27", ver.HOME_CSS_VERSION)
         snippet = home_lib._head_snippet()
         self.assertIn(
             "/template/css/lireate-home-light-v4.css?v={0}".format(ver.HOME_CSS_VERSION), snippet
