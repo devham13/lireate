@@ -25,10 +25,17 @@ $lb_cover_html = lireate_blog_performance_cover($lb_cover_html);
 $lb_collage_mode = !empty($lireate_blog_collage_mode);
 $lb_collage_hero = isset($lireate_blog_collage_hero_html) ? $lireate_blog_collage_hero_html : '';
 
+$lb_service_map = __DIR__ . '/lireate-blog-service-map.inc.php';
+if (is_file($lb_service_map)) {
+    require_once $lb_service_map;
+}
 $lb_body = lireate_blog_prepare_body_html($lb_body);
 $lb_read_mins = lireate_blog_reading_time_minutes($lb_body);
 $lb_toc = lireate_blog_extract_toc($lb_body);
-$lb_related = lireate_blog_related_articles($lb_current, 3);
+$lb_related = lireate_blog_related_articles($lb_current, 3, $lb_tag);
+$lb_service = function_exists('lireate_blog_service_for_article')
+    ? lireate_blog_service_for_article($lb_title, $lb_tag, $lb_body)
+    : null;
 $lb_assets = LIREATE_BLOG_ASSETS_BASE;
 $lb_v = LIREATE_BLOG_TEMPLATE_VERSION;
 $lb_max = LIREATE_BLOG_MAX_CHANNEL_URL;
@@ -45,6 +52,8 @@ $lb_schema_meta = array(
     'canonical' => $lb_canonical,
     'body_html' => $lb_body,
     'cover_html' => $lb_cover_html,
+    'breadcrumb_rubric' => $lb_tag,
+    'breadcrumb_rubric_url' => $lb_tag_url,
 );
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,6 +74,16 @@ if (document.body) {
 }
 </script>
 <div class="lireate-blog-page" data-lireate-blog-version="<?php echo lireate_blog_h($lb_v); ?>">
+  <nav class="lireate-blog-breadcrumbs" aria-label="Хлебные крошки">
+    <ol class="lireate-blog-breadcrumbs-list">
+      <li class="lireate-blog-breadcrumbs-item"><a href="/">Главная</a></li>
+      <li class="lireate-blog-breadcrumbs-item"><a href="/news/">Блог</a></li>
+      <?php if ($lb_tag !== '') : ?>
+      <li class="lireate-blog-breadcrumbs-item"><a href="<?php echo lireate_blog_h($lb_tag_url); ?>"><?php echo lireate_blog_h($lb_tag); ?></a></li>
+      <?php endif; ?>
+      <li class="lireate-blog-breadcrumbs-item" aria-current="page"><?php echo lireate_blog_h($lb_title); ?></li>
+    </ol>
+  </nav>
   <div class="lireate-blog-grid">
     <?php if (!empty($lb_toc)) : ?>
     <details class="lireate-blog-toc-mobile">
@@ -190,6 +209,13 @@ if (document.body) {
     </div>
   </div>
 
+  <?php if (!empty($lb_service) && !empty($lb_service['url'])) : ?>
+  <section class="lireate-blog-service-hub" aria-labelledby="lireate-blog-service-hub-heading">
+    <h2 id="lireate-blog-service-hub-heading" class="lireate-blog-service-hub-title">Услуга LIREATE по теме статьи</h2>
+    <p class="lireate-blog-service-hub-lead">Нужна практическая помощь по этому вопросу — подключим юристов бюро, подготовим документы и сопроводим в Роспатенте или суде.</p>
+    <a class="lireate-blog-service-hub-cta" href="<?php echo lireate_blog_h($lb_service['url']); ?>"><?php echo lireate_blog_h($lb_service['title']); ?> →</a>
+  </section>
+  <?php endif; ?>
   <?php if (!empty($lb_related)) : ?>
   <section class="lireate-blog-related" aria-labelledby="lireate-blog-related-heading">
     <div class="lireate-blog-related-head">
@@ -226,9 +252,9 @@ if (document.body) {
       <article class="lireate-blog-card">
         <a class="lireate-blog-card-cover<?php echo $cover_fallback ? ' lireate-blog-card-cover--fallback' : ''; ?>" href="<?php echo lireate_blog_h($curl); ?>">
           <?php if (!$cover_fallback && $cover_webp !== '') : ?>
-          <img src="<?php echo lireate_blog_h($cover_webp); ?>" alt="" loading="lazy" decoding="async" width="480" height="270" class="lireate-blog-card-cover-img" />
+          <img src="<?php echo lireate_blog_h($cover_webp); ?>" alt="<?php echo lireate_blog_h($ctitle !== '' ? $ctitle : 'Обложка статьи'); ?>" loading="lazy" decoding="async" width="480" height="270" class="lireate-blog-card-cover-img" />
           <?php elseif (!$cover_fallback) : ?>
-          <img src="<?php echo lireate_blog_h($ccover); ?>" alt="" loading="lazy" decoding="async" width="480" height="270" class="lireate-blog-card-cover-img" />
+          <img src="<?php echo lireate_blog_h($ccover); ?>" alt="<?php echo lireate_blog_h($ctitle !== '' ? $ctitle : 'Обложка статьи'); ?>" loading="lazy" decoding="async" width="480" height="270" class="lireate-blog-card-cover-img" />
           <?php endif; ?>
           <?php if ($cover_fallback) : ?><span class="lireate-blog-card-cover-brand" aria-hidden="true">LIREATE</span><?php endif; ?>
           <?php if ($ctag !== '') : ?><span class="lireate-blog-card-tag"><?php echo lireate_blog_h($ctag); ?></span><?php endif; ?>

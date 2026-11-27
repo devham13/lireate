@@ -22,6 +22,7 @@ AUDIT_FIELDS = [
     "Текущий Description",
     "Новый Description",
     "Основной ключ",
+    "Частотность основного",
     "Дополнительные ключи",
     "H1",
     "Интент",
@@ -36,6 +37,7 @@ LEGAL_FIELDS = [
     "url",
     "fragment",
     "issue",
+    "risk",
     "source_url",
     "suggested_wording",
     "verified_at",
@@ -60,10 +62,10 @@ _SERVICE_HINTS = (
 )
 
 _LEGAL_PATTERNS = (
-    (re.compile(r"ст\.\s*\d{1,4}(?:\.\d+)?", re.I), "ссылка на статью закона"),
-    (re.compile(r"\d[\d\s]{2,}\s*₽", re.U), "сумма в рублях"),
-    (re.compile(r"госпошлин", re.I), "госпошлина"),
-    (re.compile(r"\d+\s*(мес|месяц|дн|дней|год)", re.I), "срок в цифрах"),
+    (re.compile(r"ст\.\s*\d{1,4}(?:\.\d+)?", re.I), "ссылка на статью закона", "high"),
+    (re.compile(r"\d[\d\s]{2,}\s*₽", re.U), "сумма в рублях", "high"),
+    (re.compile(r"госпошлин", re.I), "госпошлина", "high"),
+    (re.compile(r"\d+\s*(мес|месяц|дн|дней|год)", re.I), "срок в цифрах", "medium"),
 )
 
 
@@ -144,17 +146,24 @@ def main() -> int:
     args = ap.parse_args()
 
     base = (args.public_base or "").rstrip("/")
-    data = json.loads(args.export.read_text(encoding="utf-8"))
-    articles = list(data.get("articles") or [])
-    active_slugs = {(a.get("seo_url") or "").strip("/") for a in articles}
+    active_slugs: set[str] = set()
+    articles_by_slug: dict[str, dict] = {}
     if args.export_inactive and args.export_inactive.is_file():
         for row in json.loads(args.export_inactive.read_text(encoding="utf-8")).get("articles", []):
             slug = (row.get("seo_url") or "").strip("/")
-            if not slug or slug in active_slugs:
-                continue
-            row = dict(row)
+            if slug:
+                articles_by_slug[slug] = dict(row)
+    data = json.loads(args.export.read_text(encoding="utf-8"))
+    for row in data.get("articles") or []:
+        slug = (row.get("seo_url") or "").strip("/")
+        if not slug:
+            continue
+        active_slugs.add(slug)
+        articles_by_slug[slug] = dict(row)
+    for slug, row in articles_by_slug.items():
+        if slug not in active_slugs:
             row["_inactive"] = True
-            articles.append(row)
+    articles = list(articles_by_slug.values())
 
     plan_by = {}
     if args.plan and args.plan.is_file():
@@ -211,22 +220,30 @@ def main() -> int:
         if hashes.get(slug) != hid:
             hashes[slug] = hid
             seen_issues = set()
-            for pat, label in _LEGAL_PATTERNS:
+            for pat, label, risk in _LEGAL_PATTERNS:
                 for m in pat.finditer(body):
                     key = (slug, label)
                     if key in seen_issues:
                         continue
                     seen_issues.add(key)
                     frag = body[max(0, m.start() - 40) : m.end() + 60]
+                    src = (
+                        "pravo.gov.ru (ГК РФ)"
+                        if "закон" in label
+                        else "rospatent.gov.ru (пошлины)"
+                        if "пошлин" in label
+                        else "pravo.gov.ru / fips.ru"
+                    )
                     legal_rows.append(
                         {
                             "url": url,
                             "fragment": frag.strip()[:200],
                             "issue": label + ": " + m.group(0),
-                            "source_url": "требует проверки pravo.gov.ru / fips.ru",
+                            "risk": risk,
+                            "source_url": src,
                             "suggested_wording": "",
                             "verified_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-                            "status": "unverified",
+                            "status": "unverified_specialist",
                         }
                     )
                     if len(seen_issues) >= 4:
@@ -243,6 +260,7 @@ def main() -> int:
                 "Текущий Description": cur_desc[:300],
                 "Новый Description": new_desc[:300],
                 "Основной ключ": _primary_key(h1, body),
+                "Частотность основного": "нет данных",
                 "Дополнительные ключи": _extra_keys(body),
                 "H1": h1,
                 "Интент": _intent_from_text(h1, body),
