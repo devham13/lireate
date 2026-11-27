@@ -25,11 +25,16 @@ class SidebarV7NoExpertPhotoTests(unittest.TestCase):
         self.assertNotIn("ensureExpertPortrait", js)
         self.assertNotIn("lsv7-sidebar-expert", js)
 
-    def test_patent_page_data_has_hero_portrait(self):
+    def test_patent_page_data_has_supplied_v4_hero_portraits(self):
         text = PATENT_DATA.read_text(encoding="utf-8")
-        block = text[text.find("if ($key === 'patent')") : text.find("if ($key === 'patent_prom_obr')")]
-        self.assertIn("person/1.webp", block)
-        self.assertIn("Габдрахманова Эльвира", block)
+        block_patent = text[text.find("if ($key === 'patent')") : text.find("if ($key === 'patent_prom_obr')")]
+        block_prom = text[text.find("if ($key === 'patent_prom_obr')") : text.find("throw new InvalidArgumentException")]
+        self.assertIn("patent-inventions.webp", block_patent)
+        self.assertIn("Охраняем идеи", block_patent)
+        self.assertNotIn("person/11.webp", block_patent)
+        self.assertIn("patent-industrial-design.webp", block_prom)
+        self.assertIn("Идеи обретают форму", block_prom)
+        self.assertNotIn("person/11.webp", block_prom)
 
 
 if __name__ == "__main__":
