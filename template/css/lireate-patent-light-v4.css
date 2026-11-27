@@ -6,8 +6,8 @@
 #lireate-patent-v4 img{max-width:100%;display:block}
 #lireate-patent-v4 .lp4-wrap{width:min(1210px,calc(100% - 72px));margin-inline:auto}
 #lireate-patent-v4 .lp4-topnav{position:sticky;top:0;z-index:54;display:flex;align-items:stretch;justify-content:space-between;min-height:78px;padding:0 clamp(16px,1.5vw,25px);border-bottom:1px solid #e4ecf8;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);box-shadow:0 5px 24px rgba(16,40,78,.025);gap:12px}
-#lireate-patent-v4 .lp4-topnav-items{display:flex;flex:1 1 auto;min-width:0;justify-content:space-between;align-items:stretch;gap:0}
-#lireate-patent-v4 .lp4-nav-link{display:inline-flex;align-items:center;justify-content:center;flex:1 1 0;min-width:0;padding:14px 8px;white-space:nowrap;font-size:clamp(13px,1.07vw,17px);font-weight:800;color:#334660;position:relative;text-align:center;transition:background .2s,color .2s}
+#lireate-patent-v4 .lp4-topnav-items{display:flex;flex:1 1 auto;min-width:0;justify-content:flex-start;align-items:stretch;gap:clamp(4px,.55vw,12px);flex-wrap:nowrap}
+#lireate-patent-v4 .lp4-nav-link{display:inline-flex;align-items:center;justify-content:center;flex:0 1 auto;min-width:0;padding:14px clamp(8px,1vw,14px);white-space:nowrap;font-size:clamp(13px,1.07vw,17px);font-weight:800;color:#334660;position:relative;text-align:center;transition:background .2s,color .2s}
 #lireate-patent-v4 .lp4-nav-link::after{position:absolute;bottom:0;left:14%;right:14%;height:2px;background:var(--lp-red);transform:scaleX(0);transition:transform .25s;content:''}
 #lireate-patent-v4 .lp4-nav-link:hover,#lireate-patent-v4 .lp4-nav-link.is-active{background:#f8fbff;color:var(--lp-red)}
 #lireate-patent-v4 .lp4-nav-link.is-active::after,#lireate-patent-v4 .lp4-nav-link:hover::after{transform:scaleX(1)}
@@ -16,6 +16,8 @@
 #lireate-patent-v4 .lp4-nav-cta{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:10px 16px;border-radius:10px;background:var(--lp-red);font-weight:800;font-size:12px;color:#fff;white-space:nowrap;transition:background .2s}
 #lireate-patent-v4 .lp4-nav-cta:hover{background:#c91313}
 #lireate-patent-v4 .lp4-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4.3vw,70px);align-items:center;padding-top:clamp(56px,6.2vw,98px);padding-bottom:58px}
+#lireate-patent-v4.lp4-patent_prom_obr .lp4-hero{align-items:start}
+#lireate-patent-v4.lp4-patent_prom_obr .lp4-photo-card{align-self:start}
 #lireate-patent-v4 .lp4-kicker,#lireate-patent-v4 .lp4-section-eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 20px;letter-spacing:.09em;text-transform:uppercase;font-size:11px;font-weight:800;color:#5a7397}
 #lireate-patent-v4 .lp4-kicker-dot{width:7px;height:7px;display:inline-block;background:var(--lp-red);border-radius:50%}
 #lireate-patent-v4 h1,#lireate-patent-v4 h2,#lireate-patent-v4 h3,#lireate-patent-v4 p{margin-top:0}
