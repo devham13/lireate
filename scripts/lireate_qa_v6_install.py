@@ -138,6 +138,11 @@ _CMS_V70_BLOB = {
     'template/page/partners/lireate-partners-page.inc.php': '90dca947049a0250b7ebb2773b063bb52afaedda',
     'template/page/news/lireate-blog-list.inc.php': '2ed0a563bccf4de333f44615ebf278f79ddd4719',
 }
+_PARTNERS_A11Y_BLOB = 'c0a0f961eaf45127a3cebff83d75688367c94cfd'
+_PARTNERS_INC_PATHS = frozenset({
+    'template/page/partners/lireate-partners-page.inc.php',
+    'pages/partners/_shared/lireate-partners-page.inc.php',
+})
 _SHARED_V70_BLOB = {
     'pages/kontaktyi/_shared/lireate-contacts-page.inc.php': 'ef1f550ea23586e894b69fd98fbcd9168cd2dcd1',
     'pages/partners/_shared/lireate-partners-page.inc.php': '90dca947049a0250b7ebb2773b063bb52afaedda',
@@ -170,6 +175,8 @@ def _allowed_main_prod(path):
     v70 = _CMS_V70_BLOB.get(path)
     if v70:
         allowed.add(v70)
+    if path in _PARTNERS_INC_PATHS:
+        allowed.add(_PARTNERS_A11Y_BLOB)
     return frozenset(allowed)
 
 def _allowed_shared(path):
@@ -184,6 +191,8 @@ def _allowed_shared(path):
     v70 = _SHARED_V70_BLOB.get(path)
     if v70:
         allowed.add(v70)
+    if path in _PARTNERS_INC_PATHS:
+        allowed.add(_PARTNERS_A11Y_BLOB)
     return frozenset(allowed)
 
 BASE_ALLOWED = {live: _allowed_main_prod(live) for live in _CMS_MAIN_BLOB}
