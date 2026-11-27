@@ -68,6 +68,11 @@
   body.lireate-service-mobile-dock .lx-dock {
     display: none !important;
   }
+  body.lireate-svc-body footer.lx-site-footer,
+  body.lireate-service-mobile-dock footer.lx-site-footer,
+  body.lsv7-managed footer.lx-site-footer {
+    padding-bottom: calc(136px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
 @media (min-width: 769px) {
   .lx-mobile-bar {
