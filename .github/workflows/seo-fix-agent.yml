@@ -1,0 +1,45 @@
+name: LIREATE SEO fix agent
+
+on:
+  repository_dispatch:
+    types: [lireate-seo-audit-fix]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: lireate-seo-fix-agent
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install IndexLift auditor
+        working-directory: skills/indexlift-seo-auditor
+        run: npm install --no-fund --no-audit
+      - name: Single-page audit (homepage)
+        env:
+          SEO_SITE_URL: ${{ github.event.client_payload.site_url || secrets.LIREATE_PUBLIC_SITE_URL }}
+        working-directory: skills/indexlift-seo-auditor
+        run: |
+          node scripts/run-audit.js \
+            --url "${SEO_SITE_URL%/}/" \
+            --mode single-page \
+            --tier basic \
+            --output-dir "$RUNNER_TEMP/indexlift"
+          ls -la "$RUNNER_TEMP/indexlift" || true
+      - name: Open or update tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="SEO VPS audit fix queue ($(date -u +%Y-%m-%d))"
+          BODY="Automated triage from VPS repository_dispatch. Review IndexLift artifact in workflow run and route to Cursor Cloud Agent."
+          gh issue list --repo "${{ github.repository }}" --search "$TITLE in:title" --json number -q '.[0].number' | grep -q . \
+            || gh issue create --repo "${{ github.repository }}" --title "$TITLE" --body "$BODY"
