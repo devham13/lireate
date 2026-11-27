@@ -267,7 +267,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 </main>
 
 <?php include __DIR__ . '/lireate-service-footer.inc.php'; ?>
-<script defer src="<?php echo lireate_service_asset_href('assets/findtz-footer-duplicate-guard.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/blocks/lireate-sticky-mobile.inc.php'; ?>
 
 <aside class="lx-dock" aria-label="Быстрый контакт">
