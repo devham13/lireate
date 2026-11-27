@@ -202,7 +202,7 @@ foreach ($items as $idx => $item) :
             aria-haspopup="dialog" aria-label="Открыть видеоотзыв <?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8'); ?>">
             <div class="lx-review-chat-preview">
               <?php if ($poster) : ?>
-              <div class="lx-review-video-poster"><img src="<?php echo htmlspecialchars($poster, ENT_QUOTES, 'UTF-8'); ?>" alt="" loading="lazy" width="280" height="360"></div>
+              <div class="lx-review-video-poster"><img src="<?php echo htmlspecialchars($poster, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars('Видеоотзыв: ' . $author, ENT_QUOTES, 'UTF-8'); ?>" loading="lazy" width="280" height="360"></div>
               <?php endif; ?>
               <span class="lx-review-video-play" aria-hidden="true">▶</span>
             </div>
@@ -223,7 +223,7 @@ foreach ($items as $idx => $item) :
         <li class="lx-review-frame lx-review-frame--<?php echo htmlspecialchars($accent, ENT_QUOTES, 'UTF-8'); ?> lx-review-frame--chat">
           <button type="button" class="lx-review-card" data-lx-review-open aria-haspopup="dialog">
             <div class="lx-review-chat-preview">
-              <div class="lx-review-chat-shot"><img src="<?php echo htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="" loading="lazy"></div>
+              <div class="lx-review-chat-shot"><img src="<?php echo htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars('Переписка с клиентом: ' . $author, ENT_QUOTES, 'UTF-8'); ?>" loading="lazy" width="320" height="568"></div>
               <?php if ($preview) : ?><div class="lx-review-bubble lx-review-bubble--them"><?php echo htmlspecialchars($preview, ENT_QUOTES, 'UTF-8'); ?></div><?php endif; ?>
             </div>
             <span class="lx-review-tag-pill"><?php echo htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?></span>

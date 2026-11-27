@@ -60,8 +60,8 @@ if (!function_exists('lireate_seo_static_page_meta')) {
             // LIREATE 2026-11-17: /contacts/ fell back to config.php default title
             'contacts' => array(
                 'title' => 'Контакты патентного бюро Лирейт — телефоны и адрес',
-                'description' => 'Как связаться с патентным бюро Лирейт: телефоны, мессенджеры, адрес офиса в Зеленодольске и консультации по России.',
-                'cluster' => 'контакты Лирейт',
+                'description' => 'Каноническая страница contacts: телефоны патентного бюро Лирейт, e-mail, адрес в Зеленодольске и онлайн-заявка на консультацию по России.',
+                'cluster' => 'контакты латинский URL',
             ),
             // audit08 S2 (2026-11-18): generic CMS descriptions -> facts visible on the page
             'team' => array(

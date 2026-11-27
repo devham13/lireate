@@ -26,7 +26,7 @@ UTC: 2026-11-27T14:17:54.639684+00:00
 | ID | Действие | Статус |
 | --- | --- | --- |
 | DOCUMENTS_MISSING_DESCRIPTION | overrides + crawl `missing_description` (12 URL на after) | в работе / PR #172 |
-| ERROR_IN_ROBOTS_TXT | `shared/robots.txt.yandex-recommended`; убрать `Disallow: /?…` и `/*?…` | **не на проде** |
+| ERROR_IN_ROBOTS_TXT | `shared/robots.txt.yandex-recommended`; убрать `Disallow: /?…` и `/*?…` | **live** (deploy 17:33 MSK, YANDEX_ROBOTS_OK) |
 | TOO_MANY_DOMAINS_ON_SEARCH | `docs/lireate-yandex-domains-analysis.ru.md` | ждёт владельца |
 | DUPLICATE_CONTENT_ATTRS | уникальные title/desc (cms-overrides, kontaktyi/contacts) | P1 data-layer |
 | DUPLICATE_PAGES | canonical + Clean-param utm/yclid/mode/nc; без массовых 301 | P0 robots + канон |
@@ -34,6 +34,8 @@ UTC: 2026-11-27T14:17:54.639684+00:00
 Запросы/позиции 30д: **нет данных**. Частота Wordstat: **нет данных** (API).
 
 ## Issue counts (problems column)
+
+**Примечание по «after»:** рост `missing_h1`, `missing_canonical`, `missing_description` и части `no_jsonld` — **не регрессии meta/schema**, а **новые URL** в after-крауле с `--discover-extra`: файлы в `/template/page/docs/documents/` (PDF/JPG/DOC) и статические consent `.html`. Их не сравнивать 1:1 с before (429 URL).
 
 - **description_long**: before=203, after=0, Δ=-203
 - **description_short**: before=3, after=0, Δ=-3
