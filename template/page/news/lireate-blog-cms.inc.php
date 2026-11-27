@@ -33,6 +33,9 @@ if (!function_exists('lireate_blog_article_collage_prepare')) {
         lireate_blog_require_lib();
     }
 }
+if (function_exists('lireate_blog_list_enrich_news_row') && is_array($row)) {
+    $row = lireate_blog_list_enrich_news_row($row);
+}
 $_lb_collage_prep = lireate_blog_article_collage_prepare($row);
 $lireate_blog_body_html = $_lb_collage_prep['body'];
 $lireate_blog_collage_mode = !empty($_lb_collage_prep['mode']);

@@ -16,6 +16,41 @@ function lireate_blog_h($s)
 }
 }
 
+if (!function_exists('lireate_blog_article_href')) {
+function lireate_blog_article_href($path)
+{
+    $path = trim((string) $path);
+    if ($path === '' || $path === '#') {
+        return $path;
+    }
+    if ($path[0] !== '/') {
+        $path = '/' . $path;
+    }
+    return rtrim($path, '/') . '/';
+}
+}
+
+if (!function_exists('lireate_blog_service_href')) {
+function lireate_blog_service_href($svc)
+{
+    if (!is_array($svc)) {
+        return '';
+    }
+    $path = isset($svc['url']) ? trim((string) $svc['url']) : '';
+    if ($path === '') {
+        return '';
+    }
+    $trailing = !isset($svc['trailing_slash']) || $svc['trailing_slash'] !== false;
+    if ($path[0] !== '/') {
+        $path = '/' . $path;
+    }
+    if ($trailing) {
+        return rtrim($path, '/') . '/';
+    }
+    return rtrim($path, '/');
+}
+}
+
 if (!function_exists('lireate_blog_media_url')) {
 function lireate_blog_media_url($url)
 {
@@ -459,6 +494,9 @@ function lireate_blog_related_articles($current_url, $limit = 3, $prefer_tag = '
   }
   $out = array();
   foreach ($rows as $row) {
+      if (!empty($row['url'])) {
+          $row['url'] = lireate_blog_article_href($row['url']);
+      }
       $out[] = $row;
       if (count($out) >= (int) $limit) {
           break;
@@ -486,7 +524,7 @@ function lireate_blog_related_articles($current_url, $limit = 3, $prefer_tag = '
               continue;
           }
           $out[] = array(
-              'url' => trim($path, '/'),
+              'url' => lireate_blog_article_href($path),
               'title' => $norm['title'],
               'date_display' => isset($norm['date_display']) ? $norm['date_display'] : '',
               'tag' => isset($norm['tag']) ? $norm['tag'] : '',

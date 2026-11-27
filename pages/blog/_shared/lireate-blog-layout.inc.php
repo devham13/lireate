@@ -213,7 +213,7 @@ if (document.body) {
   <section class="lireate-blog-service-hub" aria-labelledby="lireate-blog-service-hub-heading">
     <h2 id="lireate-blog-service-hub-heading" class="lireate-blog-service-hub-title">Услуга LIREATE по теме статьи</h2>
     <p class="lireate-blog-service-hub-lead">Нужна практическая помощь по этому вопросу — подключим юристов бюро, подготовим документы и сопроводим в Роспатенте или суде.</p>
-    <a class="lireate-blog-service-hub-cta" href="<?php echo lireate_blog_h($lb_service['url']); ?>"><?php echo lireate_blog_h($lb_service['title']); ?> →</a>
+    <a class="lireate-blog-service-hub-cta" href="<?php echo lireate_blog_h(function_exists('lireate_blog_service_href') ? lireate_blog_service_href($lb_service) : $lb_service['url']); ?>"><?php echo lireate_blog_h($lb_service['title']); ?> →</a>
   </section>
   <?php endif; ?>
   <?php if (!empty($lb_related)) : ?>
@@ -224,7 +224,7 @@ if (document.body) {
     </div>
     <div class="lireate-blog-related-grid">
       <?php foreach ($lb_related as $card) :
-          $curl = isset($card['url']) ? $card['url'] : '#';
+          $curl = isset($card['url']) ? lireate_blog_article_href($card['url']) : '#';
           $ctitle = isset($card['title']) ? $card['title'] : '';
           $cdate = isset($card['date_display']) ? $card['date_display'] : '';
           $ctag = isset($card['tag']) ? $card['tag'] : '';
