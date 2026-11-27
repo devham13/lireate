@@ -499,6 +499,46 @@ body.lireate-theme-light-v4 .lx-site-footer-requisites-panel {
   color: #94a3b8 !important;
 }
 
+/* Подвал на всю ширину справа от #leftSideBar (как на главной). */
+@media (min-width: 1151px) {
+  /* Прямой потомок body — сдвиг margin-left (главная, лендинги). */
+  body.lireate-theme-light-v4:has(#leftSideBar) > footer.lx-site-footer {
+    box-sizing: border-box;
+    margin-left: var(--lsv7-width, 270px) !important;
+    width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    max-width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    padding-inline: clamp(20px, 3vw, 48px);
+  }
+  /*
+   * CMS: footer внутри .container.content / #blog — у контента уже есть inset под
+   * #leftSideBar; второй margin-left даёт щель и белую полосу справа.
+   */
+  body.lireate-theme-light-v4:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-team-body:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-blog-body:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-about-body:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-theme-light-v4:has(#leftSideBar) .page_container footer.lx-site-footer,
+  body.lireate-team-body:has(#leftSideBar) .page_container footer.lx-site-footer,
+  body.lireate-blog-body:has(#leftSideBar) .page_container footer.lx-site-footer,
+  body.lireate-theme-light-v4:has(#leftSideBar) #blog footer.lx-site-footer,
+  body.lireate-blog-body:has(#leftSideBar) #blog footer.lx-site-footer,
+  body.lireate-team-body:has(#leftSideBar) .page_container > section#lireate-team footer.lx-site-footer,
+  body.lireate-about-body:has(#leftSideBar) .page_container > section footer.lx-site-footer {
+    box-sizing: border-box;
+    margin-left: -24px !important;
+    margin-right: 0 !important;
+    width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    max-width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    padding-inline: clamp(20px, 3vw, 48px);
+  }
+  body.lireate-theme-light-v4:has(#leftSideBar) footer.lx-site-footer .lx-site-footer-inner,
+  body.lireate-team-body:has(#leftSideBar) footer.lx-site-footer .lx-site-footer-inner,
+  body.lireate-blog-body:has(#leftSideBar) footer.lx-site-footer .lx-site-footer-inner {
+    max-width: 1080px;
+    margin-inline: auto;
+  }
+}
+
 html.lireate-team-html body.lireate-team-body.lireate-theme-light-v4,
 body.lireate-team-body.lireate-theme-light-v4:has(.lireate-team-page) {
   background: #fff !important;
