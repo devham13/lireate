@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LIREATE SEO — кабинет</title>
+  <style>
+    :root { --bg:#fff; --text:#1f212c; --accent:#e32020; --blue:#3a86ff; --muted:#5c6278; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    header { padding: 1.25rem 1.5rem; border-bottom: 3px solid var(--accent); }
+    h1 { margin: 0; font-size: 1.35rem; }
+    main { max-width: 56rem; margin: 0 auto; padding: 1.5rem; }
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+    a.card { display: block; padding: 1rem 1.1rem; border: 1px solid #e8ecf4; border-radius: 12px;
+      text-decoration: none; color: inherit; background: #f3f8ff; transition: transform .15s, box-shadow .15s; }
+    a.card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(58,134,255,.15); }
+    a.card strong { color: var(--blue); display: block; margin-bottom: .35rem; }
+    p.lead { color: var(--muted); }
+    footer { padding: 1rem 1.5rem; font-size: .85rem; color: var(--muted); border-top: 1px solid #eee; text-align: center; }
+  </style>
+</head>
+<body>
+  <header><h1>LIREATE SEO — единый кабинет</h1></header>
+  <main>
+    <p class="lead">Обход, лаборатория, отчёты и триггер исправлений. Доступ защищён HTTP Basic Auth на reverse proxy.</p>
+    <div class="grid">
+      <a class="card" href="/seonaut/"><strong>SEOnaut</strong>Краул, ссылки, метаданные, заголовки</a>
+      <a class="card" href="/reports/site/"><strong>Unlighthouse</strong>Mobile Lighthouse, HTML/JSON отчёты</a>
+      <a class="card" href="/siteone/"><strong>SiteOne Crawler</strong>Технический HTML/JSON краул</a>
+      <a class="card" href="/indexlift/"><strong>IndexLift</strong>Google + Yandex single-page / tier basic</a>
+    </div>
+  </main>
+  <footer>Стек: SEOnaut · Unlighthouse · SiteOne · IndexLift · Ofelia · GitHub Actions</footer>
+</body>
+</html>

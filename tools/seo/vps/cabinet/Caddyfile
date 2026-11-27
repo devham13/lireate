@@ -1,0 +1,32 @@
+{
+  auto_https off
+}
+
+:80 {
+  encode gzip
+  handle_path /reports/* {
+    root * /srv/reports
+    file_server browse
+  }
+  handle_path /siteone/* {
+    root * /srv/siteone
+    file_server browse
+  }
+  handle_path /indexlift/* {
+    root * /srv/indexlift
+    file_server browse
+  }
+  handle /seonaut/* {
+    uri strip_prefix /seonaut
+    reverse_proxy seonaut:9000
+  }
+  handle {
+    root * /srv/www
+    file_server
+  }
+  @protected not path /healthz
+  basic_auth @protected {
+    {$CABINET_USER} {$CABINET_PASSWORD_HASH}
+  }
+  respond /healthz 200
+}

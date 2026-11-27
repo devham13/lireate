@@ -1,0 +1,68 @@
+# Расширение tools/seo/compose.yaml для VPS (/opt/lireate-seo).
+# Запуск: docker compose -f compose.yaml -f vps/compose.stack.yaml up -d
+
+name: lireate-seo
+
+services:
+  cabinet:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    depends_on:
+      seonaut:
+        condition: service_started
+    ports:
+      - "127.0.0.1:${CABINET_PORT:-19080}:80"
+    environment:
+      CABINET_USER: ${CABINET_USER:-lireate}
+      CABINET_PASSWORD_HASH: ${CABINET_PASSWORD_HASH:-}
+    volumes:
+      - ./vps/cabinet/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./vps/cabinet/www:/srv/www:ro
+      - ./unlighthouse/reports:/srv/reports:ro
+      - ./vps/data/siteone:/srv/siteone:ro
+      - ./vps/data/indexlift:/srv/indexlift:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+  siteone:
+    profiles: [runners]
+    build:
+      context: ./vps/siteone
+    init: true
+    environment:
+      SEO_SITE_URL: ${SEO_SITE_URL}
+    volumes:
+      - ./vps/data/siteone:/work/out
+    command:
+      - "--url=${SEO_SITE_URL}/"
+      - "--max-visited-urls=400"
+      - "--max-depth=0"
+      - "--output=json"
+      - "--output-html-report=/work/out/report.html"
+      - "--workers=4"
+      - "--max-reqs-per-sec=5"
+
+  indexlift:
+    profiles: [runners]
+    build:
+      context: ../..
+      dockerfile: tools/seo/vps/indexlift/Dockerfile
+    init: true
+    environment:
+      SEO_SITE_URL: ${SEO_SITE_URL}
+    volumes:
+      - ./vps/data/indexlift:/work/out
+    working_dir: /app
+    command:
+      - "--url"
+      - "${SEO_SITE_URL}/"
+      - "--mode"
+      - "single-page"
+      - "--tier"
+      - "basic"
+      - "--output"
+      - "/work/out/latest"
+
+volumes:
+  caddy-data:
+  caddy-config:
