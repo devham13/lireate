@@ -28,8 +28,8 @@ class SidebarV7NoExpertPhotoTests(unittest.TestCase):
     def test_patent_page_data_has_hero_portrait(self):
         text = PATENT_DATA.read_text(encoding="utf-8")
         block = text[text.find("if ($key === 'patent')") : text.find("if ($key === 'patent_prom_obr')")]
-        self.assertIn("person/11.webp", block)
-        self.assertIn("Горбачев Юрий Александрович", block)
+        self.assertIn("person/1.webp", block)
+        self.assertIn("Габдрахманова Эльвира", block)
 
 
 if __name__ == "__main__":
