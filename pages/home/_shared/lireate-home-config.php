@@ -19,6 +19,9 @@ foreach ($messenger_candidates as $cfg) {
 if (!defined('LIREATE_HOME_TELEGRAM_URL')) {
     define('LIREATE_HOME_TELEGRAM_URL', 'https://t.me/lireate_patent');
 }
+if (!defined('LIREATE_HOME_WHATSAPP_URL')) {
+    define('LIREATE_HOME_WHATSAPP_URL', 'https://wa.me/79600484957');
+}
 if (!defined('LIREATE_HOME_MAX_CHAT_URL')) {
     define(
         'LIREATE_HOME_MAX_CHAT_URL',
@@ -47,8 +50,8 @@ if (!defined('LIREATE_HOME_LIGHT_V4_JS_HREF')) {
 }
 
 if (!defined('LIREATE_HOME_TEMPLATE_VERSION')) {
-    define('LIREATE_HOME_TEMPLATE_VERSION', '20261126r20');
+    define('LIREATE_HOME_TEMPLATE_VERSION', '20261127r21');
 }
 if (!defined('LIREATE_HOME_CSS_VERSION')) {
-    define('LIREATE_HOME_CSS_VERSION', '20261126r27');
+    define('LIREATE_HOME_CSS_VERSION', '20261127r28');
 }
