@@ -923,3 +923,39 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-right .expert-
   transform:scale(1.28) !important;
 }
 }
+
+/* Главная: три мессенджера вместо двух CTA в первом экране. */
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-actions.lh4-hero-messengers {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  max-width:610px;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-hero-messengers .lh4-messenger-btn {
+  min-width:0;
+  min-height:50px;
+  padding:12px 14px;
+  gap:9px;
+  border:1px solid #d6e0ee;
+  border-radius:12px;
+  background:#fff;
+  color:#24314c;
+  font-weight:800;
+  white-space:nowrap;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-hero-messengers .lh4-messenger-btn:hover {
+  border-color:#d81f28;
+  background:#fff7f7;
+  color:#1b2336;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-hero-messengers .lh4-messenger-btn:focus-visible {
+  outline:3px solid #245dbb;
+  outline-offset:3px;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-messenger-btn svg {display:block;flex:none;}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-messenger-whatsapp svg {color:#20a45b;}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-messenger-max svg {color:#8b45de;}
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-messenger-telegram svg {color:#2488c6;}
+@media(max-width:560px) {
+  body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-actions.lh4-hero-messengers {grid-template-columns:1fr;}
+}

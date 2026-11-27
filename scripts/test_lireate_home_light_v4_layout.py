@@ -11,6 +11,19 @@ CMS_CSS = ROOT / "template" / "css" / "lireate-cms-pages-light-v4.css"
 
 
 class HomeLightV4LayoutTests(unittest.TestCase):
+    def test_hero_messenger_buttons_replace_legacy_cta(self):
+        text = HOME_INC.read_text(encoding="utf-8")
+        self.assertIn("lh4-hero-messengers", text)
+        self.assertIn("lh4-messenger-whatsapp", text)
+        self.assertIn("lh4-messenger-max", text)
+        self.assertIn("lh4-messenger-telegram", text)
+        self.assertIn('data-lx-ym-goal="perehod_v_messendzher"', text)
+        self.assertIn('data-lx-ym-goal="perehod_v_telegramm"', text)
+        self.assertIn("LIREATE_HOME_WHATSAPP_URL", text)
+        hero_actions = text[text.find("hero-actions") : text.find("hero-note")]
+        self.assertNotIn('href="/findtz"', hero_actions)
+        self.assertNotIn("Бесплатная консультация", hero_actions)
+
     def test_subnav_before_hero_in_markup(self):
         text = HOME_INC.read_text(encoding="utf-8")
         sub = text.find('class="lh4-subnav"')
