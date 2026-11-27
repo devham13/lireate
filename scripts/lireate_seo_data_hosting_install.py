@@ -168,10 +168,11 @@ def cmd_apply(docroot):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     def default_docroot():
-        env_root = os.environ.get("LIREATE_REMOTE_SITE_ROOT", "").strip()
-        if env_root and os.path.isdir is not None:
+        fallback = "/var/www/u3650956/data/www/public_html"
+        env_root = os.environ.get("LIREATE_REMOTE_SITE_ROOT", "").strip().rstrip("/")
+        if env_root and env_root.endswith("public_html"):
             return env_root
-        return "/var/www/u3650956/data/www/public_html"
+        return fallback
 
     parser.add_argument("--docroot", default=default_docroot())
     parser.add_argument("--check", action="store_true", help="Remote drift check only")
