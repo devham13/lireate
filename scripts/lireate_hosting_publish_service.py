@@ -694,7 +694,7 @@ def _publish_slug(
     state_file.parent.mkdir(parents=True, exist_ok=True)
     state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    if update_mode and not dry_run and os.environ.get("LIREATE_SKIP_POST_PUBLISH_OVERLAY", "").lower() not in (
+    if update_mode and not dry_run and os.environ.get("LIREATE_POST_PUBLISH_OVERLAY", "").lower() in (
         "1",
         "yes",
         "true",
