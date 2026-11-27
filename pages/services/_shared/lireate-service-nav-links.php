@@ -28,7 +28,7 @@ if (!function_exists('lireate_breadcrumb_schema_items')) {
     {
         return [
             ['@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => rtrim($site_root, '/') . '/'],
-            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги'],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => rtrim($site_root, '/') . '/uslugi/'],
             ['@type' => 'ListItem', 'position' => 3, 'name' => $current_name, 'item' => $canonical],
         ];
     }

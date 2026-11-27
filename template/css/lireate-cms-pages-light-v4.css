@@ -319,13 +319,29 @@ body.lireate-team-body.lireate-theme-light-v4 footer:not(.lx-site-footer),
 body.lireate-blog-body.lireate-theme-light-v4 footer:not(.lx-site-footer) {
   display: none !important;
 }
-body.lireate-theme-light-v4 .lx-consent {
-  display: block !important;
+body.lireate-theme-light-v4 label.lx-consent {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
   text-align: left !important;
+  cursor: pointer;
+  font-weight: 400;
+  margin: 10px 0 0;
 }
-body.lireate-theme-light-v4 .lx-consent input[type="checkbox"] {
-  vertical-align: top;
-  margin: 2px 8px 0 0;
+body.lireate-theme-light-v4 label.lx-consent--marketing {
+  margin-top: 10px;
+}
+body.lireate-theme-light-v4 label.lx-consent input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+  accent-color: #3a86ff;
+}
+body.lireate-theme-light-v4 label.lx-consent .lx-consent-text {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Legacy CMS chrome (#leftSideBar, тёмное меню) поверх Light V4 */
