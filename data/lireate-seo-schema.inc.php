@@ -521,7 +521,7 @@ if (!function_exists('lireate_seo_build_article_graph')) {
         $authorRole = isset($meta['author_role']) ? $meta['author_role'] : '';
         $authorUrl = isset($meta['author_url']) ? $meta['author_url'] : ($base . '/avtor/');
         $article = array(
-            '@type' => 'Article',
+            '@type' => 'BlogPosting',
             '@id' => $canonical !== '' ? $canonical . '#article' : null,
             'headline' => $title,
             'description' => $desc,
@@ -535,11 +535,7 @@ if (!function_exists('lireate_seo_build_article_graph')) {
             'dateModified' => $modified !== '' ? $modified : null,
             'mainEntityOfPage' => $canonical !== '' ? array('@type' => 'WebPage', '@id' => $canonical) : null,
             'image' => $image !== '' ? array($image) : null,
-            'publisher' => array(
-                '@type' => 'Organization',
-                'name' => 'ООО «ЛИРЕЙТ»',
-                'url' => $base . '/',
-            ),
+            'publisher' => array('@id' => $base . '/#organization'),
         );
         $article = array_filter($article, function ($v) {
             return $v !== null && $v !== '';
@@ -559,13 +555,27 @@ if (!function_exists('lireate_seo_build_article_graph')) {
             ),
         );
         if ($canonical !== '') {
+            $crumbName = isset($meta['breadcrumb_rubric']) ? trim((string) $meta['breadcrumb_rubric']) : '';
+            $crumbUrl = isset($meta['breadcrumb_rubric_url']) ? trim((string) $meta['breadcrumb_rubric_url']) : '';
+            if ($crumbUrl !== '' && $crumbUrl[0] === '/') {
+                $crumbUrl = $base . $crumbUrl;
+            } elseif ($crumbUrl === '') {
+                $crumbUrl = $base . '/news/';
+            }
+            $crumbs = array(
+                array('@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $base . '/'),
+                array('@type' => 'ListItem', 'position' => 2, 'name' => 'Блог', 'item' => $base . '/news/'),
+            );
+            if ($crumbName !== '') {
+                $crumbs[] = array('@type' => 'ListItem', 'position' => 3, 'name' => $crumbName, 'item' => $crumbUrl);
+                $crumbs[] = array('@type' => 'ListItem', 'position' => 4, 'name' => $title, 'item' => $canonical);
+            } else {
+                $crumbs[] = array('@type' => 'ListItem', 'position' => 3, 'name' => $title, 'item' => $canonical);
+            }
             $graph['@graph'][] = array(
                 '@type' => 'BreadcrumbList',
-                'itemListElement' => array(
-                    array('@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $base . '/'),
-                    array('@type' => 'ListItem', 'position' => 2, 'name' => 'Блог', 'item' => $base . '/news'),
-                    array('@type' => 'ListItem', 'position' => 3, 'name' => $title, 'item' => $canonical),
-                ),
+                '@id' => $canonical . '#breadcrumb',
+                'itemListElement' => $crumbs,
             );
         }
         $faqSource = isset($meta['body_html']) ? $meta['body_html'] : '';

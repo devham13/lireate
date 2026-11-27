@@ -415,9 +415,10 @@ function lireate_blog_render_service_footer()
 }
 
 if (!function_exists('lireate_blog_related_articles')) {
-function lireate_blog_related_articles($current_url, $limit = 3)
+function lireate_blog_related_articles($current_url, $limit = 3, $prefer_tag = '')
 {
     $current = '/' . trim((string) $current_url, '/');
+    $prefer_tag = trim((string) $prefer_tag);
     $data = lireate_blog_load_index();
     $rows = array();
     foreach ($data['articles'] as $row) {
@@ -430,15 +431,74 @@ function lireate_blog_related_articles($current_url, $limit = 3)
         }
         $rows[] = $row;
     }
+    $score_row = function ($row) use ($prefer_tag) {
+        $score = 0;
+        if ($prefer_tag !== '') {
+            $tag = isset($row['tag']) ? (string) $row['tag'] : '';
+            if ($tag !== '' && (mb_stripos($tag, $prefer_tag, 0, 'UTF-8') !== false || mb_stripos($prefer_tag, $tag, 0, 'UTF-8') !== false)) {
+                $score += 10;
+            }
+        }
+        return $score;
+    };
     usort(
         $rows,
-        function ($a, $b) {
+        function ($a, $b) use ($score_row) {
+            $sa = $score_row($a);
+            $sb = $score_row($b);
+            if ($sa !== $sb) {
+                return $sb - $sa;
+            }
             $da = lireate_blog_date_display_to_iso(isset($a['date_display']) ? $a['date_display'] : '');
             $db = lireate_blog_date_display_to_iso(isset($b['date_display']) ? $b['date_display'] : '');
             return strcmp($db, $da);
         }
     );
-    return array_slice($rows, 0, max(0, (int) $limit));
+  if ($limit < 1) {
+    return array();
+  }
+  $out = array();
+  foreach ($rows as $row) {
+      $out[] = $row;
+      if (count($out) >= (int) $limit) {
+          break;
+      }
+  }
+  if (count($out) < (int) $limit && function_exists('lireate_blog_list_collect_cms_items')) {
+      $cms = lireate_blog_list_collect_cms_items();
+      foreach ($cms as $norm) {
+          if (!is_array($norm) || empty($norm['url']) || empty($norm['title'])) {
+              continue;
+          }
+          $path = $norm['url'];
+          if ($path === $current) {
+              continue;
+          }
+          $dup = false;
+          foreach ($out as $existing) {
+              $eu = isset($existing['url']) ? '/' . trim($existing['url'], '/') : '';
+              if ($eu === $path) {
+                  $dup = true;
+                  break;
+              }
+          }
+          if ($dup) {
+              continue;
+          }
+          $out[] = array(
+              'url' => trim($path, '/'),
+              'title' => $norm['title'],
+              'date_display' => isset($norm['date_display']) ? $norm['date_display'] : '',
+              'tag' => isset($norm['tag']) ? $norm['tag'] : '',
+              'cover' => isset($norm['cover']) ? $norm['cover'] : '',
+              'excerpt' => isset($norm['excerpt']) ? $norm['excerpt'] : '',
+          );
+          if (count($out) >= (int) $limit) {
+              break;
+          }
+      }
+  }
+  return $out;
 }
 }
 
