@@ -34,11 +34,14 @@ $lp_footer_css = defined('LIREATE_PARTNERS_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_assets); ?>/lireate-partners.css?v=<?php echo lireate_partners_h($lp_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_partners_h($lp_footer_css); ?>?v=<?php echo lireate_partners_h($lp_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
+<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126d">
 <script>
 document.documentElement.classList.add('lireate-partners-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_partners_h(LIREATE_PARTNERS_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-partners-body'); }
 </script>
+<script>(function(){document.documentElement.classList.add('lireate-company-v5');if(document.body){document.body.classList.add('lireate-company-v5');}else{document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lireate-company-v5');},{once:true});}})();</script>
 <div class="lireate-partners-page" data-lireate-partners-version="<?php echo lireate_partners_h($lp_v); ?>">
   <header class="lireate-partners-hero">
     <div class="lireate-partners-wrap">
@@ -47,6 +50,16 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
       <?php if ($lp_intro !== '') : ?>
       <p class="lireate-partners-lead"><?php echo lireate_partners_h($lp_intro); ?></p>
       <?php endif; ?>
+
+      <aside class="lc5-hero-media lc5-hero-media--compact" aria-label="ПАРТНЁРСКАЯ СЕТЬ">
+        <div class="lc5-icon-shell" aria-hidden="true"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="23" r="16"/><circle cx="27" cy="93" r="16"/><circle cx="93" cy="93" r="16"/><path d="M52 37 37 77M68 37 83 77M43 93h34"/><path d="M53 23h14M20 93h14M86 93h14"/></svg></div>
+        <div class="lc5-media-body">
+          <span class="lc5-chip">ПАРТНЁРСКАЯ СЕТЬ</span>
+          <strong>Решаем задачи вместе</strong>
+          <p>Юридические и бизнес-партнёры, представленные в каталоге Лирейт.</p>
+          <a href="/contacts/">Обсудить сотрудничество ↗</a>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -57,7 +70,9 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
       ?>
       <article class="lireate-partners-card">
         <div class="lireate-partners-card-body">
-          <div class="lireate-partners-head">
+          <details class="lireate-partners-disclosure">
+            <summary class="lireate-partners-summary">
+              <div class="lireate-partners-head">
             <?php if ($photo !== '') : ?>
             <div class="lireate-partners-photo-wrap">
               <img class="lireate-partners-photo" src="<?php echo lireate_partners_h($photo); ?>" alt="" loading="lazy" decoding="async">
@@ -71,7 +86,10 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
               <p class="lireate-partners-city"><?php echo lireate_partners_h($partner['city']); ?></p>
               <?php endif; ?>
             </div>
-          </div>
+              </div>
+              <span class="lireate-partners-toggle" aria-hidden="true">Подробнее <span>⌄</span></span>
+            </summary>
+            <div class="lireate-partners-expanded">
           <?php if (!empty($partner['fields']) && is_array($partner['fields'])) : ?>
           <dl class="lireate-partners-fields">
             <?php foreach ($partner['fields'] as $field) :
@@ -119,6 +137,8 @@ if (document.body) { document.body.classList.add('lireate-partners-body'); }
             <?php endforeach; ?>
           </dl>
           <?php endif; ?>
+            </div>
+          </details>
         </div>
       </article>
       <?php endforeach; ?>

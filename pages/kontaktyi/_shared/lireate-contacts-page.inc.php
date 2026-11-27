@@ -26,7 +26,6 @@ $lc_phone1_display = '+7 (499) 938-45-95';
 $lc_phone1_tel = 'tel:+74999384595';
 $lc_phone2_display = '+7 (960) 048-49-57';
 $lc_phone2_tel = 'tel:+79600484957';
-$lc_map_src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ad7e7b32ceb16a5f6568e233bb36f3fafc873135d2f7269ff6cc1168c9892c75c&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=false';
 $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
     ? LIREATE_CONTACTS_FOOTER_CSS_HREF
     : '/template/page/news/lireate-blog-footer.css';
@@ -36,11 +35,14 @@ $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
 <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Rubik:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-contacts.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_footer_css); ?>?v=<?php echo lireate_contacts_h($lc_v); ?>">
+<link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
+<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126d">
 <script>
 document.documentElement.classList.add('lireate-contacts-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_contacts_h(LIREATE_CONTACTS_METRIKA_ID); ?>');
 if (document.body) { document.body.classList.add('lireate-contacts-body'); }
 </script>
+<script>(function(){document.documentElement.classList.add('lireate-company-v5');if(document.body){document.body.classList.add('lireate-company-v5');}else{document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lireate-company-v5');},{once:true});}})();</script>
 <div class="lireate-contacts-page" data-lireate-contacts-version="<?php echo lireate_contacts_h($lc_v); ?>">
   <header class="lireate-contacts-hero">
     <div class="lireate-contacts-wrap">
@@ -54,6 +56,16 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
         <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-phone" href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone2_display); ?></a>
         <a class="lireate-contacts-pill lireate-contacts-pill--outline" id="lc-hero-phone2" href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone1_display); ?></a>
       </div>
+
+      <aside class="lc5-hero-media lc5-hero-media--compact" aria-label="ОФИС ЛИРЕЙТ">
+        <div class="lc5-icon-shell" aria-hidden="true"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 108s37-38 37-69a37 37 0 1 0-74 0c0 31 37 69 37 69Z"/><circle cx="60" cy="42" r="14"/><path d="M36 107h48"/></svg></div>
+        <div class="lc5-media-body">
+          <span class="lc5-chip">ОФИС ЛИРЕЙТ</span>
+          <strong>Зеленодольск</strong>
+          <p>Республика Татарстан, ул. Карла Маркса, 24, офис 1.</p>
+          <a href="#lc-form-title">Оставить обращение ↗</a>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -105,9 +117,6 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
         <div><dt>Телефоны</dt><dd class="lireate-contacts-phones"><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep" aria-hidden="true">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:<?php echo lireate_contacts_h($lc_email); ?>"><?php echo lireate_contacts_h($lc_email); ?></a></dd></div>
       </dl>
-      <div class="lireate-contacts-map" aria-label="Карта офиса">
-        <script type="text/javascript" charset="utf-8" async src="<?php echo lireate_contacts_h($lc_map_src); ?>"></script>
-      </div>
     </section>
   </div>
 
@@ -136,16 +145,38 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
   <section class="lireate-contacts-wrap lireate-contacts-social" aria-labelledby="lc-social-title">
     <div class="lireate-contacts-card lireate-contacts-social-card">
       <span class="lireate-contacts-badge">Соцсети</span>
-      <h2 class="lireate-contacts-card-title" id="lc-social-title">Социальные сети</h2>
-      <p class="lireate-contacts-social-label">Много интересной и важной информации Вы сможете найти в наших социальных сетях</p>
+      <h2 class="lireate-contacts-card-title" id="lc-social-title">Мессенджеры и социальные сети</h2>
+      <p class="lireate-contacts-social-label">Выберите удобный канал: консультации, полезные материалы и новости об интеллектуальной собственности.</p>
       <div class="lireate-contacts-social-grid">
-        <a class="lireate-contacts-social-item" href="https://www.youtube.com/channel/UCpg1LWotCQWwzviPDb_9Rew" target="_blank" rel="noopener noreferrer">
-          <span class="lireate-contacts-social-name">YouTube</span>
-          <span class="lireate-contacts-social-desc">На нашем канале Вы можете ознакомится с отзывами наших клиентов и получить другую полезную информацию</span>
+        <a class="lireate-contacts-social-item lireate-contacts-social-item--tg" href="https://t.me/lireate_patent" target="_blank" rel="noopener noreferrer" aria-label="Telegram" data-lx-ym-goal="perehod_v_telegramm">
+          <span class="lireate-contacts-social-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span>
+          <span class="lireate-contacts-social-name">Telegram</span>
+          <span class="lireate-contacts-social-desc">Чат с патентным бюро и консультации</span>
+          <span class="lireate-contacts-social-arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="lireate-contacts-social-item" href="https://vk.com/lireate" target="_blank" rel="noopener noreferrer">
-          <span class="lireate-contacts-social-name">Вконтакте</span>
-          <span class="lireate-contacts-social-desc">В группе VK мы регулярно публикуем интересные статьи о юридической защите предпринимательской деятельности</span>
+        <a class="lireate-contacts-social-item lireate-contacts-social-item--max" href="https://max.ru/channel_lireate" target="_blank" rel="noopener noreferrer" aria-label="MAX" data-lx-ym-goal="perehod_v_messendzher">
+          <span class="lireate-contacts-social-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50.76 0.26c27.54 0 49.13 22.34 49.13 49.89S77.61 99.49 51.02 99.49c-9.44 0-14.01-1.33-21.37-6.54-.51-.36-1.2-.27-1.63.19-5.66 6.04-20.17 10.28-20.83 2.03 0-14.39-7.19-23.73-7.19-45.3C0 21.55 23.22 0.26 50.76 0.26zm.77 24.55c-13.06-.69-23.26 8.39-25.51 22.57-1.86 11.75 1.44 26.07 4.27 26.79 1.2.31 4.08-1.88 6.18-3.86.39-.37 1-.44 1.46-.15 3.27 2 6.97 3.5 11.05 3.71 13.41.7 25.3-9.8 26.01-23.21.7-13.41-10.02-25.14-23.43-25.84z"/></svg></span>
+          <span class="lireate-contacts-social-name">MAX</span>
+          <span class="lireate-contacts-social-desc">Новости и связь с бюро</span>
+          <span class="lireate-contacts-social-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="lireate-contacts-social-item lireate-contacts-social-item--wa" href="https://wa.me/79600484957" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" data-lx-ym-goal="perehod_v_messendzher">
+          <span class="lireate-contacts-social-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2C6.5 2 2 6.2 2 11.4c0 1.9.5 3.7 1.5 5.3L2 22l5.6-1.5c1.5.8 3.2 1.3 4.9 1.3 5.5 0 10-4.2 10-9.4S17.5 2 12 2zm5.8 13.5c-.2.6-1.2 1.1-1.7 1.1-.4 0-1.1.2-3.6-.9-3-1.3-5-4.4-5.1-4.6-.2-.3-1.2-1.6-1.2-3.1 0-1.5.8-2.2 1.1-2.5.3-.3.6-.4.8-.4.2 0 .4 0 .6.1.2 0 .4.2.5.5.2.5.6 1.7.7 1.8.1.1.1.3 0 .4 0 .1-.1.2-.2.3l-.3.3c-.1.1-.2.2-.1.4.1.2.5 1 1.1 1.6.8.7 1.5 1 1.7 1.1.2.1.3 0 .4-.1l.6-.7c.1-.2.3-.2.5-.1.8.3 2.8 1.3 3.2 1.5.3.2.5.3.6.4.1.2.1.7-.1 1.3z"/></svg></span>
+          <span class="lireate-contacts-social-name">WhatsApp</span>
+          <span class="lireate-contacts-social-desc">Быстрый вопрос специалисту</span>
+          <span class="lireate-contacts-social-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="lireate-contacts-social-item lireate-contacts-social-item--vk" href="https://vk.ru/lireate" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
+          <span class="lireate-contacts-social-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.785 16.241s.288-.032.436-.194c.136-.148.132-.427.132-.427s-.02-1.304.58-1.496c.591-.19 1.35.956 2.155 1.378.605.318 1.064.248 1.064.248l2.141-.03s1.117-.07.587-.95c-.043-.073-.308-.65-1.588-1.838-1.344-1.245-1.163-.522.454-1.598.983-.656 1.377-1.055 1.254-1.224-.116-.155-.833-.114-.833-.114l-2.375.015s-.176-.024-.306.053c-.127.075-.208.249-.208.249s-.374 1.001-.87 1.852c-1.05 1.508-1.47 1.587-1.641 1.493-.399-.214-.299-.86-.299-1.319 0-1.434.216-2.03-.422-2.186-.212-.051-.368-.085-.911-.09-.697-.007-1.286.002-1.619.166-.222.115-.393.372-.289.387.129.018.421.078.576.285.2.264.193.855.193.855s.116 1.72-.27 1.936c-.266.175-.631-.182-1.414-1.283-.4-.54-.702-1.137-.702-1.137s-.058-.142-.162-.218c-.126-.093-.302-.122-.302-.122l-2.256.014s-.338.01-.462.156c-.111.13-.008.4-.008.4s1.77 4.146 3.773 6.24c1.836 1.918 3.927 1.794 3.927 1.794h.947z"/></svg></span>
+          <span class="lireate-contacts-social-name">ВКонтакте</span>
+          <span class="lireate-contacts-social-desc">Статьи, новости и юридические разборы</span>
+          <span class="lireate-contacts-social-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="lireate-contacts-social-item lireate-contacts-social-item--yt" href="https://www.youtube.com/channel/UCpg1LWotCQWwzviPDb_9Rew" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <span class="lireate-contacts-social-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg></span>
+          <span class="lireate-contacts-social-name">YouTube</span>
+          <span class="lireate-contacts-social-desc">Видеоотзывы и полезные материалы</span>
+          <span class="lireate-contacts-social-arrow" aria-hidden="true">↗</span>
         </a>
       </div>
     </div>

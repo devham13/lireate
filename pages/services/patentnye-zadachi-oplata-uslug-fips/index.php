@@ -41,8 +41,14 @@ $schema_graph = array(
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
+  <link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126d">
+<script defer src="/template/js/lireate-qa-v6.js?v=20261126d"></script>
 </head>
-<body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4">
+<body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4 lxq-patent-tasks">
+<?php
+$lxq_sidebar = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/template/lireate/lireate-patent-tasks-sidebar-v6.inc.php' : '';
+if ($lxq_sidebar !== '' && is_file($lxq_sidebar)) { include $lxq_sidebar; }
+?>
 <?php include __DIR__ . '/blocks/lireate-patent-header.inc.php'; ?>
 <main id="primary" class="lireate-svc-page" role="main" tabindex="-1" data-lx-patent-pay="fips" data-lx-pay-profiles-json="<?php echo htmlspecialchars($lx_pay_profiles_json, ENT_QUOTES, 'UTF-8'); ?>">
 <?php include __DIR__ . '/blocks/lireate-patent-breadcrumbs.inc.php'; ?>
