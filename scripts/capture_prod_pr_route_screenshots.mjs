@@ -44,9 +44,10 @@ const VIEWPORTS_BY_KEY = {
   ],
   'patent-prom-obr': [
     [1440, 900, '1440'],
-    [1280, 900, '1280'],
+    [768, 900, '768'],
     [390, 844, '390'],
   ],
+  patent: [[390, 844, '390']],
   default: [
     [1440, 900, '1440'],
     [390, 844, '390'],
@@ -222,6 +223,34 @@ for (const entry of entries) {
         { timeout: 45000 },
       )
       .catch(() => {});
+    if (key === 'patent-prom-obr') {
+      await page
+        .waitForFunction(
+          (viewportTag) => {
+            const root = document.querySelector('#lireate-patent-v4.lp4-patent_prom_obr');
+            const hero = root?.querySelector('.lp4-hero');
+            const h1 = root?.querySelector('h1');
+            const photo = root?.querySelector('.lp4-photo-card');
+            if (!hero || !h1) return false;
+            const colCount = getComputedStyle(hero).gridTemplateColumns.trim().split(/\s+/).length;
+            const h1Style = getComputedStyle(h1);
+            const hyphensOk =
+              h1Style.hyphens === 'none' || h1Style.webkitHyphens === 'none' || h1Style.hyphens === 'manual';
+            if (viewportTag === '1440') {
+              return colCount >= 2 && hyphensOk;
+            }
+            if (viewportTag === '768' || viewportTag === '390') {
+              if (colCount !== 1 || !hyphensOk) return false;
+              if (!photo) return true;
+              return photo.getBoundingClientRect().top >= h1.getBoundingClientRect().bottom - 4;
+            }
+            return true;
+          },
+          { timeout: 20000 },
+          tag,
+        )
+        .catch(() => console.warn('WARN prom-obr layout assert', key, tag));
+    }
     if (BREADCRUMB_CROP_KEYS.has(key)) {
       await page
         .waitForFunction(
