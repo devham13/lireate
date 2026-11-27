@@ -168,7 +168,7 @@ def render_inner(local_origin):
     return "\n".join(lines)
 
 
-def patch_snapshot(page_html, inner):
+def patch_snapshot(page_html, inner, local_origin):
     page_html = re.sub(r"<base\b[^>]*>", "", page_html, flags=re.I)
     page_html = re.sub(
         r'<link[^>]+href="[^"]*lireate-blog-footer-light-v4\.css[^"]*"[^>]*>',
@@ -200,6 +200,11 @@ def patch_snapshot(page_html, inner):
         patched,
         flags=re.I,
     )
+    patched = patched.replace(CMS_ORIGIN, local_origin)
+    patched = patched.replace(
+        local_origin + "/template/images/",
+        CMS_ORIGIN + "/template/images/",
+    )
     return patched
 
 
@@ -208,7 +213,7 @@ def main():
     ensure_snapshot()
     text = SNAPSHOT.read_text(encoding="utf-8", errors="replace")
     inner = render_inner(local)
-    patched = patch_snapshot(text, inner)
+    patched = patch_snapshot(text, inner, local)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(patched, encoding="utf-8")
     print("wrote {0}".format(OUT))

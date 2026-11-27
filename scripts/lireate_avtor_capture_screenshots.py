@@ -10,6 +10,42 @@ OUT_DIR = Path("/opt/cursor/artifacts/screenshots")
 PREVIEW_LOCAL = "http://127.0.0.1:8799/pages/avtor/_preview/rendered-preview.html"
 PROD_URL = "https://" + "li" + "re" + "ate.ru/avtor/"  # pragma: allowlist secret
 
+SHOT_CSS = """
+#personsSlide, #floatingBlock, #veil, #modal_form, .modal-backdrop, .modal-mail, .popup.modal { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+body.modal-open { overflow: auto !important; padding-right: 0 !important; }
+"""
+
+
+def capture_tall_viewport(page, out_path):
+    scroll_h = page.evaluate(
+        """() => Math.min(14000, Math.max(
+            document.documentElement.scrollHeight || 0,
+            document.body.scrollHeight || 0,
+            900))"""
+    )
+    viewport = page.viewport_size
+    page.set_viewport_size({"width": viewport["width"], "height": int(scroll_h)})
+    page.wait_for_timeout(300)
+    page.screenshot(path=str(out_path), full_page=False)
+
+
+def prepare_avtor_preview_shot(page, width):
+    page.add_style_tag(content=SHOT_CSS)
+    metrics = page.evaluate(
+        """() => ({
+          managed: document.body.classList.contains('lsv7-managed'),
+          nav: document.querySelectorAll('#leftSideNav .leftSideNaviButton').length,
+          expert: !!document.querySelector('.lsv7-sidebar-expert'),
+          contentPad: document.querySelector('.content') ? getComputedStyle(document.querySelector('.content')).paddingLeft : '',
+        })"""
+    )
+    if not metrics.get("managed") or metrics.get("nav", 0) < 5:
+        raise RuntimeError("BLOCKER: sidebar not ready: {0}".format(metrics))
+    if metrics.get("expert"):
+        raise RuntimeError("BLOCKER: sidebar expert should be hidden on /avtor/")
+    if width >= 1151 and metrics.get("contentPad") not in ("0px", "0"):
+        raise RuntimeError("BLOCKER: double content offset padding={0}".format(metrics.get("contentPad")))
+
 
 def main():
     render = REPO / "scripts" / "lireate_avtor_render_preview_html.py"
@@ -34,17 +70,27 @@ def main():
         for name, url, width in shots:
             page = browser.new_page(viewport={"width": width, "height": 900})
             try:
-                resp = page.goto(url, wait_until="networkidle", timeout=120000)
+                resp = page.goto(url, wait_until="domcontentloaded", timeout=120000)
                 if not resp or resp.status >= 400:
                     print("BLOCKER: {0} status={1}".format(url, resp.status if resp else "none"))
                     ok = False
                     continue
+                if "rendered-preview.html" in url:
+                    page.wait_for_function(
+                        "() => document.body.classList.contains('lsv7-managed')",
+                        timeout=30000,
+                    )
+                    page.wait_for_timeout(400)
+                    prepare_avtor_preview_shot(page, width)
             except Exception as exc:
                 print("BLOCKER: {0} {1}".format(url, exc))
                 ok = False
                 continue
             out = OUT_DIR / name
-            page.screenshot(path=str(out), full_page=True)
+            if "rendered-preview.html" in url:
+                capture_tall_viewport(page, out)
+            else:
+                page.screenshot(path=str(out), full_page=True)
             h1 = page.locator("h1").first
             if h1.count() < 1:
                 print("BLOCKER: no h1 on {0}".format(url))

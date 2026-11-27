@@ -30,6 +30,39 @@ body.lireate-avtor-body .container.content {
   padding-right: 0 !important;
   max-width: none !important;
 }
+
+/* Sitewide V7: body already margin-left 270px — сброс legacy CMS shell */
+@media (min-width: 1151px) {
+  body.lireate-avtor-body.lsv7-managed .wrapper,
+  body.lireate-avtor-body.lsv7-managed .content,
+  body.lireate-avtor-body.lsv7-managed .container.content,
+  body.lireate-avtor-body.lsv7-managed .page_container {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  body.lireate-avtor-body.lsv7-managed footer.lx-site-footer,
+  body.lireate-avtor-body.lsv7-managed .footer-ap {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+@media (max-width: 1150px) {
+  body.lireate-avtor-body.lsv7-managed .content,
+  body.lireate-avtor-body.lsv7-managed .container.content {
+    padding-left: 0 !important;
+    padding-top: 60px !important;
+  }
+}
+
+/* Решение владельца 2026-11-27: на /avtor/ без портрета в сайдбаре */
+body.lireate-avtor-body #leftSideBar .lsv7-sidebar-expert {
+  display: none !important;
+}
 body.lireate-avtor-body .container.content > .row {
   margin-left: 0;
   margin-right: 0;

@@ -71,6 +71,12 @@ class AvtorLightV4PageTests(unittest.TestCase):
         self.assertGreaterEqual(contrast_ratio(body_text, bg_white), 4.5)
         self.assertGreaterEqual(contrast_ratio(title, bg_white), 4.5)
         self.assertGreaterEqual(contrast_ratio(footer_link, footer_bg), 4.5)
+        self.assertIn("lsv7-managed", css)
+        self.assertIn("lsv7-sidebar-expert", css)
+
+    def test_sidebar_v7_skips_expert_on_avtor(self):
+        js = (ROOT / "template" / "js" / "lireate-sitewide-sidebar-v7.js").read_text(encoding="utf-8")
+        self.assertIn("lireate-avtor-body", js)
 
 
 if __name__ == "__main__":
