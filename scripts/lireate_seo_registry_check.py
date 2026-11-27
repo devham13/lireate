@@ -35,13 +35,15 @@ def main():
         if not path.is_file():
             errors.append("missing {0}".format(name))
             continue
-        php_bin = "php"
-        for candidate in ("php", "php8.3", "php8.2", "php7.4"):
-            from shutil import which
+        from shutil import which
 
+        php_bin = None
+        for candidate in ("php", "php8.3", "php8.2", "php7.4"):
             if which(candidate):
                 php_bin = candidate
                 break
+        if not php_bin:
+            continue
         proc = subprocess.run(
             [php_bin, "-l", str(path)],
             capture_output=True,
@@ -73,8 +75,6 @@ def main():
 
     changed = []
     try:
-        import subprocess
-
         out = subprocess.check_output(
             ["git", "diff", "--name-only", "origin/main...HEAD"],
             cwd=str(ROOT),

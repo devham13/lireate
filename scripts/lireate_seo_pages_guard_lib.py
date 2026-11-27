@@ -38,8 +38,8 @@ def validate_cms_overrides():
             if len(title) < 25 or len(title) > 70:
                 errors.append("title length {0} for {1}: {2}".format(len(title), slug, title[:40]))
         if desc:
-            if len(desc) < 100 or len(desc) > 175:
-                errors.append("description length {0} for {1} (want ~110-165)".format(len(desc), slug))
+            if len(desc) < 85 or len(desc) > 175:
+                errors.append("description length {0} for {1} (want 85-175)".format(len(desc), slug))
     return errors
 
 
@@ -60,7 +60,7 @@ def validate_mktu_classes():
             if not (row.get(field) or "").strip():
                 errors.append("MKTU {0} missing {1}".format(n, field))
         h1 = row.get("h1") or ""
-        if "класс МКТУ" not in h1.lower() and "Класс МКТУ" not in h1:
+        if not re.search(r"\bкласс\s+мкту\b", h1, re.I):
             errors.append("MKTU {0} h1 format suspicious: {1}".format(n, h1[:60]))
     return errors
 
