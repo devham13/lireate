@@ -46,6 +46,17 @@ if (!function_exists('lireate_seo_service_with_slash')) {
             'ekspertiza_tovarnogo_znaka',
             'mezhdunarodnaja_registracija_tovarnogo_znaka',
             'registracija_torgovyh_marok_i_logotipov',
+            'registraciya_tovarnogo_znaka_v_kitae',
+            'vozrazhenie_protiv_registracii_tovarnogo_znaka',
+            'zashchita_avtorskih_prav',
+            'spory_po_ispolzovaniju_tovarnogo_znaka',
+            'dogovory',
+            'registraciya_programm_evm',
+            'prekrashhenie_pravovoj_ohrany',
+            'priznanie_tovarnogo_znaka_obshheizvestnym',
+            'registracija_naimenovanija_mesta_proishozhdenija_tovarov',
+            'zashhita_firmennogo_naimenovanija',
+            'tovarnyi_znak_info',
             'avtor',
         );
     }

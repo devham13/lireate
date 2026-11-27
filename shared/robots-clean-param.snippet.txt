@@ -1,0 +1,4 @@
+# Yandex Clean-param (append to robots.txt if missing)
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term /
+Clean-param: yclid&gclid&stat-id /
+Clean-param: mode&test&nc /
