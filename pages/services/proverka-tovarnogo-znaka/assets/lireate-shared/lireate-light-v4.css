@@ -357,3 +357,9 @@ body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites {
   background:#fff;
   border-color:#dce8f7;
 }
+
+/* Legacy breadcrumb dropdown on cached hosting HTML */
+body.lireate-theme-light-v4 .lx-breadcrumb-services-menu,
+body.lireate-theme-light-v4 button.lx-breadcrumb-services-trigger{display:none!important}
+body.lireate-theme-light-v4 .lx-breadcrumb-services>a[href="/uslugi/"],
+body.lireate-theme-light-v4 li.lx-breadcrumb-services>a[href="/uslugi/"]{display:inline!important}
