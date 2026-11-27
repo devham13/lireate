@@ -177,8 +177,64 @@ def main():
     parser.add_argument("--docroot", default=default_docroot())
     parser.add_argument("--check", action="store_true", help="Remote drift check only")
     parser.add_argument("--apply", action="store_true", help="Backup and deploy SEO data")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Deploy even when remote diverged (e.g. partial manual scp); still requires LIREATE_ALLOW_PUBLISH",
+    )
     args = parser.parse_args()
     if args.apply:
+        if args.force:
+            ssh_base, err = ssh_env()
+            if err:
+                print(err)
+                return 2
+            ts = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+            backup = "~/lireate-autopub/backups/{0}/{1}".format(BACKUP_NAME, ts)
+            subprocess.run(
+                ssh_base + "'mkdir -p {b}/data'".format(b=backup),
+                shell=True,
+                check=True,
+            )
+            rows, err = plan(args.docroot)
+            if err:
+                print(err)
+                return 2
+            for src, dst in rows:
+                rel = "data/" + src.name
+                subprocess.run(
+                    ssh_base + "'cp -a {d}/{r} {b}/{r} 2>/dev/null || true'".format(
+                        d=args.docroot, r=rel, b=backup
+                    ),
+                    shell=True,
+                )
+                subprocess.run(
+                    [
+                        "scp",
+                        "-4",
+                        "-i",
+                        "/tmp/lireate_seo_ssh_key",
+                        "-o",
+                        "StrictHostKeyChecking=no",
+                        str(src),
+                        "{0}@{1}:{2}".format(
+                            os.environ["LIREATE_SSH_USER"],
+                            os.environ["LIREATE_SSH_HOST"],
+                            dst,
+                        ),
+                    ],
+                    check=True,
+                )
+                print("deployed {0}".format(rel))
+            touch = ssh_base + (
+                "'touch {d}/template/main.php {d}/index.php'".format(
+                    d=args.docroot.rstrip("/")
+                )
+            )
+            subprocess.run(touch, shell=True, check=True)
+            print("backup: {0}".format(backup))
+            print("STATUS: SEO_DATA_APPLIED_FORCE")
+            return 0
         return cmd_apply(args.docroot)
     return cmd_check(args.docroot)
 
