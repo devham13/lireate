@@ -1,16 +1,26 @@
 #!/usr/bin/env python3
 """CI: deploy-patches/forms-consent-2026-11-20 — node --check (*.js), php -l (*.php), patch apply smoke."""
 
+import os
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
-from urllib.request import urlopen
+
+try:
+    from urllib.error import HTTPError, URLError
+    from urllib.request import Request, urlopen
+except ImportError:
+    from urllib2 import Request, urlopen, HTTPError, URLError  # type: ignore
 
 REPO = Path(__file__).resolve().parents[1]
 PATCH_ROOT = REPO / "deploy-patches" / "forms-consent-2026-11-20"
 MAIN_PATCH = PATCH_ROOT / "template" / "js" / "main.js.consent.patch"
+MAIN_JS_FIXTURE = REPO / "tests" / "fixtures" / "forms-consent" / "template" / "js" / "main.js.baseline"
 MAIN_JS_URL = "https://" + "li" + "re" + "ate.ru/template/js/main.js"  # pragma: allowlist secret
+FETCH_ATTEMPTS = 3
+FETCH_TIMEOUT = 30
 
 
 def _run(cmd, cwd=None):
@@ -56,14 +66,59 @@ def _verify_main_js_syntax(main_path):
     return []
 
 
+def _read_baseline_path(path):
+    return path.read_text(encoding="utf-8")
+
+
+def _read_fixture_baseline():
+    if not MAIN_JS_FIXTURE.is_file():
+        return None
+    return _read_baseline_path(MAIN_JS_FIXTURE)
+
+
+def _fetch_live_baseline():
+    override = os.environ.get("LIREATE_MAIN_JS_BASELINE", "").strip()
+    if override:
+        path = Path(override)
+        if path.is_file():
+            return _read_baseline_path(path)
+
+    if os.environ.get("LIREATE_FIXTURE_OFFLINE") == "1":
+        return _read_fixture_baseline()
+
+    req = Request(MAIN_JS_URL, headers={"User-Agent": "lireate-deploy-patches-forms-consent/1.0"})
+    last_exc = None
+    for attempt in range(FETCH_ATTEMPTS):
+        try:
+            with urlopen(req, timeout=FETCH_TIMEOUT) as resp:
+                return resp.read().decode("utf-8", errors="replace")
+        except (HTTPError, URLError, IOError, OSError) as exc:
+            last_exc = exc
+            if attempt + 1 < FETCH_ATTEMPTS:
+                time.sleep(2 * (attempt + 1))
+        except Exception as exc:
+            last_exc = exc
+            break
+
+    fixture = _read_fixture_baseline()
+    if fixture is not None:
+        print("NOTE: using main.js baseline fixture (live fetch failed: {0})".format(last_exc))
+        return fixture
+
+    if last_exc is not None:
+        raise last_exc
+    return None
+
+
 def patch_main_js_smoke():
     if not MAIN_PATCH.is_file():
         return []
     try:
-        with urlopen(MAIN_JS_URL, timeout=30) as resp:
-            baseline = resp.read().decode("utf-8", errors="replace")
+        baseline = _fetch_live_baseline()
     except Exception as exc:
         return ["main.js.consent.patch: could not fetch baseline ({0})".format(exc)]
+    if baseline is None:
+        return ["main.js.consent.patch: no baseline (fixture missing)"]
 
     with tempfile.TemporaryDirectory() as tmp:
         main_path = Path(tmp) / "template" / "js" / "main.js"
@@ -71,7 +126,10 @@ def patch_main_js_smoke():
         main_path.write_text(baseline, encoding="utf-8")
         if _consent_patch_already_applied(baseline):
             return _verify_main_js_syntax(main_path)
-        patch_proc = _run(["patch", "-p0", "--forward", "-i", str(MAIN_PATCH)], cwd=str(tmp))
+        patch_proc = _run(
+            ["patch", "-p0", "--forward", "--batch", "-i", str(MAIN_PATCH)],
+            cwd=str(tmp),
+        )
         out = (patch_proc.stderr or patch_proc.stdout or "").strip()
         if patch_proc.returncode != 0:
             if "Reversed (or previously applied)" in out and _consent_patch_already_applied(
