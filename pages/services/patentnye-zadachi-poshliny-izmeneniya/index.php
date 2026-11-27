@@ -41,7 +41,7 @@ $schema_graph = array(
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
   <link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126d">
-  <link rel="stylesheet" href="/template/css/lireate-patent-center-v1.css?v=20261127a"><!-- patent-center-v1 -->
+  <link rel="stylesheet" href="/template/css/lireate-patent-center-v1.css?v=20261127b"><!-- patent-center-v1 -->
 <script defer src="/template/js/lireate-qa-v6.js?v=20261126d"></script>
 </head>
 <body class="lireate-svc-body lx-patent-tool lireate-theme-light-v4 lxq-patent-tasks">

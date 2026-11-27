@@ -123,3 +123,8 @@ body.lireate-findtz-topnav-center > footer.lx-site-footer ~ .footer-bottom,
 body.lireate-findtz-topnav-center > footer.lx-site-footer ~ .footer_bottom {
   display:none !important;
 }
+
+/* Hero: no decorative mascot panel (pause / white slots) near messenger CTAs. */
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-hero-mascot-slot {
+  display: none !important;
+}
