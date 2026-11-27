@@ -80,3 +80,14 @@ body.lxq-patent-tasks .lx-cat-cards > *,
 body.lxq-patent-tasks .lx-tool-grid > * {
   min-width: 0;
 }
+
+/* Visible in-page breadcrumbs removed; BreadcrumbList JSON-LD stays in <head>. */
+body.lxq-patent-tasks nav.lx-breadcrumbs--in-page,
+body.lxq-patent-tasks .lx-breadcrumbs.lx-breadcrumbs--patent {
+  display: none !important;
+}
+@media (min-width: 961px) {
+  body.lxq-patent-tasks > .lireate-svc-page > .lx-hero {
+    padding-top: 0;
+  }
+}
