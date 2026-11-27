@@ -6,6 +6,7 @@
   var ASSET_VER='20261126l';
   var POS_REG_SPECIALIST='Специалист по регистрации интеллектуальной собственности';
   var PAGES={
+    '/findtz':{photo:'specialist-certificate.webp',role:'Проверка товарных знаков',name:'Габдрахманова Эльвира',position:'Руководитель отдела регистрации интеллектуальной собственности',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
     '/registraciya_tovarnogo_znaka':{photo:'specialist-registraciya.webp',role:'Регистрация товарных знаков',name:'Квасова Анна',position:POS_REG_SPECIALIST,next:'Изучим ваш знак и товары, подскажем маршрут регистрации и перечень документов.'},
     '/prodlenie_tovarnogo_znaka':{photo:'specialist-prolongation.webp',role:'Продление товарных знаков',name:'Ульданова Алёна',position:POS_REG_SPECIALIST,next:'Проверим срок охраны и объясним, какие документы необходимы для продления.'},
     '/vozrazhenie_protiv_registracii_tovarnogo_znaka':{photo:'specialist-opposition.webp',role:'Споры о товарных знаках',name:'Ульданова Алёна',position:POS_REG_SPECIALIST,next:'Разберём основания возражения, документы и возможные варианты защиты.'},

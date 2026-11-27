@@ -67,6 +67,7 @@ $schema_graph = [
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>">
+  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126l"><!-- lireate_findtz_photo_v4_hero -->
   <?php lireate_sitewide_sidebar_v7_head(); ?>
 </head>
 <body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center">
@@ -97,10 +98,6 @@ $schema_graph = [
 
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="search"></div>
-  <figure class="lx-findtz-expert-photo" aria-label="Эксперт LIREATE">
-    <img src="/template/images/team/person/11.webp" width="320" height="420" alt="Горбачев Юрий Александрович — управляющий партнёр LIREATE" loading="eager" decoding="async">
-    <figcaption>Горбачев Юрий Александрович · управляющий партнёр</figcaption>
-  </figure>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · поиск по реестру</p>
     <h1>Проверка товарного знака перед регистрацией</h1>
@@ -297,5 +294,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
   <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
   <script defer src="/template/js/lireate-service-mobile-bar.js?v=20261111svc3"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
+  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126l"></script><!-- lireate_findtz_photo_v4_hero -->
 </body>
 </html>
