@@ -15,9 +15,11 @@ from pathlib import Path
 
 try:
     from urllib.error import HTTPError, URLError
+    from urllib.parse import urlparse
     from urllib.request import Request, urlopen
 except ImportError:
     from urllib2 import Request, urlopen, HTTPError, URLError  # type: ignore
+    from urlparse import urlparse  # type: ignore
 
 USER_AGENT = "lireate-blog-seo-audit/1.0"
 FETCH_TIMEOUT = 30
@@ -407,13 +409,54 @@ def main(argv=None):
         default=0,
         help="max URLs to crawl (0 = all)",
     )
+    parser.add_argument(
+        "--url-list",
+        type=Path,
+        default=None,
+        help="file with one URL per line (instead of sitemap)",
+    )
+    parser.add_argument(
+        "--articles-only",
+        action="store_true",
+        help="skip known non-article sitemap paths (services, mktu, static)",
+    )
     args = parser.parse_args(argv)
 
-    try:
-        urls = collect_sitemap_urls(args.sitemap)
-    except Exception as exc:
-        print("ERROR: sitemap: {0}".format(exc), file=sys.stderr)
-        return 2
+    if args.url_list and args.url_list.is_file():
+        urls = [
+            ln.strip()
+            for ln in args.url_list.read_text(encoding="utf-8").splitlines()
+            if ln.strip()
+        ]
+    else:
+        try:
+            urls = collect_sitemap_urls(args.sitemap)
+        except Exception as exc:
+            print("ERROR: sitemap: {0}".format(exc), file=sys.stderr)
+            return 2
+    if args.articles_only:
+        skip_tokens = (
+            "/news",
+            "/mktu",
+            "/team",
+            "/contacts",
+            "/partners",
+            "/patent",
+            "/registraciya",
+            "/dogovor",
+            "/pages/",
+            "/findtz",
+            "/uslugi",
+        )
+        filtered = []
+        for u in urls:
+            path = urlparse(u).path if "://" in u else u
+            if any(tok in path for tok in skip_tokens):
+                continue
+            if path in ("/", ""):
+                continue
+            filtered.append(u)
+        urls = filtered
 
     if not urls:
         print("ERROR: no URLs in sitemap", file=sys.stderr)
