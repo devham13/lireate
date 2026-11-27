@@ -124,37 +124,6 @@ body.lireate-findtz-topnav-center > footer.lx-site-footer ~ .footer_bottom {
   display:none !important;
 }
 
-body.lireate-findtz-topnav-center .lireate-svc-page .lx-hero {
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.15fr);
-  gap: 24px;
-  align-items: start;
-}
-body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-expert-photo {
-  margin: 0;
-  max-width: 200px;
-  justify-self: center;
-}
-body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-expert-photo img {
-  width: 100%;
-  height: auto;
-  border-radius: 16px;
-  box-shadow: 0 12px 28px rgba(19, 43, 82, 0.12);
-  display: block;
-}
-body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-expert-photo figcaption {
-  margin-top: 8px;
-  font-size: 11px;
-  line-height: 1.35;
-  color: #52637b;
-  text-align: center;
-}
-@media (max-width: 960px) {
-  body.lireate-findtz-topnav-center .lireate-svc-page .lx-hero {
-    grid-template-columns: 1fr;
-  }
-  body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-expert-photo {
-    max-width: 240px;
-    margin-inline: auto;
-    order: -1;
-  }
+body.lireate-findtz-topnav-center.lx-photo-v4 .lireate-svc-page .lx-hero .lx-findtz-messenger-cta {
+  margin-top: 22px;
 }

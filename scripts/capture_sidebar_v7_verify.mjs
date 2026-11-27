@@ -41,17 +41,7 @@ for (const p of paths) {
       const slug = p.replace(/\//g, '_').replace(/^_|_$/g, '') || 'home';
       const checks = await page.evaluate(() => ({
         breadcrumbDropdown: !!document.querySelector('.lx-breadcrumb-services-trigger'),
-        expertVisible: (() => {
-          const el = document.querySelector('.lsv7-sidebar-expert');
-          if (!el) return false;
-          return getComputedStyle(el).display !== 'none';
-        })(),
-        expertImgPx: (() => {
-          const img = document.querySelector('.lsv7-sidebar-expert img');
-          if (!img) return null;
-          const s = getComputedStyle(img);
-          return { w: s.width, h: s.height, br: s.borderRadius };
-        })(),
+        sidebarExpertAbsent: !document.querySelector('.lsv7-sidebar-expert'),
         lsv7: document.body.classList.contains('lsv7-managed'),
       }));
       const box = await page.$eval('#leftSideBar', (el) => {
