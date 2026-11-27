@@ -75,16 +75,21 @@ body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-tea
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites,
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-copy,
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-meta {
-  color: #52637b !important;
+  color: #94a3b8 !important;
 }
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer a {
-  color: #0f4db8 !important;
+  color: #f8fafc !important;
 }
-body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-title,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-title {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer p:not(.lx-site-footer-title),
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p,
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-lead {
-  color: #52637b !important;
+  color: #94a3b8 !important;
 }
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-badge,
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lireate-team-pill--solid {
@@ -155,16 +160,16 @@ body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-ab
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites,
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-copy,
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-meta {
-  color: #52637b !important;
+  color: #94a3b8 !important;
 }
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer a {
-  color: #0f4db8 !important;
+  color: #f8fafc !important;
 }
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer p,
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p,
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lx-site-footer-lead {
-  color: #52637b !important;
+  color: #94a3b8 !important;
 }
 body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-about-pill--solid {
   color: #fff !important;
@@ -344,9 +349,9 @@ body.lireate-blog-body.lireate-theme-light-v4 {
 body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .lx-site-footer,
 body.lireate-team-body.lireate-theme-light-v4 .lx-site-footer,
 body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer {
-  background: #f7fbff !important;
-  border-top-color: #dce8f7 !important;
-  color: #1f212c !important;
+  background: #0b0b1f !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc !important;
 }
 body.lireate-theme-light-v4 .lireate-about-hero,
 body.lireate-theme-light-v4 .lireate-about-card {
@@ -452,41 +457,86 @@ body.lireate-theme-light-v4.lireate-reviews-body section#face h1 {
   color: #e32020;
 }
 
-/* Light V4 — общий подвал lx-site-footer (разметка без изменений) */
-body.lireate-theme-light-v4 .lx-site-footer {
-  background: #f7fbff !important;
-  color: #1f212c !important;
-  border-top: 1px solid #dce8f7 !important;
+/* Light V4 — общий подвал lx-site-footer (как /mktu, #0b0b1f) */
+body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-team-body .lx-site-footer,
+body.lireate-blog-body .lx-site-footer,
+body.lireate-about-body .lx-site-footer,
+body.lireate-cms-page-dark .lx-site-footer {
+  background: #0b0b1f !important;
+  color: #f8fafc !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
   padding: 32px 20px 36px !important;
 }
 body.lireate-theme-light-v4 .lx-site-footer-inner {
   max-width: 1056px;
   margin: 0 auto;
 }
-body.lireate-theme-light-v4 .lx-site-footer-title,
+body.lireate-theme-light-v4 .lx-site-footer-title {
+  color: #f8fafc !important;
+}
 body.lireate-theme-light-v4 .lx-site-footer-lead,
 body.lireate-theme-light-v4 .lx-site-footer-meta,
 body.lireate-theme-light-v4 .lx-site-footer-copy {
-  color: #1f212c !important;
+  color: #94a3b8 !important;
 }
-body.lireate-theme-light-v4 .lx-site-footer-lead,
-body.lireate-theme-light-v4 .lx-site-footer-meta {
-  color: #52637b !important;
+body.lireate-theme-light-v4 .lx-site-footer-contact {
+  color: #f1f5f9 !important;
 }
 body.lireate-theme-light-v4 .lx-site-footer-contact a,
 body.lireate-theme-light-v4 .lx-site-footer-nav > a,
 body.lireate-theme-light-v4 .lx-site-footer-requisites summary {
-  color: #195acb !important;
+  color: #f8fafc !important;
 }
 body.lireate-theme-light-v4 .lx-site-footer-dot {
-  color: #8fa3bf !important;
+  color: #64748b !important;
 }
 body.lireate-theme-light-v4 .lx-site-footer-requisites {
-  border: 1px solid #dce8f7 !important;
-  background: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: transparent !important;
 }
 body.lireate-theme-light-v4 .lx-site-footer-requisites-panel {
-  color: #52637b !important;
+  color: #94a3b8 !important;
+}
+
+/* Подвал на всю ширину справа от #leftSideBar (как на главной). */
+@media (min-width: 1151px) {
+  /* Прямой потомок body — сдвиг margin-left (главная, лендинги). */
+  body.lireate-theme-light-v4:has(#leftSideBar) > footer.lx-site-footer {
+    box-sizing: border-box;
+    margin-left: var(--lsv7-width, 270px) !important;
+    width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    max-width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    padding-inline: clamp(20px, 3vw, 48px);
+  }
+  /*
+   * CMS: footer внутри .container.content / #blog — у контента уже есть inset под
+   * #leftSideBar; второй margin-left даёт щель и белую полосу справа.
+   */
+  body.lireate-theme-light-v4:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-team-body:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-blog-body:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-about-body:has(#leftSideBar) .container.content footer.lx-site-footer,
+  body.lireate-theme-light-v4:has(#leftSideBar) .page_container footer.lx-site-footer,
+  body.lireate-team-body:has(#leftSideBar) .page_container footer.lx-site-footer,
+  body.lireate-blog-body:has(#leftSideBar) .page_container footer.lx-site-footer,
+  body.lireate-theme-light-v4:has(#leftSideBar) #blog footer.lx-site-footer,
+  body.lireate-blog-body:has(#leftSideBar) #blog footer.lx-site-footer,
+  body.lireate-team-body:has(#leftSideBar) .page_container > section#lireate-team footer.lx-site-footer,
+  body.lireate-about-body:has(#leftSideBar) .page_container > section footer.lx-site-footer {
+    box-sizing: border-box;
+    margin-left: -24px !important;
+    margin-right: 0 !important;
+    width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    max-width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    padding-inline: clamp(20px, 3vw, 48px);
+  }
+  body.lireate-theme-light-v4:has(#leftSideBar) footer.lx-site-footer .lx-site-footer-inner,
+  body.lireate-team-body:has(#leftSideBar) footer.lx-site-footer .lx-site-footer-inner,
+  body.lireate-blog-body:has(#leftSideBar) footer.lx-site-footer .lx-site-footer-inner {
+    max-width: 1080px;
+    margin-inline: auto;
+  }
 }
 
 html.lireate-team-html body.lireate-team-body.lireate-theme-light-v4,

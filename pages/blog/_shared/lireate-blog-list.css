@@ -643,6 +643,17 @@ body.lireate-blog-body:has(.lireate-blog-list-page) main {
   background: #0b0b1f !important;
 }
 
+/* CMS placeholder after #blog (min-height) — лишняя тёмная полоса при скролле вниз. */
+body.lireate-blog-body:has(.lireate-blog-list-page) .container.content > .page_container {
+  display: none !important;
+  min-height: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+}
+
 body.lireate-blog-body:has(.lireate-blog-list-page) .container.content {
   flex: 1 0 auto;
   display: flex;
@@ -654,11 +665,6 @@ body.lireate-blog-body .content section#blog + .lx-site-footer,
 body.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer {
   position: relative;
   z-index: 5;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
   margin-top: 0 !important;
   left: auto !important;
   right: auto !important;
@@ -666,6 +672,25 @@ body.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer {
   background: #0b0b1f !important;
   border-top-color: rgba(255, 255, 255, 0.1) !important;
   padding-bottom: max(32px, env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1151px) {
+  body.lireate-blog-body:has(.lireate-blog-list-page) section#blog .lx-site-footer,
+  body.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: calc(100vw - var(--lsv7-width, 270px)) !important;
+    max-width: calc(100vw - var(--lsv7-width, 270px)) !important;
+  }
+}
+
+@media (max-width: 1150px) {
+  body.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 }
 
 body.lireate-blog-body:has(.lireate-blog-list-page) footer:not(.lx-site-footer),

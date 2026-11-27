@@ -118,12 +118,19 @@ body.lireate-theme-light-v4 .lx-rv-case a {
 body.lireate-theme-light-v4 .lx-rv-case a.lx-rv-case-link {
   color: #0f4db8 !important;
 }
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer {
+  background: #0b0b1f !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
 body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer,
 body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer p {
-  color: #52637b !important;
+  color: #94a3b8 !important;
+}
+body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer-title {
+  color: #f8fafc !important;
 }
 body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer a {
-  color: #0f4db8 !important;
+  color: #f8fafc !important;
 }
 body.lireate-theme-light-v4.lireate-reviews-body #face p.titleDesc,
 body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
@@ -150,14 +157,14 @@ body.lireate-reviews-body footer:not(.lx-site-footer),
 body.lireate-reviews-body .footer,
 body.lireate-reviews-body.lireate-cms-page-dark footer,
 body.lireate-theme-light-v4.lireate-reviews-body .lx-site-footer {
-  background: #f7fbff !important;
-  background-color: #f7fbff !important;
-  color: #1f212c !important;
-  border-color: #dce8f7 !important;
+  background: #0b0b1f !important;
+  background-color: #0b0b1f !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 body.lireate-reviews-body footer a,
 body.lireate-reviews-body .lx-site-footer a {
-  color: #0f4db8 !important;
+  color: #f8fafc !important;
 }
 body.lireate-reviews-body #list,
 body.lireate-reviews-body #list .default_text,
