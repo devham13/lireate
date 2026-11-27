@@ -242,6 +242,62 @@ if (!function_exists('lireate_seo_service_landings')) {
     }
 }
 
+if (!function_exists('lireate_seo_render_mktu_schema_scripts')) {
+    function lireate_seo_render_mktu_schema_scripts($classNum, $title, $canonical)
+    {
+        if (!empty($GLOBALS['lireate_seo_mktu_schema_rendered'])) {
+            return;
+        }
+        $classNum = (int) $classNum;
+        if ($classNum < 1 || $classNum > 45) {
+            return;
+        }
+        $meta = function_exists('lireate_seo_mktu_class_meta')
+            ? lireate_seo_mktu_class_meta($classNum)
+            : null;
+        $base = lireate_seo_schema_public_base();
+        $mktuHub = $base . '/mktu';
+        $crumbClass = 'Класс ' . $classNum;
+        if (is_array($meta) && !empty($meta['h1'])) {
+            $crumbClass = (string) $meta['h1'];
+        } elseif ($title !== '') {
+            $crumbClass = $title;
+        }
+        if ($canonical === '') {
+            $canonical = $base . '/' . $classNum . '/';
+        }
+        $pageName = $title !== '' ? $title : $crumbClass;
+        $webPageId = $canonical;
+        $graph = array(
+            '@context' => 'https://schema.org',
+            '@graph' => array(
+                array(
+                    '@type' => 'WebPage',
+                    '@id' => $webPageId . '#webpage',
+                    'url' => $canonical,
+                    'name' => $pageName,
+                    'isPartOf' => array('@id' => $base . '/#website'),
+                ),
+                array(
+                    '@type' => 'BreadcrumbList',
+                    '@id' => $canonical . '#breadcrumb',
+                    'itemListElement' => array(
+                        array('@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $base . '/'),
+                        array('@type' => 'ListItem', 'position' => 2, 'name' => 'МКТУ', 'item' => $mktuHub),
+                        array('@type' => 'ListItem', 'position' => 3, 'name' => $crumbClass, 'item' => $canonical),
+                    ),
+                ),
+            ),
+        );
+        $json = lireate_seo_jsonld_encode($graph);
+        if ($json === '') {
+            return;
+        }
+        echo '<script type="application/ld+json">' . $json . "</script>\n";
+        $GLOBALS['lireate_seo_mktu_schema_rendered'] = true;
+    }
+}
+
 if (!function_exists('lireate_seo_render_service_schema_scripts')) {
     function lireate_seo_render_service_schema_scripts($slug, $title, $canonical)
     {
@@ -346,10 +402,25 @@ if (!function_exists('lireate_seo_prepare_og_globals')) {
                 $desc = !empty($homeMeta['description']) ? $homeMeta['description'] : $desc;
             }
             if ($title === '') {
-                $title = 'Патентное бюро Лирейт — защита интеллектуальной собственности';
+                $title = 'Патентное бюро Лирейт — защита ИС и товарных знаков';
             }
             if ($desc === '') {
                 $desc = 'Регистрация товарных знаков, патентование, защита авторских прав и договоры. Патентное бюро Лирейт работает по России с 2015 года.';
+            }
+        } elseif ($kind === 'mktu') {
+            $slug = trim($path, '/');
+            if (preg_match('/^(\d{1,2})$/', $slug, $mktuM)) {
+                $mktuMeta = function_exists('lireate_seo_mktu_class_meta')
+                    ? lireate_seo_mktu_class_meta($mktuM[1])
+                    : null;
+                if (is_array($mktuMeta)) {
+                    if (!empty($mktuMeta['title'])) {
+                        $title = $mktuMeta['title'];
+                    }
+                    if (!empty($mktuMeta['description'])) {
+                        $desc = $mktuMeta['description'];
+                    }
+                }
             }
         } elseif ($kind === 'service' || $kind === 'other' || $kind === 'cms') {
             $slug = trim($path, '/');

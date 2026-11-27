@@ -121,6 +121,12 @@ if (!function_exists('lireate_seo_page_kind')) {
         $segments = explode('/', $trimmed);
         $first = $segments[0];
         if (count($segments) === 1) {
+            if (preg_match('/^(\d{1,2})$/', $first, $mktuMatch)) {
+                $mktuNum = (int) $mktuMatch[1];
+                if ($mktuNum >= 1 && $mktuNum <= 45) {
+                    return 'mktu';
+                }
+            }
             if (in_array($first, lireate_seo_cms_slashless(), true)) {
                 return 'cms';
             }
