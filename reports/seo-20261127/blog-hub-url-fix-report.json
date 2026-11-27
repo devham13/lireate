@@ -1,0 +1,36 @@
+{
+  "deploy": {
+    "pr": 171,
+    "branch": "cursor/blog-hub-url-fix-4890",
+    "backup": "blog-install-20261127-141631",
+    "deployed_at_utc": "2026-11-27T14:16:31Z",
+    "opcache_touch_required": true
+  },
+  "service_catalog": {
+    "urls_checked": 7,
+    "http_200": 7,
+    "redirect_301": 0,
+    "not_found_404": 0
+  },
+  "article_crawl": {
+    "articles_in_audit": 329,
+    "articles_crawled": 329,
+    "articles_with_service_hub": 313,
+    "unique_hub_cta_hrefs_live": 4,
+    "unique_related_hrefs_live": 5,
+    "hub_related_301": 0,
+    "hub_related_404": 0
+  },
+  "baseline_pre_pr170_fix": {
+    "hub_related_301": 6,
+    "hub_related_404": 3,
+    "failure_count": 9
+  },
+  "sample_article": "/net_brenda_na_wildberries_seller/",
+  "sample_smoke": {
+    "hub_cta_after_fix": "/registraciya_tovarnogo_znaka/",
+    "related_trailing_slash": true,
+    "breadcrumb_json_ld_levels": 4,
+    "breadcrumb_rubric": "Бренд"
+  }
+}
