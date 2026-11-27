@@ -10,6 +10,16 @@ PATENT_DATA = ROOT / "pages/patents/_shared/lireate-patent-data.php"
 
 
 class SidebarV7ExpertPhotoTests(unittest.TestCase):
+    def test_v7_css_expert_is_compact_round_not_card(self):
+        css = (ROOT / "template/css/lireate-sitewide-sidebar-v7.css").read_text(encoding="utf-8")
+        self.assertIn("border-radius:50%", css)
+        self.assertIn("width:64px", css)
+        self.assertNotIn("border:1px solid var(--lsv7-line)!important", css.split(".lsv7-sidebar-expert")[1][:400])
+        self.assertIn("lx-photo-v4", css)
+
+    def test_js_skips_expert_on_lx_photo_v4_pages(self):
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn('classList.contains("lx-photo-v4")', js)
     def test_canonical_sidebar_markup_has_yuri_photo(self):
         for name in ("lireate-sidebar-v7-content.inc.php", "lireate-sidebar-v7.html"):
             text = (TEMPLATE / name).read_text(encoding="utf-8")

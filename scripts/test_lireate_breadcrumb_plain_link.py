@@ -12,6 +12,13 @@ class BreadcrumbPlainLinkTests(unittest.TestCase):
         self.assertIn('href="/uslugi/">Услуги</a>', text)
         self.assertNotIn("lx-breadcrumb-services", text)
 
+    def test_registraciya_block_plain_uslugi(self):
+        text = (SERVICES / "registraciya-tovarnogo-znaka/blocks/lireate-breadcrumbs.inc.php").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('href="/uslugi/">Услуги</a>', text)
+        self.assertNotIn("lx-breadcrumb-services", text)
+
     def test_service_indexes_no_dropdown_markup_or_js(self):
         for index in SERVICES.glob("*/index.php"):
             if index.parent.name.startswith("_"):

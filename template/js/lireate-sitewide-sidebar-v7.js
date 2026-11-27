@@ -63,11 +63,12 @@ function init(){
  });
 }
 function ensureExpertPortrait(sidebar){
+ if(document.body&&document.body.classList.contains("lx-photo-v4"))return;
  if(sidebar.querySelector(".lsv7-sidebar-expert"))return;
  var head=sidebar.querySelector(".lpc-sidebar-head");
  var logo=sidebar.querySelector("a.leftSideLogo");
  var html='<figure class="lsv7-sidebar-expert" aria-label="Эксперт LIREATE">'+
-   '<img src="/template/images/team/person/11.webp" width="120" height="120" alt="Горбачев Юрий Александрович — управляющий партнёр LIREATE" loading="lazy" decoding="async">'+
+   '<img src="/template/images/team/person/11.webp" width="64" height="64" alt="Горбачев Юрий Александрович — управляющий партнёр LIREATE" loading="lazy" decoding="async">'+
    '<figcaption class="lsv7-sidebar-expert-caption"><strong>Горбачев Юрий Александрович</strong><span>Управляющий партнёр</span></figcaption></figure>';
  var wrap=document.createElement("div");
  wrap.innerHTML=html;
