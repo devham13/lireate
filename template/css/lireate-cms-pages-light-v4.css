@@ -286,13 +286,15 @@ html.lireate-about-html body.lireate-about-body.lireate-theme-light-v4,
 body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page),
 body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .wrapper,
 body.lireate-team-body.lireate-theme-light-v4,
-body.lireate-blog-body.lireate-theme-light-v4 {
+body.lireate-blog-body.lireate-theme-light-v4,
+body.lireate-contacts-body.lireate-theme-light-v4 {
   background: #fff !important;
   color: #1f212c !important;
 }
 body.lireate-about-body.lireate-theme-light-v4:has(.lireate-about-page) .lx-site-footer,
 body.lireate-team-body.lireate-theme-light-v4 .lx-site-footer,
-body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer {
+body.lireate-blog-body.lireate-theme-light-v4 .lx-site-footer,
+body.lireate-contacts-body.lireate-theme-light-v4 .lx-site-footer {
   background: #0b0b1f !important;
   border-top-color: rgba(255, 255, 255, 0.1) !important;
   color: #f8fafc !important;
