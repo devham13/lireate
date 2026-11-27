@@ -35,14 +35,14 @@ def prepare_avtor_preview_shot(page, width):
         """() => ({
           managed: document.body.classList.contains('lsv7-managed'),
           nav: document.querySelectorAll('#leftSideNav .leftSideNaviButton').length,
-          expert: !!document.querySelector('.lsv7-sidebar-expert'),
+          expert: !!document.querySelector('#leftSideBar .lsv7-sidebar-expert img[src*="person/"]'),
           contentPad: document.querySelector('.content') ? getComputedStyle(document.querySelector('.content')).paddingLeft : '',
         })"""
     )
     if not metrics.get("managed") or metrics.get("nav", 0) < 5:
         raise RuntimeError("BLOCKER: sidebar not ready: {0}".format(metrics))
     if metrics.get("expert"):
-        raise RuntimeError("BLOCKER: sidebar expert should be hidden on /avtor/")
+        raise RuntimeError("BLOCKER: sidebar must not show person/* portrait in menu")
     if width >= 1151 and metrics.get("contentPad") not in ("0px", "0"):
         raise RuntimeError("BLOCKER: double content offset padding={0}".format(metrics.get("contentPad")))
 

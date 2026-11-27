@@ -15,7 +15,6 @@ $la_email = lireate_avtor_email();
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=<?php echo lireate_avtor_h($la_v); ?>">
 <link rel="stylesheet" href="/template/css/lireate-light-v4.css?v=<?php echo lireate_avtor_h($la_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_avtor_h($la_assets); ?>/lireate-avtor.css?v=<?php echo lireate_avtor_h($la_v); ?>">
 <script>

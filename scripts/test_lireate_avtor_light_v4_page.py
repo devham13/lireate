@@ -31,9 +31,9 @@ def _hex_to_rgb(h):
 class AvtorLightV4PageTests(unittest.TestCase):
     def test_shared_has_light_stack(self):
         text = SHARED_INC.read_text(encoding="utf-8")
-        self.assertIn("lireate-cms-pages-light-v4.css", text)
         self.assertIn("lireate-light-v4.css", text)
         self.assertIn("lireate-avtor.css", text)
+        self.assertNotIn("lireate-cms-pages-light-v4.css", text)
         self.assertIn('aria-current="page">Автор', text)
         self.assertIn("Горбачев Юрий Александрович", text)
         self.assertNotIn("lireate-service-dark", text)

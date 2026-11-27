@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Render /avtor/ after-preview HTML (no PHP) for QA screenshots."""
+"""Render /avtor/ static HTML from prod snapshot (legacy diff tool — НЕ для скриншотов).
+
+For screenshots use pages/avtor/_preview/index.php + lireate_avtor_capture_final_screenshots.py.
+"""
 
 import html
 import re
@@ -98,7 +101,6 @@ def render_inner(local_origin):
         '<link rel="preconnect" href="https://fonts.googleapis.com">',
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">',
-        '<link rel="stylesheet" href="{0}/template/css/lireate-cms-pages-light-v4.css?v=20261127avtor">'.format(html.escape(local_origin)),
         '<link rel="stylesheet" href="{0}/template/css/lireate-light-v4.css?v=preview">'.format(html.escape(local_origin)),
         '<link rel="stylesheet" href="{0}/lireate-avtor.css?v=preview">'.format(html.escape(assets)),
         '<link rel="stylesheet" href="{0}/template/page/news/lireate-blog-footer.css?v=preview">'.format(html.escape(local_origin)),
