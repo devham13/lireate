@@ -190,6 +190,16 @@ class ShellTuningTests(unittest.TestCase):
         again, _ = patch.build_plan(self.root)
         self.assertNotIn(rel, again)
 
+    def test_fix_og_image_replaces_legacy_og_default_path(self):
+        cms = self.root / 'data/page/dogovory.php'
+        cms.parent.mkdir(parents=True)
+        cms.write_text(
+            '<meta property="og:image" content="https://example.test/local/templates/lireate/images/og-default.jpg">',
+            encoding='utf-8',
+        )
+        plan, _ = patch.build_plan(self.root)
+        self.assertIn('/template/images/OG_image.jpg', plan[cms.relative_to(self.root)].decode())
+
     def test_service_longread_reserves_sidebar_and_repairs_og_image(self):
         html = ('<head><link rel="preconnect" href="https://fonts.googleapis.com"></head>'
                 '<body class="lireate-svc-body">'
