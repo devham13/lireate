@@ -4,16 +4,6 @@
  */
 $lireate_blog_list_render_ok = false;
 
-if (!isset($ct) || !is_array($ct)) {
-    $ct = array();
-}
-if (defined('LIREATE_BLOG_LIST_SEO_TITLE') && empty($ct['seo_title'])) {
-    $ct['seo_title'] = LIREATE_BLOG_LIST_SEO_TITLE;
-}
-if (defined('LIREATE_BLOG_LIST_SEO_DESCRIPTION') && empty($ct['seo_description'])) {
-    $ct['seo_description'] = LIREATE_BLOG_LIST_SEO_DESCRIPTION;
-}
-
 try {
     if (!function_exists('lireate_blog_h')) {
         $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';

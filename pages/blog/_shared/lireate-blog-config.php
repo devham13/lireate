@@ -65,20 +65,6 @@ if (!defined('LIREATE_BLOG_LIST_LEAD')) {
     );
 }
 
-if (!defined('LIREATE_BLOG_LIST_SEO_TITLE')) {
-    define(
-        'LIREATE_BLOG_LIST_SEO_TITLE',
-        'Блог Лирейт — товарные знаки, патенты и авторское право'
-    );
-}
-
-if (!defined('LIREATE_BLOG_LIST_SEO_DESCRIPTION')) {
-    define(
-        'LIREATE_BLOG_LIST_SEO_DESCRIPTION',
-        'Практические статьи и разборы дел по интеллектуальной собственности: регистрация товарных знаков, патенты, авторское право, договоры и судебные споры.'
-    );
-}
-
 if (!defined('LIREATE_BLOG_ASSETS_BASE')) {
     define('LIREATE_BLOG_ASSETS_BASE', '/template/page/news');
 }
