@@ -86,6 +86,44 @@ body.lireate-theme-light-v4 .lx-faq summary:hover{color:var(--l4-red)}
 body.lireate-theme-light-v4 .lx-faq p{color:var(--l4-sub)}
 body.lireate-theme-light-v4 .lx-related-links a,
 body.lireate-theme-light-v4 .lx-section a:not(.lx-btn){color:#195acb}
+/* Светлая тема: контакты — три заметные кнопки вместо текстовых ссылок. */
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn{
+  box-sizing:border-box;min-width:0;min-height:50px;
+  display:flex;justify-content:center;align-items:center;gap:8px;
+  padding:12px 10px;border:1px solid #bad3f0;border-radius:14px;
+  background:#eef6ff;color:#0a3d91;text-decoration:none;font-weight:750;
+  box-shadow:0 5px 14px rgba(31,68,125,.08);
+  transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="whatsapp"]{
+  background:#eaf9f0;border-color:#aadfc1;color:#145d39;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="max"]{
+  background:linear-gradient(135deg,#fff0f8,#f2e8ff);border-color:#e3b8eb;color:#6827a0;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn:hover{
+  transform:translateY(-2px);border-color:#db333a;
+  box-shadow:0 9px 20px rgba(31,68,125,.12);
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn:focus-visible{
+  outline:3px solid #2456a0;outline-offset:3px;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn .lx-svg-icon{
+  flex:none;width:20px;height:20px;
+}
+@media(max-width:1180px){
+  body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:560px){
+  body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid{
+    grid-template-columns:1fr;
+  }
+}
 body.lireate-theme-light-v4 .lx-contact,
 body.lireate-theme-light-v4 input,
 body.lireate-theme-light-v4 textarea{border-color:var(--l4-line)}
