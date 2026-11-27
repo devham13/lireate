@@ -1,33 +1,27 @@
 # SEO_REPORT
 
-Пакет **seo-20261127** (site crawl + blog CSVs + Яндекс Webmaster).
+Пакет **seo-20261127** (site crawl + blog CSVs в каталоге).
 
-UTC: 2026-11-27T14:12:00+03:00 (данные Вебмастера от владельца); crawl CSV — 2026-11-27T14:15:50Z.
+UTC: 2026-11-27T14:17:54.639684+00:00
+
+## Crawl
+
+- before: `/opt/cursor/artifacts/seo-registry.csv` (429 URLs)
+- after: `/opt/cursor/artifacts/seo-registry-after-20261127.csv` (442 URLs, discover-extra; fatal_error=0)
+- crawl lib: `TimeoutError` retried in `fetch_url` (full run completes)
 
 ## Яндекс Webmaster (API, владелец)
 
+См. `seo-yandex-webmaster.csv`, `seo-yandex-diagnostics-p0.csv`.
+
 | Метрика | Значение |
-| --- | ---: |
+| --- | --- |
 | Хост | `https://lireate.ru` (verified) |
-| В поиске | 374 |
-| Исключено | 4 |
+| В поиске / исключено | 374 / 4 |
 | ИКС (SQI) | 50 |
-| Запросы 30д | **нет данных** (0 строк API) |
+| Запросы 30д | **нет данных** |
 
-**Диагностика (PRESENT / POSSIBLE_PROBLEM)** — см. `seo-yandex-diagnostics-p0.csv`:
-
-1. **DOCUMENTS_MISSING_DESCRIPTION** — P0: meta description через data-layer / overrides (crawl: `missing_description`).
-2. **ERROR_IN_ROBOTS_TXT** — P0: убрать `Disallow: /?…` и `Disallow: /*?…`; добавить `Clean-param: mode&test&nc /` → `shared/robots.txt.yandex-recommended`; check: `lireate_seo_robots_yandex_check.py`.
-3. **TOO_MANY_DOMAINS_ON_SEARCH** — P0: **только анализ** `lireate.online`, `sam.lireate.*` → `docs/lireate-yandex-domains-analysis.ru.md` (зеркала не менять без владельца).
-4. **DUPLICATE_CONTENT_ATTRS** — P0: уникальные title/description (cms-overrides, услуги; пары contacts/kontaktyi).
-5. **DUPLICATE_PAGES** — P0: canonical + Clean-param (utm, yclid, mode, nc); без массовых 301 до карты дублей.
-
-**Recrawl 429 URL sitemap:** выполняет владелец (17:12+ МСК); Cloud **не** дублирует полный crawl.
-
-## Crawl (репозиторий)
-
-- before: `seo-audit-before.csv` (429 URLs, baseline)
-- after: `seo-audit-after.csv` (частичный/обновляемый; полный recrawl — у владельца)
+**P0 диагностики:** DOCUMENTS_MISSING_DESCRIPTION, ERROR_IN_ROBOTS_TXT, TOO_MANY_DOMAINS_ON_SEARCH (анализ только), DUPLICATE_CONTENT_ATTRS, DUPLICATE_PAGES.
 
 ## Issue counts (problems column)
 
@@ -44,9 +38,8 @@ UTC: 2026-11-27T14:12:00+03:00 (данные Вебмастера от влад�
 
 ## Deployed P0 (prod)
 
-- Home title ≤58 chars (51), description без изменений («с 2015 года» не трогали).
-- МКТУ 1–45: WebPage + BreadcrumbList JSON-LD (после атомарной выкладки head+schema).
-- Service slugs (расшир.): WebPage + BreadcrumbList `@id` + Service `@id` (P1 data-layer, merge pending deploy).
+- Home title ≤58 chars (51), description без изменений.
+- MКТУ 1–45: WebPage + BreadcrumbList JSON-LD.
 
 ## Artifacts
 

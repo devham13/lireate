@@ -1,6 +1,6 @@
 # Before / after (seo master 2026-11-27)
 
-UTC: 2026-11-27T14:15:50Z
+UTC: 2026-11-27T14:17:34Z
 
 | issue | before | after | delta |
 | --- | ---: | ---: | ---: |
