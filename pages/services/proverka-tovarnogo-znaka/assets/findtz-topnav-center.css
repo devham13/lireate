@@ -1,0 +1,31 @@
+/* /findtz/: align the service navigation to the center of the content area,
+   accounting for the left site sidebar on desktop. Keep mobile layout intact. */
+@media (min-width: 1151px) {
+  body.lireate-findtz-topnav-center .lx-nav-shell .lx-nav-pill {
+    width: min(1100px, calc(100vw - var(--lpc-side-width, 250px) - 32px));
+    max-width: 1100px;
+    transform: translateX(calc(var(--lpc-side-width, 250px) / 2));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: clamp(8px, 1vw, 18px);
+  }
+
+  body.lireate-findtz-topnav-center .lx-nav-pill > .lx-logo {
+    justify-self: start;
+  }
+
+  body.lireate-findtz-topnav-center .lx-nav-pill > .lx-nav-links {
+    flex: none;
+    min-width: 0;
+    justify-self: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: clamp(8px, 1vw, 20px);
+    white-space: nowrap;
+  }
+
+  body.lireate-findtz-topnav-center .lx-nav-pill > .lx-btn {
+    justify-self: end;
+    white-space: nowrap;
+  }
+}
