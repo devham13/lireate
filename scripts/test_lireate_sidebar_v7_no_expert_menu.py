@@ -20,11 +20,12 @@ class SidebarV7NoExpertMenuTests(unittest.TestCase):
         js = JS.read_text(encoding="utf-8")
         self.assertNotIn("ensureExpertPortrait", js)
         self.assertNotIn("person/11.webp", js)
-        self.assertIn("removeChild(legacyExpert)", js)
+        self.assertNotIn("lsv7-sidebar-expert", js)
 
-    def test_expert_hidden_if_legacy_markup_present(self):
+    def test_css_does_not_style_expert_portrait_in_menu(self):
         css = CSS.read_text(encoding="utf-8")
-        self.assertIn(".lsv7-sidebar-expert{display:none", css)
+        self.assertNotIn(".lsv7-sidebar-expert{", css)
+        self.assertNotIn("person/11", css)
 
 
 if __name__ == "__main__":
