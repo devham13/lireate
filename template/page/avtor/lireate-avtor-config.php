@@ -40,7 +40,7 @@ if (!defined('LIREATE_AVTOR_ASSETS_BASE')) {
 }
 
 if (!defined('LIREATE_AVTOR_TEMPLATE_VERSION')) {
-    define('LIREATE_AVTOR_TEMPLATE_VERSION', '20261127-light-v4');
+    define('LIREATE_AVTOR_TEMPLATE_VERSION', '20261127-light-v4c');
 }
 
 if (!defined('LIREATE_AVTOR_METRIKA_ID')) {

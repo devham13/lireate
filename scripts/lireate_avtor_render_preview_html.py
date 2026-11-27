@@ -65,13 +65,31 @@ def ensure_snapshot():
 
 
 def footer_html():
-    footer_path = REPO / "template" / "page" / "news" / "lireate-blog-site-footer.inc.php"
-    if not footer_path.is_file():
-        return ""
-    text = footer_path.read_text(encoding="utf-8", errors="replace")
-    text = re.sub(r"<\?php[\s\S]*?\?>", "", text)
-    text = re.sub(r"<\?=[\s\S]*?\?>", "", text)
-    return text.strip()
+    email = INFO_EMAIL
+    return (
+        '<footer class="lx-site-footer" role="contentinfo"><div class="lx-site-footer-inner">'
+        '<p class="lx-site-footer-title">LIREATE • Товарные знаки • Интеллектуальная собственность</p>'
+        '<p class="lx-site-footer-lead">Регистрация и защита товарных знаков, патентов и авторских прав.</p>'
+        '<p class="lx-site-footer-meta">ООО «ЛИРЕЙТ»</p>'
+        '<p class="lx-site-footer-meta">ИНН 1648040894 • КПП 164801001 • ОГРН 1151673001578</p>'
+        '<p class="lx-site-footer-contact">'
+        '<a href="mailto:{0}">{0}</a>'
+        '<span class="lx-site-footer-dot" aria-hidden="true">•</span>'
+        '<a href="tel:+79600484957">+7 (960) 048-49-57</a>'
+        '<span class="lx-site-footer-dot" aria-hidden="true">•</span>'
+        '<a href="tel:+74999384595">+7 (499) 938-45-95</a>'
+        '<span class="lx-site-footer-dot" aria-hidden="true">•</span>'
+        '<a href="https://t.me/lireate_patent" target="_blank" rel="noopener noreferrer">Telegram</a>'
+        '</p>'
+        '<div class="lx-site-footer-nav">'
+        '<a href="/politika_konfidencialnosti">Политика конфиденциальности</a>'
+        '<a href="/private_data">Согласие на обработку персональных данных</a>'
+        '<a href="/news/">Блог</a>'
+        '<a class="lx-site-footer-documents-link" href="/docs">Реквизиты</a>'
+        '</div>'
+        '<p class="lx-site-footer-copy">© 2026 LIREATE</p>'
+        '</div></footer>'
+    ).format(email)
 
 
 def render_inner(local_origin):
@@ -80,7 +98,7 @@ def render_inner(local_origin):
         '<link rel="preconnect" href="https://fonts.googleapis.com">',
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">',
-        '<link rel="stylesheet" href="{0}/template/css/lireate-cms-pages-light-v4.css?v=preview">'.format(html.escape(local_origin)),
+        '<link rel="stylesheet" href="{0}/template/css/lireate-cms-pages-light-v4.css?v=20261127avtor">'.format(html.escape(local_origin)),
         '<link rel="stylesheet" href="{0}/template/css/lireate-light-v4.css?v=preview">'.format(html.escape(local_origin)),
         '<link rel="stylesheet" href="{0}/lireate-avtor.css?v=preview">'.format(html.escape(assets)),
         '<link rel="stylesheet" href="{0}/template/page/news/lireate-blog-footer.css?v=preview">'.format(html.escape(local_origin)),
@@ -143,9 +161,8 @@ def render_inner(local_origin):
             'E-mail: <a href="mailto:{0}">{0}</a></p>'.format(INFO_EMAIL),
             '<p class="la-nav-links"><a href="/team/">Команда</a><span aria-hidden="true">·</span>'
             '<a href="/docs">Документы и реквизиты</a><span aria-hidden="true">·</span>'
-            '<a href="/kontaktyi">Контакты</a></p></div></section></div>',
+            '<a href="/kontaktyi">Контакты</a></p></div></section></div></div>',
             footer_html(),
-            "</div>",
         ]
     )
     return "\n".join(lines)
@@ -153,6 +170,18 @@ def render_inner(local_origin):
 
 def patch_snapshot(page_html, inner):
     page_html = re.sub(r"<base\b[^>]*>", "", page_html, flags=re.I)
+    page_html = re.sub(
+        r'<link[^>]+href="[^"]*lireate-blog-footer-light-v4\.css[^"]*"[^>]*>',
+        "",
+        page_html,
+        flags=re.I,
+    )
+    page_html = re.sub(
+        r'<link[^>]+href="[^"]*template/page/avtor/lireate-avtor\.css[^"]*"[^>]*>',
+        "",
+        page_html,
+        flags=re.I,
+    )
     page_html = re.sub(
         r'(<body\b[^>]*\bclass=")([^"]*)(")',
         lambda m: m.group(1) + m.group(2) + " lireate-avtor-body lireate-theme-light-v4" + m.group(3),

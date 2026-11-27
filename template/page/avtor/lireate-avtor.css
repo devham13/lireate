@@ -58,6 +58,93 @@ body.lireate-avtor-body #lireate-avtor .lx-site-footer {
   margin-top: 48px;
 }
 
+/* Поверх legacy/dark lu-* в CMS bundle и lireate-blog-footer-light-v4 */
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor.lu-page,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-prose,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-prose p,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-list,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-list > li,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor li.la-fact-card,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-section-lead,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-contacts,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-contacts p,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-pub-card span,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-role {
+  color: #52637b !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-role strong,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-pub-card strong,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-page .lu-h1,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-page .lu-h2 {
+  color: #1f212c !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-eyebrow {
+  color: #0f4db8 !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-wrap .la-prose a,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-wrap .la-contacts a,
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-wrap .la-nav-links a {
+  color: #0f4db8 !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-wrap p.lu-eyebrow {
+  color: #0f4db8 !important;
+}
+/* Поверх lireate-light-v4.css «белый» footer */
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer {
+  background: #0b0b1f !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-title {
+  color: #f8fafc !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-lead,
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-meta,
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-copy,
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer p:not(.lx-site-footer-title) {
+  color: #94a3b8 !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact,
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact a,
+body.lireate-avtor-body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn) {
+  color: #f8fafc !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor li.la-fact-card {
+  background: #ffffff !important;
+  border: 1px solid #dce8f7 !important;
+  box-shadow: 0 8px 24px rgba(31, 33, 44, 0.04);
+}
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-pub-card {
+  background: #ffffff !important;
+  border: 1px solid #dce8f7 !important;
+  color: #1f212c !important;
+}
+
+/* Подвал как /mktu — тёмный navy, не light-v4 footer */
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer {
+  background: #0b0b1f !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-title {
+  color: #f8fafc !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-lead,
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-meta,
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-copy {
+  color: #94a3b8 !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-contact {
+  color: #f1f5f9 !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer a,
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-contact a,
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-nav > a {
+  color: #f8fafc !important;
+}
+body.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-dot {
+  color: #64748b !important;
+}
+
 .lu-page {
   position: relative;
   isolation: isolate;
@@ -98,7 +185,7 @@ body.lireate-avtor-body #lireate-avtor .lx-site-footer {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #3a86ff;
+  color: #0f4db8;
 }
 .lu-page .lu-h1 {
   margin: 0 0 14px;
@@ -247,6 +334,13 @@ body.lireate-avtor-body #lireate-avtor .lx-site-footer {
   background: #f3f8ff;
   transform: translateY(-2px);
   box-shadow: 0 14px 36px rgba(58, 134, 255, 0.12);
+}
+
+body.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-contacts {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .la-nav-links a { color: #3a86ff; text-decoration: none; font-weight: 600; }

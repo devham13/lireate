@@ -102,8 +102,8 @@ if (document.body) { document.body.classList.add('lireate-avtor-body'); }
       </div>
     </section>
   </div>
-<?php lireate_avtor_render_footer(); ?>
 </div>
+<?php lireate_avtor_render_footer(); ?>
 <script>
 (function () {
   document.addEventListener('click', function (e) {
