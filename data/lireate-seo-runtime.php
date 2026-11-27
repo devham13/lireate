@@ -246,6 +246,10 @@ if (!function_exists('lireate_seo_ob_filter_html')) {
                         1
                     );
                 }
+                if (!empty($static['h1']) && preg_match('/^\\d{1,2}$/', $_static_slug)) {
+                    $h1 = htmlspecialchars((string) $static['h1'], ENT_QUOTES, 'UTF-8');
+                    $html = preg_replace('/<h1([^>]*)>[^<]*<\\/h1>/i', '<h1$1>' . $h1 . '</h1>', $html, 1);
+                }
                 if (!empty($static['cluster']) && preg_match('/^\\d{1,2}$/', $_static_slug)) {
                     $kw = htmlspecialchars((string) $static['cluster'], ENT_QUOTES, 'UTF-8');
                     if (preg_match('/<meta\\s+name="keywords"/i', $html)) {

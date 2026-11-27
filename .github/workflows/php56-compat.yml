@@ -47,7 +47,7 @@ jobs:
       - name: SEO data bundle + sitemap crawl lib
         run: |
           python3 scripts/lireate_seo_registry_check.py
-          python3 -m unittest scripts.test_lireate_seo_data_install scripts.test_lireate_seo_sitemap_crawl -q
+          python3 -m unittest scripts.test_lireate_seo_data_install scripts.test_lireate_seo_sitemap_crawl scripts.test_lireate_seo_pages_guard -q
       - name: blog list pagination SEO
         run: python3 -m unittest scripts.test_lireate_blog_list_pagination -q
       - name: patent tools fee tests
