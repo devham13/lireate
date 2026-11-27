@@ -19,6 +19,11 @@ class SidebarV7LogoTests(unittest.TestCase):
         self.assertIn("background-size:contain", collapsed)
         self.assertNotIn("background-size:190px", collapsed)
 
+    def test_mktu_body_selectors_use_full_wordmark(self):
+        text = CSS.read_text(encoding="utf-8")
+        self.assertIn("body.lireate-mktu-lu-body.lsv7-managed", text)
+        self.assertIn("logo-light-v7.svg", text)
+
 
 if __name__ == "__main__":
     unittest.main()
