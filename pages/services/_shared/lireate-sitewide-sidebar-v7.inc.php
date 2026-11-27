@@ -31,7 +31,7 @@ if (!function_exists('lireate_sitewide_sidebar_v7_render')) {
         }
         $path = $doc . '/template/lireate/lireate-sidebar-v7-content.inc.php';
         if ($doc === '' || !is_file($path)) {
-            $fallback = dirname(__FILE__, 3) . '/template/lireate/lireate-sidebar-v7-content.inc.php';
+            $fallback = dirname(dirname(dirname(__FILE__))) . '/template/lireate/lireate-sidebar-v7-content.inc.php';
             if (is_file($fallback)) {
                 $path = $fallback;
             }
