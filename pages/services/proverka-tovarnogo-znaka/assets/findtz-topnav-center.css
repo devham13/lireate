@@ -107,3 +107,19 @@ body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid {
     grid-template-columns:1fr;
   }
 }
+
+/* The finished page ends with its official white footer; no black body tail. */
+body.lireate-svc-body.lireate-theme-light-v4.lireate-findtz-topnav-center {
+  background:#fff !important;
+}
+body.lireate-findtz-topnav-center > footer.lx-site-footer {
+  background:#fff !important;
+  border-top:1px solid #dce8f7 !important;
+  margin-bottom:0 !important;
+}
+body.lireate-findtz-topnav-center > footer.lx-site-footer ~ footer:not(.lx-site-footer),
+body.lireate-findtz-topnav-center > footer.lx-site-footer ~ .footer-ap,
+body.lireate-findtz-topnav-center > footer.lx-site-footer ~ .footer-bottom,
+body.lireate-findtz-topnav-center > footer.lx-site-footer ~ .footer_bottom {
+  display:none !important;
+}
