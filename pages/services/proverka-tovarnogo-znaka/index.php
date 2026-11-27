@@ -86,7 +86,10 @@ $schema_graph = [
 
 <main id="primary" class="lireate-svc-page proverka-tovarnogo-znaka-page" role="main" tabindex="-1">
 
-<?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
+<?php /* UI batch 2026-11-27: visually remove in-page breadcrumb navigation on /findtz/.
+ * Keep the structured BreadcrumbList in the existing JSON-LD above for SEO.
+ * Shared breadcrumb templates for other pages are unchanged.
+ */ ?>
 
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="search"></div>
