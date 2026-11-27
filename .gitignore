@@ -45,3 +45,4 @@ Thumbs.db
 tools/seo/unlighthouse/reports/
 tools/seo/unlighthouse/.unlighthouse/
 tools/seo/*.log
+reports/seo-20261127/.content_hashes.json
