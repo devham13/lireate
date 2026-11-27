@@ -86,6 +86,50 @@ body.lireate-theme-light-v4 .lx-faq summary:hover{color:var(--l4-red)}
 body.lireate-theme-light-v4 .lx-faq p{color:var(--l4-sub)}
 body.lireate-theme-light-v4 .lx-related-links a,
 body.lireate-theme-light-v4 .lx-section a:not(.lx-btn){color:#195acb}
+/* Светлая тема: контакты — три заметные кнопки вместо текстовых ссылок. */
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid{
+  grid-template-columns:1fr;
+  gap:12px;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn{
+  box-sizing:border-box;min-width:0;min-height:50px;
+  display:flex!important;justify-content:center;align-items:center;gap:8px;
+  padding:12px 10px;border:1px solid #bad3f0;border-radius:14px;
+  background:#eef6ff;color:#0a3d91!important;text-decoration:none!important;font-weight:750!important;
+  box-shadow:0 5px 14px rgba(31,68,125,.08);
+  transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="whatsapp"]{
+  background:#eaf9f0;border-color:#aadfc1;color:#145d39!important;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="max"]{
+  background:linear-gradient(135deg,#fff0f8,#f2e8ff);border-color:#e3b8eb;color:#6827a0!important;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn:hover,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn:focus-visible{
+  transform:translateY(-2px);border-color:#db333a;
+  box-shadow:0 9px 20px rgba(31,68,125,.12);
+  text-decoration:none!important;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="whatsapp"]:hover,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="whatsapp"]:focus-visible{
+  color:#145d39!important;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="max"]:hover,
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="max"]:focus-visible{
+  color:#6827a0!important;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn:focus-visible{
+  outline:3px solid #2456a0;outline-offset:3px;
+}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid .lx-msg-btn .lx-svg-icon{
+  flex:none;width:20px;height:20px;
+}
+@media(min-width:560px){
+  body.lireate-theme-light-v4 .lireate-svc-page .lx-msg-grid{
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  }
+}
 body.lireate-theme-light-v4 .lx-contact,
 body.lireate-theme-light-v4 input,
 body.lireate-theme-light-v4 textarea{border-color:var(--l4-line)}
@@ -171,7 +215,7 @@ body.lireate-theme-light-v4 .lireate-svc-page b,
 body.lireate-theme-light-v4 .lireate-svc-page strong{color:#1f212c!important}
 body.lireate-theme-light-v4 .lireate-svc-page a[href*="rospatent"],
 body.lireate-theme-light-v4 .lireate-svc-page .lx-hero-lead a,
-body.lireate-theme-light-v4 .lireate-svc-page .lx-section a{color:#0a3d91!important;font-weight:800!important;text-decoration:underline!important}
+body.lireate-theme-light-v4 .lireate-svc-page .lx-section a:not(.lx-btn):not(.lx-msg-btn){color:#0a3d91!important;font-weight:800!important;text-decoration:underline!important}
 body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer,
 body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer p{color:#52637b!important}
 body.lireate-theme-light-v4 .lireate-svc-page .lx-site-footer a{color:#0a3d91!important}
@@ -261,4 +305,48 @@ body.lx-tm-white.registraciya-pilot-v2 .lx-mobile-bar{
  transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important
  }
  body.lireate-theme-light-v4 .l4-reveal{opacity:1!important;transform:none!important}
+}
+
+/* Shared white footer for LIREATE Light V4, all service pages and CMS. */
+body.lireate-theme-light-v4 footer.lx-site-footer {
+  background:#fff !important;
+  border-top:1px solid #dce8f7 !important;
+  color:#52637b !important;
+  box-shadow:none !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-inner {
+  max-width:1080px;
+  margin-left:auto;
+  margin-right:auto;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-title {
+  color:#1f212c !important;
+  font-weight:800;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-lead,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-meta,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-copy,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites-panel,
+body.lireate-theme-light-v4 footer.lx-site-footer p {
+  color:#52637b !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn),
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-nav > a,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites summary {
+  color:#0f4db8 !important;
+  text-decoration:none;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn):hover {
+  text-decoration:underline;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-social-btn {
+  color:#fff !important;
+  border-radius:9px;
+  width:34px;
+  height:34px;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites {
+  background:#fff;
+  border-color:#dce8f7;
 }

@@ -959,3 +959,21 @@ body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .lh4-messenger-teleg
 @media(max-width:560px) {
   body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .hero-actions.lh4-hero-messengers {grid-template-columns:1fr;}
 }
+
+/* White footer consistency for Light V4 home and page chrome. */
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .footer {
+  background:#fff !important;
+  color:#52637b !important;
+  border-top:1px solid #dce8f7 !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer {
+  background:#fff !important;
+  border-top:1px solid #dce8f7 !important;
+  color:#52637b !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-title {
+  color:#1f212c !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer p {
+  color:#52637b !important;
+}

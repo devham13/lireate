@@ -65,8 +65,9 @@ $schema_graph = [
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"></noscript>
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>">
 </head>
-<body class="lsv7-managed lireate-svc-body lireate-theme-light-v4">
+<body class="lsv7-managed lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
@@ -86,7 +87,10 @@ $schema_graph = [
 
 <main id="primary" class="lireate-svc-page proverka-tovarnogo-znaka-page" role="main" tabindex="-1">
 
-<?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
+<?php /* UI batch 2026-11-27: visually remove in-page breadcrumb navigation on /findtz/.
+ * Keep the structured BreadcrumbList in the existing JSON-LD above for SEO.
+ * Shared breadcrumb templates for other pages are unchanged.
+ */ ?>
 
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="search"></div>
@@ -95,10 +99,19 @@ $schema_graph = [
     <h1>Проверка товарного знака перед регистрацией</h1>
     <p class="lx-hero-lead">Поиск по реестру Роспатента и оценка рисков до подачи заявки: сходство, однородность, основания отказа по ст. 1483 ГК РФ. Отчёт и рекомендации — по смете; регистрацию и исход экспертизы гарантировать нельзя.</p>
     <div class="lx-tags"><span>ФИПС</span><span>реестр ТЗ</span><span>МКТУ</span><span>ст. 1483 ГК РФ</span></div>
-    <div class="lx-hero-cta">
-      <a class="lx-btn lx-btn-primary" href="#contact">Заказать проверку</a>
-      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="telegram"><span>Написать в Telegram</span></a>
-      <a class="lx-btn lx-btn-ghost lx-btn--with-icon" id="hero-max" href="<?php echo htmlspecialchars(defined('LIREATE_MAX_CHANNEL_URL') ? LIREATE_MAX_CHANNEL_URL : 'https://max.ru/channel_lireate', ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-icon="max"><span>Написать в Max</span></a>
+    <div class="lx-hero-cta lx-findtz-messenger-cta" aria-label="Связаться с Лирейт">
+      <a class="lx-btn lx-findtz-messenger-btn lx-findtz-messenger-btn--wa" id="hero-whatsapp" href="<?php echo htmlspecialchars($lireate_whatsapp, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher" aria-label="Написать в WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2C6.5 2 2 6.2 2 11.4c0 1.9.5 3.7 1.5 5.3L2 22l5.6-1.5c1.5.8 3.2 1.3 4.9 1.3 5.5 0 10-4.2 10-9.4S17.5 2 12 2zm5.8 13.5c-.2.6-1.2 1.1-1.7 1.1-.4 0-1.1.2-3.6-.9-3-1.3-5-4.4-5.1-4.6-.2-.3-1.2-1.6-1.2-3.1 0-1.5.8-2.2 1.1-2.5.3-.3.6-.4.8-.4.2 0 .4 0 .6.1.2 0 .4.2.5.5.2.5.6 1.7.7 1.8.1.1.1.3 0 .4 0 .1-.1.2-.2.3l-.3.3c-.1.1-.2.2-.1.4.1.2.5 1 1.1 1.6.8.7 1.5 1 1.7 1.1.2.1.3 0 .4-.1l.6-.7c.1-.2.3-.2.5-.1.8.3 2.8 1.3 3.2 1.5.3.2.5.3.6.4.1.2.1.7-.1 1.3z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+      <a class="lx-btn lx-findtz-messenger-btn lx-findtz-messenger-btn--max" id="hero-max" href="<?php echo htmlspecialchars($lireate_max, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_messendzher" aria-label="Написать в MAX">
+        <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50.76 0.26c27.54 0 49.13 22.34 49.13 49.89S77.61 99.49 51.02 99.49c-9.44 0-14.01-1.33-21.37-6.54-.51-.36-1.2-.27-1.63.19-5.66 6.04-20.17 10.28-20.83 2.03 0-14.39-7.19-23.73-7.19-45.3C0 21.55 23.22 0.26 50.76 0.26zm.77 24.55c-13.06-.69-23.26 8.39-25.51 22.57-1.86 11.75 1.44 26.07 4.27 26.79 1.2.31 4.08-1.88 6.18-3.86.39-.37 1-.44 1.46-.15 3.27 2 6.97 3.5 11.05 3.71 13.41.7 25.3-9.8 26.01-23.21.7-13.41-10.02-25.14-23.43-25.84z"/></svg>
+        <span>MAX</span>
+      </a>
+      <a class="lx-btn lx-findtz-messenger-btn lx-findtz-messenger-btn--tg" id="hero-telegram" href="<?php echo htmlspecialchars($lireate_telegram, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" data-lx-ym-goal="perehod_v_telegramm" aria-label="Написать в Telegram">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+        <span>Telegram</span>
+      </a>
     </div>
     <div class="lx-hero-mini">
       <div class="lx-mini-stat"><strong class="lx-stat-value">реестр</strong><span>Роспатент / ФИПС</span></div>
