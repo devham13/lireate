@@ -27,6 +27,7 @@ MESSENGER_BUNDLE_NAMES = (
 )
 BLOCKS_DIR = SHARED / "blocks"
 VK_CASES_NAME = "vk-cases.json"
+SIDEBAR_V7_CONTENT = REPO_ROOT / "template" / "lireate" / "lireate-sidebar-v7-content.inc.php"
 
 
 def _sha256(path):
@@ -82,6 +83,13 @@ def sync_service(service_dir, dry_run=False):
         changed.append(dst.relative_to(service_dir))
         if not dry_run:
             shutil.copy2(str(src), str(dst))
+    if SIDEBAR_V7_CONTENT.is_file():
+        dst = dest / "lireate-sidebar-v7-content.inc.php"
+        if not dst.is_file() or _sha256(SIDEBAR_V7_CONTENT) != _sha256(dst):
+            changed.append(dst.relative_to(service_dir))
+            if not dry_run:
+                dest.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(SIDEBAR_V7_CONTENT), str(dst))
     if BLOCKS_DIR.is_dir():
         for src in sorted(BLOCKS_DIR.glob("*.inc.php")):
             dst = service_dir / "blocks" / src.name

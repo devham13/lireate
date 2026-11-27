@@ -25,20 +25,18 @@ if (!function_exists('lireate_sitewide_sidebar_v7_render')) {
             return;
         }
         $rendered = true;
+        $local = dirname(__FILE__) . '/lireate-sidebar-v7-content.inc.php';
+        if (is_file($local)) {
+            include $local;
+            return;
+        }
         $doc = '';
         if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] !== '') {
             $doc = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\');
         }
         $path = $doc . '/template/lireate/lireate-sidebar-v7-content.inc.php';
-        if ($doc === '' || !is_file($path)) {
-            $fallback = dirname(dirname(dirname(__FILE__))) . '/template/lireate/lireate-sidebar-v7-content.inc.php';
-            if (is_file($fallback)) {
-                $path = $fallback;
-            }
+        if ($doc !== '' && is_file($path)) {
+            include $path;
         }
-        if (!is_file($path)) {
-            return;
-        }
-        include $path;
     }
 }
