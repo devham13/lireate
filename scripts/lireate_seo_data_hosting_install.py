@@ -91,13 +91,21 @@ def cmd_check(docroot):
     drift = []
     for name in SEO_FILES:
         local = DATA_DIR / name
+        if not local.is_file():
+            continue
         local_sha = sha256_file(local)
         remote_sha_val = remote_sha(ssh_base, "{0}/data/{1}".format(docroot, name))
         base_sha = baseline.get(name, "")
-        if remote_sha_val and base_sha and remote_sha_val != base_sha and remote_sha_val != local_sha:
+        if not remote_sha_val:
+            continue
+        if remote_sha_val == local_sha:
+            continue
+        if base_sha and remote_sha_val == base_sha:
+            continue
+        if remote_sha_val != local_sha:
             drift.append(name)
     if drift:
-        print("BLOCKER: remote newer or diverged (not baseline, not local): {0}".format(", ".join(drift)))
+        print("BLOCKER: remote diverged from baseline and local: {0}".format(", ".join(drift)))
         return 2
     print("STATUS: SEO_DATA_DRIFT_OK")
     return 0
@@ -160,11 +168,13 @@ def cmd_apply(docroot):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--docroot",
-        default=os.environ.get("LIREATE_REMOTE_SITE_ROOT", "").strip()
-        or "/var/www/u3650956/data/www/public_html",
-    )
+    def default_docroot():
+        env_root = os.environ.get("LIREATE_REMOTE_SITE_ROOT", "").strip()
+        if env_root and os.path.isdir is not None:
+            return env_root
+        return "/var/www/u3650956/data/www/public_html"
+
+    parser.add_argument("--docroot", default=default_docroot())
     parser.add_argument("--check", action="store_true", help="Remote drift check only")
     parser.add_argument("--apply", action="store_true", help="Backup and deploy SEO data")
     args = parser.parse_args()
