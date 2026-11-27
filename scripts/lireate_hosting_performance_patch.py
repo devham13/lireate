@@ -163,10 +163,13 @@ def uncommented(text):
 
 def fix_og_image(text):
     """Point og:image at the file that actually exists."""
-    return re.sub(
+    text = re.sub(
         r'(?<!/template)(/images/OG_image\.jpg)',
         '/template/images/OG_image.jpg',
         text)
+    return text.replace(
+        '/local/templates/lireate/images/og-default.jpg',
+        '/template/images/OG_image.jpg')
 
 
 def relax_google_fonts(text):
