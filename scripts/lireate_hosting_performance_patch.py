@@ -269,6 +269,24 @@ def fix_og_protocol(text):
         flags=re.I)
 
 
+PROTECTED_STANDALONE_ROOTS = frozenset({'findtz', 'patentnye-zadachi'})
+
+
+def is_protected_standalone_url(url_path):
+    """Batch #146 + v7 sidebars: skip tune_service font/body rewrites on these routes."""
+    url = (url_path or '').strip('/')
+    if not url:
+        return False
+    root = url.split('/')[0]
+    return root in PROTECTED_STANDALONE_ROOTS
+
+
+def patch_standalone_service_entry(text):
+    """Inject seo-perf head block and fix og:image only (preserves #146 layout CSS)."""
+    text = fix_og_protocol(fix_og_image(text))
+    return patch_head(text)
+
+
 def tune_service(text):
     """Fixes confirmed on published longreads: a 404 social image and a desktop
     shift when the shared sidebar is inserted after the first paint.
@@ -416,7 +434,11 @@ def build_plan(docroot):
         if path.is_file() or rel in plan:
             text = plan[rel].decode('utf-8') if rel in plan else path.read_text(encoding='utf-8')
             if 'lireate-service-dark.css' in text and re.search(r'</head\s*>', text, re.I):
-                plan[rel] = patch_head(tune_service(text)).encode('utf-8')
+                if is_protected_standalone_url(url):
+                    patched = patch_standalone_service_entry(text)
+                else:
+                    patched = patch_head(tune_service(text))
+                plan[rel] = patched.encode('utf-8')
     return {rel: data for rel, data in plan.items()
             if not safe_path(docroot, rel).is_file() or safe_path(docroot, rel).read_bytes() != data}, notes
 
