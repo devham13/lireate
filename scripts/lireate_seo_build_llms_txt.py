@@ -48,6 +48,24 @@ def parse_sitemap_json(stdout):
     return entries[:MAX_BLOG], None
 
 
+def blog_via_local_php(docroot, php_path):
+    php_path = os.path.expanduser(os.path.expandvars(php_path))
+    if not os.path.isfile(php_path):
+        return None, "missing php script {0}".format(php_path)
+    proc = subprocess.run(
+        ["php", php_path, "sitemap_urls", docroot.rstrip("/")],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    if proc.returncode != 0:
+        return None, proc.stderr or proc.stdout or "local php error"
+    try:
+        return parse_sitemap_json(proc.stdout)
+    except ValueError as exc:
+        return None, str(exc)
+
+
 def blog_via_ssh(docroot, php_rel):
     key = os.environ.get("LIREATE_SSH_KEY", "").strip()
     host = os.environ.get("LIREATE_SSH_HOST", "").strip()
@@ -72,7 +90,7 @@ def blog_via_ssh(docroot, php_rel):
         "{0}@{1}".format(user, host),
         remote,
     ]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     if proc.returncode != 0:
         return None, proc.stderr or proc.stdout or "ssh error"
     try:
@@ -102,7 +120,7 @@ def main():
         "--news-php",
         default=os.environ.get(
             "LIREATE_NEWS_DB_PHP",
-            "$HOME/lireate-autopub/repo/scripts/lireate_db_publish.php",
+            "/var/www/u3650956/data/lireate-autopub/repo/scripts/lireate_db_publish.php",
         ),
     )
     ap.add_argument("--output", type=Path, required=True)
@@ -111,10 +129,16 @@ def main():
     body = load_template(args.base_url)
     blog_count = 0
     if not args.no_blog:
-        entries, err = blog_via_ssh(args.docroot, args.news_php)
+        news_php = os.path.expanduser(os.path.expandvars(args.news_php))
+        entries, err = blog_via_ssh(args.docroot, news_php)
         if entries is None:
-            print("WARN: blog section skipped: {0}".format(err), file=sys.stderr)
-            entries = []
+            entries, err_local = blog_via_local_php(args.docroot, news_php)
+            if entries is None:
+                print(
+                    "WARN: blog section skipped: ssh={0} local={1}".format(err, err_local),
+                    file=sys.stderr,
+                )
+                entries = []
         body = merge_document(body, entries, args.base_url.rstrip("/"))
         blog_count = len(entries)
     args.output.parent.mkdir(parents=True, exist_ok=True)
