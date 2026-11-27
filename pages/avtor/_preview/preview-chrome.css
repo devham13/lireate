@@ -1,0 +1,22 @@
+/* QA /avtor/: hide prod widgets & modals that break local preview (не влияет на прод). */
+body.lireate-screenshot-capture #modal_form,
+body.lireate-screenshot-capture #modalMail,
+body.lireate-screenshot-capture .modal-mail,
+body.lireate-screenshot-capture .popup.modal,
+body.lireate-screenshot-capture .modal-backdrop,
+body.lireate-screenshot-capture #floatingBlock,
+body.lireate-screenshot-capture #personsSlide,
+body.lireate-screenshot-capture #veil:not(.lsv7-veil),
+body.lireate-screenshot-capture .jivo-iframe-container,
+body.lireate-screenshot-capture [id*="jivo"],
+body.lireate-screenshot-capture [class*="whatsapp-widget"],
+body.lireate-screenshot-capture [class*="wa-chat"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+body.lireate-screenshot-capture.modal-open {
+  overflow: auto !important;
+  padding-right: 0 !important;
+}

@@ -48,5 +48,7 @@ python3 scripts/lireate_avtor_install.py --check --docroot "$LIREATE_DOCROOT"
 python3 scripts/lireate_avtor_sync_template.py
 python3 scripts/lireate_avtor_render_preview_html.py
 python3 -m http.server 8799 --directory /path/to/office-repo
-# http://127.0.0.1:8799/pages/avtor/_preview/rendered-preview.html
+# http://127.0.0.1:8799/pages/avtor/_preview/index.php  (PHP) или
+python3 scripts/lireate_avtor_build_shell_preview_html.py
+python3 scripts/lireate_avtor_capture_final_screenshots.py  # → /opt/cursor/artifacts/avtor-final/
 ```

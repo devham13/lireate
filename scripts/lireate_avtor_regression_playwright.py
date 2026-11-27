@@ -3,7 +3,9 @@
 
 import json
 import os
+import subprocess
 import sys
+import time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -82,10 +84,16 @@ def main():
                 print("OK", path, "nav", m.get("navCount"))
             page.close()
 
-        render = REPO / "scripts" / "lireate_avtor_render_preview_html.py"
-        if os.system("python3 {0}".format(render)) != 0:
+        if os.system("python3 {0}".format(REPO / "scripts" / "lireate_avtor_build_shell_preview_html.py")) != 0:
             return 2
-        preview = "http://127.0.0.1:8799/pages/avtor/_preview/rendered-preview.html"
+        proc = subprocess.Popen(
+            [sys.executable, "-m", "http.server", "8799", "--directory", str(REPO)],
+            cwd=str(REPO),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        time.sleep(0.5)
+        preview = "http://127.0.0.1:8799/pages/avtor/_preview/cms-shell-preview.html"
         for width, name in ((1440, "regression-avtor-after-desktop-1440.png"), (390, "regression-avtor-after-mobile-390.png")):
             page = browser.new_page(viewport={"width": width, "height": 900})
             resp = page.goto(preview, wait_until="domcontentloaded", timeout=60000)
@@ -98,6 +106,8 @@ def main():
                 ok = False
             page.close()
         browser.close()
+        proc.terminate()
+        proc.wait(timeout=5)
 
     manifest = OUT / "avtor-regression-report.json"
     manifest.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
