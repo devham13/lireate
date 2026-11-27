@@ -102,8 +102,7 @@ def cmd_check(docroot):
             continue
         if base_sha and remote_sha_val == base_sha:
             continue
-        if remote_sha_val != local_sha:
-            drift.append(name)
+        drift.append(name)
     if drift:
         print("BLOCKER: remote diverged from baseline and local: {0}".format(", ".join(drift)))
         return 2
