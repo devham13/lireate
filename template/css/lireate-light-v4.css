@@ -188,10 +188,15 @@ body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites sum
 body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-dot{color:#64748b!important;}
 body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-social-btn{color:#fff!important;}
 
-@media (max-width: 768px) {
-  body.lireate-theme-light-v4.lireate-svc-page footer.lx-site-footer,
+/* Мобильный подвал: см. pages/services/_shared/lireate-light-v4.css */
+@media (max-width: 1150px) {
+  body.lireate-svc-body footer.lx-site-footer,
+  body.lireate-service-mobile-dock footer.lx-site-footer,
+  body.lsv7-managed footer.lx-site-footer,
+  body.lireate-theme-light-v4.lireate-svc-body footer.lx-site-footer,
+  body.lsv7-managed.lireate-theme-light-v4.lireate-svc-body footer.lx-site-footer,
   body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer,
   body.lx-fg-white footer.lx-site-footer {
-    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }

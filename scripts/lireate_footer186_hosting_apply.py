@@ -78,31 +78,7 @@ SRC="${OFFICE}/pages/services/_shared/lireate-light-v4.css"
 cp -a "$SRC" "${DOCROOT}/_shared/lireate-light-v4.css"
 STATE="${AUTOPUB}/services-published.json"
 export LIREATE_OFFICE_REPO="$OFFICE"
-if test -f "$STATE"; then
-  "$PY" - <<'PY'
-import json, os, shutil
-from pathlib import Path
-autopub = Path(os.environ["HOME"]) / "lireate-autopub"
-docroot = Path(os.environ["LIREATE_DOCROOT"])
-state = json.loads((autopub / "services-published.json").read_text())
-src = Path(os.environ["LIREATE_OFFICE_REPO"]) / "pages/services/_shared/lireate-light-v4.css"
-n = 0
-for slug, row in state.items():
-    path = row.get("url_path") or row.get("dest_dir", "")
-    if not path:
-        continue
-    url = str(path).strip("/")
-    if not url:
-        continue
-    for rel in (Path(url) / "assets/lireate-shared/lireate-light-v4.css",
-                Path(url) / "_shared/lireate-light-v4.css"):
-        dst = docroot / rel
-        if dst.parent.is_dir():
-            shutil.copy2(src, dst)
-            n += 1
-print("SYNC_LIGHT_V4_COPIES", n)
-PY
-fi
+"$PY" scripts/lireate_service_light_v4_css_hosting_sync.py || true
 touch "${DOCROOT}/template/main.php"
 echo "BACKUP_DIR=${BK}"
 echo STATUS: FOOTER186_APPLIED
