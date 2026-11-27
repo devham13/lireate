@@ -49,7 +49,8 @@ $lb_schema_meta = array(
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-article.css?v=<?php echo lireate_blog_h($lb_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-light-v4.css?v=<?php echo lireate_blog_h($lb_v); ?>"><!-- lireate_blog_light_v4 -->
 <link rel="stylesheet" href="<?php echo lireate_blog_h($lb_assets); ?>/lireate-blog-footer.css?v=<?php echo lireate_blog_h($lb_v); ?>">
