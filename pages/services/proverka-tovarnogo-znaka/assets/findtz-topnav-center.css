@@ -29,3 +29,81 @@
     white-space: nowrap;
   }
 }
+
+/* UI batch: messenger CTAs in the hero and contact section, independent of old dark-theme rules. */
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-cta {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  max-width:640px;
+  margin-bottom:28px;
+}
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-btn,
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid .lx-msg-btn {
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-width:0;
+  min-height:50px;
+  padding:12px 10px;
+  border-radius:13px;
+  border:1px solid #bad3f0;
+  background:#eef6ff;
+  color:#0a3d91 !important;
+  font-size:13px;
+  line-height:1.3;
+  font-weight:750;
+  text-align:center;
+  text-decoration:none !important;
+  box-shadow:0 5px 14px rgba(31,68,125,.07);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-btn--wa,
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="whatsapp"] {
+  background:#eaf9f0;
+  color:#145d39 !important;
+  border-color:#aadfc1;
+}
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-btn--max,
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid .lx-msg-btn[data-lx-icon="max"] {
+  background:#f4ebff;
+  color:#6827a0 !important;
+  border-color:#dabaf2;
+}
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-btn:hover,
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid .lx-msg-btn:hover {
+  transform:translateY(-2px);
+  border-color:#dc3238;
+  box-shadow:0 9px 20px rgba(31,68,125,.12);
+}
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-btn:focus-visible,
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid .lx-msg-btn:focus-visible {
+  outline:3px solid #2456a0;
+  outline-offset:3px;
+}
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-btn svg,
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid .lx-msg-btn .lx-svg-icon {
+  display:block;
+  width:20px;
+  height:20px;
+  flex:none;
+}
+body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+@media (min-width: 561px) and (max-width: 1280px) {
+  body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-cta,
+  body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width:560px) {
+  body.lireate-findtz-topnav-center .lireate-svc-page .lx-findtz-messenger-cta,
+  body.lireate-findtz-topnav-center .lireate-svc-page .lx-msg-grid {
+    grid-template-columns:1fr;
+  }
+}
