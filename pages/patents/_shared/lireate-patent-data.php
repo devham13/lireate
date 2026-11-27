@@ -28,9 +28,9 @@ function lp4_page_data($key) {
             'hero_subtitle' => 'Защищаем техническое решение — идея сама по себе патентом не охраняется.',
             'hero_cta' => 'Интересно? Обращайтесь!',
             'lead' => '',
-            'image' => '',
-            'photo_caption' => '',
-            'photo_alt' => '',
+            'image' => '/template/images/team/person/11.webp',
+            'photo_caption' => 'Горбачев Юрий Александрович',
+            'photo_alt' => 'Горбачев Юрий Александрович — управляющий партнёр LIREATE',
             'hero_facts' => $hero_facts,
             'criteria_title' => 'Чтобы иметь право на патентную защиту, Российские законы требует, чтобы изобретение было:',
             'overview' => array(
