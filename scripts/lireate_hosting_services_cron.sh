@@ -169,6 +169,9 @@ if [[ "${LIREATE_ALLOW_PUBLISH:-}" == "yes" ]]; then
       --docroot "$DOCROOT" --backup-root "$AUTOPUB_HOME/backups/performance" --apply; then
     echo "STATUS: WARN — performance patch failed preflight; inspect the log, service publishing continues"
   fi
+  if ! "$PY" "$OFFICE_REPO/scripts/lireate_hosting_llms_txt_install.py" --docroot "$DOCROOT"; then
+    echo "STATUS: WARN — llms.txt deploy failed; GEO/AEO index file not updated"
+  fi
 fi
 
 readarray -t CANDIDATES < <(

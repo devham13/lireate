@@ -1,0 +1,106 @@
+name: LIREATE SEO daily health
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lireate-seo-daily-health
+  cancel-in-progress: false
+
+jobs:
+  probes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SEO_SITE_URL: ${{ secrets.LIREATE_PUBLIC_SITE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Public availability, robots and sitemap
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import sys
+          from urllib.request import Request, urlopen
+
+          site = os.environ["SEO_SITE_URL"].rstrip("/")
+          checks = []
+
+          def fetch(path):
+              req = Request(site + path, headers={"User-Agent": "LIREATE-SEO-Health/1.0"})
+              with urlopen(req, timeout=45) as resp:
+                  return resp.status, resp.read(800_000).decode("utf-8", "replace")
+
+          def record(name, ok, detail=""):
+              checks.append({"name": name, "ok": ok, "detail": detail[:500]})
+
+          try:
+              code, html = fetch("/")
+              record("homepage_http_200", code == 200, "status=%s" % code)
+              record("homepage_has_h1", "<h1" in html.lower(), "")
+              record("no_hosting_challenge", "__rcpc" not in html.lower(), "")
+              marker = re.search(r'lireate-performance-patch" content="([^"]+)"', html)
+              record("performance_marker", bool(marker), marker.group(1) if marker else "")
+          except Exception as exc:
+              record("homepage", False, str(exc))
+
+          try:
+              code, body = fetch("/robots.txt")
+              record("robots_txt", code == 200 and "Sitemap:" in body, "bytes=%s" % len(body))
+          except Exception as exc:
+              record("robots_txt", False, str(exc))
+
+          try:
+              code, body = fetch("/sitemap.xml")
+              urls = body.count("<loc>")
+              record("sitemap_xml", code == 200 and urls > 50, "url_count=%s" % urls)
+          except Exception as exc:
+              record("sitemap_xml", False, str(exc))
+
+          for path in ("/llms.txt", "/registraciya_tovarnogo_znaka/", "/contacts/", "/news"):
+              try:
+                  code, _ = fetch(path)
+                  record("url_%s" % path.strip("/").replace("/", "_") or "root", code == 200, "status=%s" % code)
+              except Exception as exc:
+                  record("url_%s" % path, False, str(exc))
+
+          critical_names = {
+              "homepage_http_200",
+              "homepage_has_h1",
+              "no_hosting_challenge",
+              "robots_txt",
+              "sitemap_xml",
+          }
+          failed = [c for c in checks if not c["ok"]]
+          critical_failed = [c for c in failed if c["name"] in critical_names]
+          summary = {
+              "site": site,
+              "checks": checks,
+              "failed": len(failed),
+              "critical_failed": len(critical_failed),
+          }
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          Path = __import__("pathlib").Path
+          Path("reports/seo").mkdir(parents=True, exist_ok=True)
+          Path("reports/seo/DAILY_HEALTH_LAST.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          if critical_failed:
+              print("CRITICAL:", ", ".join(c["name"] for c in critical_failed))
+              sys.exit(1)
+          if failed:
+              print("NON_CRITICAL:", ", ".join(c["name"] for c in failed))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lireate-seo-daily-health-${{ github.run_id }}
+          path: reports/seo/DAILY_HEALTH_LAST.json
+          if-no-files-found: warn
+          retention-days: 14
