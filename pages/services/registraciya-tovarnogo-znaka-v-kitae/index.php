@@ -282,7 +282,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-compare.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>

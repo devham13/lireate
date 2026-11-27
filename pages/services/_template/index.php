@@ -188,7 +188,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-motion-init.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reveal.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->

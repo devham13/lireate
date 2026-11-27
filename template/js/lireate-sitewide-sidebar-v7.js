@@ -18,14 +18,15 @@ function init(){
  if(existing){
    body.classList.add("lsv7-sidebar-present");
    var style=window.getComputedStyle(existing);
-   // A CMS sidebar should be managed by its existing navigation controller.
-   // Repair only truly display:none sidebars on desktop; never replace markup.
-   if(window.innerWidth>1150 && (style.display==="none" || style.visibility==="hidden")){
-     existing.classList.add("lsv7-sidebar");
-     existing.setAttribute("data-lireate-sidebar-origin","recovered");
-     body.classList.add("lsv7-managed","lsv7-recovered");
-     bind(existing);
+   existing.classList.add("lsv7-sidebar");
+   if(!existing.getAttribute("data-lireate-sidebar-origin")){
+     existing.setAttribute("data-lireate-sidebar-origin","server-inline");
    }
+   body.classList.add("lsv7-managed");
+   if(window.innerWidth>1150 && (style.display==="none" || style.visibility==="hidden")){
+     body.classList.add("lsv7-recovered");
+   }
+   bind(existing);
    return;
  }
  function loadFragment(url){

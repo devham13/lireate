@@ -435,7 +435,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-timeline.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mobile-bar.js', $lx_service_asset_dir); ?>"></script>
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/registraciya-oplata-white-v3.js', $lx_service_asset_dir); ?>"></script><!-- lireate_fg_white_v3 -->
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>

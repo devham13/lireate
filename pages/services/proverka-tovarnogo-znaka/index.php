@@ -13,6 +13,7 @@ $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
 $lireate_whatsapp = 'https://wa.me/79600484957';
 require_once dirname(__DIR__) . '/_shared/lireate-service-messenger-include.inc.php';
+require_once dirname(__DIR__) . '/_shared/lireate-sitewide-sidebar-v7.inc.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-nav-links.php';
 require_once dirname(__DIR__) . '/_shared/lireate-service-assets.php';
 $lx_service_asset_dir = __DIR__;
@@ -66,8 +67,10 @@ $schema_graph = [
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>">
+  <?php lireate_sitewide_sidebar_v7_head(); ?>
 </head>
-<body class="lsv7-managed lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center">
+<body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center">
+<?php lireate_sitewide_sidebar_v7_render(); ?>
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
@@ -94,6 +97,10 @@ $schema_graph = [
 
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="search"></div>
+  <figure class="lx-findtz-expert-photo" aria-label="Эксперт LIREATE">
+    <img src="/template/images/team/person/11.webp" width="320" height="420" alt="Горбачев Юрий Александрович — управляющий партнёр LIREATE" loading="eager" decoding="async">
+    <figcaption>Горбачев Юрий Александрович · управляющий партнёр</figcaption>
+  </figure>
   <div>
     <p class="lx-eyebrow">LIREATE · товарные знаки · поиск по реестру</p>
     <h1>Проверка товарного знака перед регистрацией</h1>
@@ -284,7 +291,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-mascot.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-service-extras.js', $lx_service_asset_dir); ?>"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-reviews.js', $lx_service_asset_dir); ?>"></script>
-<script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-breadcrumbs.js', $lx_service_asset_dir); ?>"></script>
 <?php include __DIR__ . '/lireate-lead-scripts.inc.php'; ?>
 <?php include dirname(__DIR__) . '/_shared/lireate-metrika.inc.php'; ?>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-metrika-goals.js', $lx_service_asset_dir); ?>"></script>
