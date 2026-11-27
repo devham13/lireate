@@ -35,5 +35,16 @@
   ],
   "dedupe_article_slugs": [
     "zaschita_firmennogo_stilya"
-  ]
+  ],
+  "sitemap_index": {
+    "enabled": false,
+    "child_maps": [
+      "sitemap-services.xml",
+      "sitemap-blog.xml",
+      "sitemap-mktu.xml",
+      "sitemap-tools.xml",
+      "sitemap-portfolio.xml",
+      "sitemap-pages.xml"
+    ]
+  }
 }
