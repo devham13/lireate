@@ -1,0 +1,37 @@
+# Источники фото services-v4
+
+## Файлы в установке (только WebP)
+
+Установщик `scripts/lireate_six_services_photo_v4_install.py` копирует **только** пять `specialist-*.webp` в корне каталога, без `originals/`.
+
+## Полные кадры до пояса (originals/waist, 26.11.2026)
+
+Сборка: `python3 scripts/build_services_v4_waist_originals.py` → `specialist-registraciya.webp`, `specialist-prolongation.webp`, `specialist-opposition.webp` (black-blazer-on), `specialist-copyright.webp` (blazer-over-arm).
+
+## Три фото с фоном (legacy, заменены waist-оригиналами)
+
+Оригиналы владельца (JPEG с полным фоном) конвертированы в:
+
+- `specialist-copyright.webp`
+- `specialist-opposition.webp`
+- `specialist-registraciya.webp`
+
+Скрипт: `scripts/build_services_v4_from_originals.py` (читает временно положенные `originals/*.jpg`, в git **не хранятся**).
+
+Параметры: RGB WebP 800×1200, качество ~82, без rembg и без подложки.
+
+## Кадр по середину туловища (как главная, чуть шире)
+
+Пропорция рамки с live главной @ 1440: **453×378** (aspect ≈ 1.198). Пересборка всех `specialist-*.webp`: `scripts/reframe_services_v4_chest_crop.py` — нижний край кадра на пояс/середину туловища (если хватает исходника), ~8% отступ над макушкой, лицо по центру; метаданные кропа: `reframe-midbody-meta.json`. Выход **906×756** RGB WebP; `object-fit: cover; object-position: center top`.
+
+## Certificate (findtz)
+
+Пересборка из `originals/certificate-original.jpg` (JPEG с тёмным фоном, без вырезания): `scripts/build_certificate_webp.py` → `specialist-certificate.webp` 800×1200 RGB WebP; оригинал после сборки из репозитория удаляется.
+
+## Prolongation (prodlenie)
+
+Пересборка из `originals/prolongation-original.jpg` (с фоном): `scripts/build_prolongation_webp.py` → `specialist-prolongation.webp`; JPEG после сборки удаляется.
+
+## `/team`
+
+Портреты `/template/images/team/person/{n}.jpg` — другие кадры, не заменяют пять постановок услуг.

@@ -1,0 +1,20 @@
+{
+  "specialist-certificate": {
+    "stem": "specialist-certificate",
+    "source_h": 1200,
+    "source_w": 800,
+    "waist_reached": false,
+    "note": "source shorter than waist; frame lowered maximally without clipping crown",
+    "face": true,
+    "fh": 217,
+    "waist_y": 1089,
+    "crop_top": 132,
+    "crop_bottom": 800,
+    "ideal_top": 132,
+    "bytes": 19450,
+    "out_size": [
+      906,
+      756
+    ]
+  }
+}
