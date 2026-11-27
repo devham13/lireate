@@ -60,6 +60,33 @@ function lireate_blog_substr($text, $start, $len = 1)
 }
 }
 
+if (!function_exists('lireate_blog_truncate_plain')) {
+function lireate_blog_truncate_plain($plain, $max, $ellipsis = '…')
+{
+    $plain = trim((string) $plain);
+    $max = (int) $max;
+    if ($max < 1) {
+        return '';
+    }
+    if (lireate_blog_strlen($plain) <= $max) {
+        return $plain;
+    }
+    $ell = (string) $ellipsis;
+    $budget = $max - lireate_blog_strlen($ell);
+    if ($budget < 1) {
+        $budget = $max;
+        $ell = '';
+    }
+    $chunk = lireate_blog_substr($plain, 0, $budget);
+  $sp = function_exists('mb_strrpos') ? mb_strrpos($chunk, ' ', 0, 'UTF-8') : strrpos($chunk, ' ');
+    if ($sp !== false && $sp > (int) ($budget / 2)) {
+        $chunk = lireate_blog_substr($chunk, 0, $sp);
+    }
+    $chunk = rtrim($chunk, " ,.-:;");
+    return $chunk . $ell;
+}
+}
+
 if (!function_exists('lireate_blog_slugify_heading')) {
 function lireate_blog_slugify_heading($text)
 {
@@ -829,7 +856,7 @@ function lireate_blog_list_excerpt_from_row($row)
     if (lireate_blog_strlen($plain) <= 220) {
         return $plain;
     }
-    return lireate_blog_substr($plain, 0, 217) . '…';
+    return lireate_blog_truncate_plain($plain, 217, '…');
 }
 }
 
