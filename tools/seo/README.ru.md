@@ -153,6 +153,35 @@ npm run audit
 > tools/seo/unlighthouse/reports. Подготовь исправления метаданных и внутренних
 > ссылок по AGENTS.md. Для каждого изменения укажи URL и способ проверки.
 
+## Комплексный краул (CSV-реестры)
+
+```bash
+# Сначала сохраните список URL (с хостинга снимает REG.RU периодические таймауты SSL):
+python3 - <<'PY'
+from urllib.request import urlopen, Request
+from xml.etree import ElementTree as ET
+from pathlib import Path
+import os
+site = os.environ['SEO_SITE_URL'].rstrip('/')
+req = Request(site + '/sitemap.xml', headers={'User-Agent': 'LIREATE-SEO/1.0'})
+data = urlopen(req, timeout=60).read()
+ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+root = ET.fromstring(data)
+locs = [u.find('sm:loc', ns).text.strip() for u in root.findall('sm:url', ns)]
+Path('tools/seo/.cache').mkdir(parents=True, exist_ok=True)
+Path('tools/seo/.cache/sitemap-urls.txt').write_text('\n'.join(locs) + '\n', encoding='utf-8')
+print(len(locs), 'urls')
+PY
+
+python3 tools/seo/lireate_comprehensive_audit.py --workers 1 \\
+  --url-list tools/seo/.cache/sitemap-urls.txt --max-urls 200
+
+python3 tools/seo/generate_seo_deliverables.py
+```
+
+Результаты: `reports/seo/URL_INVENTORY.csv`, `SEO_ERRORS.csv` и markdown-отчёты.
+Полный обход 429 URL надёжнее запускать с VPS (SEOnaut), не из Cloud Agent.
+
 ## Проверка установки
 
 ```bash

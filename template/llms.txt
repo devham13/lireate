@@ -1,0 +1,38 @@
+# LIREATE — патентное бюро
+
+> Юридическая компания и патентное бюро LIREATE (Лирейт): регистрация и защита товарных знаков, патентование, авторское право, договоры по ИС, судебные и досудебные споры. Офисы: Москва, Санкт-Петербург, Казань. Сайт: https://${PUBLIC_SITE_HOST}/
+
+LIREATE помогает бизнесу и авторам оформлять и защищать интеллектуальную собственность в России и за рубежом. Материалы на сайте подготовлены юристами и патентными поверенными; актуальные цены и сроки указываются на страницах услуг.
+
+## Основные услуги
+
+- [Регистрация товарного знака](https://${PUBLIC_SITE_HOST}/registraciya_tovarnogo_znaka/)
+- [Проверка товарного знака](https://${PUBLIC_SITE_HOST}/findtz/)
+- [Патентование изобретений](https://${PUBLIC_SITE_HOST}/patent)
+- [Промышленные образцы](https://${PUBLIC_SITE_HOST}/patent_prom_obr)
+- [Защита авторских прав](https://${PUBLIC_SITE_HOST}/zashchita_avtorskih_prav/)
+- [Возражение против регистрации чужого знака](https://${PUBLIC_SITE_HOST}/vozrazhenie_protiv_registracii_tovarnogo_znaka/)
+- [Каталог услуг](https://${PUBLIC_SITE_HOST}/uslugi/)
+
+## Инструменты и справочники
+
+- [Каталог МКТУ](https://${PUBLIC_SITE_HOST}/mktu)
+- [Патентные задачи](https://${PUBLIC_SITE_HOST}/patentnye-zadachi/)
+- [Блог](https://${PUBLIC_SITE_HOST}/news)
+
+## О компании и контакты
+
+- [Команда](https://${PUBLIC_SITE_HOST}/team)
+- [Контакты](https://${PUBLIC_SITE_HOST}/contacts/)
+- [Кейсы](https://${PUBLIC_SITE_HOST}/portfolio)
+- [Отзывы](https://${PUBLIC_SITE_HOST}/reviews)
+
+## Правовая информация
+
+- [Политика конфиденциальности](https://${PUBLIC_SITE_HOST}/politika_konfidencialnosti)
+- [Согласие на обработку ПДн](https://${PUBLIC_SITE_HOST}/private_data)
+
+## Optional
+
+Sitemap: https://${PUBLIC_SITE_HOST}/sitemap.xml
+Robots: https://${PUBLIC_SITE_HOST}/robots.txt

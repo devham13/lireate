@@ -1,0 +1,21 @@
+cluster_id,service_title,main_query,supporting_queries,intent,region,demand_visits_metrika,current_landing,target_landing,status,priority
+S01,"Защита авторских прав на контент, софт и дизайн",,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S02,Регистрация товарного знака с оплатой за результат,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S03,Возражение против регистрации товарного знака,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S04,"Договоры лицензии, отчуждения и франчайзинга на ИС",,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S05,Маркировка импортных товаров «Честный знак»,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S06,Защита коммерческой тайны и режим конфиденциальности,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S07,Проверка товарного знака на уникальность,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S08,Доработка товарного знака перед подачей в Роспатент,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S09,Подбор классов МКТУ для регистрации товарного знака,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S10,Аннулирование и оспаривание чужого товарного знака,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S11,Ответ на претензию правообладателя товарного знака,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S12,Регистрация товарного знака в Китае,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S13,Регистрация бренда для Ozon и Wildberries,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S14,Защита фирменного наименования компании,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S15,Регистрация товарного знака на физическое лицо,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S16,Регистрация программы для ЭВМ и мобильного приложения,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S17,Патентование изобретений и полезных моделей,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S18,Патентование промышленных образцов,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S19,Регистрация товарного знака в Роспатенте,,,commercial,RU; MSK; SPB; KZN,,,,,P2
+S20,Международная регистрация товарного знака,,,commercial,RU; MSK; SPB; KZN,,,,,P2
