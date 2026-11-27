@@ -76,7 +76,8 @@ class AvtorLightV4PageTests(unittest.TestCase):
 
     def test_sidebar_v7_skips_expert_on_avtor(self):
         js = (ROOT / "template" / "js" / "lireate-sitewide-sidebar-v7.js").read_text(encoding="utf-8")
-        self.assertIn("lireate-avtor-body", js)
+        self.assertNotIn("ensureExpertPortrait", js)
+        self.assertNotIn("lsv7-sidebar-expert", js)
 
 
 if __name__ == "__main__":
