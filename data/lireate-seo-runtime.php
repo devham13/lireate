@@ -57,7 +57,6 @@ if (!function_exists('lireate_seo_service_with_slash')) {
             'registracija_naimenovanija_mesta_proishozhdenija_tovarov',
             'zashhita_firmennogo_naimenovanija',
             'tovarnyi_znak_info',
-            'avtor',
         );
     }
 }

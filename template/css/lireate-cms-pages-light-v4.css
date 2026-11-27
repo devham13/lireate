@@ -171,6 +171,62 @@ body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .lireate-ab
   background: #047857 !important;
   border-color: #047857 !important;
 }
+/* /avtor/ — Light V4 контент на белом, подвал navy как /mktu */
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4,
+html.lireate-avtor-html body.lireate-avtor-body.lireate-cms-page-dark.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .wrapper,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .page_container,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .container.content,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor {
+  background: #fff !important;
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-wrap :is(p, li, span, div, .la-prose, .lu-section-lead, .la-role),
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .container.content #lireate-avtor .lu-wrap :is(p, li, span, div) {
+  color: #52637b !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-wrap p.lu-eyebrow,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .container.content #lireate-avtor .lu-wrap p.lu-eyebrow {
+  color: #0f4db8 !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-h1,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-h2,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-role strong,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .la-pub-card strong {
+  color: #1f212c !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-eyebrow {
+  color: #0f4db8 !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 #lireate-avtor .lu-wrap a:not(.lu-btn-primary):not(.lu-btn-ghost) {
+  color: #0f4db8 !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer {
+  background: #0b0b1f !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-title {
+  color: #f8fafc !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-lead,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-meta,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-copy {
+  color: #94a3b8 !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-contact {
+  color: #f1f5f9 !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer a,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-contact a,
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-nav > a {
+  color: #f8fafc !important;
+}
+body.lireate-cms-page-dark.lireate-avtor-body.lireate-theme-light-v4 .lx-site-footer-dot {
+  color: #64748b !important;
+}
 body.lireate-theme-light-v4.lireate-reviews-body #face p.titleDesc,
 body.lireate-theme-light-v4.lireate-reviews-body #face .titleDesc {
   color: #52637b !important;

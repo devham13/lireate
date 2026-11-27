@@ -63,6 +63,7 @@ function init(){
  });
 }
 function ensureExpertPortrait(sidebar){
+ if(body.classList.contains("lireate-avtor-body"))return;
  if(sidebar.querySelector(".lsv7-sidebar-expert"))return;
  var head=sidebar.querySelector(".lpc-sidebar-head");
  var logo=sidebar.querySelector("a.leftSideLogo");

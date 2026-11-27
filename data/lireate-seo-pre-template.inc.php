@@ -36,14 +36,6 @@ if ($__lb_path === '/avtor' || $__lb_path === '/avtor/') {
     if (isset($temp) && is_array($temp)) {
         $temp['apsw'] = false;
     }
-    $avtor_title = 'Горбачев Юрий Александрович — директор бюро «Лирейт»';
-    $avtor_desc = 'Юрий Горбачев — директор и управляющий партнёр ООО «ЛИРЕЙТ»: товарные знаки, патенты, авторское право и споры. Статьи на vc.ru, в Т—Ж, на Клерке и Хабре.';
-    if (isset($cfg) && is_array($cfg)) {
-        $cfg['title'] = $avtor_title;
-        $cfg['description'] = $avtor_desc;
-    }
-    $seo_title = $avtor_title;
-    $seo_description = $avtor_desc;
     if (function_exists('lireate_seo_apply_static_page_meta_to_cfg')) {
         lireate_seo_apply_static_page_meta_to_cfg('avtor', $cfg, $seo_title, $seo_description);
     }

@@ -64,6 +64,13 @@ if (!function_exists('lireate_lh4_subnav_items_for_request')) {
                 array('href' => '#lu-contact', 'label' => 'Контакты'),
             );
         }
+        if (preg_match('#^/avtor(?:/|$)#', $path)) {
+            return array(
+                array('href' => '#la-about', 'label' => 'О специализации'),
+                array('href' => '#la-pubs', 'label' => 'Публикации'),
+                array('href' => '#la-contacts', 'label' => 'Контакты'),
+            );
+        }
         if (preg_match('#^/mktu(?:/|$)#', $path)) {
             return array(
                 array('href' => '#mktu-classes', 'label' => 'Классы'),
