@@ -1,7 +1,6 @@
 # Расширение tools/seo/compose.yaml для VPS (/opt/lireate-seo).
 # Запуск: docker compose -f compose.yaml -f vps/compose.stack.yaml up -d
-
-name: lireate-seo
+# Не переопределяем `name:` — сохраняем существующий project (lireate-seo-tools).
 
 services:
   cabinet:
@@ -11,7 +10,8 @@ services:
       seonaut:
         condition: service_started
     ports:
-      - "127.0.0.1:${CABINET_PORT:-19080}:80"
+      - "${CABINET_BIND:-127.0.0.1}:${CABINET_PORT:-19080}:80"
+      - "${CABINET_PUBLIC_BIND:-0.0.0.0}:${CABINET_PUBLIC_PORT:-18443}:443"
     environment:
       CABINET_USER: ${CABINET_USER:-lireate}
       CABINET_PASSWORD_HASH: ${CABINET_PASSWORD_HASH:-}

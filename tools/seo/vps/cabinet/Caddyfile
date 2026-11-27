@@ -1,8 +1,9 @@
 {
-  auto_https off
+  auto_https disable_redirects
 }
 
-:80 {
+:80, :443 {
+  tls internal
   encode gzip
   handle_path /reports/* {
     root * /srv/reports
