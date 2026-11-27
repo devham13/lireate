@@ -152,7 +152,7 @@ def main() -> int:
         nonlocal redirect_301, not_found_404, bad_hub_related
         if not href.startswith("/"):
             return
-        code, url = curl_status(args.base, href, follow=False)
+        code, url = curl_status(base, href, follow=False)
         if code == 301 or code == 302:
             redirect_301 += 1
             bad_hub_related += 1
