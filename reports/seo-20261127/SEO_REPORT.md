@@ -21,7 +21,17 @@ UTC: 2026-11-27T14:17:54.639684+00:00
 | ИКС (SQI) | 50 |
 | Запросы 30д | **нет данных** |
 
-**P0 диагностики:** DOCUMENTS_MISSING_DESCRIPTION, ERROR_IN_ROBOTS_TXT, TOO_MANY_DOMAINS_ON_SEARCH (анализ только), DUPLICATE_CONTENT_ATTRS, DUPLICATE_PAGES.
+**P0 диагностики (5):**
+
+| ID | Действие | Статус |
+| --- | --- | --- |
+| DOCUMENTS_MISSING_DESCRIPTION | overrides + crawl `missing_description` (12 URL на after) | в работе / PR #172 |
+| ERROR_IN_ROBOTS_TXT | `shared/robots.txt.yandex-recommended`; убрать `Disallow: /?…` и `/*?…` | **не на проде** |
+| TOO_MANY_DOMAINS_ON_SEARCH | `docs/lireate-yandex-domains-analysis.ru.md` | ждёт владельца |
+| DUPLICATE_CONTENT_ATTRS | уникальные title/desc (cms-overrides, kontaktyi/contacts) | P1 data-layer |
+| DUPLICATE_PAGES | canonical + Clean-param utm/yclid/mode/nc; без массовых 301 | P0 robots + канон |
+
+Запросы/позиции 30д: **нет данных**. Частота Wordstat: **нет данных** (API).
 
 ## Issue counts (problems column)
 
@@ -36,10 +46,21 @@ UTC: 2026-11-27T14:17:54.639684+00:00
 - **title_long**: before=9, after=1, Δ=-8
 - **title_short**: before=4, after=1, Δ=-3
 
-## Deployed P0 (prod)
+## Live vs repo (curl 17:18 MSK)
 
-- Home title ≤58 chars (51), description без изменений.
-- MКТУ 1–45: WebPage + BreadcrumbList JSON-LD.
+| Элемент | Прод | В #172 / не выложено |
+| --- | --- | --- |
+| Home title 51 chars | да | в main (#169) |
+| МКТУ `/1/` `/25/` `/45/` BreadcrumbList | да | в main (#169) |
+| Service WebPage `@id` + расшир. slugs | **частично** (findtz: Service+BC, без WebPage в HTML) | data-layer в #172, baseline обновлён |
+| `robots.txt` Яндекс-clean | **нет** (ERROR) | `shared/robots.txt.yandex-recommended` |
+| `llms.txt` 141096 B | да (Last-Mod 13:42 UTC) | combined builder в main |
+| Sitemap index split | нет | план + JSON в #172; код в lireate-news |
+
+## Deployed P0 (prod, #169)
+
+- Home title ≤58 chars (51), description без изменений («с 2015 года»).
+- МКТУ 1–45: WebPage + BreadcrumbList JSON-LD.
 
 ## Artifacts
 
