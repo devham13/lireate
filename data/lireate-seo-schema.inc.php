@@ -449,7 +449,7 @@ if (!function_exists('lireate_seo_home_organization')) {
                     'areaServed' => 'RU',
                     'address' => array(
                         '@type' => 'PostalAddress',
-                        'streetAddress' => 'ул. Королёва, 11Б, помещ. 30-1005',
+                        'streetAddress' => 'ул. Карла Маркса, 24, оф. 1',
                         'addressLocality' => 'Зеленодольск',
                         'addressCountry' => 'RU',
                     ),
