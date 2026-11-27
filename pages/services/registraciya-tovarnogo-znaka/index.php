@@ -7,7 +7,7 @@ $canonical = $site_root . $path;
 $seo_title = 'Регистрация товарного знака под ключ в Роспатенте — Лирейт';
 $seo_description = 'Проверим обозначение, подберём МКТУ, подадим заявку и ответим экспертизе. Госпошлина за 1 класс — 35 000 ₽, услуги отдельно. Гарантий регистрации нет.';
 $og_type = 'website';
-$og_image = $site_root . '/local/templates/lireate/images/og-default.jpg';
+$og_image = $site_root . '/template/images/OG_image.jpg';
 $lireate_phone_display = '+7 (960) 048-49-57';
 $lireate_phone_tel = 'tel:+79600484957';
 $lireate_telegram = 'https://t.me/lireate_patent';
@@ -84,10 +84,10 @@ $schema_graph = [
   <link rel="stylesheet" href="/template/css/lireate-service-mobile-bar.css?v=20261111svc1" /><!-- lireate_design_service_mobile_bar_css_v1 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"></noscript>
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 </head>
-<body class="lireate-svc-body registraciya-landing-body registraciya-pilot-v2 lx-tm-white lireate-theme-light-v4">
+<body class="lsv7-managed lireate-svc-body registraciya-landing-body registraciya-pilot-v2 lx-tm-white lireate-theme-light-v4">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
