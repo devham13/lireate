@@ -126,7 +126,7 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
       <span class="lireate-contacts-badge lireate-contacts-badge--green">Офис</span>
       <h2 class="lireate-contacts-card-title" id="lc-info-title">Как связаться</h2>
       <dl class="lireate-contacts-dl">
-        <div><dt>Адрес</dt><dd><?php echo lireate_contacts_h($lc_address); ?><br>Также Вы можете обраться к нашим <a href="/partners" target="_blank" rel="noopener noreferrer">партнёрам</a>.</dd></div>
+        <div><dt>Адрес</dt><dd><?php echo lireate_contacts_h($lc_address); ?><br>Также вы можете обратиться к нашим <a href="/partners" target="_blank" rel="noopener noreferrer">партнёрам</a>.</dd></div>
         <div><dt>Телефоны</dt><dd class="lireate-contacts-phones"><a href="<?php echo lireate_contacts_h($lc_phone1_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone1_display); ?></a><span class="lireate-contacts-sep" aria-hidden="true">|</span><a href="<?php echo lireate_contacts_h($lc_phone2_tel); ?>" data-lx-ym-goal="klik_po_nomeru_telefona"><?php echo lireate_contacts_h($lc_phone2_display); ?></a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:<?php echo lireate_contacts_h($lc_email); ?>"><?php echo lireate_contacts_h($lc_email); ?></a></dd></div>
       </dl>
