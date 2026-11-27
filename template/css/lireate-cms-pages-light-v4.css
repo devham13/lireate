@@ -80,7 +80,12 @@ body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-foo
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer a {
   color: #f8fafc !important;
 }
-body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer p,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-title,
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer .lx-site-footer-title {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer p:not(.lx-site-footer-title),
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel,
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-requisites-panel p,
 body.lireate-cms-page-dark.lireate-team-body.lireate-theme-light-v4 .lx-site-footer-lead {

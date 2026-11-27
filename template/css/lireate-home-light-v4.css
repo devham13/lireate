@@ -686,7 +686,7 @@ body.lireate-theme-light-v4.lireate-home-light-v4 .hamburger .hamb-bottom { top:
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .expert-info .role {
   color: #3d4f66 !important;
 }
-body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root footer a,
+body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root footer:not(.lx-site-footer) a,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .footer a,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .menu a,
 body.lireate-home-light-v4.lireate-theme-light-v4 .lh4-root .mobile-menu a {
@@ -981,8 +981,17 @@ body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer p {
 }
 body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact,
 body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact a,
-body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer-nav > a {
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-nav a,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-documents-link,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites summary,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn) {
   color:#f8fafc !important;
+  font-weight:400 !important;
+  text-decoration:none !important;
+}
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-copy,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-copy {
+  color:#94a3b8 !important;
 }
 
 /* Home: CMS #leftSideBar stays visible — v7 JS does not add .lsv7-managed; inset footer beside it. */

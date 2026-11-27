@@ -126,7 +126,7 @@
 .lx-site-footer-copy {
   margin: 16px 0 0;
   font-size: 13px;
-  color: #64748b;
+  color: #94a3b8;
 }
 @media (max-width: 520px) {
   .lx-site-footer-contact .lx-site-footer-dot { display: none; }
@@ -153,7 +153,7 @@
 #blog .lx-site-footer p.lx-site-footer-contact a{color:#f8fafc}
 #blog .lireate-blog-subscribe-card p.lireate-blog-subscribe-label{font-size:12px;line-height:1.3;font-weight:800;color:#c4b5fd;max-width:none;margin:0 0 6px}
 #blog .lireate-blog-subscribe-card p.lireate-blog-subscribe-text{font-size:15px;line-height:1.55;color:#d4dce8;max-width:none;margin:0 0 14px}
-#blog .lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#64748b;margin:16px 0 0}
+#blog .lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#94a3b8;margin:16px 0 0}
 .lx-site-footer p{max-width:none;margin:0;letter-spacing:normal;font-size:12px;line-height:1.5;color:#64748b}
 .lx-site-footer p.lx-site-footer-title{font-size:16px;line-height:1.35;font-weight:700;color:#f8fafc;margin:0 0 6px}
 .lx-site-footer p.lx-site-footer-lead{font-size:14px;line-height:1.5;color:#a7b0c8;margin:0 0 12px}
@@ -162,7 +162,7 @@
 .lx-site-footer p.lx-site-footer-contact a{color:#f8fafc}
 .lireate-blog-subscribe-card p.lireate-blog-subscribe-label{font-size:12px;line-height:1.3;font-weight:800;color:#c4b5fd;max-width:none;margin:0 0 6px}
 .lireate-blog-subscribe-card p.lireate-blog-subscribe-text{font-size:15px;line-height:1.55;color:#d4dce8;max-width:none;margin:0 0 14px}
-.lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#64748b;margin:16px 0 0}
+.lx-site-footer p.lx-site-footer-copy{font-size:13px;line-height:1.5;color:#94a3b8;margin:16px 0 0}
 .lireate-blog-page { overflow-x: clip; max-width: 100%; }
 .lx-site-footer { overflow-x: clip; }
 
@@ -183,4 +183,69 @@ body.lx-tm-white.registraciya-pilot-v2 .lx-site-footer,
 body.lx-fg-white .lx-site-footer {
   background: #0b0b1f !important;
   border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Типографика тёмного подвала (как /mktu): контраст ≥4.5:1 на #0b0b1f. */
+body.lireate-theme-light-v4 footer.lx-site-footer,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer,
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer,
+body.lx-fg-white footer.lx-site-footer,
+body.lireate-blog-body footer.lx-site-footer,
+body.lireate-team-body footer.lx-site-footer,
+body.lireate-cms-page-dark footer.lx-site-footer {
+  color: #94a3b8 !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-title,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-title,
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer .lx-site-footer-title,
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-title {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-lead,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-meta,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-meta,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites-panel,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites-panel p,
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer .lx-site-footer-lead,
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer p.lx-site-footer-meta {
+  color: #94a3b8 !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-contact {
+  color: #f1f5f9 !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-copy,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-copy,
+#blog .lx-site-footer p.lx-site-footer-copy,
+body.lireate-blog-body footer.lx-site-footer p.lx-site-footer-copy {
+  color: #94a3b8 !important;
+}
+body.lireate-cms-page-dark.lireate-team-body footer.lx-site-footer p.lx-site-footer-title,
+body.lireate-cms-page-dark.lireate-team-body footer.lx-site-footer .lx-site-footer-title {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn),
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact a,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-nav a,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-documents-link,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites summary,
+body.lireate-home-light-v4.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn),
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer a:not(.lx-site-footer-social-btn),
+body.lx-fg-white footer.lx-site-footer a:not(.lx-site-footer-social-btn) {
+  color: #f8fafc !important;
+  font-weight: 400 !important;
+  text-decoration: none !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn):hover,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites summary:hover {
+  color: #fff !important;
+  text-decoration: underline !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-dot {
+  color: #64748b !important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-social-btn {
+  color: #fff !important;
 }

@@ -290,18 +290,21 @@ body.lx-fg-white .lx-mid-cta p,
 body.lx-fg-white .lx-bottom-cta p{color:var(--tw-muted) !important}
 
 /* ---------- footer (sitewide dark #0b0b1f) ---------- */
-body.lx-fg-white .lx-site-footer{background:#0b0b1f;border-top:1px solid rgba(255,255,255,.1);color:#94a3b8}
-body.lx-fg-white .lx-site-footer .lx-site-footer-title{color:#f8fafc}
-body.lx-fg-white .lx-site-footer .lx-site-footer-lead,
-body.lx-fg-white .lx-site-footer .lx-site-footer-contact,
-body.lx-fg-white .lx-site-footer .lx-site-footer-requisites-panel p,
-body.lx-fg-white .lx-site-footer p.lx-site-footer-meta,
-body.lx-fg-white .lx-site-footer p.lx-site-footer-copy{color:#94a3b8 !important}
-body.lx-fg-white .lx-site-footer a,
-body.lx-fg-white .lx-site-footer .lx-site-footer-contact a,
-body.lx-fg-white .lx-site-footer .lx-site-footer-nav > a,
-body.lx-fg-white .lx-site-footer .lx-site-footer-requisites summary{color:#f8fafc}
-body.lx-fg-white .lx-site-footer a.lx-site-footer-social-btn{color:#fff}
+body.lx-fg-white footer.lx-site-footer{background:#0b0b1f!important;border-top:1px solid rgba(255,255,255,.1)!important;color:#94a3b8!important}
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-title,
+body.lx-fg-white footer.lx-site-footer p.lx-site-footer-title{color:#f8fafc!important;font-weight:700!important}
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-lead,
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-contact,
+body.lx-fg-white footer.lx-site-footer p.lx-site-footer-contact,
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-requisites-panel p,
+body.lx-fg-white footer.lx-site-footer p.lx-site-footer-meta,
+body.lx-fg-white footer.lx-site-footer p.lx-site-footer-copy{color:#94a3b8!important}
+body.lx-fg-white footer.lx-site-footer a:not(.lx-site-footer-social-btn),
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-contact a,
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-nav a,
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-documents-link,
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-requisites summary{color:#f8fafc!important;font-weight:400!important;text-decoration:none!important}
+body.lx-fg-white footer.lx-site-footer a.lx-site-footer-social-btn{color:#fff!important}
 body.lx-fg-white .lx-site-footer .lx-site-footer-dot{color:#64748b}
 body.lx-fg-white .lx-site-footer a:not(.lx-site-footer-social-btn):hover,
 body.lx-fg-white .lx-site-footer .lx-site-footer-requisites summary:hover{color:#fff;text-decoration:underline}

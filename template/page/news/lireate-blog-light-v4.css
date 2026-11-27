@@ -157,7 +157,7 @@ body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-s
 body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-requisites-panel{background:transparent!important;color:#94a3b8!important;border:1px solid rgba(255,255,255,.12)!important}
 body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-requisites summary{color:#f8fafc!important;font-weight:600!important}
 body.lireate-blog-body.lireate-theme-light-v4:has(.lireate-blog-list-page) .lx-site-footer-copy,
-body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-copy{color:#64748b!important}
+body.lireate-blog-body.lireate-theme-light-v4 #blog .lx-site-footer p.lx-site-footer-copy{color:#94a3b8!important}
 /* Real CMS article: legacy body classes + Light V4 (contrast >= 4.5:1) */
 body.lireate-theme-light-v4.lireate-cms-page-dark.lireate-legacy-article-lu #articleBox,
 body.lireate-theme-light-v4.lireate-cms-page-dark #articleBox,
@@ -197,7 +197,7 @@ body.lireate-theme-light-v4 #articleBox .lx-site-footer p{color:#94a3b8!importan
 body.lireate-theme-light-v4 #articleBox .lx-site-footer-title{color:#f8fafc!important}
 body.lireate-theme-light-v4 #articleBox .lx-site-footer-contact{color:#f1f5f9!important}
 body.lireate-theme-light-v4 #articleBox .lx-site-footer-contact a{color:#f8fafc!important}
-body.lireate-theme-light-v4 #articleBox .lx-site-footer-copy{color:#64748b!important}
+body.lireate-theme-light-v4 #articleBox .lx-site-footer-copy{color:#94a3b8!important}
 /* Real CMS article render (no lireate-theme-light-v4 in static HTML; class added by inline script) */
 body.lireate-legacy-article-lu.lireate-cms-page-dark.lireate-blog-body,
 body.lireate-legacy-article-lu.lireate-cms-page-dark.lireate-theme-light-v4,

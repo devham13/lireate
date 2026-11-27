@@ -322,3 +322,46 @@ body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-social-btn {
   width:34px;
   height:34px;
 }
+
+/* Dark footer readable text (как /mktu) — после удаления white overrides. */
+body.lireate-theme-light-v4 footer.lx-site-footer,
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer,
+body.lx-fg-white footer.lx-site-footer {
+  background:#0b0b1f!important;
+  border-top:1px solid rgba(255,255,255,.1)!important;
+  color:#94a3b8!important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-title,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-title,
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer .lx-site-footer-title,
+body.lx-fg-white footer.lx-site-footer .lx-site-footer-title{
+  color:#f8fafc!important;font-weight:700!important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-lead,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-meta,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-meta,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites-panel,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites-panel p,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-copy,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-copy{
+  color:#94a3b8!important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact,
+body.lireate-theme-light-v4 footer.lx-site-footer p.lx-site-footer-contact{
+  color:#f1f5f9!important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn),
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-contact a,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-nav a,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-documents-link,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites summary,
+body.lx-tm-white.registraciya-pilot-v2 footer.lx-site-footer a:not(.lx-site-footer-social-btn),
+body.lx-fg-white footer.lx-site-footer a:not(.lx-site-footer-social-btn){
+  color:#f8fafc!important;font-weight:400!important;text-decoration:none!important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer a:not(.lx-site-footer-social-btn):hover,
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites summary:hover{
+  color:#fff!important;text-decoration:underline!important;
+}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-dot{color:#64748b!important;}
+body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-social-btn{color:#fff!important;}
