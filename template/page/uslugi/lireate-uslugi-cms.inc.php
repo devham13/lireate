@@ -8,10 +8,12 @@ foreach ($lu_groups as $g) { $lu_count += count($g['cards']); }
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/template/css/lireate-cms-pages-light-v4.css?v=20261127">
 <link rel="stylesheet" href="/template/page/uslugi/lireate-uslugi.css?v=<?php echo lireate_uslugi_h($lu_v); ?>">
 <script>
-document.documentElement.classList.add('lireate-uslugi-html');
+document.documentElement.classList.add('lireate-uslugi-html', 'lireate-theme-light-v4');
 if (document.body) { document.body.classList.add('lireate-uslugi-body'); }
 </script>
 <div class="lu-page">
