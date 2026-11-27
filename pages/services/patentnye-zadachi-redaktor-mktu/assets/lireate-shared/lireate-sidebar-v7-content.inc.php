@@ -6,13 +6,6 @@
       <span class="lpc-collapse-icon" aria-hidden="true"></span>
     </button>
   </div>
-  <figure class="lsv7-sidebar-expert" aria-label="Эксперт LIREATE">
-    <img src="/template/images/team/person/11.webp" width="120" height="120" alt="Горбачев Юрий Александрович — управляющий партнёр LIREATE" loading="lazy" decoding="async">
-    <figcaption class="lsv7-sidebar-expert-caption">
-      <strong>Горбачев Юрий Александрович</strong>
-      <span>Управляющий партнёр</span>
-    </figcaption>
-  </figure>
   <nav id="leftSideNav" aria-label="Разделы">
     <div class="leftSideTitle">Услуги</div>
     <div class="leftSideNaviButton js-question">Товарный знак <div class="leftSideArrow"></div></div>
