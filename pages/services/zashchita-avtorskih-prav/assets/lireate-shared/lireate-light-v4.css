@@ -357,3 +357,41 @@ body.lireate-theme-light-v4 footer.lx-site-footer .lx-site-footer-requisites {
   background:#fff;
   border-color:#dce8f7;
 }
+
+/* Legacy breadcrumb dropdown on cached hosting HTML */
+body.lireate-theme-light-v4 .lx-breadcrumb-services-menu{display:none!important}
+body.lireate-theme-light-v4 .lireate-svc-page button.lx-breadcrumb-services-trigger,
+body.lireate-theme-light-v4 button.lx-breadcrumb-services-trigger{
+  display:none!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body.lireate-theme-light-v4 .lx-breadcrumbs a[href="/uslugi/"],
+body.lireate-theme-light-v4 .lx-breadcrumb-services>a[href="/uslugi/"],
+body.lireate-theme-light-v4 li.lx-breadcrumb-services>a[href="/uslugi/"]{
+  display:inline!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  margin:0!important;
+  font:inherit!important;
+  font-weight:inherit!important;
+  color:#195acb!important;
+  text-decoration:none!important;
+  border-radius:0!important;
+}
+body.lireate-theme-light-v4 .lx-breadcrumbs a[href="/uslugi/"]:hover{text-decoration:underline!important}
+body.lireate-theme-light-v4 li.lx-breadcrumb-services{background:transparent!important;border:0!important;padding:0!important}
+body.lireate-theme-light-v4 .lx-breadcrumb-services-trigger::after,
+body.lireate-theme-light-v4 button.lx-breadcrumb-services-trigger::after{
+  content:none!important;
+  display:none!important;
+  border:0!important;
+}
+body.lireate-theme-light-v4 .lireate-svc-page button.lx-breadcrumb-services-trigger,
+body.lireate-theme-light-v4.lireate-svc-body button.lx-breadcrumb-services-trigger{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+}
