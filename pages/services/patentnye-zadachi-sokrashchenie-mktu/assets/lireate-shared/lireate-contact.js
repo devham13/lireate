@@ -148,7 +148,7 @@
     var nameEl = document.getElementById('lf-name');
     var phoneEl = document.getElementById('lf-phone');
     bindPhoneMask(phoneEl);
-    var consent = document.getElementById('lf-consent');
+    var consent = form.querySelector('input[name="consent_request"]');
     var okEl = document.getElementById('lf-success');
     var errEl = document.getElementById('lf-error');
     var submitBtn = form.querySelector('.lx-form-submit, button[type="submit"]');

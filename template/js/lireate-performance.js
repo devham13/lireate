@@ -55,7 +55,16 @@
     var phone = form.querySelector('input[name="tel"], input[type="tel"]');
     var message = '';
     var focus = null;
-    if (name && name.required && !String(name.value || '').trim()) {
+    var consent = form.querySelector('input[name="consent_request"]');
+    if (
+      consent &&
+      consent.type === 'checkbox' &&
+      (consent.required || consent.hasAttribute('required')) &&
+      !consent.checked
+    ) {
+      message = 'Нужно согласие на обработку персональных данных.';
+      focus = consent;
+    } else if (name && name.required && !String(name.value || '').trim()) {
       message = 'Укажите, как к вам обращаться.';
       focus = name;
     } else if (phone) {

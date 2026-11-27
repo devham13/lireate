@@ -84,6 +84,8 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
         data-lx-mail-action="<?php echo lireate_contacts_h($lc_mail_action); ?>"
         data-lead-topic="Заявка со страницы Контакты"
         data-lx-success-text="Заявка принята. Мы свяжемся с вами в ближайшее время."
+        data-lireate-consent-managed="1"
+        data-lireate-skip-legacy-consent="1"
         novalidate
       >
         <input type="hidden" name="mail_token" value="503066424d5f7b5ad2097703ef3404d2">
@@ -96,7 +98,17 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
         <input id="lf-name" name="name" type="text" required autocomplete="name" class="lireate-contacts-input" placeholder="Как к вам обращаться">
         <label for="lf-phone">Телефон</label>
         <input id="lf-phone" name="tel" type="tel" required autocomplete="tel" class="lireate-contacts-input" placeholder="+7 …" inputmode="tel">
-        <label class="lx-consent lireate-contacts-consent" for="lf-consent"><input type="checkbox" id="lf-consent" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>
+        <?php
+        $lx_consent_pd_id = 'lf-consent';
+        $lx_consent_mkt_id = 'lf-consent-mkt';
+        $lx_consent_path = lireate_contacts_consent_fields_inc_path();
+        if ($lx_consent_path !== '') {
+            include $lx_consent_path;
+        } else {
+            require_once __DIR__ . '/../../home/_shared/lireate-home-lib.php';
+            lireate_home_render_consent_fields($lx_consent_pd_id, $lx_consent_mkt_id);
+        }
+        ?>
         <button type="submit" class="lireate-contacts-submit lx-btn lx-btn-primary lx-form-submit">Отправить</button>
         <p class="lx-form-success" id="lf-success" role="status" aria-live="polite"></p>
         <p class="lx-form-error" id="lf-error" role="alert" hidden></p>
@@ -105,6 +117,8 @@ if (document.body) { document.body.classList.add('lireate-contacts-body'); }
       <script>window.lireateMailSpamGuard=<?php echo json_encode($lc_spam_guard); ?>;</script>
       <script src="/template/js/lireate-utm.js?v=20261117b1"></script>
       <script src="/registraciya_tovarnogo_znaka/assets/lireate-shared/lireate-lead-mail.js"></script>
+      <script src="/registraciya_tovarnogo_znaka/assets/lireate-shared/lireate-lead-consent-marketing.js"></script>
+      <script src="/registraciya_tovarnogo_znaka/assets/lireate-shared/lireate-contact.js"></script>
       <?php endif; ?>
     </section>
 

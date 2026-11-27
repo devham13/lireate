@@ -50,6 +50,8 @@ $lx_mail_action = 'https://' . 'lireate.ru/mail.php'; // pragma: allowlist secre
         data-lx-mail-action="<?php echo htmlspecialchars($lx_mail_action, ENT_QUOTES, 'UTF-8'); ?>"
         data-lead-topic="<?php echo htmlspecialchars($lx_lead_topic, ENT_QUOTES, 'UTF-8'); ?>"
         data-lx-success-text="<?php echo htmlspecialchars($lx_lead_success_text, ENT_QUOTES, 'UTF-8'); ?>"
+        data-lireate-consent-managed="1"
+        data-lireate-skip-legacy-consent="1"
         novalidate
       >
         <input type="hidden" name="mail_token" value="503066424d5f7b5ad2097703ef3404d2">

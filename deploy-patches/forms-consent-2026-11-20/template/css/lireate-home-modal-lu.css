@@ -241,6 +241,23 @@ body.lireate-home-dark .modal.modal-mail .lireate-consents label,
 body.lireate-cms-page-dark .modal.modal-mail .lireate-consents label,
 body.lireate-home-dark .modal.mbg .lireate-consents label,
 body.lireate-cms-page-dark .modal.mbg .lireate-consents label {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left !important;
   font-weight: 400 !important;
   color: #e8ecf5 !important;
+  cursor: pointer;
+  margin: 8px 0 !important;
+}
+
+body.lireate-home-dark .modal.modal-mail .lireate-consents label input[type="checkbox"],
+body.lireate-cms-page-dark .modal.modal-mail .lireate-consents label input[type="checkbox"],
+body.lireate-home-dark .modal.mbg .lireate-consents label input[type="checkbox"],
+body.lireate-cms-page-dark .modal.mbg .lireate-consents label input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  margin: 2px 0 0 !important;
+  flex-shrink: 0;
 }

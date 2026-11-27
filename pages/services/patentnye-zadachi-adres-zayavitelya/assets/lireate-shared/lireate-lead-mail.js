@@ -144,7 +144,30 @@
     if (nameOptional) {
       fd.set('name', nameOptional);
     }
-    fd.set('consent_request', '1');
+    var consentBox = form.querySelector('input[name="consent_request"]');
+    if (consentBox) {
+      if (consentBox.type === 'checkbox') {
+        if (consentBox.checked) {
+          fd.set('consent_request', '1');
+        } else {
+          fd.delete('consent_request');
+        }
+      } else if (String(consentBox.value || '').trim() !== '') {
+        fd.set('consent_request', String(consentBox.value));
+      }
+    }
+    var mktHidden = form.querySelector('input[name="consent_marketing_data"]');
+    var adsHidden = form.querySelector('input[name="consent_ads"]');
+    if (mktHidden && !mktHidden.disabled && String(mktHidden.value || '') === '1') {
+      fd.set('consent_marketing_data', '1');
+    } else {
+      fd.delete('consent_marketing_data');
+    }
+    if (adsHidden && !adsHidden.disabled && String(adsHidden.value || '') === '1') {
+      fd.set('consent_ads', '1');
+    } else {
+      fd.delete('consent_ads');
+    }
     fd.set('fuck_spamers', currentSpamGuard(form));
     var tokenNode = form.querySelector('input[name="mail_token"]');
     if (tokenNode && tokenNode.value) {

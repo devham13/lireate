@@ -41,3 +41,21 @@ function lireate_contacts_require_blog_footer()
     return false;
 }
 }
+
+if (!function_exists('lireate_contacts_consent_fields_inc_path')) {
+function lireate_contacts_consent_fields_inc_path()
+{
+    $doc = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/') : '';
+    $candidates = array();
+    if ($doc !== '') {
+        $candidates[] = $doc . '/pages/services/_shared/lireate-lead-consent-fields.inc.php';
+    }
+    $candidates[] = __DIR__ . '/../../services/_shared/lireate-lead-consent-fields.inc.php';
+    foreach ($candidates as $path) {
+        if ($path !== '' && is_file($path)) {
+            return $path;
+        }
+    }
+    return '';
+}
+}

@@ -252,8 +252,15 @@ body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section label,
 body.lireate-theme-light-v4 .lireate-svc-page .lx-contact-section .lx-hint,
 body.lireate-theme-light-v4 .lireate-svc-page .lx-section p,
 body.lireate-theme-light-v4 .lireate-svc-page .lx-section li{color:#2d4764!important}
-body.lireate-theme-light-v4 .lireate-svc-page label.lx-consent{color:#52637b!important;font-weight:400!important}
+body.lireate-theme-light-v4 .lireate-svc-page label.lx-consent{
+  display:flex!important;align-items:flex-start;gap:10px;text-align:left!important;
+  cursor:pointer;margin:10px 0 0!important;color:#52637b!important;font-weight:400!important}
+body.lireate-theme-light-v4 .lireate-svc-page label.lx-consent--marketing{margin-top:10px!important}
 body.lireate-theme-light-v4 .lireate-svc-page label.lx-consent a{color:#0a3d91!important;font-weight:700!important}
+body.lireate-theme-light-v4 .lireate-svc-page label.lx-consent input[type="checkbox"]{
+ width:18px!important;height:18px!important;min-width:18px!important;margin:2px 0 0!important;
+ padding:0!important;flex-shrink:0!important;accent-color:#3a86ff!important}
+body.lireate-theme-light-v4 .lireate-svc-page label.lx-consent .lx-consent-text{flex:1!important;min-width:0!important}
 body.lireate-theme-light-v4 .lireate-svc-page .lx-form-panel input[type="checkbox"]{
  width:18px!important;height:18px!important;min-width:18px!important;margin:2px 0 0!important;padding:0!important
 }

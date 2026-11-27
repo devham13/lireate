@@ -52,6 +52,10 @@ jobs:
         run: node scripts/test_lireate_consent_marketing_combined.mjs
       - name: deploy-patches forms-consent lint
         run: python3 scripts/test_deploy_patches_forms_consent.py
+      - name: form templates consent audit (stage H)
+        run: python3 scripts/test_lireate_form_templates_consent_audit.py
+      - name: lead mail consent body (mock)
+        run: node scripts/test_lireate_lead_mail_consent_body.mjs
       - name: service index lireate_* callables
         run: python3 scripts/test_lireate_service_index_functions.py
       - name: home Light V4 install apply rollback

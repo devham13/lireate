@@ -41,8 +41,8 @@ function lireate_home_render_consent_fields($pd_id, $mkt_id)
     }
     $pd = lireate_home_h($pd_id);
     $mkt = lireate_home_h($mkt_id);
-    echo '<label class="lx-consent" for="' . $pd . '"><input type="checkbox" id="' . $pd . '" name="consent_request" value="1" required> Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</label>';
-    echo '<label class="lx-consent lx-consent--marketing" for="' . $mkt . '"><input type="checkbox" class="lireate-consent-marketing-combined" id="' . $mkt . '" value="1"> Я согласен(-на) на <a href="/marketing-data-consent.html" target="_blank" rel="noopener noreferrer">обработку контактных данных для рекламы</a> и <a href="/advertising-consent.html" target="_blank" rel="noopener noreferrer">получение рекламы ЛИРЕЙТ</a> по телефону и, если указан, email.</label>';
+    echo '<label class="lx-consent" for="' . $pd . '"><input type="checkbox" id="' . $pd . '" name="consent_request" value="1" required><span class="lx-consent-text">Согласен на <a href="/private_data" target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href="/politika_konfidencialnosti" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.</span></label>';
+    echo '<label class="lx-consent lx-consent--marketing" for="' . $mkt . '"><input type="checkbox" class="lireate-consent-marketing-combined" id="' . $mkt . '" value="1"><span class="lx-consent-text">Я согласен(-на) на <a href="/marketing-data-consent.html" target="_blank" rel="noopener noreferrer">обработку контактных данных для рекламы</a> и <a href="/advertising-consent.html" target="_blank" rel="noopener noreferrer">получение рекламы ЛИРЕЙТ</a> по телефону и, если указан, email.</span></label>';
     echo '<input type="hidden" name="consent_marketing_data" value="" disabled="disabled">';
     echo '<input type="hidden" name="consent_ads" value="" disabled="disabled">';
 }
