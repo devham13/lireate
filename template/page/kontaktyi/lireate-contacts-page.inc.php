@@ -36,7 +36,6 @@ $lc_footer_css = defined('LIREATE_CONTACTS_FOOTER_CSS_HREF')
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_assets); ?>/lireate-contacts.css?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <link rel="stylesheet" href="<?php echo lireate_contacts_h($lc_footer_css); ?>?v=<?php echo lireate_contacts_h($lc_v); ?>">
 <link rel="stylesheet" href="/template/css/lireate-company-pages-v5.css?v=20261126c">
-<link rel="stylesheet" href="/template/css/lireate-qa-v6.css?v=20261126d">
 <script>
 document.documentElement.classList.add('lireate-contacts-html');
 document.documentElement.setAttribute('data-lireate-metrika-id', '<?php echo lireate_contacts_h(LIREATE_CONTACTS_METRIKA_ID); ?>');
