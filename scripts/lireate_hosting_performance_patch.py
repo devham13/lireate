@@ -364,6 +364,22 @@ def build_plan(docroot):
                 continue
             if updated.encode('utf-8') != raw:
                 plan[rel] = updated.encode('utf-8')
+    for path in sorted(docroot.glob('*/index.php')):
+        if not path.is_file() or path.is_symlink():
+            continue
+        try:
+            rel = path.resolve().relative_to(docroot.resolve())
+        except ValueError:
+            continue
+        if rel == main_rel or rel in plan:
+            continue
+        raw = path.read_bytes()
+        try:
+            updated = fix_legacy_markup(fix_og_image(raw.decode('utf-8')))
+        except UnicodeError:
+            continue
+        if updated.encode('utf-8') != raw:
+            plan[rel] = updated.encode('utf-8')
     for rel in HOME_FONT_PATHS:
         home_inc = safe_path(docroot, rel)
         if not home_inc.is_file() and rel not in plan:

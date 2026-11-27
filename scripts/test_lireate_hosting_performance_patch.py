@@ -200,6 +200,16 @@ class ShellTuningTests(unittest.TestCase):
         plan, _ = patch.build_plan(self.root)
         self.assertIn('/template/images/OG_image.jpg', plan[cms.relative_to(self.root)].decode())
 
+    def test_fix_og_image_on_docroot_slug_index_php(self):
+        slug = self.root / 'dogovory' / 'index.php'
+        slug.parent.mkdir(parents=True)
+        slug.write_text(
+            '<meta property="og:image" content="https://example.test/local/templates/lireate/images/og-default.jpg">',
+            encoding='utf-8',
+        )
+        plan, _ = patch.build_plan(self.root)
+        self.assertIn('/template/images/OG_image.jpg', plan[Path('dogovory/index.php')].decode())
+
     def test_service_longread_reserves_sidebar_and_repairs_og_image(self):
         html = ('<head><link rel="preconnect" href="https://fonts.googleapis.com"></head>'
                 '<body class="lireate-svc-body">'
