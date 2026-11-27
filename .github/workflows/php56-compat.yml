@@ -65,7 +65,7 @@ jobs:
       - name: breadcrumb plain link (no dropdown)
         run: python3 -m unittest scripts.test_lireate_breadcrumb_plain_link -q
       - name: sidebar V7 expert portrait (Yuri)
-        run: python3 -m unittest scripts.test_lireate_sidebar_v7_expert_photo -q
+        run: python3 -m unittest scripts.test_lireate_sidebar_v7_no_expert_menu scripts.test_lireate_avtor_install -q
       - name: sidebar V7 logo wordmark (no mask crop)
         run: python3 -m unittest scripts.test_lireate_sidebar_v7_logo -q
       - name: home Light V4 install apply rollback

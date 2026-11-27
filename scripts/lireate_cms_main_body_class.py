@@ -8,6 +8,8 @@ PARTNERS_BODY_COND = "<?php if($temp['page']=='partners') echo ' lireate-partner
 TEAM_BODY_COND = "<?php if($temp['page']=='team') echo ' lireate-team-body';?>"
 CONTACTS_PAGE_BODY_COND = "<?php if($temp['page']=='contacts') echo ' lireate-contacts-body';?>"
 ABOUT_BODY_COND = "<?php if($temp['page']=='o_kompanii') echo ' lireate-about-body';?>"
+AVTOR_BODY_MARKER = "lireate-avtor-install:body-v1"
+AVTOR_BODY_INLINE = " if($temp['page']=='avtor') echo ' lireate-avtor-body lireate-theme-light-v4';/* " + AVTOR_BODY_MARKER + " */"
 HOME_LIGHT_V4_BODY_COND = (
     "<?php if($temp['page']=='home' || (isset($_SERVER['REQUEST_URI']) && "
     "preg_match('#^/(?:index\\.php)?$#', parse_url((string)$_SERVER['REQUEST_URI'], PHP_URL_PATH)?:''))) "
@@ -104,6 +106,17 @@ def patch_contacts_page_body_conditional(text):
     else:
         pos = cms_default_insert_pos(text)
     return _insert_after_pos(text, pos, CONTACTS_PAGE_BODY_COND)
+
+
+def patch_avtor_body_inline(text):
+    """Insert /avtor/ body classes inside the long single-line body PHP (after team, before uslugi)."""
+    if AVTOR_BODY_MARKER in text:
+        return text, False
+    needle = "echo ' lireate-team-body'; if($temp['page']=='uslugi')"
+    if needle not in text:
+        return text, False
+    repl = "echo ' lireate-team-body';" + AVTOR_BODY_INLINE + " if($temp['page']=='uslugi')"
+    return text.replace(needle, repl, 1), True
 
 
 def patch_about_body_conditional(text):
