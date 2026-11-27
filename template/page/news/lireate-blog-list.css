@@ -2,8 +2,8 @@
 html.lireate-blog-html,
 body.lireate-blog-body {
   margin: 0;
-  background: #0b0b1f !important;
-  color: #f1f5f9 !important;
+  background: #fff !important;
+  color: #1f212c !important;
   font-family: Rubik, Arial, Helvetica, sans-serif !important;
   font-size: 16px !important;
   line-height: 1.5 !important;
@@ -14,8 +14,8 @@ body.lireate-blog-body {
   --lbl-font-ui: Rubik, Arial, Helvetica, sans-serif;
   --lbl-font-display: Unbounded, Rubik, Arial, sans-serif;
   --lbl-font-lead: Marmelad, Rubik, Arial, sans-serif;
-  --lbl-bg: #0b0b1f;
-  --lbl-text: #f1f5f9;
+  --lbl-bg: #fff;
+  --lbl-text: #1f212c;
   --lbl-muted: #a7b0c8;
   --lbl-line: rgba(255, 255, 255, 0.1);
   --lbl-card: rgba(15, 23, 42, 0.72);
@@ -577,7 +577,7 @@ body.lireate-blog-body .content:has(.lireate-blog-list-page),
 body.lireate-blog-body .container.content:has(.lireate-blog-list-page),
 .content:has(.lireate-blog-list-page),
 .container.content:has(.lireate-blog-list-page) {
-  background: #0b0b1f !important;
+  background: #fff !important;
   text-align: left !important;
   padding-right: 0 !important;
   box-sizing: border-box !important;
@@ -606,7 +606,7 @@ body.lireate-blog-body .container.content:has(.lireate-blog-list-page),
 
 section#blog:has(.lireate-blog-list-page),
 #blog:has(.lireate-blog-list-page) {
-  background: #0b0b1f !important;
+  background: #fff !important;
   border: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -627,20 +627,20 @@ section#blog .lireate-blog-list-page,
 html.lireate-blog-html:has(.lireate-blog-list-page),
 html.lireate-blog-html:has(.lireate-blog-list-page) body.lireate-blog-body {
   min-height: 100%;
-  background: #0b0b1f !important;
+  background: #fff !important;
 }
 
 body.lireate-blog-body:has(.lireate-blog-list-page) .wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0b0b1f !important;
+  background: #fff !important;
 }
 
 body.lireate-blog-body:has(.lireate-blog-list-page) .page_container,
 body.lireate-blog-body:has(.lireate-blog-list-page) #page,
 body.lireate-blog-body:has(.lireate-blog-list-page) main {
-  background: #0b0b1f !important;
+  background: #fff !important;
 }
 
 /* CMS placeholder after #blog (min-height) — лишняя тёмная полоса при скролле вниз. */
@@ -672,6 +672,13 @@ body.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer {
   background: #0b0b1f !important;
   border-top-color: rgba(255, 255, 255, 0.1) !important;
   padding-bottom: max(32px, env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 1150px) {
+  body.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer,
+  body.lsv7-managed.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
 
 @media (min-width: 1151px) {
@@ -711,7 +718,7 @@ body.lireate-blog-body:has(.lireate-blog-list-page) .site-footer:not(.lx-site-fo
 body.lireate-blog-body:has(.lireate-blog-list-page),
 body.lireate-blog-body:has(.lireate-blog-list-page) .content,
 body.lireate-blog-body:has(.lireate-blog-list-page) .container.content {
-  background: #0b0b1f !important;
+  background: #fff !important;
 }
 
 body.lireate-blog-body:has(.lireate-blog-list-page) .lx-site-footer-title {

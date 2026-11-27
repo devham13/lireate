@@ -2,8 +2,8 @@
 html.lireate-contacts-html,
 body.lireate-contacts-body {
   margin: 0;
-  background: #0b0b1f !important;
-  color: #f1f5f9 !important;
+  background: #fff !important;
+  color: #1f212c !important;
   font-family: Rubik, Arial, Helvetica, sans-serif !important;
   font-size: 16px !important;
   line-height: 1.5 !important;
@@ -436,7 +436,7 @@ body.lireate-contacts-body:has(.lireate-contacts-page) .content.text-center {
 
 body.lireate-contacts-body:has(.lireate-contacts-page) .content,
 body.lireate-contacts-body:has(.lireate-contacts-page) .container.content {
-  background: #0b0b1f !important;
+  background: #fff !important;
   text-align: left !important;
   padding-right: 0 !important;
   box-sizing: border-box !important;
@@ -468,7 +468,7 @@ body.lireate-contacts-body:has(.lireate-contacts-page) .container.content {
 
 section#lireate-contacts:has(.lireate-contacts-page),
 #lireate-contacts:has(.lireate-contacts-page) {
-  background: #0b0b1f !important;
+  background: #fff !important;
   border: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -490,7 +490,7 @@ section#lireate-contacts .lireate-contacts-page,
 html.lireate-contacts-html:has(.lireate-contacts-page),
 html.lireate-contacts-html:has(.lireate-contacts-page) body.lireate-contacts-body {
   min-height: 100%;
-  background: #0b0b1f !important;
+  background: #fff !important;
   overflow-x: clip;
   max-width: 100%;
 }
@@ -499,7 +499,7 @@ body.lireate-contacts-body:has(.lireate-contacts-page) .wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0b0b1f !important;
+  background: #fff !important;
   overflow-x: clip;
   max-width: 100%;
 }
