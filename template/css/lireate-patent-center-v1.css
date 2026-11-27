@@ -1,0 +1,82 @@
+/* Patent tools: one centered content axis for nav, breadcrumbs, hero and tool cards.
+ * Desktop layout excludes the fixed 250px sidebar; phone/tablet layout is unchanged.
+ * Loaded after lireate-qa-v6.css on all 13 /patentnye-zadachi/ routes. */
+@media (min-width: 961px) {
+  body.lxq-patent-tasks {
+    --lxp-sidebar-width: 250px;
+    --lxp-content-max: 1100px;
+    --lxp-content-gutter: 24px;
+  }
+
+  /* Navigation is centered in the available space to the right of the sidebar. */
+  body.lxq-patent-tasks .lx-nav-shell {
+    left: 0 !important;
+    right: auto !important;
+    width: calc(100% - var(--lxp-sidebar-width)) !important;
+    margin-left: var(--lxp-sidebar-width) !important;
+    padding-inline: var(--lxp-content-gutter) !important;
+    box-sizing: border-box !important;
+  }
+  body.lxq-patent-tasks .lx-nav-shell > .lx-nav-pill {
+    width: 100% !important;
+    max-width: var(--lxp-content-max) !important;
+    margin-inline: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: clamp(10px, 1.2vw, 20px);
+    align-items: center;
+  }
+  body.lxq-patent-tasks .lx-nav-pill > .lx-logo {
+    justify-self: start;
+    min-width: 0;
+  }
+  body.lxq-patent-tasks .lx-nav-pill > .lx-nav-links {
+    flex: none;
+    justify-self: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: clamp(10px, 1.2vw, 20px);
+    white-space: nowrap;
+  }
+  body.lxq-patent-tasks .lx-nav-pill > .lx-btn {
+    justify-self: end;
+    white-space: nowrap;
+  }
+
+  /* Old qa-v6 margin-right:auto pushed all card grids off-center.
+     Center the same 1100px area used by the navigation above. */
+  body.lxq-patent-tasks > .lireate-svc-page {
+    box-sizing: border-box !important;
+    width: calc(100% - var(--lxp-sidebar-width)) !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 0 60px var(--lxp-sidebar-width) !important;
+    padding: 24px max(var(--lxp-content-gutter), calc((100vw - var(--lxp-sidebar-width) - var(--lxp-content-max)) / 2)) !important;
+  }
+  body.lxq-patent-tasks > .lireate-svc-page > :is(.lx-breadcrumbs,.lx-hero,.lx-section) {
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: var(--lxp-content-max) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    min-width: 0;
+  }
+
+  /* The tool footer uses the same sidebar offset, without affecting its buttons. */
+  body.lxq-patent-tasks .lx-patent-footer-shell {
+    box-sizing: border-box;
+    width: calc(100% - var(--lxp-sidebar-width)) !important;
+    margin-left: var(--lxp-sidebar-width) !important;
+  }
+  body.lxq-patent-tasks .lx-patent-footer-inner {
+    box-sizing: border-box;
+    max-width: var(--lxp-content-max) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+/* Keep grid children from causing overflow after centering at narrower widths. */
+body.lxq-patent-tasks .lx-cat-cards > *,
+body.lxq-patent-tasks .lx-tool-grid > * {
+  min-width: 0;
+}
