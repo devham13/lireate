@@ -16,4 +16,6 @@ Cron и wave2 используют `lireate_fast_indexing.build_sitemap_xml` + `
 
 ## Следующий шаг
 
-Реализация в **lireate-news** `lireate_fast_indexing.py` (отдельный PR после approve #187 или sibling), smoke: `curl sitemap.xml` → index, дочерние карты 200, количество URL = baseline.
+- Библиотека: `scripts/lireate_sitemap_index_lib.py` (office-repo).
+- Включение: `data/lireate-sitemap-static.json` → `"sitemap_index": {"enabled": false}` (пока false).
+- Подключение cron: **lireate-news** `lireate_fast_indexing.py` (отдельный PR); deploy только после smoke: дочерние карты 200, `url_count` ≥ baseline, cron `:00/:30` без ошибок.
