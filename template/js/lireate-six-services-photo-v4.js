@@ -3,10 +3,10 @@
 (function () {
   'use strict';
   var BASE='/template/images/services-v4/';
-  var ASSET_VER='20261126l';
+  var ASSET_VER='20261128-findtz1';
   var POS_REG_SPECIALIST='Специалист по регистрации интеллектуальной собственности';
   var PAGES={
-    '/findtz':{photo:'specialist-certificate.webp',role:'Проверка товарных знаков',name:'Габдрахманова Эльвира',position:'Руководитель отдела регистрации интеллектуальной собственности',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
+    '/findtz':{photo:'specialist-certificate.webp',role:'Проверка товарных знаков',name:'Габдрахманова Эльвира',position:'Руководитель отдела регистрации интеллектуальной собственности',captionShort:'Проверим обозначение по реестру до уплаты пошлин',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
     '/registraciya_tovarnogo_znaka':{photo:'specialist-registraciya.webp',role:'Регистрация товарных знаков',name:'Квасова Анна',position:POS_REG_SPECIALIST,next:'Изучим ваш знак и товары, подскажем маршрут регистрации и перечень документов.'},
     '/prodlenie_tovarnogo_znaka':{photo:'specialist-prolongation.webp',role:'Продление товарных знаков',name:'Ульданова Алёна',position:POS_REG_SPECIALIST,next:'Проверим срок охраны и объясним, какие документы необходимы для продления.'},
     '/vozrazhenie_protiv_registracii_tovarnogo_znaka':{photo:'specialist-opposition.webp',role:'Споры о товарных знаках',name:'Ульданова Алёна',position:POS_REG_SPECIALIST,next:'Разберём основания возражения, документы и возможные варианты защиты.'},
@@ -19,7 +19,17 @@
     var path=(window.location.pathname||'').replace(/\/+$/,'').toLowerCase();
     var config=PAGES[path];if(!config)return;
     var page=document.querySelector('.lireate-svc-page');if(!page)return;
-    var hero=page.querySelector('.lx-hero');if(!hero || hero.querySelector('.lx-photo-v4-expert-card'))return;
+    var hero=page.querySelector('.lx-hero');if(!hero)return;
+    var existing=hero.querySelector('.lx-photo-v4-expert-card');
+    if(existing){
+      document.body.classList.add('lx-photo-v4');
+      var oldPanelOnly=hero.querySelector('.lx-glass');
+      if(oldPanelOnly && !oldPanelOnly.classList.contains('lx-photo-v4-summary')){
+        oldPanelOnly.classList.add('lx-photo-v4-summary');
+        hero.parentNode.insertBefore(oldPanelOnly,hero.nextSibling);
+      }
+      return;
+    }
     var text=[].slice.call(hero.children).filter(function(n){return n.tagName==='DIV' && !n.classList.contains('lx-hero-mascot-slot') && !n.classList.contains('lx-glass');})[0];
     if(!text)return;
     document.body.classList.add('lx-photo-v4');
@@ -33,6 +43,11 @@
     img.onerror=function(){stack.style.display='none';};
     media.appendChild(img);card.appendChild(media);
     var info=make('div','lx-photo-v4-expert-info');
+    var cap=make('div','lx-photo-v4-expert-caption');
+    cap.appendChild(make('span','', 'LIREATE'));
+    cap.appendChild(make('strong','', 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ'));
+    cap.appendChild(make('p','', config.captionShort || (config.role || 'Консультации по интеллектуальной собственности')));
+    media.appendChild(cap);
     info.appendChild(make('span','lx-photo-v4-expert-role',config.position||config.role));
     info.appendChild(make('h2','lx-photo-v4-expert-name',config.name||'Специалист Лирейт'));
     info.appendChild(make('p','lx-photo-v4-expert-desc','Консультации, сопровождение заявок и защита интеллектуальной собственности.'));

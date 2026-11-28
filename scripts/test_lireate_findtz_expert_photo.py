@@ -24,6 +24,10 @@ class FindtzExpertPhotoTests(unittest.TestCase):
         self.assertNotIn("/template/images/team/person/11.webp", html)
         self.assertNotIn("lx-findtz-expert-photo", html)
         self.assertIn("lireate-six-services-photo-v4", html)
+        self.assertIn("lx-photo-v4-expert-card", html)
+        self.assertIn("ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ", html)
+        self.assertIn("lx-photo-v4", html)
+        self.assertIn("20261128-findtz1", html)
 
 
 if __name__ == "__main__":
