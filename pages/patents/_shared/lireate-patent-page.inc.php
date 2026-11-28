@@ -8,7 +8,7 @@ $lp4_key = isset($lireate_patent_key) ? $lireate_patent_key : '';
 $lp4 = lp4_page_data($lp4_key);
 $lp4_phone = '+7 (960) 048-49-57';
 $lp4_phone_href = 'tel:+79600484957';
-$lp4_version = '20261126-v2';
+$lp4_version = '20261128-center-v1';
 $lp4_tomail = ($lp4_key === 'patent_prom_obr') ? 'Рассчитать' : 'Заказать обратный звонок';
 $lp4_modal_attrs = ' data-toggle="modal" data-frm="name,tel" data-mtitle="Оставьте заявку и мы свяжемся с вами в ближайшее время" data-success="Мы перезвоним Вам в ближайшее время." data-btn="Отправить заявку"';
 ?>
