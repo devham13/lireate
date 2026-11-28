@@ -202,7 +202,7 @@ lireate_lh4_render_mobile_anchors($lh4_home_anchors);
       </div>
       <div class="pricing-grid">
         <article class="price-card reveal"><div class="service-num">Первый шаг</div><h3>Бесплатная консультация</h3><div class="price">0 ₽</div><p>Оставьте заявку — специалисты свяжутся с вами и подскажут, что делать дальше.</p><a class="link-arrow" href="<?php echo lireate_home_h(LIREATE_HOME_TELEGRAM_URL); ?>" target="_blank" rel="noopener noreferrer">Получить консультацию ↗</a></article>
-        <article class="price-card reveal"><div class="service-num">Товарный знак</div><h3>Регистрация товарного знака с финансовой гарантией</h3><div class="price">от 30000 руб.</div><p>Вы решили самостоятельно зарегистрировать свой товарный знак? Это похвально. В среднем вам понадобится около 100 часов на обучение и изучение требований Роспатента. Если у вас есть время на ошибки, мы желаем вам успехов. Регистрация нужна уже сейчас? Мы готовы помочь.</p><a class="link-arrow" href="/registraciya_tovarnogo_znaka_s_oplatoy_za_rezultat/">Подробнее об услуге ↗</a></article>
+        <article class="price-card reveal"><div class="service-num">Товарный знак</div><h3>Регистрация товарного знака с финансовой гарантией</h3><p>Вы решили самостоятельно зарегистрировать свой товарный знак? Это похвально. В среднем вам понадобится около 100 часов на обучение и изучение требований Роспатента. Если у вас есть время на ошибки, мы желаем вам успехов. Регистрация нужна уже сейчас? Мы готовы помочь.</p><a class="link-arrow" href="/registraciya_tovarnogo_znaka/">Подробнее об услуге ↗</a></article>
       </div>
     </div>
   </section>
