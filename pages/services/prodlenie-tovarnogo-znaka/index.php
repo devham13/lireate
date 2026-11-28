@@ -84,8 +84,6 @@ $schema_graph = [
 
 <main id="primary" class="lireate-svc-page prodlenie-tovarnogo-znaka-page" role="main" tabindex="-1">
 
-<?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
-
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="renewal"></div>
   <div>

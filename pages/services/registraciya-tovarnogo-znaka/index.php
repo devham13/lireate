@@ -110,8 +110,6 @@ $schema_graph = [
 
 <main id="primary" class="lireate-svc-page registraciya-tovarnogo-znaka-page" role="main" tabindex="-1">
 
-<?php include __DIR__ . '/blocks/lireate-breadcrumbs.inc.php'; ?>
-
 <section class="lx-hero lx-hero--landing lx-hero--landing-v2" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="registration" aria-hidden="true"></div>
   <div>
