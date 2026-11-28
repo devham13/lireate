@@ -64,6 +64,9 @@ $schema_graph = [
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"></noscript>
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
+  <!-- lireate-six-services-photo-v4-20261126 -->
+  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-regprod-hero1">
+  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-regprod-hero1"></script>
 </head>
 <body class="lsv7-managed lireate-svc-body lireate-theme-light-v4">
 <div class="lx-bg-glow" aria-hidden="true"></div>
