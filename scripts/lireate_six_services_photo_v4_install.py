@@ -29,11 +29,11 @@ ASSETS = (
     Path('template/js/lireate-six-services-photo-v4.js'),
 ) + tuple(Path('template/images/services-v4/' + n + '.webp') for n in (
     'specialist-registraciya', 'specialist-prolongation',
-    'specialist-opposition', 'specialist-copyright'))
+    'specialist-opposition', 'specialist-copyright', 'specialist-certificate'))
 INJECTION = (
     '\n<!-- ' + MARKER + ' -->\n'
-    '<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126l">\n'
-    '<script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126l"></script>\n'
+    '<link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-findtz1">\n'
+    '<script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-findtz1"></script>\n'
 )
 HEAD_CLOSE = re.compile(r'</head\s*>', re.IGNORECASE)
 

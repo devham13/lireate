@@ -67,10 +67,10 @@ $schema_graph = [
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>">
-  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261126l"><!-- lireate_findtz_photo_v4_hero -->
+  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-findtz6"><!-- lireate_findtz_photo_v4_hero -->
   <?php lireate_sitewide_sidebar_v7_head(); ?>
 </head>
-<body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center">
+<body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center lx-photo-v4">
 <?php lireate_sitewide_sidebar_v7_render(); ?>
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
@@ -98,7 +98,7 @@ $schema_graph = [
 
 <section class="lx-hero" id="top">
   <div class="lx-hero-mascot-slot" data-lx-mascot="search"></div>
-  <div>
+  <div class="lx-photo-v4-copy">
     <p class="lx-eyebrow">LIREATE · товарные знаки · поиск по реестру</p>
     <h1>Проверка товарного знака перед регистрацией</h1>
     <p class="lx-hero-lead">Поиск по реестру Роспатента и оценка рисков до подачи заявки: сходство, однородность, основания отказа по ст. 1483 ГК РФ. Отчёт и рекомендации — по смете; регистрацию и исход экспертизы гарантировать нельзя.</p>
@@ -117,30 +117,45 @@ $schema_graph = [
         <span>Telegram</span>
       </a>
     </div>
-    <div class="lx-hero-mini">
-      <div class="lx-mini-stat"><strong class="lx-stat-value">реестр</strong><span>Роспатент / ФИПС</span></div>
-      <div class="lx-mini-stat"><strong class="lx-stat-value">3 шага</strong><span>бриф → поиск → отчёт</span></div>
-      <div class="lx-mini-stat"><strong class="lx-stat-value">по смете</strong><span>услуги LIREATE</span></div>
-    </div>
   </div>
-  <div class="lx-glass lx-glass-anim" aria-label="Этапы проверки">
-    <div class="lx-panel-head"><span>Проверка · ориентиры</span><span class="lx-live">до пошлин</span></div>
-    <ul class="lx-feed">
-      <li>Сбор данных об обозначении и товарах</li>
-      <li>Поиск тождественных и сходных знаков</li>
-      <li>Вывод о рисках и следующих шагах</li>
-      <li>При необходимости — переход к регистрации</li>
-    </ul>
-    <div class="lx-route" role="img" aria-label="Маршрут проверки">
-      <ol class="lx-route-steps">
-        <li><span class="lx-route-node">Бриф</span><span class="lx-route-label">данные</span></li>
-        <li><span class="lx-route-node">Поиск</span><span class="lx-route-label">реестр</span></li>
-        <li><span class="lx-route-node lx-route-node--wide">Отчёт</span><span class="lx-route-label">риски</span></li>
-        <li><span class="lx-route-node">ТЗ</span><span class="lx-route-label">заявка</span></li>
-      </ol>
-    </div>
+  <aside class="lx-photo-v4-expert-stack" aria-label="Команда Лирейт">
+    <article class="lx-photo-v4-expert-card lx-photo-v4-expert-card--photo-only">
+      <div class="lx-photo-v4-expert-media lx-photo-v4-expert-media--findtz" data-photo="findtz-hero">
+        <picture>
+          <source type="image/webp" srcset="/template/images/findtz/findtz-hero.webp?v=20261128-findtz6">
+          <img src="/template/images/findtz/findtz-hero.jpg?v=20261128-findtz6" alt="Сотрудник LIREATE — экспертное сопровождение" width="1200" height="1800" loading="eager" decoding="async" fetchpriority="high">
+        </picture>
+        <div class="lx-photo-v4-expert-caption">
+          <span class="lx-photo-v4-expert-caption-kicker">LIREATE / ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ</span>
+          <p class="lx-photo-v4-expert-caption-lead">Проверим обозначение по реестру до уплаты пошлин</p>
+        </div>
+      </div>
+    </article>
+  </aside>
+  <div class="lx-hero-mini lx-hero-mini--after-photo">
+    <div class="lx-mini-stat"><strong class="lx-stat-value">реестр</strong><span>Роспатент / ФИПС</span></div>
+    <div class="lx-mini-stat"><strong class="lx-stat-value">3 шага</strong><span>бриф → поиск → отчёт</span></div>
+    <div class="lx-mini-stat"><strong class="lx-stat-value">по смете</strong><span>услуги LIREATE</span></div>
   </div>
 </section>
+
+<div class="lx-glass lx-glass-anim lx-photo-v4-summary" aria-label="Этапы проверки">
+  <div class="lx-panel-head"><span>Проверка · ориентиры</span><span class="lx-live">до пошлин</span></div>
+  <ul class="lx-feed">
+    <li>Сбор данных об обозначении и товарах</li>
+    <li>Поиск тождественных и сходных знаков</li>
+    <li>Вывод о рисках и следующих шагах</li>
+    <li>При необходимости — переход к регистрации</li>
+  </ul>
+  <div class="lx-route" role="img" aria-label="Маршрут проверки">
+    <ol class="lx-route-steps">
+      <li><span class="lx-route-node">Бриф</span><span class="lx-route-label">данные</span></li>
+      <li><span class="lx-route-node">Поиск</span><span class="lx-route-label">реестр</span></li>
+      <li><span class="lx-route-node lx-route-node--wide">Отчёт</span><span class="lx-route-label">риски</span></li>
+      <li><span class="lx-route-node">ТЗ</span><span class="lx-route-label">заявка</span></li>
+    </ol>
+  </div>
+</div>
 
 <section class="lx-section lx-reveal" id="when">
   <span class="lx-section-label">Когда нужна</span>
@@ -294,6 +309,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
   <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
   <script defer src="/template/js/lireate-service-mobile-bar.js?v=20261111svc3"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
-  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261126l"></script><!-- lireate_findtz_photo_v4_hero -->
+  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-findtz6"></script><!-- lireate_findtz_photo_v4_hero -->
 </body>
 </html>
