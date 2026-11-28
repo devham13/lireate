@@ -759,7 +759,57 @@ body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-btn--outline {
   color: #1f212c !important;
 }
 body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-dl-row { border-top-color: #edf2f8 !important; }
+/* /docs/: legacy .content{padding-left} + lsv7 body{margin-left} — единая колонка справа от меню */
+body.lireate-docs-body.lireate-theme-light-v4 .container.content {
+  text-align: left !important;
+  padding-right: 0 !important;
+  max-width: none !important;
+}
+@media (min-width: 1151px) {
+  body.lireate-docs-body.lsv7-managed .wrapper-ap,
+  body.lireate-docs-body.lsv7-managed .wrapper,
+  body.lireate-docs-body.lsv7-managed .content,
+  body.lireate-docs-body.lsv7-managed .container.content,
+  body.lireate-docs-body.lsv7-managed .page_container {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-page {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: clamp(20px, 3vw, 40px);
+    box-sizing: border-box;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-wrap {
+    width: min(1040px, 100%);
+    margin-inline: auto;
+    padding-inline: clamp(16px, 2.5vw, 28px);
+    box-sizing: border-box;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-hero .lireate-docs-wrap,
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-section > .lireate-docs-wrap {
+    padding-inline: clamp(16px, 2.5vw, 28px);
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
 @media (max-width: 1150px) {
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-page {
+    padding-inline: 16px;
+    box-sizing: border-box;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-wrap {
+    width: 100%;
+    padding-inline: 4px;
+  }
   html:has(body.lireate-theme-light-v4),
   body.lireate-theme-light-v4,
   body.lireate-reviews-body,

@@ -13,7 +13,7 @@ if (!HOST) {
 }
 const MODE = (process.env.LIREATE_CAPTURE_MODE || 'after').toLowerCase();
 const OUT = process.env.LIREATE_OUT_DIR || `/cursor/stores/self/docs-light-v4/${MODE}`;
-const VER = '20261128-docs-light-v1';
+const VER = '20261127r25';
 
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -81,6 +81,7 @@ async function setup(page) {
 
 const viewports = [
   [1440, 900, '1440'],
+  [1100, 900, '1100'],
   [390, 844, '390'],
 ];
 
@@ -102,12 +103,26 @@ for (const [w, h, tag] of viewports) {
       const [r, g, b] = m.map(Number);
       return r + g + b < 120;
     })();
+    const wrap = document.querySelector('.lireate-docs-wrap');
+    const grid = document.querySelector('.lireate-docs-grid');
+    const sb = document.getElementById('leftSideBar');
+    const sbR = sb?.getBoundingClientRect();
+    const wR = wrap?.getBoundingClientRect();
+    const gR = grid?.getBoundingClientRect();
+    const rightGap = gR ? window.innerWidth - gR.right : null;
+    const heroWrap = document.querySelector('.lireate-docs-hero .lireate-docs-wrap')?.getBoundingClientRect();
+    const sectionWrap = document.querySelector('.lireate-docs-section .lireate-docs-wrap')?.getBoundingClientRect();
+    const alignDelta =
+      heroWrap && sectionWrap ? Math.round(heroWrap.left - sectionWrap.left) : null;
     return {
       bodyClass: body.className,
       hasLight: body.classList.contains('lireate-theme-light-v4'),
       hasCmsCss: !!document.querySelector('link[href*="lireate-cms-pages-light-v4"]'),
       bg,
       darkPage: dark,
+      rightGap: rightGap === null ? null : Math.round(rightGap),
+      headerWrapAlign: alignDelta,
+      sidebar: !!sb,
     };
   });
   const file = `${OUT}/docs-${tag}.png`;
@@ -115,6 +130,10 @@ for (const [w, h, tag] of viewports) {
   console.log(JSON.stringify({ file, vp: tag, mode: MODE, ...metrics }));
   if (MODE === 'after' && metrics.darkPage) {
     console.error('FAIL: docs still dark', tag);
+    process.exitCode = 3;
+  }
+  if (MODE === 'after' && tag === '1440' && (metrics.rightGap < 12 || Math.abs(metrics.headerWrapAlign || 0) > 3)) {
+    console.error('FAIL: docs layout margins', tag, metrics.rightGap, metrics.headerWrapAlign);
     process.exitCode = 3;
   }
 }
