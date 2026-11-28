@@ -56,17 +56,14 @@
       media.appendChild(img);
     }
     img.onerror=function(){stack.style.display='none';};
-    var cap=make('div','lx-photo-v4-expert-caption');
     if(path==='/findtz'){
+      var cap=make('div','lx-photo-v4-expert-caption');
       cap.appendChild(make('span','lx-photo-v4-expert-caption-kicker','LIREATE / ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ'));
       cap.appendChild(make('p','lx-photo-v4-expert-caption-lead', config.captionShort || config.role));
-    }else{
-      cap.appendChild(make('span','', 'LIREATE'));
-      cap.appendChild(make('strong','', 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ'));
-      cap.appendChild(make('p','', config.captionShort || (config.role || 'Консультации по интеллектуальной собственности')));
+      media.appendChild(cap);
     }
-    media.appendChild(cap);
     card.appendChild(media);
+  var note=null;
     if(path!=='/findtz'){
       var info=make('div','lx-photo-v4-expert-info');
       info.appendChild(make('span','lx-photo-v4-expert-role',config.position||config.role));
@@ -75,11 +72,12 @@
       var links=make('nav','lx-photo-v4-expert-links');links.setAttribute('aria-label','Информация о команде');
       links.appendChild(link('/team','Команда Лирейт'));links.appendChild(link('/o_kompanii','О компании'));
       info.appendChild(links);card.appendChild(info);
-      var note=make('div','lx-photo-v4-expert-next');
+      note=make('div','lx-photo-v4-expert-next');
       note.appendChild(make('strong','','Понятный первый шаг'));
-      note.appendChild(make('p','',config.next));stack.appendChild(note);
+      note.appendChild(make('p','',config.next));
     }
     stack.appendChild(card);
+    if(note){stack.appendChild(note);}
     hero.insertBefore(stack,text.nextSibling);
     var oldPanel=hero.querySelector('.lx-glass');
     if(oldPanel){oldPanel.classList.add('lx-photo-v4-summary');hero.parentNode.insertBefore(oldPanel,hero.nextSibling);}
