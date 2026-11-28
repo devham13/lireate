@@ -2,7 +2,7 @@
 
 CMS_DEFAULT = "cms-default"
 
-DOCS_BODY_COND = "<?php if($temp['page']=='docs') echo ' lireate-docs-body';?>"
+DOCS_BODY_COND = "<?php if($temp['page']=='docs') echo ' lireate-docs-body lireate-theme-light-v4';?>"
 CONTACTS_BODY_COND = "<?php if($temp['page']=='kontaktyi') echo ' lireate-contacts-body';?>"
 PARTNERS_BODY_COND = "<?php if($temp['page']=='partners') echo ' lireate-partners-body';?>"
 TEAM_BODY_COND = "<?php if($temp['page']=='team') echo ' lireate-team-body';?>"

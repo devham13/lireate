@@ -1,6 +1,6 @@
 <?php
 /**
- * Разметка страницы «Документы» (/docs/) — тёмный стиль как /news.
+ * Разметка страницы «Документы» (/docs/) — Light V4 (базовый lireate-docs.css перекрывается cms-pages-light-v4).
  */
 require_once __DIR__ . '/lireate-docs-lib.php';
 

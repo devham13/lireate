@@ -13,7 +13,7 @@ from pathlib import Path
 INSTALL_MARKER = "lireate-docs-install:v1"
 LEGACY_MARKER = "lireate-docs-legacy:snapshot"
 BODY_CLASS = "lireate-docs-body"
-BODY_CLASS_COND = "<?php if($temp['page']=='docs') echo ' lireate-docs-body';?>"
+BODY_CLASS_COND = "<?php if($temp['page']=='docs') echo ' lireate-docs-body lireate-theme-light-v4';?>"
 CMS_INCLUDE = "/template/page/docs/lireate-docs-cms.inc.php"
 SHARED_DOCROOT_REL = Path("pages/docs/_shared")
 TEMPLATE_REL = Path("template/page/docs")

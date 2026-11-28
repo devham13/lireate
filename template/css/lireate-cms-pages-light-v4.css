@@ -693,13 +693,130 @@ body.lireate-cms-page-dark.lireate-about-body.lireate-theme-light-v4 .wrapper {
   background: #fff !important;
   background-color: #fff !important;
 }
+/* /docs/: базовый lireate-docs.css ещё тёмный; Light V4 обязателен в inc + body class */
+body.lireate-docs-body.lireate-theme-light-v4,
+html.lireate-docs-html body.lireate-docs-body.lireate-theme-light-v4 {
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .wrapper,
+body.lireate-docs-body.lireate-theme-light-v4 .page_container,
+body.lireate-docs-body.lireate-theme-light-v4 .container.content,
+body.lireate-cms-page-dark.lireate-docs-body.lireate-theme-light-v4 .wrapper,
+body.lireate-cms-page-dark.lireate-docs-body.lireate-theme-light-v4 .page_container,
+body.lireate-cms-page-dark.lireate-docs-body.lireate-theme-light-v4 .container.content {
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-page {
+  --ld-bg: #ffffff;
+  --ld-text: #1f212c;
+  --ld-muted: #52637b;
+  --ld-line: #dce8f7;
+  --ld-card: #ffffff;
+  --ld-green: #047857;
+  background: #fff !important;
+  color: #1f212c !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-hero {
+  border-bottom-color: #dce8f7 !important;
+  background: linear-gradient(180deg, #f7fbff 0%, #fff 72%) !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-kicker { color: #60738b !important; opacity: 1 !important; }
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-h1,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-h2,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-card-title,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-card-title a { color: #1f212c !important; }
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-lead,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-size,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-dl dt,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-dl dd { color: #52637b !important; }
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-badge {
+  background: #f3f8ff !important;
+  border: 1px solid #dce8f7 !important;
+  color: #2155b9 !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-badge--green {
+  background: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #047857 !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-card,
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-req-card {
+  background: #fff !important;
+  border: 1px solid #dce8f7 !important;
+  box-shadow: 0 10px 35px rgba(31, 33, 44, 0.06) !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-btn--solid {
+  background: #e32020 !important;
+  border-color: #e32020 !important;
+  color: #fff !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-btn--outline {
+  background: #fff !important;
+  border: 1px solid #c5d7ef !important;
+  color: #1f212c !important;
+}
+body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-dl-row { border-top-color: #edf2f8 !important; }
+/* /docs/: legacy .content{padding-left} + lsv7 body{margin-left} — единая колонка справа от меню */
+body.lireate-docs-body.lireate-theme-light-v4 .container.content {
+  text-align: left !important;
+  padding-right: 0 !important;
+  max-width: none !important;
+}
+@media (min-width: 1151px) {
+  body.lireate-docs-body.lsv7-managed .wrapper-ap,
+  body.lireate-docs-body.lsv7-managed .wrapper,
+  body.lireate-docs-body.lsv7-managed .content,
+  body.lireate-docs-body.lsv7-managed .container.content,
+  body.lireate-docs-body.lsv7-managed .page_container {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-page {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: clamp(20px, 3vw, 40px);
+    box-sizing: border-box;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-wrap {
+    width: min(1040px, 100%);
+    margin-inline: auto;
+    padding-inline: clamp(16px, 2.5vw, 28px);
+    box-sizing: border-box;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-hero .lireate-docs-wrap,
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-section > .lireate-docs-wrap {
+    padding-inline: clamp(16px, 2.5vw, 28px);
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
 @media (max-width: 1150px) {
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-page {
+    padding-inline: 16px;
+    box-sizing: border-box;
+  }
+  body.lireate-docs-body.lireate-theme-light-v4 .lireate-docs-wrap {
+    width: 100%;
+    padding-inline: 4px;
+  }
   html:has(body.lireate-theme-light-v4),
   body.lireate-theme-light-v4,
   body.lireate-reviews-body,
   body.lireate-portfolio-body,
   body.lireate-team-body,
-  body.lireate-about-body {
+  body.lireate-about-body,
+  body.lireate-docs-body {
     background: #fff !important;
   }
 }
