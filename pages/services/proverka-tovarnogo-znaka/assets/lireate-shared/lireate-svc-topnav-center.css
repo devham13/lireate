@@ -76,8 +76,26 @@ body.lireate-svc-topnav-center.lx-photo-v4 .lireate-svc-page > .lx-hero > .lx-ph
   align-self: start !important;
 }
 
+/* reg / prodlenie: карточка сверху, «Понятный первый шаг» снизу; без оверлея на фото */
+body.lireate-svc-topnav-center.lx-photo-v4:not(.lireate-findtz-topnav-center)
+  .lx-photo-v4-expert-stack {
+  flex-direction: column !important;
+}
+body.lireate-svc-topnav-center.lx-photo-v4:not(.lireate-findtz-topnav-center)
+  .lx-photo-v4-expert-card {
+  order: 1 !important;
+}
+body.lireate-svc-topnav-center.lx-photo-v4:not(.lireate-findtz-topnav-center)
+  .lx-photo-v4-expert-next {
+  order: 2 !important;
+}
+body.lireate-svc-topnav-center.lx-photo-v4:not(.lireate-findtz-topnav-center)
+  .lx-photo-v4-expert-caption {
+  display: none !important;
+}
+
 @media (min-width: 961px) {
-  body.lireate-svc-topnav-center.lx-photo-v4:not(.registraciya-pilot-v2)
+  body.lireate-svc-topnav-center.lx-photo-v4:not(.registraciya-pilot-v2):not(.lireate-findtz-topnav-center)
     .lireate-svc-page
     > .lx-hero:first-child
     > .lx-photo-v4-expert-stack {

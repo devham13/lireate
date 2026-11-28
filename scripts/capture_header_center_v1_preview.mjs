@@ -10,8 +10,8 @@ if (!HOST) {
   console.error('LIREATE_PUBLIC_SITE_URL required');
   process.exit(2);
 }
-const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/header-center-v1';
-const VER = '20261128-hcv1';
+const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/header-center-v2';
+const VER = '20261128-hcv2';
 
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -21,6 +21,14 @@ const TOPNAV_CSS = fs.readFileSync(
 );
 const FINDTZ_CSS = fs.readFileSync(
   path.join(REPO, 'pages/services/proverka-tovarnogo-znaka/assets/findtz-topnav-center.css'),
+  'utf8',
+);
+const PHOTO_CSS = fs.readFileSync(
+  path.join(REPO, 'template/css/lireate-six-services-photo-v4.css'),
+  'utf8',
+);
+const PHOTO_JS = fs.readFileSync(
+  path.join(REPO, 'template/js/lireate-six-services-photo-v4.js'),
   'utf8',
 );
 
@@ -66,6 +74,22 @@ async function setupPage(page, slugPath) {
       });
       return;
     }
+    if (pathname.includes('lireate-six-services-photo-v4.css')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'text/css; charset=utf-8',
+        body: PHOTO_CSS,
+      });
+      return;
+    }
+    if (pathname.includes('lireate-six-services-photo-v4.js')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/javascript; charset=utf-8',
+        body: PHOTO_JS,
+      });
+      return;
+    }
     if (
       req.resourceType() === 'document' &&
       (pathname === slugPath || pathname === `${slugPath}/`)
@@ -93,10 +117,24 @@ async function metrics(page) {
     const er = eye?.getBoundingClientRect();
     const pillCenterX = pr ? pr.left + pr.width / 2 : 0;
     const heroCenterX = cr ? cr.left + cr.width / 2 : 0;
+    const stack = document.querySelector('.lx-photo-v4-expert-stack');
+    let expert = null;
+    if (stack) {
+      const kids = [...stack.children];
+      const card = stack.querySelector('.lx-photo-v4-expert-card');
+      const next = stack.querySelector('.lx-photo-v4-expert-next');
+      const cap = stack.querySelector('.lx-photo-v4-expert-caption');
+      expert = {
+        kidOrder: kids.map((k) => k.className.split(' ')[0]),
+        cardBeforeNext: !!(card && next && card.getBoundingClientRect().top < next.getBoundingClientRect().top),
+        captionDisplay: cap ? getComputedStyle(cap).display : null,
+      };
+    }
     return {
       pillHeroDelta: Math.round(Math.abs(pillCenterX - heroCenterX)),
       eyebrowGap: pr && er ? Math.round(er.top - pr.bottom) : null,
       eyebrowVisible: !!(er && pr && er.top >= pr.bottom + 18),
+      expert,
     };
   });
 }
@@ -144,6 +182,13 @@ for (const [slug, file, w, h, control] of plan) {
     const gapMin = w >= 1151 ? 20 : 10;
     if (m.eyebrowGap !== null && (m.eyebrowGap < gapMin || m.eyebrowGap > 48)) fail += 1;
     if (w >= 1151 && !m.eyebrowVisible) fail += 1;
+    if (
+      m.expert &&
+      (slug === '/registraciya_tovarnogo_znaka' || slug === '/prodlenie_tovarnogo_znaka')
+    ) {
+      if (!m.expert.cardBeforeNext) fail += 1;
+      if (m.expert.captionDisplay && m.expert.captionDisplay !== 'none') fail += 1;
+    }
   }
 }
 await browser.close();

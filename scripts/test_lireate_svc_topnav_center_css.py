@@ -5,7 +5,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CSS = ROOT / "pages/services/_shared/lireate-svc-topnav-center.css"
-VER = "20261128-hcv1"
+VER = "20261128-hcv2"
 
 
 class SvcTopnavCenterTests(unittest.TestCase):
