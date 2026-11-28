@@ -175,3 +175,10 @@ body.lireate-patent-light-v4.lireate-theme-light-v4 .wrapper-ap{background:#fff!
 body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 .container.content :is(p,li,h1,h2,h3,h4,span,div),
 body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 #lireate-patent-v4 :is(p,li,h1,h2,h3,.lp4-hero-lead,.lp4-hero-subtitle,.lp4-criteria-note){color:#364963!important}
 body.lireate-cms-page-dark.lireate-patent-light-v4.lireate-theme-light-v4 #lireate-patent-v4 :is(h1,h2,h3){color:#1f212c!important}
+/* Legacy CMS .content{padding-left:270px} + sitewide V7 body{margin-left} = двойной сдвиг; как на /avtor */
+body.lireate-patent-light-v4 .container.content{text-align:left!important;padding-right:0!important;max-width:none!important}
+@media (min-width:1151px){
+body.lireate-patent-light-v4.lsv7-managed .wrapper-ap,body.lireate-patent-light-v4.lsv7-managed .wrapper,body.lireate-patent-light-v4.lsv7-managed .content,body.lireate-patent-light-v4.lsv7-managed .container.content,body.lireate-patent-light-v4.lsv7-managed .page_container{padding-left:0!important;margin-left:0!important;margin-right:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box}
+body.lireate-patent-light-v4.lsv7-managed #lireate-patent-v4{width:100%;max-width:100%;margin-inline:auto}}
+@media (max-width:1150px){
+body.lireate-patent-light-v4.lsv7-managed .content,body.lireate-patent-light-v4.lsv7-managed .container.content{padding-left:0!important;padding-top:60px!important}}
