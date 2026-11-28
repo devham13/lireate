@@ -1,0 +1,162 @@
+/*
+ * /findtz/ — редакционная типографика для страницы проверки товарного знака.
+ * Изолированный слой: не меняет глобальные шаблоны, меню, формы и SEO.
+ * Manrope — доступный кириллический близкий по характеру аналог референса;
+ * точное семейство шрифта стороннего сайта не подтверждено.
+ */
+body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page {
+  --findtz-text: #334155;
+  --findtz-heading: #1f212c;
+  --findtz-muted: #52637b;
+  font-family: "Manrope", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--findtz-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page h1,
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page h2,
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page h3 {
+  font-family: inherit;
+  color: var(--findtz-heading);
+  text-wrap: balance;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-hero h1 {
+  font-size: clamp(36px, 4.1vw, 58px);
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  max-width: 19ch;
+  margin-bottom: 22px;
+}
+body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page .lx-hero-lead {
+  font-size: clamp(17px, 1.25vw, 19px);
+  line-height: 1.74;
+  font-weight: 400;
+  letter-spacing: -0.011em;
+  max-width: 66ch;
+  color: var(--findtz-text) !important;
+  text-wrap: pretty;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > h2 {
+  font-size: clamp(29px, 2.9vw, 42px);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+  max-width: 27ch;
+  margin-bottom: 22px;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > h3 {
+  font-size: clamp(20px, 1.55vw, 24px);
+  line-height: 1.35;
+  letter-spacing: -0.022em;
+  font-weight: 750;
+  max-width: 36ch;
+  margin: 38px 0 13px;
+}
+body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page .lx-section > p,
+body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page .lx-section > .lx-reading-p {
+  max-width: 69ch;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.78;
+  letter-spacing: -0.005em;
+  color: var(--findtz-text) !important;
+  margin: 0 0 21px;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > h3 + p {
+  margin-top: 0;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > .lx-reading-lead {
+  font-size: 18px;
+  line-height: 1.73;
+  color: var(--findtz-heading) !important;
+  font-weight: 500;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > .lx-reading-note {
+  padding-left: 19px;
+  border-left: 3px solid #e32020;
+  margin: 5px 0 27px;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section-label {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  line-height: 1.4;
+}
+body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page .lx-section > .lx-checklist li {
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.68;
+  color: var(--findtz-text) !important;
+  max-width: 68ch;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-card p,
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-risk-item p,
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-steps-walk-step p {
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.65;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-faq summary {
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-faq p {
+  font-family: inherit;
+  font-size: 15.5px;
+  line-height: 1.7;
+  max-width: 70ch;
+}
+@media (max-width: 767px) {
+  body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-hero h1 {
+    font-size: clamp(32px, 8vw, 43px);
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+    max-width: 20ch;
+    margin-bottom: 16px;
+  }
+  body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page .lx-hero-lead {
+    font-size: 16px;
+    line-height: 1.68;
+    max-width: none;
+  }
+  body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > h2 {
+    font-size: clamp(25px, 6.2vw, 32px);
+    line-height: 1.23;
+    max-width: none;
+    margin-bottom: 18px;
+  }
+  body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > h3 {
+    font-size: 19px;
+    line-height: 1.37;
+    max-width: none;
+    margin: 29px 0 11px;
+  }
+  body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page .lx-section > p {
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 18px;
+    max-width: none;
+  }
+  body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > .lx-reading-lead {
+    font-size: 16.5px;
+    line-height: 1.7;
+  }
+  body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-section > .lx-reading-note {
+    padding-left: 13px;
+  }
+  body.lireate-findtz-topnav-center .proverka-tovarnogo-znaka-page .lx-faq summary {
+    font-size: 15.5px;
+  }
+}
+@media (max-width: 360px) {
+  body.lireate-findtz-topnav-center.lireate-theme-light-v4 .proverka-tovarnogo-znaka-page .lx-section > p {
+    font-size: 15.5px;
+    line-height: 1.7;
+  }
+}
