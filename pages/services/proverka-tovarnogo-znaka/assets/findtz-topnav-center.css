@@ -127,3 +127,47 @@ body.lireate-findtz-topnav-center > footer.lx-site-footer ~ .footer_bottom {
 body.lireate-findtz-topnav-center.lx-photo-v4 .lireate-svc-page .lx-hero .lx-findtz-messenger-cta {
   margin-top: 22px;
 }
+
+/* Hero photo card only (без ФИО под фото): caption + safe top inset под sticky nav */
+body.lireate-findtz-topnav-center.lx-photo-v4 .lx-hero {
+  padding-top: clamp(20px, 2.5vw, 36px) !important;
+}
+body.lireate-findtz-topnav-center.lx-photo-v4 .lx-photo-v4-expert-stack {
+  margin-top: 4px;
+}
+body.lireate-findtz-topnav-center.lx-photo-v4 .lx-photo-v4-expert-card--photo-only .lx-photo-v4-expert-media--findtz .lx-photo-v4-expert-caption {
+  padding: 22px 16px 14px;
+  background: linear-gradient(0deg, rgba(8, 12, 19, 0.94) 0%, rgba(8, 12, 19, 0.72) 42%, transparent 100%);
+}
+body.lireate-findtz-topnav-center.lx-photo-v4 .lx-photo-v4-expert-media--findtz .lx-photo-v4-expert-caption span {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  opacity: 0.92;
+  margin-bottom: 4px;
+}
+body.lireate-findtz-topnav-center.lx-photo-v4 .lx-photo-v4-expert-media--findtz .lx-photo-v4-expert-caption strong {
+  font-size: clamp(11px, 0.95vw, 13px) !important;
+  line-height: 1.28;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+  margin-bottom: 4px;
+  max-width: 14em;
+}
+body.lireate-findtz-topnav-center.lx-photo-v4 .lx-photo-v4-expert-media--findtz .lx-photo-v4-expert-caption p {
+  font-size: 11px;
+  line-height: 1.4;
+  opacity: 1;
+  max-width: 16em;
+}
+@media (min-width: 1151px) {
+  body.lireate-findtz-topnav-center.lx-photo-v4 .lx-hero {
+    padding-top: clamp(24px, 2.2vw, 40px) !important;
+  }
+  body.lireate-findtz-topnav-center.lx-photo-v4 .lx-photo-v4-expert-stack {
+    margin-top: 10px;
+  }
+  body.lireate-findtz-topnav-center.lx-photo-v4 .lx-photo-v4-expert-card--photo-only {
+    scroll-margin-top: 88px;
+  }
+}

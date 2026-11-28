@@ -12,9 +12,9 @@ if (!_site) {
   process.exit(2);
 }
 const HOST = _site.replace(/\/$/, '');
-const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/findtz-hero-photo';
+const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/findtz-hero-photo-v2';
 const BRANCH = process.env.LIREATE_PR_BRANCH || 'HEAD';
-const VER = '20261128-findtz2';
+const VER = '20261128-findtz4';
 
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -49,6 +49,9 @@ function heroBlockFromIndex() {
 const HERO_BLOCK = heroBlockFromIndex();
 const cssBody = gitShow('template/css/lireate-six-services-photo-v4.css');
 const jsBody = gitShow('template/js/lireate-six-services-photo-v4.js');
+const findtzTopnavCss = gitShow('pages/services/proverka-tovarnogo-znaka/assets/findtz-topnav-center.css');
+const findtzHeroWebp = fs.readFileSync(path.join(REPO, 'template/images/findtz/findtz-hero.webp'));
+const findtzHeroJpg = fs.readFileSync(path.join(REPO, 'template/images/findtz/findtz-hero.jpg'));
 
 function patchFindtzHtml(html) {
   let out = html.replace(/lireate-six-services-photo-v4\.css\?v=[^"]+/g, `lireate-six-services-photo-v4.css?v=${VER}`);
@@ -57,6 +60,12 @@ function patchFindtzHtml(html) {
     out = out.replace(
       /class="([^"]*lireate-findtz-topnav-center)"/,
       'class="$1 lx-photo-v4"',
+    );
+  }
+  if (!out.includes('findtz-topnav-center.css')) {
+    out = out.replace(
+      /<\/head>/i,
+      '<link rel="stylesheet" href="/template/css/findtz-topnav-center.css?v=' + VER + '">\n</head>',
     );
   }
   const heroRe = /<section class="lx-hero"[\s\S]*?<\/section>\s*(?:<div class="lx-glass[\s\S]*?<\/div>\s*)?/;
@@ -103,6 +112,30 @@ async function setup(page) {
       });
       return;
     }
+    if (pathname.includes('findtz-topnav-center.css') || pathname.endsWith('/template/css/findtz-topnav-center.css')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'text/css; charset=utf-8',
+        body: findtzTopnavCss,
+      });
+      return;
+    }
+    if (pathname.includes('/template/images/findtz/findtz-hero.webp')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'image/webp',
+        body: findtzHeroWebp,
+      });
+      return;
+    }
+    if (pathname.includes('/template/images/findtz/findtz-hero.jpg')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'image/jpeg',
+        body: findtzHeroJpg,
+      });
+      return;
+    }
     await route.continue();
   });
 }
@@ -125,17 +158,29 @@ for (const [w, h, tag] of viewports) {
     const img = document.querySelector('.lx-photo-v4-expert-media img');
     const cap = document.querySelector('.lx-photo-v4-expert-caption strong');
     const r = card?.getBoundingClientRect();
+  const nav = document.querySelector('.lx-nav-shell,.lx-nav-pill');
+  const navBottom = nav?.getBoundingClientRect().bottom ?? 0;
     return {
       card: !!card,
       caption: cap?.textContent?.trim() || '',
       imgOk: !!(img && img.complete && img.naturalWidth > 0),
       inFirstScreen1440: !!(r && r.top < 700 && r.height > 80),
+      noElvira: !document.body.innerText.includes('Габдрахманова'),
+      noExpertName: !document.querySelector('.lx-photo-v4-expert-name'),
+      cardBelowNav: !!(r && r.top >= navBottom - 28),
     };
   });
   const file = `${OUT}/findtz-${tag}-hero.png`;
   await page.screenshot({ path: file });
   console.log(JSON.stringify({ file, vp: tag, ...metrics }));
-  if (!metrics.card || !metrics.imgOk || metrics.caption !== 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ') {
+  if (
+    !metrics.card ||
+    !metrics.imgOk ||
+    metrics.caption !== 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ' ||
+    !metrics.noElvira ||
+    metrics.noExpertName === false ||
+    false
+  ) {
     console.error('FAIL hero photo checks', tag);
     process.exitCode = 3;
   }

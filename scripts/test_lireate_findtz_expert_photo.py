@@ -19,7 +19,10 @@ class FindtzExpertPhotoTests(unittest.TestCase):
         text = JS.read_text(encoding="utf-8")
         self.assertIn("'/findtz'", text)
         self.assertIn("findtz-hero.webp", text)
-        self.assertNotIn("Габдрахманова", FINDTZ.read_text(encoding="utf-8"))
+        html = FINDTZ.read_text(encoding="utf-8")
+        self.assertNotIn("Габдрахманова", html)
+        self.assertNotIn("lx-photo-v4-expert-name", html)
+        self.assertNotIn("lx-photo-v4-expert-next", html)
 
     def test_findtz_index_no_yuri_static_hero(self):
         html = FINDTZ.read_text(encoding="utf-8")
@@ -30,7 +33,8 @@ class FindtzExpertPhotoTests(unittest.TestCase):
         self.assertIn("ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ", html)
         self.assertIn("lx-photo-v4", html)
         self.assertIn("findtz/findtz-hero.webp", html)
-        self.assertIn("20261128-findtz2", html)
+        self.assertIn("20261128-findtz4", html)
+        self.assertIn("lx-photo-v4-expert-card--photo-only", html)
 
 
 if __name__ == "__main__":

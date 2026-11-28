@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   var BASE='/template/images/services-v4/';
-  var ASSET_VER='20261128-findtz2';
+  var ASSET_VER='20261128-findtz4';
   var POS_REG_SPECIALIST='Специалист по регистрации интеллектуальной собственности';
   var PAGES={
     '/findtz':{photo:'findtz-hero.webp',photoBase:'/template/images/findtz/',photoJpg:'findtz-hero.jpg',role:'Проверка товарных знаков',name:'',position:'Проверка товарных знаков',captionShort:'Проверим обозначение по реестру до уплаты пошлин',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
@@ -56,22 +56,25 @@
       media.appendChild(img);
     }
     img.onerror=function(){stack.style.display='none';};
-    card.appendChild(media);
-    var info=make('div','lx-photo-v4-expert-info');
     var cap=make('div','lx-photo-v4-expert-caption');
     cap.appendChild(make('span','', 'LIREATE'));
     cap.appendChild(make('strong','', 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ'));
     cap.appendChild(make('p','', config.captionShort || (config.role || 'Консультации по интеллектуальной собственности')));
     media.appendChild(cap);
-    info.appendChild(make('span','lx-photo-v4-expert-role',config.position||config.role));
-    if(config.name){info.appendChild(make('h2','lx-photo-v4-expert-name',config.name));}
-    info.appendChild(make('p','lx-photo-v4-expert-desc','Консультации, сопровождение заявок и защита интеллектуальной собственности.'));
-    var links=make('nav','lx-photo-v4-expert-links');links.setAttribute('aria-label','Информация о команде');
-    links.appendChild(link('/team','Команда Лирейт'));links.appendChild(link('/o_kompanii','О компании'));
-    info.appendChild(links);card.appendChild(info);stack.appendChild(card);
-    var note=make('div','lx-photo-v4-expert-next');
-    note.appendChild(make('strong','','Понятный первый шаг'));
-    note.appendChild(make('p','',config.next));stack.appendChild(note);
+    card.appendChild(media);
+    if(path!=='/findtz'){
+      var info=make('div','lx-photo-v4-expert-info');
+      info.appendChild(make('span','lx-photo-v4-expert-role',config.position||config.role));
+      if(config.name){info.appendChild(make('h2','lx-photo-v4-expert-name',config.name));}
+      info.appendChild(make('p','lx-photo-v4-expert-desc','Консультации, сопровождение заявок и защита интеллектуальной собственности.'));
+      var links=make('nav','lx-photo-v4-expert-links');links.setAttribute('aria-label','Информация о команде');
+      links.appendChild(link('/team','Команда Лирейт'));links.appendChild(link('/o_kompanii','О компании'));
+      info.appendChild(links);card.appendChild(info);
+      var note=make('div','lx-photo-v4-expert-next');
+      note.appendChild(make('strong','','Понятный первый шаг'));
+      note.appendChild(make('p','',config.next));stack.appendChild(note);
+    }
+    stack.appendChild(card);
     hero.insertBefore(stack,text.nextSibling);
     var oldPanel=hero.querySelector('.lx-glass');
     if(oldPanel){oldPanel.classList.add('lx-photo-v4-summary');hero.parentNode.insertBefore(oldPanel,hero.nextSibling);}
