@@ -33,7 +33,8 @@ class FindtzExpertPhotoTests(unittest.TestCase):
         self.assertIn("ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ", html)
         self.assertIn("lx-photo-v4", html)
         self.assertIn("findtz/findtz-hero.webp", html)
-        self.assertIn("20261128-findtz4", html)
+        self.assertIn("20261128-findtz5", html)
+        self.assertIn("lx-hero-mini--after-photo", html)
         self.assertIn("lx-photo-v4-expert-card--photo-only", html)
 
 

@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   var BASE='/template/images/services-v4/';
-  var ASSET_VER='20261128-findtz4';
+  var ASSET_VER='20261128-findtz5';
   var POS_REG_SPECIALIST='Специалист по регистрации интеллектуальной собственности';
   var PAGES={
     '/findtz':{photo:'findtz-hero.webp',photoBase:'/template/images/findtz/',photoJpg:'findtz-hero.jpg',role:'Проверка товарных знаков',name:'',position:'Проверка товарных знаков',captionShort:'Проверим обозначение по реестру до уплаты пошлин',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},

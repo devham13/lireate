@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** /findtz/ hero photo — prod HTML + route CSS/JS from branch. */
+/** /findtz/ hero photo — prod HTML + route CSS/JS from branch → findtz-hero-photo-v3 */
 import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'node:child_process';
@@ -12,9 +12,9 @@ if (!_site) {
   process.exit(2);
 }
 const HOST = _site.replace(/\/$/, '');
-const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/findtz-hero-photo-v2';
+const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/findtz-hero-photo-v3';
 const BRANCH = process.env.LIREATE_PR_BRANCH || 'HEAD';
-const VER = '20261128-findtz4';
+const VER = '20261128-findtz5';
 
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -56,6 +56,7 @@ const findtzHeroJpg = fs.readFileSync(path.join(REPO, 'template/images/findtz/fi
 function patchFindtzHtml(html) {
   let out = html.replace(/lireate-six-services-photo-v4\.css\?v=[^"]+/g, `lireate-six-services-photo-v4.css?v=${VER}`);
   out = out.replace(/lireate-six-services-photo-v4\.js\?v=[^"]+/g, `lireate-six-services-photo-v4.js?v=${VER}`);
+  out = out.replace(/findtz-topnav-center\.css\?v=[^"]+/g, `findtz-topnav-center.css?v=${VER}`);
   if (!out.includes('lireate-findtz-topnav-center lx-photo-v4')) {
     out = out.replace(
       /class="([^"]*lireate-findtz-topnav-center)"/,
@@ -65,7 +66,7 @@ function patchFindtzHtml(html) {
   if (!out.includes('findtz-topnav-center.css')) {
     out = out.replace(
       /<\/head>/i,
-      '<link rel="stylesheet" href="/template/css/findtz-topnav-center.css?v=' + VER + '">\n</head>',
+      `<link rel="stylesheet" href="/template/css/findtz-topnav-center.css?v=${VER}">\n</head>`,
     );
   }
   const heroRe = /<section class="lx-hero"[\s\S]*?<\/section>\s*(?:<div class="lx-glass[\s\S]*?<\/div>\s*)?/;
@@ -112,7 +113,7 @@ async function setup(page) {
       });
       return;
     }
-    if (pathname.includes('findtz-topnav-center.css') || pathname.endsWith('/template/css/findtz-topnav-center.css')) {
+    if (pathname.includes('findtz-topnav-center.css')) {
       await route.fulfill({
         status: 200,
         contentType: 'text/css; charset=utf-8',
@@ -140,50 +141,72 @@ async function setup(page) {
   });
 }
 
-const viewports = [
-  [1440, 900, '1440'],
-  [390, 844, '390'],
-];
+async function metrics(page) {
+  return page.evaluate(() => {
+    const card = document.querySelector('.lx-photo-v4-expert-card');
+    const img = document.querySelector('.lx-photo-v4-expert-media--findtz img');
+    const cap = document.querySelector('.lx-photo-v4-expert-caption strong');
+    const r = card?.getBoundingClientRect();
+    const nav = document.querySelector('.lx-nav-shell');
+    const navBottom = nav?.getBoundingClientRect().bottom ?? 0;
+    const person = document.querySelectorAll('#leftSideBar img[src*="person/"]').length;
+    return {
+      card: !!card,
+      caption: cap?.textContent?.trim() || '',
+      imgOk: !!(img && img.complete && img.naturalWidth > 0),
+      imgVisible: !!(img && img.offsetParent !== null && img.getBoundingClientRect().height > 40),
+      noElviraName: !document.body.innerText.includes('Габдрахманова'),
+      noExpertName: !document.querySelector('.lx-photo-v4-expert-name'),
+      cardBelowNav: !!(r && r.top >= navBottom - 6),
+      sidebarPerson: person,
+    };
+  });
+}
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage();
 await setup(page);
 
-for (const [w, h, tag] of viewports) {
-  await page.setViewportSize({ width: w, height: h });
-  await page.goto(`${HOST}/findtz/`, { waitUntil: 'load', timeout: 120000 });
-  await page.waitForTimeout(1200);
-  const metrics = await page.evaluate(() => {
-    const card = document.querySelector('.lx-photo-v4-expert-card');
-    const img = document.querySelector('.lx-photo-v4-expert-media img');
-    const cap = document.querySelector('.lx-photo-v4-expert-caption strong');
-    const r = card?.getBoundingClientRect();
-  const nav = document.querySelector('.lx-nav-shell,.lx-nav-pill');
-  const navBottom = nav?.getBoundingClientRect().bottom ?? 0;
-    return {
-      card: !!card,
-      caption: cap?.textContent?.trim() || '',
-      imgOk: !!(img && img.complete && img.naturalWidth > 0),
-      inFirstScreen1440: !!(r && r.top < 700 && r.height > 80),
-      noElvira: !document.body.innerText.includes('Габдрахманова'),
-      noExpertName: !document.querySelector('.lx-photo-v4-expert-name'),
-      cardBelowNav: !!(r && r.top >= navBottom - 28),
-    };
-  });
-  const file = `${OUT}/findtz-${tag}-hero.png`;
-  await page.screenshot({ path: file });
-  console.log(JSON.stringify({ file, vp: tag, ...metrics }));
-  if (
-    !metrics.card ||
-    !metrics.imgOk ||
-    metrics.caption !== 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ' ||
-    !metrics.noElvira ||
-    metrics.noExpertName === false ||
-    false
-  ) {
-    console.error('FAIL hero photo checks', tag);
-    process.exitCode = 3;
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.goto(`${HOST}/findtz/`, { waitUntil: 'load', timeout: 120000 });
+await page.waitForTimeout(1200);
+const m1440 = await metrics(page);
+const f1440 = `${OUT}/findtz-1440-first-screen.png`;
+await page.screenshot({ path: f1440 });
+console.log(JSON.stringify({ file: f1440, vp: '1440', ...m1440 }));
+
+await page.setViewportSize({ width: 390, height: 844 });
+await page.goto(`${HOST}/findtz/`, { waitUntil: 'load', timeout: 120000 });
+await page.waitForTimeout(900);
+const m390top = await metrics(page);
+const f390top = `${OUT}/findtz-390-first-screen.png`;
+await page.screenshot({ path: f390top });
+console.log(JSON.stringify({ file: f390top, vp: '390-top', ...m390top }));
+
+const card = await page.$('.lx-photo-v4-expert-card');
+if (card) {
+  await card.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(400);
+}
+const m390photo = await metrics(page);
+const f390photo = `${OUT}/findtz-390-to-photo.png`;
+await page.screenshot({ path: f390photo, fullPage: false });
+console.log(JSON.stringify({ file: f390photo, vp: '390-photo', ...m390photo }));
+
+await browser.close();
+
+let fail = 0;
+for (const m of [m1440, m390top, m390photo]) {
+  if (!m.card || !m.imgOk || !m.imgVisible || m.caption !== 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ' || !m.noElviraName || m.noExpertName === false) {
+    fail += 1;
   }
 }
-await browser.close();
-console.log('DONE', OUT);
+if (!m1440.cardBelowNav) fail += 1;
+if (m1440.sidebarPerson > 0 || m390top.sidebarPerson > 0) fail += 1;
+
+if (fail) {
+  console.error('FAIL checks', fail);
+  process.exitCode = 3;
+} else {
+  console.log('DONE', OUT);
+}
