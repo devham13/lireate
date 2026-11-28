@@ -6,18 +6,20 @@ import unittest
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FINDTZ = ROOT / "pages/services/proverka-tovarnogo-znaka/index.php"
 JS = ROOT / "template/js/lireate-six-services-photo-v4.js"
-IMG = ROOT / "template/images/services-v4/specialist-certificate.webp"
+IMG_WEBP = ROOT / "template/images/findtz/findtz-hero.webp"
+IMG_JPG = ROOT / "template/images/findtz/findtz-hero.jpg"
 
 
 class FindtzExpertPhotoTests(unittest.TestCase):
-    def test_certificate_asset_exists(self):
-        self.assertTrue(IMG.is_file(), msg=str(IMG))
+    def test_findtz_hero_assets_exist(self):
+        self.assertTrue(IMG_WEBP.is_file(), msg=str(IMG_WEBP))
+        self.assertTrue(IMG_JPG.is_file(), msg=str(IMG_JPG))
 
     def test_findtz_js_mapping(self):
         text = JS.read_text(encoding="utf-8")
         self.assertIn("'/findtz'", text)
-        self.assertIn("specialist-certificate.webp", text)
-        self.assertIn("Габдрахманова Эльвира", text)
+        self.assertIn("findtz-hero.webp", text)
+        self.assertNotIn("Габдрахманова", FINDTZ.read_text(encoding="utf-8"))
 
     def test_findtz_index_no_yuri_static_hero(self):
         html = FINDTZ.read_text(encoding="utf-8")
@@ -27,7 +29,8 @@ class FindtzExpertPhotoTests(unittest.TestCase):
         self.assertIn("lx-photo-v4-expert-card", html)
         self.assertIn("ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ", html)
         self.assertIn("lx-photo-v4", html)
-        self.assertIn("20261128-findtz1", html)
+        self.assertIn("findtz/findtz-hero.webp", html)
+        self.assertIn("20261128-findtz2", html)
 
 
 if __name__ == "__main__":

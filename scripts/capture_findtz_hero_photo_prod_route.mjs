@@ -14,7 +14,7 @@ if (!_site) {
 const HOST = _site.replace(/\/$/, '');
 const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/findtz-hero-photo';
 const BRANCH = process.env.LIREATE_PR_BRANCH || 'HEAD';
-const VER = '20261128-findtz1';
+const VER = '20261128-findtz2';
 
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -42,10 +42,7 @@ function heroBlockFromIndex() {
   }
   let block = raw.slice(start, end);
   block = block.replace(/<\?php[\s\S]*?\?>\s*/g, '');
-  block = block.replace(
-    /specialist-certificate\.webp\?v=[^"]+/,
-    `specialist-certificate.webp?v=${VER}`,
-  );
+  block = block.replace(/findtz-hero\.(webp|jpg)\?v=[^"]+/g, `findtz-hero.$1?v=${VER}`);
   return block;
 }
 

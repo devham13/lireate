@@ -67,7 +67,7 @@ $schema_graph = [
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>">
-  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-findtz1"><!-- lireate_findtz_photo_v4_hero -->
+  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-findtz2"><!-- lireate_findtz_photo_v4_hero -->
   <?php lireate_sitewide_sidebar_v7_head(); ?>
 </head>
 <body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center lx-photo-v4">
@@ -125,8 +125,11 @@ $schema_graph = [
   </div>
   <aside class="lx-photo-v4-expert-stack" aria-label="Команда Лирейт">
     <article class="lx-photo-v4-expert-card">
-      <div class="lx-photo-v4-expert-media" data-photo="specialist-certificate">
-        <img src="/template/images/services-v4/specialist-certificate.webp?v=20261128-findtz1" alt="Фотография: Габдрахманова Эльвира" width="906" height="756" loading="eager" decoding="async" fetchpriority="high">
+      <div class="lx-photo-v4-expert-media lx-photo-v4-expert-media--findtz" data-photo="findtz-hero">
+        <picture>
+          <source type="image/webp" srcset="/template/images/findtz/findtz-hero.webp?v=20261128-findtz2">
+          <img src="/template/images/findtz/findtz-hero.jpg?v=20261128-findtz2" alt="Сотрудник LIREATE — экспертное сопровождение" width="1200" height="1800" loading="eager" decoding="async" fetchpriority="high">
+        </picture>
         <div class="lx-photo-v4-expert-caption">
           <span>LIREATE</span>
           <strong>ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ</strong>
@@ -134,8 +137,7 @@ $schema_graph = [
         </div>
       </div>
       <div class="lx-photo-v4-expert-info">
-        <span class="lx-photo-v4-expert-role">Руководитель отдела регистрации интеллектуальной собственности</span>
-        <h2 class="lx-photo-v4-expert-name">Габдрахманова Эльвира</h2>
+        <span class="lx-photo-v4-expert-role">Проверка товарных знаков</span>
         <p class="lx-photo-v4-expert-desc">Консультации, сопровождение заявок и защита интеллектуальной собственности.</p>
         <nav class="lx-photo-v4-expert-links" aria-label="Информация о команде">
           <a href="/team">Команда Лирейт ↗</a>
@@ -320,6 +322,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
   <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
   <script defer src="/template/js/lireate-service-mobile-bar.js?v=20261111svc3"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
-  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-findtz1"></script><!-- lireate_findtz_photo_v4_hero -->
+  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-findtz2"></script><!-- lireate_findtz_photo_v4_hero -->
 </body>
 </html>

@@ -3,10 +3,10 @@
 (function () {
   'use strict';
   var BASE='/template/images/services-v4/';
-  var ASSET_VER='20261128-findtz1';
+  var ASSET_VER='20261128-findtz2';
   var POS_REG_SPECIALIST='Специалист по регистрации интеллектуальной собственности';
   var PAGES={
-    '/findtz':{photo:'specialist-certificate.webp',role:'Проверка товарных знаков',name:'Габдрахманова Эльвира',position:'Руководитель отдела регистрации интеллектуальной собственности',captionShort:'Проверим обозначение по реестру до уплаты пошлин',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
+    '/findtz':{photo:'findtz-hero.webp',photoBase:'/template/images/findtz/',photoJpg:'findtz-hero.jpg',role:'Проверка товарных знаков',name:'',position:'Проверка товарных знаков',captionShort:'Проверим обозначение по реестру до уплаты пошлин',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
     '/registraciya_tovarnogo_znaka':{photo:'specialist-registraciya.webp',role:'Регистрация товарных знаков',name:'Квасова Анна',position:POS_REG_SPECIALIST,next:'Изучим ваш знак и товары, подскажем маршрут регистрации и перечень документов.'},
     '/prodlenie_tovarnogo_znaka':{photo:'specialist-prolongation.webp',role:'Продление товарных знаков',name:'Ульданова Алёна',position:POS_REG_SPECIALIST,next:'Проверим срок охраны и объясним, какие документы необходимы для продления.'},
     '/vozrazhenie_protiv_registracii_tovarnogo_znaka':{photo:'specialist-opposition.webp',role:'Споры о товарных знаках',name:'Ульданова Алёна',position:POS_REG_SPECIALIST,next:'Разберём основания возражения, документы и возможные варианты защиты.'},
@@ -37,11 +37,26 @@
     var stack=make('aside','lx-photo-v4-expert-stack');stack.setAttribute('aria-label','Команда Лирейт');
     var card=make('article','lx-photo-v4-expert-card');
     var media=make('div','lx-photo-v4-expert-media');
+    if(path==='/findtz')media.classList.add('lx-photo-v4-expert-media--findtz');
     media.setAttribute('data-photo',config.photo.replace(/\.webp$/,''));
-    var img=document.createElement('img');img.src=BASE+config.photo+'?v='+ASSET_VER;img.alt=config.name?('Фотография: '+config.name):'Фотография специалиста Лирейт';img.loading='eager';img.decoding='async';
+    var assetBase=config.photoBase||BASE;
+    var img=document.createElement('img');
+    img.alt=config.name?('Фотография: '+config.name):'Сотрудник LIREATE — экспертное сопровождение';
+    img.loading='eager';img.decoding='async';
     img.setAttribute('fetchpriority','high');
+    if(config.photoJpg){
+      var pic=document.createElement('picture');
+      var srcWebp=document.createElement('source');
+      srcWebp.type='image/webp';
+      srcWebp.srcSet=assetBase+config.photo+'?v='+ASSET_VER;
+      img.src=assetBase+config.photoJpg+'?v='+ASSET_VER;
+      pic.appendChild(srcWebp);pic.appendChild(img);media.appendChild(pic);
+    }else{
+      img.src=assetBase+config.photo+'?v='+ASSET_VER;
+      media.appendChild(img);
+    }
     img.onerror=function(){stack.style.display='none';};
-    media.appendChild(img);card.appendChild(media);
+    card.appendChild(media);
     var info=make('div','lx-photo-v4-expert-info');
     var cap=make('div','lx-photo-v4-expert-caption');
     cap.appendChild(make('span','', 'LIREATE'));
@@ -49,7 +64,7 @@
     cap.appendChild(make('p','', config.captionShort || (config.role || 'Консультации по интеллектуальной собственности')));
     media.appendChild(cap);
     info.appendChild(make('span','lx-photo-v4-expert-role',config.position||config.role));
-    info.appendChild(make('h2','lx-photo-v4-expert-name',config.name||'Специалист Лирейт'));
+    if(config.name){info.appendChild(make('h2','lx-photo-v4-expert-name',config.name));}
     info.appendChild(make('p','lx-photo-v4-expert-desc','Консультации, сопровождение заявок и защита интеллектуальной собственности.'));
     var links=make('nav','lx-photo-v4-expert-links');links.setAttribute('aria-label','Информация о команде');
     links.appendChild(link('/team','Команда Лирейт'));links.appendChild(link('/o_kompanii','О компании'));
