@@ -67,7 +67,7 @@ $schema_graph = [
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>">
-  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-findtz5"><!-- lireate_findtz_photo_v4_hero -->
+  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-findtz6"><!-- lireate_findtz_photo_v4_hero -->
   <?php lireate_sitewide_sidebar_v7_head(); ?>
 </head>
 <body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center lx-photo-v4">
@@ -122,13 +122,12 @@ $schema_graph = [
     <article class="lx-photo-v4-expert-card lx-photo-v4-expert-card--photo-only">
       <div class="lx-photo-v4-expert-media lx-photo-v4-expert-media--findtz" data-photo="findtz-hero">
         <picture>
-          <source type="image/webp" srcset="/template/images/findtz/findtz-hero.webp?v=20261128-findtz5">
-          <img src="/template/images/findtz/findtz-hero.jpg?v=20261128-findtz5" alt="Сотрудник LIREATE — экспертное сопровождение" width="1200" height="1800" loading="eager" decoding="async" fetchpriority="high">
+          <source type="image/webp" srcset="/template/images/findtz/findtz-hero.webp?v=20261128-findtz6">
+          <img src="/template/images/findtz/findtz-hero.jpg?v=20261128-findtz6" alt="Сотрудник LIREATE — экспертное сопровождение" width="1200" height="1800" loading="eager" decoding="async" fetchpriority="high">
         </picture>
         <div class="lx-photo-v4-expert-caption">
-          <span>LIREATE</span>
-          <strong>ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ</strong>
-          <p>Проверим обозначение по реестру до уплаты пошлин</p>
+          <span class="lx-photo-v4-expert-caption-kicker">LIREATE / ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ</span>
+          <p class="lx-photo-v4-expert-caption-lead">Проверим обозначение по реестру до уплаты пошлин</p>
         </div>
       </div>
     </article>
@@ -310,6 +309,6 @@ include __DIR__ . '/blocks/lireate-contact-section.inc.php';
   <script defer src="/template/js/lireate-service-metrika-goals.js?v=20261111svc3"></script><!-- lireate_design_service_mobile_bar_js_v1 -->
   <script defer src="/template/js/lireate-service-mobile-bar.js?v=20261111svc3"></script>
 <script src="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.js', $lx_service_asset_dir); ?>"></script><!-- lireate_light_v4 -->
-  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-findtz5"></script><!-- lireate_findtz_photo_v4_hero -->
+  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-findtz6"></script><!-- lireate_findtz_photo_v4_hero -->
 </body>
 </html>

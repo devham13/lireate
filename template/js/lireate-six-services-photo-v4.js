@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   var BASE='/template/images/services-v4/';
-  var ASSET_VER='20261128-findtz5';
+  var ASSET_VER='20261128-findtz6';
   var POS_REG_SPECIALIST='Специалист по регистрации интеллектуальной собственности';
   var PAGES={
     '/findtz':{photo:'findtz-hero.webp',photoBase:'/template/images/findtz/',photoJpg:'findtz-hero.jpg',role:'Проверка товарных знаков',name:'',position:'Проверка товарных знаков',captionShort:'Проверим обозначение по реестру до уплаты пошлин',next:'Оценим риски сходства и поможем определить следующий шаг перед подачей заявки.'},
@@ -57,9 +57,14 @@
     }
     img.onerror=function(){stack.style.display='none';};
     var cap=make('div','lx-photo-v4-expert-caption');
-    cap.appendChild(make('span','', 'LIREATE'));
-    cap.appendChild(make('strong','', 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ'));
-    cap.appendChild(make('p','', config.captionShort || (config.role || 'Консультации по интеллектуальной собственности')));
+    if(path==='/findtz'){
+      cap.appendChild(make('span','lx-photo-v4-expert-caption-kicker','LIREATE / ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ'));
+      cap.appendChild(make('p','lx-photo-v4-expert-caption-lead', config.captionShort || config.role));
+    }else{
+      cap.appendChild(make('span','', 'LIREATE'));
+      cap.appendChild(make('strong','', 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ'));
+      cap.appendChild(make('p','', config.captionShort || (config.role || 'Консультации по интеллектуальной собственности')));
+    }
     media.appendChild(cap);
     card.appendChild(media);
     if(path!=='/findtz'){

@@ -12,9 +12,9 @@ if (!_site) {
   process.exit(2);
 }
 const HOST = _site.replace(/\/$/, '');
-const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/findtz-hero-photo-v3';
+const OUT = process.env.LIREATE_OUT_DIR || '/cursor/stores/self/findtz-hero-photo-v4';
 const BRANCH = process.env.LIREATE_PR_BRANCH || 'HEAD';
-const VER = '20261128-findtz5';
+const VER = '20261128-findtz6';
 
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -145,19 +145,35 @@ async function metrics(page) {
   return page.evaluate(() => {
     const card = document.querySelector('.lx-photo-v4-expert-card');
     const img = document.querySelector('.lx-photo-v4-expert-media--findtz img');
-    const cap = document.querySelector('.lx-photo-v4-expert-caption strong');
+    const kicker = document.querySelector('.lx-photo-v4-expert-caption-kicker');
+    const lead = document.querySelector('.lx-photo-v4-expert-caption-lead');
     const r = card?.getBoundingClientRect();
     const nav = document.querySelector('.lx-nav-shell');
+    const navPill = document.querySelector('.lx-nav-pill');
+    const consultBtn = document.querySelector('.lx-nav-pill > .lx-btn');
     const navBottom = nav?.getBoundingClientRect().bottom ?? 0;
     const person = document.querySelectorAll('#leftSideBar img[src*="person/"]').length;
+    const vw = window.innerWidth;
+    const pill = navPill?.getBoundingClientRect();
+    const btn = consultBtn?.getBoundingClientRect();
+    const capBox = document.querySelector('.lx-photo-v4-expert-caption')?.getBoundingClientRect();
+    const leadBox = lead?.getBoundingClientRect();
+    const noCaptionOverlap =
+      !capBox ||
+      !leadBox ||
+      leadBox.bottom <= capBox.bottom + 2;
     return {
       card: !!card,
-      caption: cap?.textContent?.trim() || '',
+      kicker: kicker?.textContent?.trim() || '',
+      lead: lead?.textContent?.trim() || '',
       imgOk: !!(img && img.complete && img.naturalWidth > 0),
       imgVisible: !!(img && img.offsetParent !== null && img.getBoundingClientRect().height > 40),
       noElviraName: !document.body.innerText.includes('Габдрахманова'),
       noExpertName: !document.querySelector('.lx-photo-v4-expert-name'),
       cardBelowNav: !!(r && r.top >= navBottom - 6),
+      consultVisible: !!(btn && btn.right <= vw - 4 && btn.width > 40),
+      navPillInView: !!(pill && pill.right <= vw + 2),
+      noCaptionOverlap,
       sidebarPerson: person,
     };
   });
@@ -196,12 +212,22 @@ console.log(JSON.stringify({ file: f390photo, vp: '390-photo', ...m390photo }));
 await browser.close();
 
 let fail = 0;
+const kickerOk = (t) => t.includes('LIREATE') && t.includes('ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ');
 for (const m of [m1440, m390top, m390photo]) {
-  if (!m.card || !m.imgOk || !m.imgVisible || m.caption !== 'ЭКСПЕРТНОЕ СОПРОВОЖДЕНИЕ' || !m.noElviraName || m.noExpertName === false) {
+  if (
+    !m.card ||
+    !m.imgOk ||
+    !m.imgVisible ||
+    !kickerOk(m.kicker) ||
+    !m.lead ||
+    !m.noElviraName ||
+    m.noExpertName === false ||
+    !m.noCaptionOverlap
+  ) {
     fail += 1;
   }
 }
-if (!m1440.cardBelowNav) fail += 1;
+if (!m1440.cardBelowNav || !m1440.consultVisible || !m1440.navPillInView) fail += 1;
 if (m1440.sidebarPerson > 0 || m390top.sidebarPerson > 0) fail += 1;
 
 if (fail) {
