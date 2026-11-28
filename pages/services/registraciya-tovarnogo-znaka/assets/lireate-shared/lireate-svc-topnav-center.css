@@ -1,0 +1,111 @@
+/* Центрирование lx-nav-pill в колонке справа от #leftSideBar + отступ hero под fixed-плашкой.
+   Класс body: lireate-svc-topnav-center (reg / findtz / prodlenie). Не для patent CMS. */
+:root {
+  --lx-svc-nav-pill-h: 56px;
+  --lx-svc-nav-gap-below: clamp(24px, 2.4vw, 32px);
+  --lx-svc-nav-top: 16px;
+}
+
+@media (min-width: 1151px) {
+  body.lireate-svc-topnav-center.lsv7-managed:has(#leftSideBar) .lx-nav-shell,
+  body.lireate-svc-topnav-center:has(#leftSideBar) .lx-nav-shell,
+  body.lireate-svc-topnav-center.lsv7-sidebar-present .lx-nav-shell {
+    left: var(--lpc-side-width, 280px);
+    right: 0;
+  /* lireate-sitewide-sidebar-v7.css: body.lsv7-managed .lx-nav-shell { width:100%!important } */
+    width: auto !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: clamp(12px, 1.5vw, 20px);
+    padding-right: clamp(12px, 1.5vw, 20px);
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  body.lireate-svc-topnav-center .lx-nav-shell .lx-nav-pill {
+    width: min(1100px, 100%);
+    max-width: min(1100px, calc(100vw - var(--lpc-side-width, 280px) - 32px));
+    margin-inline: auto;
+    transform: none !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: clamp(8px, 1vw, 18px);
+    align-items: center;
+  }
+
+  body.lireate-svc-topnav-center .lx-nav-pill > .lx-logo {
+    justify-self: start;
+  }
+
+  body.lireate-svc-topnav-center .lx-nav-pill > .lx-nav-links {
+    justify-self: center;
+    justify-content: center;
+    flex: none;
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: clamp(8px, 1vw, 20px);
+  }
+
+  body.lireate-svc-topnav-center .lx-nav-pill > .lx-btn,
+  body.lireate-svc-topnav-center .lx-nav-pill > a.lx-btn {
+    justify-self: end;
+    margin-left: 0 !important;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+/* Отступ hero: низ плашки + 24–32px до .lx-eyebrow (fixed nav) */
+body.lireate-svc-topnav-center .lireate-svc-page > .lx-hero:first-child,
+body.lireate-svc-topnav-center .lireate-svc-page > section.lx-hero:first-of-type {
+  padding-top: calc(
+    var(--lx-svc-nav-top) + var(--lx-svc-nav-pill-h) + var(--lx-svc-nav-gap-below)
+  ) !important;
+}
+
+/* six-services photo-v4: hero с min-height + center — eyebrow уезжает вниз */
+body.lireate-svc-topnav-center.lx-photo-v4 .lireate-svc-page > .lx-hero:first-child,
+body.lireate-svc-topnav-center.lx-photo-v4 .lireate-svc-page > section.lx-hero:first-of-type {
+  align-items: start !important;
+  min-height: 0 !important;
+  padding-bottom: 34px !important;
+}
+
+body.lireate-svc-topnav-center.lx-photo-v4 .lireate-svc-page > .lx-hero > .lx-photo-v4-copy {
+  align-self: start !important;
+}
+
+@media (min-width: 961px) {
+  body.lireate-svc-topnav-center.lx-photo-v4:not(.registraciya-pilot-v2)
+    .lireate-svc-page
+    > .lx-hero:first-child
+    > .lx-photo-v4-expert-stack {
+    align-self: start !important;
+    margin-top: 0 !important;
+  }
+}
+
+body.lireate-svc-topnav-center .lx-hero--landing-v2:first-child,
+body.lireate-svc-topnav-center .lireate-svc-page > .lx-hero.lx-hero--landing-v2:first-of-type {
+  align-items: start;
+}
+
+body.lireate-svc-topnav-center .lx-hero .lx-eyebrow {
+  scroll-margin-top: calc(var(--lx-svc-nav-top) + var(--lx-svc-nav-pill-h) + 12px);
+}
+
+@media (max-width: 1150px) {
+  body.lireate-svc-topnav-center .lx-nav-shell {
+    left: 0;
+    right: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  body.lireate-svc-topnav-center .lireate-svc-page > .lx-hero:first-child,
+  body.lireate-svc-topnav-center .lireate-svc-page > section.lx-hero:first-of-type {
+    padding-top: calc(
+      12px + var(--lx-svc-nav-pill-h) + clamp(24px, 3vw, 28px)
+    ) !important;
+  }
+}

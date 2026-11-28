@@ -65,12 +65,13 @@ $schema_graph = [
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-inter-font.css', $lx_service_asset_dir); ?>?v=20261128-fint1">
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-light-v4.css', $lx_service_asset_dir); ?>"><!-- lireate_light_v4 -->
-  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>">
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-svc-topnav-center.css', $lx_service_asset_dir); ?>?v=20261128-hcv1">
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-topnav-center.css', $lx_service_asset_dir); ?>?v=20261128-hcv1">
   <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-findtz6"><!-- lireate_findtz_photo_v4_hero -->
   <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/findtz-inter-family-v1.css', $lx_service_asset_dir); ?>?v=20261128-fint1">
   <?php lireate_sitewide_sidebar_v7_head(); ?>
 </head>
-<body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center lireate-findtz-inter-v1 lx-photo-v4">
+<body class="lsv7-managed lsv7-sidebar-present lireate-svc-body lireate-theme-light-v4 lireate-findtz-topnav-center lireate-findtz-inter-v1 lireate-svc-topnav-center lx-photo-v4">
 <?php lireate_sitewide_sidebar_v7_render(); ?>
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">

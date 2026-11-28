@@ -67,8 +67,9 @@ $schema_graph = [
   <!-- lireate-six-services-photo-v4-20261126 -->
   <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-regprod-hero1">
   <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-regprod-hero1"></script>
+  <link rel="stylesheet" href="<?php echo lireate_service_asset_href('assets/lireate-shared/lireate-svc-topnav-center.css', $lx_service_asset_dir); ?>?v=20261128-hcv1">
 </head>
-<body class="lsv7-managed lireate-svc-body lireate-theme-light-v4">
+<body class="lsv7-managed lireate-svc-body lireate-theme-light-v4 lireate-svc-topnav-center">
 <div class="lx-bg-glow" aria-hidden="true"></div>
 <div class="lx-nav-shell">
   <header class="lx-nav-pill" role="banner">
