@@ -1,0 +1,13 @@
+/* /findtz/: только font-family (типографика страницы без изменения размеров) */
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center.lx-photo-v4,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page .lx-hero h1,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page .lx-section > h2,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page .lx-section > h3,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page p,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page .lx-btn,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page button,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page .lx-photo-v4-expert-caption-lead,
+body.lireate-findtz-inter-v1.lireate-findtz-topnav-center .lireate-svc-page .lx-photo-v4-expert-name {
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif !important;
+}
