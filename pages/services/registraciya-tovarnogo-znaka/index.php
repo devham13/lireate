@@ -86,6 +86,9 @@ $schema_graph = [
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"></noscript>
   <script type="application/ld+json"><?php echo json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
+  <!-- lireate-six-services-photo-v4-20261126 -->
+  <link rel="stylesheet" href="/template/css/lireate-six-services-photo-v4.css?v=20261128-regprod-hero1">
+  <script defer src="/template/js/lireate-six-services-photo-v4.js?v=20261128-regprod-hero1"></script>
 </head>
 <body class="lsv7-managed lireate-svc-body registraciya-landing-body registraciya-pilot-v2 lx-tm-white lireate-theme-light-v4">
 <div class="lx-bg-glow" aria-hidden="true"></div>
